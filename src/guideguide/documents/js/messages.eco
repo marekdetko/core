@@ -1,0 +1,20 @@
+---
+write: false
+---
+
+# Get an object full of messages in the correct language
+class Messages
+  messages:
+    'en-us':
+      'gap.unrecognized': "Unrecognized gap"
+      'gap.noFillWildcards': "Wildcards cannot be fills"
+      'ggsn.noGrids': "This string does not contain any grids"
+      'ggsn.fillInVariable': "Variables cannot contain a fill"
+      'ggsn.noWildcardsInVariableFills': "A variable used as a fill can not contain a wildcard"
+      'ggsn.undefinedVariable': "Undefined variable"
+      'ggsn.oneFillPerGrid': "A grid can only contain one fill"
+      'ggsn.moreThanOneHundredPercent': "A grid cannot contain more than 100%"
+
+  constructor: (i18n) ->
+    $.each @messages['en-us'], (key,value) =>
+      @[key] = if @messages[i18n][key] then @messages[i18n][key] else value

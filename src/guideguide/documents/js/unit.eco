@@ -1,0 +1,116 @@
+---
+write: false
+---
+
+resolution = 72
+
+# A unit of measurement formed of a number/type pair
+
+class Unit
+  
+  # number - entered value 
+  value: null
+
+  # string - entered unit type, reformatted 
+  type: null
+
+  # number - value in base units, usually pixels
+  baseValue: null
+
+  # boolean - truthy if this is valid and can be parsed
+  isValid: true
+
+  # string - original string
+  original: null
+
+  # Create a unit object
+  #
+  #   string - string to be parsed into a Unit
+  #
+  # Returns an object
+  constructor: (string, integerOnly = false) ->
+    @original = string = string.replace /\s/g, ''
+    unitGaps = string.match(/([-0-9\.]+)([a-z]+)?/i) || ''
+    @value    = parseFloat unitGaps[1]
+
+    if !integerOnly
+      unitString = unitGaps[2] || ''
+      @type      = parseUnit unitString
+      @baseValue = getBaseValue(@value,@type)
+      @isValid   = @type != null
+    else
+      if unitGaps[1]
+        @type = 'integer'
+        @isValid = true
+
+    if !@value
+      @isValid = false
+    if !@type
+      @isValid = false
+      @type = unitString
+
+  # Return the string form of the object, properly formatted,
+  # based on the original string value
+  toString: =>
+    if @isValid
+      "#{@value if @value}#{if @type and @type != 'integer' then @type else ''}"
+    else
+      @original
+
+# Parse a string and change it to a friendly unit
+#
+#   string - string to be parsed
+#
+# Returns a string or null, if invalid
+parseUnit = (string) ->
+  switch string
+    when 'centimeter', 'centimeters', 'centimetre', 'centimetres', 'cm'
+      'cm'
+    when 'inch', 'inches', 'in'
+      'in'
+    when 'millimeter', 'millimeters', 'millimetre', 'millimetres', 'mm'
+      'mm'
+    when 'pixel', 'pixels', 'px'
+      'px'
+    when 'point', 'points', 'pts', 'pt'
+      'points'
+    when 'pica', 'picas'
+      'picas'
+    when 'percent', 'pct', '%'
+      '%'
+    when ''
+      info = appAdapter.getInfo()
+      parseUnit info.ruler
+    else
+      null
+
+# Get the value of the gap in base units
+#
+#   value - value to be converted
+#   type  - units of the value
+#
+# Returns a number
+getBaseValue = (value,type) ->
+  tmpValue  = 0
+  unitCanon =
+    cm:    2.54,
+    inch:  1,
+    mm:    25.4,
+    px:    resolution,
+    point: 72,
+    pica:  6
+  
+  # convert to inch
+  switch type
+    when 'cm' then tmpValue = value / unitCanon.cm
+    when 'in' then tmpValue = value / unitCanon.inch
+    when 'mm' then tmpValue = value / unitCanon.mm
+    when 'px' then tmpValue = value / unitCanon.px
+    when 'points' then tmpValue = value / unitCanon.point
+    when 'picas' then tmpValue = value / unitCanon.pica
+    when '%'
+      # tmpValue = (pctRef / unitCanon.px)*(value/100)
+    else
+      return 0
+
+  tmpValue * unitCanon.px 

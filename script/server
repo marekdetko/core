@@ -1,0 +1,6 @@
+#!/bin/sh
+# usage: script/server
+#
+# check if things need to be updated, then run the server
+
+docpad run

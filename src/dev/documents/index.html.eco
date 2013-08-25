@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>GuideGuide Open Demo</title>
+
+  <link rel="stylesheet" type="text/css" href="/css/demo.css">
+  <link rel="stylesheet" type="text/css" href="/css/guideguide.css">
+
+  <script type="text/javascript" src="/js/jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="/js/demo.js"></script>
+  <script type="text/javascript" src="/js/guideguide-web.js"></script>
+  <script type="text/javascript" src="/js/guideguide.js"></script>
+</head>
+<body class="guideguide-dark">
+  <h1 class="page-title">GuideGuide Open</h1>
+
+  <ul class="color-switcher js-color-switcher">
+    <li><a href class="js-color-switcher-color" data-theme-name="guideguide-lighter">lighter</a></li>
+    <li><a href class="js-color-switcher-color" data-theme-name="guideguide-light">light</a></li>
+    <li><a href class="js-color-switcher-color is-selected" data-theme-name="guideguide-dark">dark</a></li>
+    <li><a href class="js-color-switcher-color" data-theme-name="guideguide-darker">darker</a></li>
+  </ul>
+
+  <div class="faux-app">
+    <div class="document js-document">
+      <div class="document-header">
+        GuideGuide Demo
+      </div>
+
+      <div class="document-artboard js-artboard">
+      </div>
+
+    </div>
+
+    <div class="panel-shell">
+
+      <div class="panel-header">
+        <span class="panel-tab">GuideGuide</span>
+      </div>
+
+      <%- @include('panel.html') %>
+
+    </div>
+  </div>
+
+</body>
+</html>

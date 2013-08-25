@@ -1,0 +1,14 @@
+#!/bin/sh
+# usage: script/bootstrap
+#
+# install dependencies and generate user related directories
+
+gem install sass
+
+npm install -g npm
+
+npm instal -g docpad@6.45
+
+docpad install coffeescript
+
+docpad install sass
