@@ -4,6 +4,8 @@ GuideGuide is a guide management plugin designed to easy to embed in multiple ap
 
 ## Setup
 
+### OSX
+
 1. [Download & Install Git](http://git-scm.com/download)
 
 2. [Download & Install Xcode](http://developer.apple.com/xcode/)
@@ -16,10 +18,16 @@ GuideGuide is a guide management plugin designed to easy to embed in multiple ap
 
 4. Bootstrap everything in Terminal.
 
-    sudo script/bootstrap
+      sudo script/bootstrap
 
-5. Run the server.
+### Windows
 
-    script/server
+Not documented at this time. Feel free to submit a pull request
 
-6. Open `http://localhost:9778/` in a browser.
+## Usage
+
+1. Run the server.
+
+      script/server
+
+2. Open `http://localhost:9778/` in a browser.
