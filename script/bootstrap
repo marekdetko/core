@@ -3,6 +3,8 @@
 #
 # install dependencies and generate user related directories
 
+chown -R $USER /usr/local
+
 gem install sass
 
 npm install -g npm
