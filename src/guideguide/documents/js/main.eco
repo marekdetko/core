@@ -9,12 +9,12 @@ window.messages = {}
 $(document).on 'guideguide:ready', '#guideguide', (event) ->
   window.messages = new Messages(appAdapter.i18n)
   if appAdapter.hasData()
-    $('#guideguide').trigger 'internal:refreshSets'
+    $('#guideguide').trigger 'guideguideInternal:refreshSets'
   else
-    $('#guideguide').trigger 'internal:bootstrap'
+    $('#guideguide').trigger 'guideguideInternal:bootstrap'
 
 # If this is the first time GuideGuide has been launched, set up some default data.
-$(document).on 'internal:bootstrap', '#guideguide', (event) ->
+$(document).on 'guideguideInternal:bootstrap', '#guideguide', (event) ->
   console.log 'Bootstrapping GuideGuide'
   appAdapter.data =
     panel: # Info about this install of GuideGuide
@@ -45,7 +45,7 @@ $(document).on 'internal:bootstrap', '#guideguide', (event) ->
       calculation:         'pixel'
 
   appAdapter.saveData()
-  $('#guideguide').trigger 'internal:refreshSets'
+  $('#guideguide').trigger 'guideguideInternal:refreshSets'
 
 # Behavior for navigating a collection of "pages" via a set of tabs
 $(document).on 'click', '.js-tabbed-pages .js-tabbed-page-tab', (event) ->
@@ -56,12 +56,12 @@ $(document).on 'click', '.js-tabbed-pages .js-tabbed-page-tab', (event) ->
 
   return if enterPage == exitPage
 
-  $('#guideguide').trigger "internal:exit#{ exitPage }"
+  $('#guideguide').trigger "guideguideInternal:exit#{ exitPage }"
 
   if filter = enterPage
     selectTab $container, filter
 
-  $('#guideguide').trigger "internal:enter#{ enterPage }"
+  $('#guideguide').trigger "guideguideInternal:enter#{ enterPage }"
 
 # Update the panel's color theme  
 $(document).on 'guideguide:updateTheme', '#guideguide', (event, theme) ->

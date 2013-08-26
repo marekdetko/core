@@ -3,9 +3,9 @@ write: false
 ---
 
 # When leaving the custom form tab do
-$(document).on 'internal:exitggsn', '#guideguide', (event) ->
+$(document).on 'guideguideInternal:exitggsn', '#guideguide', (event) ->
   $(this).find('.js-ggsn-input').val('') if $(this).hasClass 'is-showing-new-set-form'
-  $('#guideguide').trigger 'internal:hideNewSetForm'
+  $('#guideguide').trigger 'guideguideInternal:hideNewSetForm'
 
 # Create a grid from the form inputs
 $(document).on 'click', '.js-sets-form .js-make-grid', (event) ->
@@ -23,7 +23,7 @@ $(document).on 'click', '.js-sets-form .js-make-grid', (event) ->
 $(document).on 'click', '.js-sets-form .js-new-set', (event) ->
   event.preventDefault()
   $('#guideguide .js-custom-tab').click()  
-  $('#guideguide').trigger 'internal:showNewGGSNForm'
+  $('#guideguide').trigger 'guideguideInternal:showNewGGSNForm'
 
 # Select a set
 $(document).on 'click', '.js-sets-form .js-set-select', (event) ->
@@ -40,7 +40,7 @@ $(document).on 'click', '.js-sets-form .js-delete-set', (event) ->
   appAdapter.data.sets = $.grep appAdapter.data.sets, (set) -> parseInt(set.id) != parseInt(id)
 
   appAdapter.saveData()
-  $('#guideguide').trigger 'internal:refreshSets'
+  $('#guideguide').trigger 'guideguideInternal:refreshSets'
 
 # Open set editor
 $(document).on 'click', '.js-sets-form .js-edit-set', (event) ->
@@ -56,7 +56,7 @@ $(document).on 'click', '.js-sets-form .js-edit-set', (event) ->
   $form.find('.js-set-id').val set[0].id
 
   $('#guideguide').find('.js-custom-tab').click()
-  $('#guideguide').trigger 'internal:showNewGGSNForm'
+  $('#guideguide').trigger 'guideguideInternal:showNewGGSNForm'
 
 # Fire save set event and pass it the contents of the grid form
 $(document).on 'click', '.js-ggsn-form .js-save-set', (event) ->
@@ -72,9 +72,9 @@ $(document).on 'click', '.js-ggsn-form .js-save-set', (event) ->
       ggsn: string
 
     if !$('#guideguide').find('.js-set-id').val()
-      $('#guideguide').trigger 'internal:newSet', obj
+      $('#guideguide').trigger 'guideguideInternal:newSet', obj
     else
-      $('#guideguide').trigger 'internal:updateSet', obj
+      $('#guideguide').trigger 'guideguideInternal:updateSet', obj
 
     $('#guideguide .js-sets-tab').click()
 
@@ -94,27 +94,27 @@ $(document).on 'click', '.js-grid-form .js-save-set', (event) ->
       name: data.name
       ggsn: string
 
-    $('#guideguide').trigger 'internal:newSet', obj
+    $('#guideguide').trigger 'guideguideInternal:newSet', obj
     $('#guideguide .js-sets-tab').click()
 
 # Update a set with new data
 #
 #   data - information for the set
 #
-$(document).on 'internal:updateSet', '#guideguide', (event, data) ->
+$(document).on 'guideguideInternal:updateSet', '#guideguide', (event, data) ->
   set = $.grep appAdapter.data.sets, (set) -> parseInt(set.id) == parseInt(data.id)
 
   set[0].name = data.name
   set[0].string = data.ggsn
 
   appAdapter.saveData()
-  $('#guideguide').trigger 'internal:refreshSets'
+  $('#guideguide').trigger 'guideguideInternal:refreshSets'
 
 # Add a new set to the list of sets
 #
 #   data - information for the set
 #
-$(document).on 'internal:newSet', '#guideguide', (event, data) ->
+$(document).on 'guideguideInternal:newSet', '#guideguide', (event, data) ->
   newSet =
     id: appAdapter.data.panel.newSetId
     name: data.name
@@ -123,24 +123,24 @@ $(document).on 'internal:newSet', '#guideguide', (event, data) ->
   appAdapter.data.panel.newSetId++
   appAdapter.data.sets.push newSet
   appAdapter.saveData()
-  $('#guideguide').trigger 'internal:refreshSets'
+  $('#guideguide').trigger 'guideguideInternal:refreshSets'
 
 # Display new set name, swap in save set and cancel set buttons,
 # hide make grid and new set buttons
 # Focus into the name field
-$(document).on 'internal:showNewSetForm', '#guideguide', (event) ->
+$(document).on 'guideguideInternal:showNewSetForm', '#guideguide', (event) ->
   $(this).addClass 'is-showing-new-set-form'
   $('#guideguide').find('.js-grid-form').find('.js-set-name').focus() 
 
 # Hide new set name, swap out save set and cancel set buttons,
 # show make grid and new set buttons
-$(document).on 'internal:hideNewSetForm', '#guideguide', (event) ->
+$(document).on 'guideguideInternal:hideNewSetForm', '#guideguide', (event) ->
   $(this).find('.js-set-name').val('')
   $(this).find('.js-set-id').val('')
   $(this).removeClass 'is-showing-new-set-form'
 
 # Refresh the list of sets
-$(document).on 'internal:refreshSets', '#guideguide', (event) ->
+$(document).on 'guideguideInternal:refreshSets', '#guideguide', (event) ->
   $list = $('.js-set-list')
   $list.find('.js-set').remove()
   $.each appAdapter.data.sets, (index,set) =>

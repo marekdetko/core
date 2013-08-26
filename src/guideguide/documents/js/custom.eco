@@ -27,15 +27,15 @@ $(document).on 'blur', '.js-ggsn-form .js-ggsn-input', (event) ->
 
 $(document).on 'click', '.js-ggsn-form .js-new-set', (event) ->
   event.preventDefault()
-  $('#guideguide').trigger 'internal:showNewGGSNForm'
+  $('#guideguide').trigger 'guideguideInternal:showNewGGSNForm'
 
 $(document).on 'click', '.js-ggsn-form .js-cancel-set', (event) ->
   event.preventDefault()
-  $('#guideguide').trigger 'internal:hideNewSetForm'
+  $('#guideguide').trigger 'guideguideInternal:hideNewSetForm'
 
 # Display new set name, swap in save set and cancel set buttons,
 # hide make grid and new set buttons
 # Focus into the name field
-$(document).on 'internal:showNewGGSNForm', '#guideguide', (event) ->
+$(document).on 'guideguideInternal:showNewGGSNForm', '#guideguide', (event) ->
   $(this).addClass 'is-showing-new-set-form'
   $('#guideguide').find('.js-ggsn-form').find('.js-set-name').focus() 

@@ -61,11 +61,11 @@ $(document).on 'click', '.js-grid-form .js-make-grid', (event) ->
 
 $(document).on 'click', '.js-grid-form .js-new-set', (event) ->
   event.preventDefault()
-  $('#guideguide').trigger 'internal:showNewSetForm'
+  $('#guideguide').trigger 'guideguideInternal:showNewSetForm'
 
 $(document).on 'click', '.js-grid-form .js-cancel-set', (event) ->
   event.preventDefault()
-  $('#guideguide').trigger 'internal:hideNewSetForm'
+  $('#guideguide').trigger 'guideguideInternal:hideNewSetForm'
 
 stringifyFormData = (data) ->
   info = appAdapter.getInfo()
