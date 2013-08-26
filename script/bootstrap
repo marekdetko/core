@@ -7,8 +7,10 @@ gem install sass
 
 npm install -g npm
 
-npm instal -g docpad@6.45
+npm instal -g docpad
 
 docpad install coffeescript
 
 docpad install sass
+
+docpad install eco
