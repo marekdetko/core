@@ -18,7 +18,9 @@ GuideGuide is a guide management plugin designed to easy to embed in multiple ap
 
 4. Bootstrap everything in Terminal.
 
-      sudo script/bootstrap
+  ```
+  sudo script/bootstrap
+  ```
 
 ### Windows
 
@@ -28,6 +30,8 @@ Not documented at this time. Feel free to submit a pull request
 
 1. Run the server.
 
-      script/server
+  ```
+  script/server
+  ```
 
 2. Open `http://localhost:9778/` in a browser.
