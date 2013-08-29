@@ -8,8 +8,8 @@
 
   <script type="text/javascript" src="/js/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="/js/demo.js"></script>
+  <script type="text/javascript" src="/js/guideguide-core.js"></script>
   <script type="text/javascript" src="/js/guideguide-web.js"></script>
-  <script type="text/javascript" src="/js/guideguide.js"></script>
 </head>
 <body class="guideguide-dark">
   <h1 class="page-title">GuideGuide Open</h1>

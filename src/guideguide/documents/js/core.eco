@@ -1,0 +1,49 @@
+---
+write: false
+---
+
+class window.GuideGuideCore
+  constructor: (@panel) ->
+    @i18n or= 'en-us'
+    @messages = new Messages(@i18n)
+
+    @guideguideData = @getGuideGuideData()
+
+    if @guideguideData
+      @refreshSets()
+    else
+      @bootstrap()
+
+  # Set default data the first time GuideGuide run.
+  #
+  # Returns nothing.
+  bootstrap: =>
+
+  # Get GuideGuide's data, including usage data, user preferences, and sets
+  #
+  # Returns an Object or null if no data exists.
+  getGuideGuideData: =>
+    false
+
+  # Remove any sets in the markup and update the list with a new set items for
+  # each set in the list.
+  #
+  # Returns nothing.
+  refreshSets: =>
+
+  # Get information about the current active document.
+  #
+  #   info - object of info about the active document
+  #
+  # Example data:
+  #
+  #     info =
+  #       width:   100
+  #       height:  100
+  #       ruler:   'pixels'
+  #       offsetX: 0
+  #       offsety: 0
+  #
+  # Returns an Object or null if no object exists.
+  getDocumentInfo: (info = null) =>
+    return if info then info else null

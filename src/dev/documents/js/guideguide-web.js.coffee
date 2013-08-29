@@ -1,6 +1,23 @@
 # Web module for GuideGuide. Used for development and the website demo.
 
-class GuideGuide
+class GuideGuide extends window.GuideGuideCore
+  constructor: (@panel) ->
+    console.log 'Running GuideGuide in Web mode'
+    @i18n = 'en-us'
+    super @panel
+
+  getDocumentInfo: =>
+    activeDocument = $('.js-document').find('.js-artboard')
+    artboardPosition = activeDocument.position()
+    info =
+      width: activeDocument.width()
+      height: activeDocument.height()
+      ruler: 'pixels'
+      offsetX: artboardPosition.left
+      offsetY: artboardPosition.top
+    super info
+
+class GuideGuideLegacy
   i18n: ''
 
   constructor: (@$guideguide) ->
@@ -67,5 +84,4 @@ class GuideGuide
 
 
 $ ->
-  window.appAdapter = new GuideGuide $('#guideguide')
-  $('#guideguide').trigger('guideguide:ready')
+  window.guideguide = new GuideGuide $('#guideguide')
