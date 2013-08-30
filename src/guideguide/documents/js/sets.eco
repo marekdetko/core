@@ -7,40 +7,11 @@ $(document).on 'guideguideInternal:exitggsn', '#guideguide', (event) ->
   $(this).find('.js-ggsn-input').val('') if $(this).hasClass 'is-showing-new-set-form'
   $('#guideguide').trigger 'guideguideInternal:hideNewSetForm'
 
-# Create a grid from the form inputs
-$(document).on 'click', '.js-sets-form .js-make-grid', (event) ->
-  event.preventDefault()
-  $set = $('.js-set-list').find('.is-selected').first()
-  
-  return unless $set.length and appAdapter.getInfo()
-
-  console.log 'Grid from set'
-  data = $.grep appAdapter.data.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
-  console.log data
-  appAdapter.addGuides getGuides new GGSN data[0].string
-
 # Create a new set
 $(document).on 'click', '.js-sets-form .js-new-set', (event) ->
   event.preventDefault()
   $('#guideguide .js-custom-tab').click()  
   $('#guideguide').trigger 'guideguideInternal:showNewGGSNForm'
-
-# Select a set
-$(document).on 'click', '.js-sets-form .js-set-select', (event) ->
-  event.preventDefault()
-  $(this).closest('.js-sets-form').find('.is-selected').removeClass 'is-selected'
-  $(this).closest('.js-set').addClass 'is-selected'
-
-# Delet a set
-$(document).on 'click', '.js-sets-form .js-delete-set', (event) ->
-  event.preventDefault()
-  $set = $(this).closest '.js-set'
-  id = $set.attr 'data-id'
-
-  appAdapter.data.sets = $.grep appAdapter.data.sets, (set) -> parseInt(set.id) != parseInt(id)
-
-  appAdapter.saveData()
-  $('#guideguide').trigger 'guideguideInternal:refreshSets'
 
 # Open set editor
 $(document).on 'click', '.js-sets-form .js-edit-set', (event) ->
@@ -138,13 +109,3 @@ $(document).on 'guideguideInternal:hideNewSetForm', '#guideguide', (event) ->
   $(this).find('.js-set-name').val('')
   $(this).find('.js-set-id').val('')
   $(this).removeClass 'is-showing-new-set-form'
-
-# Refresh the list of sets
-$(document).on 'guideguideInternal:refreshSets', '#guideguide', (event) ->
-  $list = $('.js-set-list')
-  $list.find('.js-set').remove()
-  $.each appAdapter.data.sets, (index,set) =>
-    item = $('.js-set-item-template').clone(true).removeClass('js-set-item-template').css('display','')
-    item.find('.js-set-item-name').html set.name
-    item.attr 'data-id', set.id
-    $list.append item

@@ -5,6 +5,9 @@ write: false
 class window.GuideGuideCore
   constructor: (@panel) ->
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
+    @panel.on 'click', '.js-sets-form .js-make-grid', @onMakeGridFromSet
+    @panel.on 'click', '.js-sets-form .js-set-select', @onSelectSet
+    @panel.on 'click', '.js-sets-form .js-delete-set', @onDeleteSet
 
     @i18n or= 'en-us'
     @messages = new Messages(@i18n)
@@ -20,7 +23,7 @@ class window.GuideGuideCore
   # Returns nothing.
   bootstrap: =>
     console.log 'Bootstrapping GuideGuide'
-    data =
+    @guideguideData =
       panel: # Info about this install of GuideGuide
         newSetId: 3
       sets: [ # User sets
@@ -48,7 +51,7 @@ class window.GuideGuideCore
         verticalRemainder:   'last'
         calculation:         'pixel'
 
-    @saveGuideGuideData(data)
+    @saveGuideGuideData(@guideguideData)
     @refreshSets()
 
   # Update the panel's color theme  
@@ -126,6 +129,40 @@ class window.GuideGuideCore
   #
   # Returns nothing
   addGuides: (guides) =>
+    console.log 'Adding guides:', guides
+
+  # Select a set in the sets list when it is clicked
+  #
+  # Returns nothing.
+  onSelectSet: (event) =>
+    event.preventDefault()
+    $set = $(event.currentTarget)
+    $set.closest('.js-sets-form').find('.is-selected').removeClass('is-selected')
+    $set.closest('.js-set').addClass('is-selected')
+
+  onDeleteSet: (event) =>
+    event.preventDefault()
+    $set = $(event.currentTarget).closest '.js-set'
+    id = $set.attr 'data-id'
+
+    @guideguideData.sets = $.grep @guideguideData.sets, (set) -> parseInt(set.id) != parseInt(id)
+
+    @saveGuideGuideData(@guideguideData)
+    @refreshSets()
+
+  # Create a grid from a set
+  #
+  # Returns nothing.
+  onMakeGridFromSet: (event) =>
+    event.preventDefault()
+    $set = $('.js-set-list').find('.is-selected').first()
+    
+    return unless $set.length and @getDocumentInfo()
+
+    console.log 'Grid from set'
+    data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
+    console.log data
+    @addGuides @getGuides new GGSN data[0].string
 
   # Remove any sets in the markup and update the list with a new set items for
   # each set in the list.
@@ -133,6 +170,13 @@ class window.GuideGuideCore
   # Returns nothing.
   refreshSets: =>
     console.log 'Refreshing sets'
+    $list = @panel.find('.js-set-list')
+    $list.find('.js-set').remove()
+    $.each @guideguideData.sets, (index,set) =>
+      item = $('.js-set-item-template').clone(true).removeClass('js-set-item-template').css('display','')
+      item.find('.js-set-item-name').html set.name
+      item.attr 'data-id', set.id
+      $list.append item
 
   # Get information about the current active document.
   #
@@ -157,7 +201,7 @@ class window.GuideGuideCore
   #
   # Returns a collection of guides
   getGuides: (ggn) =>
-    info = appAdapter.getInfo()
+    info = @getDocumentInfo()
     guides = []
 
     $.each ggn.grids, (index,grid) =>
@@ -261,8 +305,6 @@ class window.GuideGuideCore
       unique
 
     guides
-
-
 
 # Calculate the sum of an array of values
 #

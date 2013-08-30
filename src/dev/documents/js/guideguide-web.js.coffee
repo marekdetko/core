@@ -48,9 +48,10 @@ class GuideGuide extends window.GuideGuideCore
   #   guides - Collection of guides to be added.
   #
   # Returns nothing
-  addGuides: =>
+  addGuides: (guides) =>
     $.each guides, (index,guide) =>
       @addGuide guide.location, guide.orientation
+    super
 
   # Add a guide to the document
   #
