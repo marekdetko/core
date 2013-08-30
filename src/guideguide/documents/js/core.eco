@@ -3,6 +3,9 @@ write: false
 ---
 
 class window.GuideGuideCore
+
+  @guideguideData: null
+
   constructor: (@panel) ->
     @i18n or= 'en-us'
     @messages = new Messages(@i18n)
@@ -18,18 +21,74 @@ class window.GuideGuideCore
   #
   # Returns nothing.
   bootstrap: =>
+    console.log 'Bootstrapping GuideGuide'
+    data =
+      panel: # Info about this install of GuideGuide
+        newSetId: 3
+      sets: [ # User sets
+          id: 0
+          name:'Outline'
+          string: """
+          | ~ | (hFl)
+          | ~ | (vFl)
+          """
+        ,
+          id: 1
+          name:'Two column grid'
+          string: """
+          | ~ | ~ | (hFl)
+          """
+        ,
+          id: 2
+          name:'Three column grid'
+          string: """
+          | ~ | ~ | ~ | (hFl)
+          """
+      ]
+      settings: # User settings
+        horizontalRemainder: 'last'
+        verticalRemainder:   'last'
+        calculation:         'pixel'
+
+    @saveGuideGuideData(data)
+    @refreshSets()
+
 
   # Get GuideGuide's data, including usage data, user preferences, and sets
   #
   # Returns an Object or null if no data exists.
-  getGuideGuideData: =>
-    false
+  getGuideGuideData: (data = null) =>
+    if data
+      console.log "Retrieved data:", data
+      return data
+    else
+      console.log "Failed to retrieve data"
+
+  # Save GuideGuide's data, including usage data, user preferences, and sets
+  #
+  # Returns nothing.
+  saveGuideGuideData: (data) =>
+    console.log if data then "Saved data" else "Failed to retrieve data"
+
+  # Removes all guides from the document
+  #
+  # Returns nothing.
+  clearGuides: =>
+    console.log "Clear guides"
+
+  # Add a collection of guides to the document.
+  #
+  #   guides - Collection of guides to be added.
+  #
+  # Returns nothing
+  addGuides: (guides) =>
 
   # Remove any sets in the markup and update the list with a new set items for
   # each set in the list.
   #
   # Returns nothing.
   refreshSets: =>
+    console.log 'Refreshing sets'
 
   # Get information about the current active document.
   #

@@ -6,6 +6,11 @@ class GuideGuide extends window.GuideGuideCore
     @i18n = 'en-us'
     super @panel
 
+  # Get information about the current active document.
+  #
+  #   info - object of info about the active document
+  #
+  # Returns an Object or null if no object exists.
   getDocumentInfo: =>
     activeDocument = $('.js-document').find('.js-artboard')
     artboardPosition = activeDocument.position()
@@ -17,39 +22,35 @@ class GuideGuide extends window.GuideGuideCore
       offsetY: artboardPosition.top
     super info
 
-class GuideGuideLegacy
-  i18n: ''
-
-  constructor: (@$guideguide) ->
-    console.log 'Running GuideGuide in Web mode'
-    @document = $('.js-document')
-
-    @i18n = @getLanguage()
-
-    @data = JSON.parse localStorage.getItem 'guideguide'
-
-  # Get the localization string of the application.
-  #
-  # Returns a localization string
-  getLanguage: => 'en-us'
-
-  # Get information about the active document
-  #
-  # Returns an object
-  getInfo: =>
-    $artboardPosition = @document.find('.js-artboard').position()
-    obj =
-      width: @document.width()
-      height: @document.height()
-      ruler: 'pixels'
-      offsetX: $artboardPosition.left
-      offsetY: $artboardPosition.top
-
   # Removes all guides from the document
   #
-  # Returns nothing
+  # Returns nothing.
   clearGuides: =>
+    super
     @document.find('.js-guide').remove()
+
+  # Get GuideGuide's data, including usage data, user preferences, and sets
+  #
+  # Returns an Object or null if no data exists.
+  getGuideGuideData: =>
+    data = JSON.parse localStorage.getItem 'guideguide'
+    super data
+
+  # Save GuideGuide's data, including usage data, user preferences, and sets
+  #
+  # Returns nothing.
+  saveGuideGuideData: (data) =>
+    localStorage.setItem 'guideguide', JSON.stringify data if localStorage
+    super data
+
+  # Add a collection of guides to the document.
+  #
+  #   guides - Collection of guides to be added.
+  #
+  # Returns nothing
+  addGuides: =>
+    $.each guides, (index,guide) =>
+      @addGuide guide.location, guide.orientation
 
   # Add a guide to the document
   #
@@ -65,23 +66,7 @@ class GuideGuideLegacy
     else
       guide.css 'left', location + 'px'
 
-    @document.append guide
-
-  # Add a collection of guides to the document.
-  #
-  #   guides - Collection of guides to be added.
-  #
-  # Returns nothing
-  addGuides: (guides) =>
-    $.each guides, (index,guide) =>
-      @addGuide guide.location, guide.orientation
-
-  hasData: =>
-    return if localStorage.getItem 'guideguide' then true else false
-
-  saveData: =>
-    localStorage.setItem 'guideguide', JSON.stringify @data if localStorage
-
+    $('.js-document').find('.js-artboard').append guide
 
 $ ->
   window.guideguide = new GuideGuide $('#guideguide')
