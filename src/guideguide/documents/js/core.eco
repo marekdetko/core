@@ -164,6 +164,27 @@ class window.GuideGuideCore
     console.log data
     @addGuides @getGuides new GGSN data[0].string
 
+  createNewSet: (data) =>
+    newSet =
+      id: @guideguideData.panel.newSetId
+      name: data.name
+      string: data.ggn
+
+    @guideguideData.panel.newSetId++
+    @guideguideData.sets.push newSet
+    @saveGuideGuideData(@guideguideData)
+    @refreshSets()
+
+  updateSet: (data) =>
+    set = $.grep appAdapter.data.sets, (set) -> parseInt(set.id) == parseInt(data.id)
+
+    set[0].name = data.name
+    set[0].string = data.ggsn
+
+    @saveGuideGuideData(@guideguideData)
+    @refreshSets()
+
+
   # Remove any sets in the markup and update the list with a new set items for
   # each set in the list.
   #

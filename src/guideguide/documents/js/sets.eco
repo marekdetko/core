@@ -68,34 +68,6 @@ $(document).on 'click', '.js-grid-form .js-save-set', (event) ->
     $('#guideguide').trigger 'guideguideInternal:newSet', obj
     $('#guideguide .js-sets-tab').click()
 
-# Update a set with new data
-#
-#   data - information for the set
-#
-$(document).on 'guideguideInternal:updateSet', '#guideguide', (event, data) ->
-  set = $.grep appAdapter.data.sets, (set) -> parseInt(set.id) == parseInt(data.id)
-
-  set[0].name = data.name
-  set[0].string = data.ggsn
-
-  appAdapter.saveData()
-  $('#guideguide').trigger 'guideguideInternal:refreshSets'
-
-# Add a new set to the list of sets
-#
-#   data - information for the set
-#
-$(document).on 'guideguideInternal:newSet', '#guideguide', (event, data) ->
-  newSet =
-    id: appAdapter.data.panel.newSetId
-    name: data.name
-    string: data.ggsn
-
-  appAdapter.data.panel.newSetId++
-  appAdapter.data.sets.push newSet
-  appAdapter.saveData()
-  $('#guideguide').trigger 'guideguideInternal:refreshSets'
-
 # Display new set name, swap in save set and cancel set buttons,
 # hide make grid and new set buttons
 # Focus into the name field
