@@ -3,13 +3,11 @@ write: false
 ---
 
 class window.GuideGuideCore
-
-  @guideguideData: null
-
   constructor: (@panel) ->
+    @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
+
     @i18n or= 'en-us'
     @messages = new Messages(@i18n)
-
     @guideguideData = @getGuideGuideData()
 
     if @guideguideData
@@ -53,6 +51,52 @@ class window.GuideGuideCore
     @saveGuideGuideData(data)
     @refreshSets()
 
+  # Update the panel's color theme  
+  #
+  #   theme - (String) name of the theme to be used
+  #
+  # Returns nothing.
+  updateTheme: (theme) =>
+    @panel.attr 'data-theme', theme
+
+  # Behavior for navigating a collection of "pages" via a set of tabs
+  #
+  # Returns nothing.
+  onTabClick: (event) =>
+    event.preventDefault()
+
+    exitPage   = @panel.find('.js-tabbed-page-tab.is-selected').attr 'data-page'
+    enterPage  = $(event.currentTarget).attr 'data-page'
+
+    return if enterPage == exitPage
+
+    $('#guideguide').trigger "guideguideInternal:exit#{ exitPage }"
+
+    if filter = enterPage
+      @selectTab @panel, filter
+
+    $('#guideguide').trigger "guideguideInternal:enter#{ enterPage }"
+
+  # Select the tab that has the given tab-filter. If there is none, select the first tab.
+  #
+  # $container - (jQuery object) .js-tabbed-pages element
+  # name       - (String) content of the data-page attribute. this item will be selected
+  #
+  # Returns nothing.
+  selectTab: ($container, name) =>
+    $container.find("[data-page]").removeClass 'is-selected'
+
+    if name
+      filter = -> $(this).attr('data-page') is name
+      tab = $container.find('.js-tabbed-page-tab').filter filter
+      tabBucket = $container.find('.js-tabbed-page').filter filter
+    else
+      tab = $container.find '.js-tabbed-page-tab:first'
+      tabBucket = $container.find '.js-tabbed-page:first'
+
+    # Select tab and bucket
+    tab.addClass 'is-selected'
+    tabBucket.addClass 'is-selected'
 
   # Get GuideGuide's data, including usage data, user preferences, and sets
   #
@@ -78,7 +122,7 @@ class window.GuideGuideCore
 
   # Add a collection of guides to the document.
   #
-  #   guides - Collection of guides to be added.
+  #   guides - (Object) Collection of guides to be added.
   #
   # Returns nothing
   addGuides: (guides) =>
@@ -92,7 +136,7 @@ class window.GuideGuideCore
 
   # Get information about the current active document.
   #
-  #   info - object of info about the active document
+  #   info - (Object) info about the active document
   #
   # Example data:
   #
@@ -106,3 +150,132 @@ class window.GuideGuideCore
   # Returns an Object or null if no object exists.
   getDocumentInfo: (info = null) =>
     return if info then info else null
+
+  # Turn a GuideGuide object into a collection of guides.
+  #
+  # ggn - GuideGuide Object to pull guides from
+  #
+  # Returns a collection of guides
+  getGuides: (ggn) =>
+    info = appAdapter.getInfo()
+    guides = []
+
+    $.each ggn.grids, (index,grid) =>
+      positionOffset   = 0
+      gridOrientation  = grid.options.orientation.value
+      guideOrientation = if gridOrientation == 'horizontal' then 'vertical' else 'horizontal'
+      wholePixels      = grid.options.calculation && grid.options.calculation.value == 'pixel'
+      fill             = grid.gaps.fill if grid.gaps.fill
+      measuredWidth    = if gridOrientation == 'horizontal' then info.width else info.height
+      measuredWidth    = grid.options.width.value if grid.options.width
+      offset           = if gridOrientation == 'horizontal' then info.offsetX else info.offsetY
+
+      # Calculate and set the value percent gaps. This calculation is based on
+      # the document or selection width, less the margin area if it is greater
+      # zero.
+      if grid.gaps.percents
+        $.each grid.gaps.percents, (index,gap) =>
+          percentValue = measuredWidth*(gap.value/100)
+          Math.floor percentValue if wholePixels
+          gap.convertPercent percentValue
+
+      # Subtract arbitrary gap value from non-margin area to get wildcard area,
+      # which is used to calculate the size of the wildcards
+      arbitrarySum = if grid.gaps.arbitrary then sum grid.gaps.arbitrary, 'value' else 0
+      wildcardArea = measuredWidth - arbitrarySum
+
+      if wildcardArea and fill
+        # The grid contains a fill, figure out how many times it will fit and generate
+        # new gaps for it.
+        fillIterations = Math.floor wildcardArea/fill.sum(ggn.variables)
+        fillCollection = []
+        fillWidth = 0
+
+        for i in [1..fillIterations]
+          if fill.isVariable
+            fillCollection = fillCollection.concat ggn.variables[fill.id]
+            fillWidth += sum ggn.variables[fill.id], 'value'
+          else
+            newGap = fill.clone()
+            newGap.isFill = false
+            fillCollection.push newGap
+            fillWidth += newGap.value
+
+        wildcardArea -= fillWidth
+
+      if wildcardArea and grid.gaps.wildcards
+        # If the grid contains wildcards, figure out and set how wide they are
+        wildcardWidth = wildcardArea/grid.gaps.wildcards.length
+
+        if wholePixels
+          wildcardWidth = Math.floor wildcardWidth
+          remainderPixels = wildcardArea % grid.gaps.wildcards.length
+
+        $.each grid.gaps.wildcards, (index,gap) =>
+          gap.value = wildcardWidth
+
+      if remainderPixels
+        # If this is a pixel specific grid, whole pixel math usually results in remainder pixels.
+        # This decides where amongst the wildcards the remainders should be distributed.
+        remainderOffset = 0
+
+        remainderOffset = Math.floor (grid.gaps.wildcards.length - remainderPixels)/2 if grid.options.remainder.value == 'center'
+        remainderOffset = grid.gaps.wildcards.length - remainderPixels if grid.options.remainder.value == 'last'
+
+        $.each grid.gaps.wildcards, (index, gap) =>
+          gap.value++ if index >= remainderOffset && index < remainderOffset + remainderPixels
+
+      # Figure out where the grid starts
+      insertMarker = offset
+      if grid.options.width && grid.options.position.value == 'last'
+        areaWidth = if gridOrientation == 'horizontal' then info.width else info.height
+        insertMarker += areaWidth - grid.options.width.value
+
+      if grid.options.offset
+        if grid.options.position.value == 'first'
+          insertMarker += grid.options.offset.value
+        else if grid.options.position.value == 'last'
+          insertMarker -= grid.options.offset.value
+
+      # Expand any fills
+      $.each grid.gaps.all, (index,item) =>
+        grid.gaps.all = grid.gaps.all.slice(0, index).concat fillCollection, grid.gaps.all.slice(index + 1) if item.isFill
+
+      # Add all the guides
+      $.each grid.gaps.all, (index,item) =>
+        if item == '|'
+          guides.push obj =
+            location: insertMarker
+            orientation: guideOrientation
+        else
+          insertMarker += item.value
+
+    # Sort out duplicates
+    uniqueGuides =
+      horizontal: {}
+      vertical: {}
+
+    guides = $.grep guides, (el) =>
+      unique = !uniqueGuides[el.orientation][el.location]
+      uniqueGuides[el.orientation][el.location] = true
+      unique
+
+    guides
+
+
+
+# Calculate the sum of an array of values
+#
+#   array - array to be added together
+#   key   - optional key value to be used if array contains objects
+#
+# Returns a Number
+sum = (array, key = null) ->
+  total = 0
+  $.each array, (index,value) =>
+    if key
+      total += array[index][key] if array[index][key]
+    else
+      total += array[index]
+  total
+
