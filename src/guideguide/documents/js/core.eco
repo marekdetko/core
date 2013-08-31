@@ -26,6 +26,12 @@ class window.GuideGuideCore
     @panel.on 'click', '.js-action-bar .js-right', @onClickRightGuide
     @panel.on 'click', '.js-action-bar .js-horizontal-midpoint', @onClickHorizontalMidpoint
     @panel.on 'click', '.js-action-bar .js-vertical-midpoint', @onClickVerticalMidpoint
+    @panel.on 'mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOverDistributeIcon
+    @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
+    @panel.on 'click', '.js-grid-form [data-distribute] .js-iconned-input-button', @onClickDistributeIcon
+    @panel.on 'focus', '.js-grid-form .js-grid-form-input', @onFocusFormInput
+    @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
+    @panel.on 'click', '.js-grid-form .js-make-grid', @onMakeGridFromForm
 
     @i18n or= 'en-us'
     @messages = new Messages(@i18n)
@@ -184,6 +190,8 @@ class window.GuideGuideCore
     @addGuides @getGuides new GGSN "~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
 
   # Handle clicks on the clear guides button.
+  #
+  # Returns nothing.
   onClickClearGuides: (event) =>
     event.preventDefault()
     @clearGuides()
@@ -202,7 +210,61 @@ class window.GuideGuideCore
   addGuides: (guides) =>
     console.log 'Adding guides:', guides
 
-  # Clear any error reporting text and reset the field's validation
+  # Highlight all field icons of similar type
+  #
+  # Returns nothing.
+  onMouseOverDistributeIcon: (event) =>
+    $form   = $(event.currentTarget).closest '.js-grid-form'
+    type    = $(event.currentTarget).closest('[data-distribute]').attr 'data-distribute'
+    $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
+
+    $fields.addClass 'distribute-highlight'
+
+  # Remove highlight from field icons
+  #
+  # Returns nothing.
+  onMouseOutDistributeIcon: (event) =>
+    @panel.find('.distribute-highlight').removeClass('distribute-highlight')
+
+  # When one of the input icons is clicked, change all fields of the same type
+  # to that value
+  #
+  # Returns nothing.
+  onClickDistributeIcon: (event) =>
+    event.preventDefault()
+    $form  = $(event.currentTarget).closest '.js-grid-form'
+    $input = $(event.currentTarget).closest '.js-grid-form-iconned-input'
+    $field = $input.find('.js-grid-form-input')
+    @formatField $field
+    value   = $field.val()
+    type    = $input.attr 'data-distribute'
+    $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
+    $fields.find('.js-grid-form-input').val value
+
+  # When a field is focused, reset it's validity.
+  #
+  # Returns nothing.
+  onFocusFormInput: (event) =>
+    $(event.currentTarget).attr 'data-valid', true
+
+  # When a field is unfocused, validate its contents
+  #
+  # Returns noting.
+  onBlurFormInput: (event) =>
+    $input = $(event.currentTarget)
+    if $input.val()
+      int = false
+
+      if $input.attr 'data-integer'
+        $input.val Math.round parseFloat $input.val()
+        int = true
+
+      if !@isValid $input.val(), int
+        $input.attr 'data-valid', false
+      else
+        @formatField $input
+
+  # Clear any error reporting text and reset the Custom forms's validation
   #
   # Returns nothing.
   onFocusCustomForm: (event) =>
@@ -210,6 +272,9 @@ class window.GuideGuideCore
     $input.attr 'data-valid', true
     $input.val $input.val().replace(/[\{\}]|\[.*?\]|^#.*?$/gm, '').replace(/\s+$/g,'')
 
+  # Validate the contents of the Custom form
+  #
+  # Returns nothing.
   onBlurCustomForm: (event) =>
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
@@ -289,8 +354,8 @@ class window.GuideGuideCore
   onSaveSetFromGrid: (event) =>
     event.preventDefault()
     $form      = @panel.find('.js-grid-form')
-    data       = getFormData $form
-    string     = stringifyFormData data
+    data       = @getFormData $form
+    string     = @stringifyFormData data
     executable = $form.find('[data-valid="false"]').length == 0 and string
 
     if executable
@@ -303,6 +368,20 @@ class window.GuideGuideCore
 
       @createNewSet(obj)
       @panel.find('.js-sets-tab').click()
+
+  onMakeGridFromForm: (event) =>
+    event.preventDefault()
+    $form  = $(event.currentTarget).closest '.js-grid-form'
+    string = @stringifyFormData @getFormData $form
+
+    return unless $form.find('[data-valid="false"]').length == 0 and string and @getDocumentInfo
+
+    console.group 'Add guides from grid form'
+    console.log string
+    ggsn = new GGSN(string)
+    console.log ggsn
+    @addGuides @getGuides new GGSN string
+    console.groupEnd()
 
   # Create a grid from the Custom form
   #
@@ -344,7 +423,7 @@ class window.GuideGuideCore
     @refreshSets()
 
   updateSet: (data) =>
-    set = $.grep appAdapter.data.sets, (set) -> parseInt(set.id) == parseInt(data.id)
+    set = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt(data.id)
 
     set[0].name = data.name
     set[0].string = data.ggsn
@@ -464,7 +543,7 @@ class window.GuideGuideCore
         for i in [1..fillIterations]
           if fill.isVariable
             fillCollection = fillCollection.concat ggn.variables[fill.id]
-            fillWidth += sum ggn.variables[fill.id], 'value'
+            fillWidth += @sum ggn.variables[fill.id], 'value'
           else
             newGap = fill.clone()
             newGap.isFill = false
@@ -532,18 +611,128 @@ class window.GuideGuideCore
 
     guides
 
-# Calculate the sum of an array of values
-#
-#   array - array to be added together
-#   key   - optional key value to be used if array contains objects
-#
-# Returns a Number
-sum = (array, key = null) ->
-  total = 0
-  $.each array, (index,value) =>
-    if key
-      total += array[index][key] if array[index][key]
-    else
-      total += array[index]
-  total
+  stringifyFormData: (data) ->
+    info = @getDocumentInfo
+    string = ''
+    # Variables
+    if data.countColumn or data.widthColumn
+      string += '$v =|'
+      string += if data.widthColumn then data.widthColumn else '~'
+      string += '|'
+      string += data.gutterColumn if data.gutterColumn
+      string += '\n'
 
+    if data.countRow or data.widthRow
+      string += '$h =|'
+      string += if data.widthRow then data.widthRow else '~'
+      string += '|'
+      string += data.gutterRow if data.gutterRow
+      string += '\n'
+
+    string += '\n' if data.countColumn or data.widthColumn or data.countRow or data.widthRow
+
+    if data.marginLeft or data.marginRight or data.countColumn or data.widthColumn
+      # Grids
+      string += '|' + data.marginLeft.replace(/\s/g,'').split(',').join('|') + '|' if data.marginLeft
+      if data.countColumn or data.widthColumn
+        string += '|$v*'
+        string += data.countColumn - 1 if data.countColumn
+        string += '|' + data.widthColumn if (data.widthColumn and data.countColumn) or (data.widthColumn and data.gutterColumn)
+        string += '|~' if !data.widthColumn
+        string += '|'
+      if data.marginRight
+        string += '~' if (!data.countColumn and !data.widthColumn) or (data.countColumn and data.widthColumn)
+        string += '|' + data.marginRight.replace(/\s/g,'').split(',').join('|') + '|'
+      string += ' (hF'
+      string += 'f' if @guideguideData.settings.horizontalRemainder == 'first'
+      string += 'c' if @guideguideData.settings.horizontalRemainder == 'center'
+      string += 'l' if @guideguideData.settings.horizontalRemainder == 'last'
+      string += 'p' if @guideguideData.settings.calculation == 'pixel'
+      string += ')\n'
+
+    if data.marginTop or data.marginBottom or data.countRow or data.widthRow
+      # Grids
+      string += '|' + data.marginTop.replace(/\s/g,'').split(',').join('|') + '|' if data.marginTop
+      if data.countRow or data.widthRow
+        string += '|$h*'
+        string += data.countRow - 1 if data.countRow
+        string += '|' + data.widthRow if (data.widthRow and data.countRow) or (data.widthRow and data.gutterRow)
+        string += '|~' if !data.widthRow
+        string += '|'
+      if data.marginBottom
+        string += '~' if (!data.countRow and !data.widthRow) or (data.countRow and data.widthRow)
+        string += '|' + data.marginBottom.replace(/\s/g,'').split(',').join('|') + '|'
+      string += ' (vF'
+      string += 'f' if @guideguideData.settings.horizontalRemainder == 'first'
+      string += 'c' if @guideguideData.settings.horizontalRemainder == 'center'
+      string += 'l' if @guideguideData.settings.horizontalRemainder == 'last'
+      string += 'p' if @guideguideData.settings.calculation == 'pixel'
+      string += ')'
+
+    # Rather than fiddle with spaces and duplicate pipes in the string calculation,
+    # just do a second pass on the string to clean everything up.
+    return string.replace(/\|+/g,'|').replace(/\|/g, ' | ').replace(/^[^\S\n]+|[^\S\n]+$/mg,'') 
+
+  # Calculate the sum of an array of values
+  #
+  #   array - array to be added together
+  #   key   - optional key value to be used if array contains objects
+  #
+  # Returns a Number
+  sum: (array, key = null) ->
+    total = 0
+    $.each array, (index,value) =>
+      if key
+        total += array[index][key] if array[index][key]
+      else
+        total += array[index]
+    total
+
+  # Reformat a unit string to match conventions
+  #
+  #   $field - input to format
+  #
+  # Returns a String
+  formatField: ($field) ->
+    int = if $field.attr 'data-integer' then true else false
+    $field.val $.map $field.val().split(','), (unit) ->
+      new Unit(unit,int).toString()
+    .join(', ')
+
+  # Sort a list of form fields and return ones that match a filter
+  #
+  #    $list - list of objects to be filtered
+  #    type  - type of form field to return
+  #
+  # Returns an Array of jquery objects
+  filteredList: ($list,type) ->
+    filter  = -> $(this).attr('data-distribute') is type
+    $fields = $list.filter filter
+
+  # Collect data from the grid form.
+  #
+  #   $form - jQuery object of the form to be used
+  #
+  # Returns an Object
+  getFormData: ($form) ->
+    obj =
+      name: $('.js-grid-form .js-set-name').val()
+
+    $fields = $form.find '.js-grid-form-input'
+    $fields.each (index,element) ->
+      key = $(element).attr 'data-type'
+      obj[key] = $(element).val()
+    obj
+
+  # Determine whether the value in the form is valid
+  #
+  #   string - string to be validated
+  #
+  # Returns a Boolean
+  isValid: (string, integerOnly = false) ->
+    units = string.split ','
+    units = units.filter (unit) =>
+      u = new Unit(unit,integerOnly)
+      !u.isValid
+
+    units.length == 0
