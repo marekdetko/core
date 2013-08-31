@@ -4,10 +4,14 @@ write: false
 
 class window.GuideGuideCore
   constructor: (@panel) ->
-    @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
-    @panel.on 'click', '.js-sets-form .js-make-grid', @onMakeGridFromSet
+    @panel.on 'click', '.js-tabbed-page-tab',          @onTabClick
+    @panel.on 'click', '.js-sets-form .js-make-grid',  @onMakeGridFromSet
     @panel.on 'click', '.js-sets-form .js-set-select', @onSelectSet
     @panel.on 'click', '.js-sets-form .js-delete-set', @onDeleteSet
+    @panel.on 'click', '.js-grid-form .js-new-set',    @onShowGridNewSetForm
+    @panel.on 'click', '.js-custom-form .js-new-set',  @onShowCustomNewSetForm
+    @panel.on 'click', '.js-sets-form .js-new-set',    @onShowCustomNewSetForm
+    @panel.on 'click', '.js-cancel-set',               @onHideNewSetForm
 
     @i18n or= 'en-us'
     @messages = new Messages(@i18n)
@@ -73,12 +77,12 @@ class window.GuideGuideCore
 
     return if enterPage == exitPage
 
-    $('#guideguide').trigger "guideguideInternal:exit#{ exitPage }"
+    $('#guideguide').trigger "guideguide:exit#{ exitPage }"
 
     if filter = enterPage
       @selectTab @panel, filter
 
-    $('#guideguide').trigger "guideguideInternal:enter#{ enterPage }"
+    $('#guideguide').trigger "guideguide:enter#{ enterPage }"
 
   # Select the tab that has the given tab-filter. If there is none, select the first tab.
   #
@@ -184,7 +188,6 @@ class window.GuideGuideCore
     @saveGuideGuideData(@guideguideData)
     @refreshSets()
 
-
   # Remove any sets in the markup and update the list with a new set items for
   # each set in the list.
   #
@@ -198,6 +201,35 @@ class window.GuideGuideCore
       item.find('.js-set-item-name').html set.name
       item.attr 'data-id', set.id
       $list.append item
+
+  # On the Grid page, display and focus new set name field, swap in save set
+  # and cancel set buttons, hide make grid and new set buttons.
+  #
+  # Returns nothing.
+  onShowCustomNewSetForm: (event) =>
+    event.preventDefault()
+    @panel.find('.js-custom-tab').click() if @panel.find('.js-sets-tab.is-selected').length
+    @panel.addClass('is-showing-new-set-form')
+    @panel.find('.js-custom-form').find('.js-set-name').focus() 
+
+  # On the Custom page, display and focus new set name field, swap in save set
+  # and cancel set buttons, hide make grid and new set buttons.
+  #
+  # Returns nothing.
+  onShowGridNewSetForm: (event) =>
+    event.preventDefault()
+    @panel.addClass('is-showing-new-set-form')
+    @panel.find('.js-grid-form').find('.js-set-name').focus() 
+
+  # On both forms, Hide new set name, swap out save set and cancel set buttons, show make
+  # grid and new set buttons
+  #
+  # Returns nothing.
+  onHideNewSetForm: (event) =>
+    event.preventDefault()
+    @panel.find('.js-grid-form').find('.js-set-name').val('')
+    @panel.find('.js-grid-form').find('.js-set-id').val('')
+    @panel.removeClass('is-showing-new-set-form')
 
   # Get information about the current active document.
   #
