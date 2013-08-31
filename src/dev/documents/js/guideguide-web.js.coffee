@@ -27,7 +27,7 @@ class GuideGuide extends window.GuideGuideCore
   # Returns nothing.
   clearGuides: =>
     super
-    @document.find('.js-guide').remove()
+    $('.js-document').find('.js-guide').remove()
 
   # Get GuideGuide's data, including usage data, user preferences, and sets
   #

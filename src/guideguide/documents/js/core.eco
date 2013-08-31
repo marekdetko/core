@@ -19,6 +19,13 @@ class window.GuideGuideCore
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
+    @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
+    @panel.on 'click', '.js-action-bar .js-top', @onClickTopGuide
+    @panel.on 'click', '.js-action-bar .js-bottom', @onClickBottomGuide
+    @panel.on 'click', '.js-action-bar .js-left', @onClickLeftGuide
+    @panel.on 'click', '.js-action-bar .js-right', @onClickRightGuide
+    @panel.on 'click', '.js-action-bar .js-horizontal-midpoint', @onClickHorizontalMidpoint
+    @panel.on 'click', '.js-action-bar .js-vertical-midpoint', @onClickVerticalMidpoint
 
     @i18n or= 'en-us'
     @messages = new Messages(@i18n)
@@ -128,6 +135,55 @@ class window.GuideGuideCore
   saveGuideGuideData: (data) =>
     console.log if data then "Saved data" else "Failed to retrieve data"
 
+  # Draw a guide at the top of the document/selection
+  #
+  # Return nothing.
+  onClickTopGuide: (event) =>
+    console.log 'Top guide'  
+    event.preventDefault()
+    @addGuides @getGuides new GGSN "| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+
+  # Draw a guide at the bottom of the document/selection
+  #
+  # Return nothing.
+  onClickBottomGuide: (event) =>
+    console.log 'Bottom guide'  
+    event.preventDefault()
+    @addGuides @getGuides new GGSN "~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+
+  # Draw a guide to the left of the document/selection
+  #
+  # Return nothing.
+  onClickLeftGuide: (event) =>
+    console.log 'Top guide'  
+    event.preventDefault()
+    @addGuides @getGuides new GGSN "| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+
+  # Draw a guide to the right of the document/selection
+  #
+  # Return nothing.
+  onClickRightGuide: (event) =>
+    console.log 'Bottom guide'  
+    event.preventDefault()
+    @addGuides @getGuides new GGSN "~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+
+  # Draw a guide at the horizontal midpoint of the document/selection
+  #
+  # Return nothing.
+  onClickHorizontalMidpoint: (event) =>
+    console.log 'Horizontal midpoint'  
+    event.preventDefault()
+    @addGuides @getGuides new GGSN "~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+
+  # Draw a guide at the vertical midpoint of the document/selection
+  #
+  # Return nothing.
+  onClickVerticalMidpoint: (event) =>
+    console.log 'Vertical midpoint'  
+    event.preventDefault()
+    @addGuides @getGuides new GGSN "~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+
+  # Handle clicks on the clear guides button.
   onClickClearGuides: (event) =>
     event.preventDefault()
     @clearGuides()
@@ -184,7 +240,7 @@ class window.GuideGuideCore
   #
   # Returns nothing
   onExitCustomForm: =>
-    @panel.find('.js-ggsn-input').val('') if @panel.hasClass('is-showing-new-set-form')
+    @panel.find('.js-custom-input').val('') if @panel.hasClass('is-showing-new-set-form')
     @hideNewSetForm()
 
   # Open Custom form with data from the set to be edited
