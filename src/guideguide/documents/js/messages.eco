@@ -16,5 +16,8 @@ class Messages
       'ggsn.moreThanOneHundredPercent': "A grid cannot contain more than 100%"
 
   constructor: (i18n) ->
-    $.each @messages['en-us'], (key,value) =>
-      @[key] = if @messages[i18n][key] then @messages[i18n][key] else value
+    if @messages[i18n]
+      $.each @messages['en-us'], (key,value) =>
+        @[key] = if @messages[i18n][key] then @messages[i18n][key] else value
+    else
+      console.log "GuideGuide doesn't recognize the \"#{ i18n }\" localization."

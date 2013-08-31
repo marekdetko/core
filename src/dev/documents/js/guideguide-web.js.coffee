@@ -1,38 +1,57 @@
 # Web module for GuideGuide. Used for development and the website demo.
 
-class GuideGuide
-  i18n: ''
-
-  constructor: (@$guideguide) ->
+class GuideGuide extends window.GuideGuideCore
+  constructor: (@panel) ->
     console.log 'Running GuideGuide in Web mode'
-    @document = $('.js-document')
+    @i18n = 'en-us'
+    super @panel
 
-    @i18n = @getLanguage()
-
-    @data = JSON.parse localStorage.getItem 'guideguide'
-
-  # Get the localization string of the application.
+  # Get information about the current active document.
   #
-  # Returns a localization string
-  getLanguage: => 'en-us'
-
-  # Get information about the active document
+  #   info - object of info about the active document
   #
-  # Returns an object
-  getInfo: =>
-    $artboardPosition = @document.find('.js-artboard').position()
-    obj =
-      width: @document.width()
-      height: @document.height()
+  # Returns an Object or null if no object exists.
+  getDocumentInfo: =>
+    activeDocument = $('.js-document').find('.js-artboard')
+    artboardPosition = activeDocument.position()
+    info =
+      width: activeDocument.width()
+      height: activeDocument.height()
       ruler: 'pixels'
-      offsetX: $artboardPosition.left
-      offsetY: $artboardPosition.top
+      offsetX: artboardPosition.left
+      offsetY: artboardPosition.top
+    super info
 
   # Removes all guides from the document
   #
-  # Returns nothing
+  # Returns nothing.
   clearGuides: =>
-    @document.find('.js-guide').remove()
+    super
+    $('.js-document').find('.js-guide').remove()
+
+  # Get GuideGuide's data, including usage data, user preferences, and sets
+  #
+  # Returns an Object or null if no data exists.
+  getGuideGuideData: =>
+    data = JSON.parse localStorage.getItem 'guideguide'
+    super data
+
+  # Save GuideGuide's data, including usage data, user preferences, and sets
+  #
+  # Returns nothing.
+  saveGuideGuideData: (data) =>
+    localStorage.setItem 'guideguide', JSON.stringify data if localStorage
+    super data
+
+  # Add a collection of guides to the document.
+  #
+  #   guides - Collection of guides to be added.
+  #
+  # Returns nothing
+  addGuides: (guides) =>
+    $.each guides, (index,guide) =>
+      @addGuide guide.location, guide.orientation
+    super
 
   # Add a guide to the document
   #
@@ -48,24 +67,7 @@ class GuideGuide
     else
       guide.css 'left', location + 'px'
 
-    @document.append guide
-
-  # Add a collection of guides to the document.
-  #
-  #   guides - Collection of guides to be added.
-  #
-  # Returns nothing
-  addGuides: (guides) =>
-    $.each guides, (index,guide) =>
-      @addGuide guide.location, guide.orientation
-
-  hasData: =>
-    return if localStorage.getItem 'guideguide' then true else false
-
-  saveData: =>
-    localStorage.setItem 'guideguide', JSON.stringify @data if localStorage
-
+    $('.js-document').find('.js-artboard').append guide
 
 $ ->
-  window.appAdapter = new GuideGuide $('#guideguide')
-  $('#guideguide').trigger('guideguide:ready')
+  window.guideguide = new GuideGuide $('#guideguide')

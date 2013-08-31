@@ -1,9 +1,0 @@
-<%- @include('./messages') %>
-<%- @include('./ggsn') %>
-<%- @include('./unit') %>
-<%- @include('./gap') %>
-<%- @include('./main') %>
-<%- @include('./action-bar') %>
-<%- @include('./grid') %>
-<%- @include('./custom') %>
-<%- @include('./sets') %>
