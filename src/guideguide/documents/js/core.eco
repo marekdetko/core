@@ -12,6 +12,10 @@ class window.GuideGuideCore
     @panel.on 'click', '.js-custom-form .js-new-set',  @onShowCustomNewSetForm
     @panel.on 'click', '.js-sets-form .js-new-set',    @onShowCustomNewSetForm
     @panel.on 'click', '.js-cancel-set',               @onHideNewSetForm
+    @panel.on 'click', '.js-grid-form .js-save-set',   @onSaveSetFromGrid
+    @panel.on 'click', '.js-custom-form .js-save-set', @onSaveSetFromCustom
+    @panel.on 'click', '.js-sets-form .js-edit-set',   @onEditSet
+    @panel.on 'guideguide:exitcustom',                 @onExitCustomForm
 
     @i18n or= 'en-us'
     @messages = new Messages(@i18n)
@@ -154,6 +158,74 @@ class window.GuideGuideCore
     @saveGuideGuideData(@guideguideData)
     @refreshSets()
 
+  # When exiting the Custom form, clear it.
+  #
+  # Returns nothing
+  onExitCustomForm: =>
+    @panel.find('.js-ggsn-input').val('') if @panel.hasClass('is-showing-new-set-form')
+    @hideNewSetForm()
+
+  # Open Custom form with data from the set to be edited
+  #
+  # Returns nothing.
+  onEditSet: (event) =>
+    event.preventDefault()
+    $set = $(event.currentTarget).closest('.js-set')
+    id = $set.attr('data-id')
+    
+    set = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt(id)
+
+    $form = @panel.find('.js-custom-form')
+    $form.find('.js-set-name').val(set[0].name)
+    $form.find('.js-custom-input').val(set[0].string)
+    $form.find('.js-set-id').val(set[0].id)
+
+    $('#guideguide').find('.js-custom-tab').click()
+    @showCustomSetForm()
+
+  # Fire save set event and pass it the contents of the custom form
+  #
+  # Returns nothing.
+  onSaveSetFromCustom: (event) =>
+    event.preventDefault()
+    $form      = @panel.find('.js-custom-form')
+    string     = $('.js-custom-input').val().replace /^\s+|\s+$/g, ''
+    executable = $form.find('[data-valid="false"]').length == 0 and string.length > 0
+    
+    if executable
+      obj =
+        id: $form.find('.js-set-id').val()
+        name: $form.find('.js-set-name').val()
+        ggsn: string
+
+      if !$('#guideguide').find('.js-set-id').val()
+        @createNewSet(obj)
+      else
+        @updateSet(obj)
+
+      @panel.find('.js-sets-tab').click()
+
+  # Fire save set event and pass it the contents of the grid form
+  #
+  # Returns nothing.
+  onSaveSetFromGrid: (event) =>
+    event.preventDefault()
+    $form      = @panel.find('.js-grid-form')
+    data       = getFormData $form
+    string     = stringifyFormData data
+    executable = $form.find('[data-valid="false"]').length == 0 and string
+
+    if executable
+      console.group 'New set from form'
+      console.log string
+      console.groupEnd()
+      obj =
+        name: data.name
+        ggsn: string
+
+      @createNewSet(obj)
+      @panel.find('.js-sets-tab').click()
+
   # Create a grid from a set
   #
   # Returns nothing.
@@ -202,15 +274,21 @@ class window.GuideGuideCore
       item.attr 'data-id', set.id
       $list.append item
 
+  # Handle clicks on the new set button
+  #
+  # Returns nothing
+  onShowCustomNewSetForm: (event) =>
+    event.preventDefault()
+    @showCustomSetForm()
+
   # On the Grid page, display and focus new set name field, swap in save set
   # and cancel set buttons, hide make grid and new set buttons.
   #
   # Returns nothing.
-  onShowCustomNewSetForm: (event) =>
-    event.preventDefault()
+  showCustomSetForm: =>
     @panel.find('.js-custom-tab').click() if @panel.find('.js-sets-tab.is-selected').length
     @panel.addClass('is-showing-new-set-form')
-    @panel.find('.js-custom-form').find('.js-set-name').focus() 
+    @panel.find('.js-custom-form').find('.js-set-name').focus()
 
   # On the Custom page, display and focus new set name field, swap in save set
   # and cancel set buttons, hide make grid and new set buttons.
@@ -227,6 +305,9 @@ class window.GuideGuideCore
   # Returns nothing.
   onHideNewSetForm: (event) =>
     event.preventDefault()
+    @hideNewSetForm()
+
+  hideNewSetForm: =>
     @panel.find('.js-grid-form').find('.js-set-name').val('')
     @panel.find('.js-grid-form').find('.js-set-id').val('')
     @panel.removeClass('is-showing-new-set-form')
