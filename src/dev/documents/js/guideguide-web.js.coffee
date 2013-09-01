@@ -14,12 +14,13 @@ class GuideGuide extends window.GuideGuideCore
   getDocumentInfo: =>
     activeDocument = $('.js-document').find('.js-artboard')
     artboardPosition = activeDocument.position()
+    $selection = $('.js-artboard').find('.js-selection')
     info =
-      width: activeDocument.width()
-      height: activeDocument.height()
+      width: if $selection.length then $selection.width()+1 else activeDocument.width()
+      height: if $selection.length then $selection.height()+1 else activeDocument.height()
       ruler: 'pixels'
-      offsetX: artboardPosition.left
-      offsetY: artboardPosition.top
+      offsetX: if $selection.length then $selection.position().left else artboardPosition.left
+      offsetY: if $selection.length then $selection.position().top else artboardPosition.top
     super info
 
   # Removes all guides from the document
@@ -27,7 +28,7 @@ class GuideGuide extends window.GuideGuideCore
   # Returns nothing.
   clearGuides: =>
     super
-    $('.js-document').find('.js-guide').remove()
+    $('.js-artboard').find('.js-guide').remove()
 
   # Get GuideGuide's data, including usage data, user preferences, and sets
   #
@@ -60,7 +61,7 @@ class GuideGuide extends window.GuideGuideCore
   #
   # Returns false
   addGuide: (location,orientation) =>
-    guide = $('<span></span>').addClass 'guide js-guide ' + orientation
+    guide = $('.js-templates').find('.js-guide').clone().addClass 'guide js-guide ' + orientation
 
     if orientation == 'horizontal'
       guide.css 'top', location + 'px'

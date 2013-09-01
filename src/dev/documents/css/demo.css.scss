@@ -79,6 +79,15 @@ body {
       left: 0;
     }
   }
+
+  .templates { display: none; }
+
+  .selection {
+    position: absolute;
+    display: inline-block;
+    border: 1px dashed #666;
+    box-sizing: border-box;
+  }
 }
 
 .document-header {
@@ -103,6 +112,8 @@ body {
   background-image: url(../img/ps_neutral.png);
   box-sizing: border-box;
   overflow: hidden;
+  position: relative;
+  cursor: default;
 }
 
 .panel-shell {
