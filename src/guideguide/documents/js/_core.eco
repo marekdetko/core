@@ -208,6 +208,7 @@ class window.GuideGuideCore
   #
   # Returns nothing
   addGuides: (guides) =>
+    @clearGuides()
     console.log 'Adding guides:', guides
 
   # Highlight all field icons of similar type
@@ -500,6 +501,19 @@ class window.GuideGuideCore
   getDocumentInfo: (info = null) =>
     return if info then info else null
 
+  # Get all of the guides that currently exist in the document or selection.
+  #
+  #   guides - (Array) collection of guides
+  #
+  # Returns a collection of guides
+  getExistingGuides: (guides = null) =>
+    if guides
+      console.log 'Existing guides:', guides
+    else
+      console.log 'Could not get get existing guides'
+
+    guides
+
   # Turn a GuideGuide object into a collection of guides.
   #
   # ggn - GuideGuide Object to pull guides from
@@ -599,17 +613,27 @@ class window.GuideGuideCore
         else
           insertMarker += item.value
 
-    # Sort out duplicates
+    guides = @consolidateGuides [guides, @getExistingGuides()]
+
+  # Create a collection of unique guides from multiple guide arrrays
+  #
+  #   guideArrays = (Array) collection of guide arrays
+  #
+  # Returns an array of guides
+  consolidateGuides: (guideArrays) =>
     uniqueGuides =
       horizontal: {}
       vertical: {}
+
+    guides = []
+
+    for array in guideArrays
+      guides = guides.concat array
 
     guides = $.grep guides, (el) =>
       unique = !uniqueGuides[el.orientation][el.location]
       uniqueGuides[el.orientation][el.location] = true
       unique
-
-    guides
 
   stringifyFormData: (data) ->
     info = @getDocumentInfo

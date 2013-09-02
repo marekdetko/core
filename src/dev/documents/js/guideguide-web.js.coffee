@@ -50,9 +50,10 @@ class GuideGuide extends window.GuideGuideCore
   #
   # Returns nothing
   addGuides: (guides) =>
+    super guides
     $.each guides, (index,guide) =>
       @addGuide guide.location, guide.orientation
-    super
+    
 
   # Add a guide to the document
   #
@@ -69,6 +70,27 @@ class GuideGuide extends window.GuideGuideCore
       guide.css 'left', location + 'px'
 
     $('.js-document').append guide
+
+  getExistingGuides: =>
+    guides = []
+
+    docGuides = $('.js-document').find('.js-guide')
+
+    docGuides.each (index, el) =>
+      $el = $(el)
+      guide = {}
+
+      if $el.hasClass 'horizontal'
+        guide.orientation = 'horizontal'
+        guide.location = $el.position().top
+
+      if $el.hasClass 'vertical'
+        guide.orientation = 'vertical'
+        guide.location = $el.position().left
+
+      guides.push guide
+      
+    super guides
 
 $ ->
   window.guideguide = new GuideGuide $('#guideguide')
