@@ -62,7 +62,7 @@ $(document).on 'mousedown', '.js-document', (event) ->
     $selection.css(css)
 
   $(document).on 'mouseup', (event) ->
-    $('.js-artboard').find('.js-selection').remove() if $('.js-selection').width() <= 1 and $('.js-selection').height() <= 1
+    $('.js-document').find('.js-selection').remove() if $('.js-selection').width() <= 1 and $('.js-selection').height() <= 1
     $(document).off 'mousemove'
     $(document).off 'mouseup'
 
