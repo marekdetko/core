@@ -59,9 +59,6 @@ $(document).on 'mousedown', '.js-document', (event) ->
       top:    selection.top - doc.top
       height: Math.abs selection.height
 
-    # TODO: handle out of artboard bounds selections. Currently going top left will still resize the selection
-    # going bottom right will go out of bounds
-
     $selection.css(css)
 
   $(document).on 'mouseup', (event) ->
