@@ -6,6 +6,10 @@ write: false
 class Messages
   messages:
     'en-us':
+      'ui.gridTab': "Grid"
+      'ui.customTab': "Custom"
+      'ui.setsTab': "Sets"
+      'ui.btnMakeGrid': "Make grid"
       'gap.unrecognized': "Unrecognized gap"
       'gap.noFillWildcards': "Wildcards cannot be fills"
       'ggsn.noGrids': "This string does not contain any grids"

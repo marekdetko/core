@@ -3,8 +3,10 @@
 class GuideGuide extends window.GuideGuideCore
   constructor: (@panel) ->
     console.log 'Running GuideGuide in Web mode'
-    @i18n = 'en-us'
     super @panel
+
+  getLocalization(): =>
+    'en-us'
 
   # Get information about the current active document.
   #

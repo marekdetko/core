@@ -33,14 +33,23 @@ class window.GuideGuideCore
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
     @panel.on 'click', '.js-grid-form .js-make-grid', @onMakeGridFromForm
 
-    @i18n or= 'en-us'
-    @messages = new Messages(@i18n)
+    @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
+
+    @localizeUI()
 
     if @guideguideData
       @refreshSets()
     else
       @bootstrap()
+
+  getLocalization: =>
+    'en-us'
+
+  localizeUI: =>
+    $elements = $('[data-localize]')
+    $elements.each (index, el) =>
+      $(el).text @messages[$(el).attr('data-localize')]
 
   # Set default data the first time GuideGuide run.
   #
