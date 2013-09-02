@@ -14,7 +14,7 @@ class GuideGuide extends window.GuideGuideCore
   getDocumentInfo: =>
     activeDocument = $('.js-document').find('.js-artboard')
     artboardPosition = activeDocument.position()
-    $selection = $('.js-artboard').find('.js-selection')
+    $selection = $('.js-document').find('.js-selection')
     info =
       width: if $selection.length then $selection.width()+1 else activeDocument.width()
       height: if $selection.length then $selection.height()+1 else activeDocument.height()
@@ -28,7 +28,7 @@ class GuideGuide extends window.GuideGuideCore
   # Returns nothing.
   clearGuides: =>
     super
-    $('.js-artboard').find('.js-guide').remove()
+    $('.js-document').find('.js-guide').remove()
 
   # Get GuideGuide's data, including usage data, user preferences, and sets
   #
@@ -68,7 +68,7 @@ class GuideGuide extends window.GuideGuideCore
     else
       guide.css 'left', location + 'px'
 
-    $('.js-document').find('.js-artboard').append guide
+    $('.js-document').append guide
 
 $ ->
   window.guideguide = new GuideGuide $('#guideguide')

@@ -28,11 +28,10 @@
       </div>
 
       <div class="document-artboard js-artboard"></div>
-
-      <div class="templates js-templates">
-        <span class="guide js-guide vertical" style=""></span>
-        <span class="js-selection selection"></span>
-      </div>
+    </div>
+    <div class="templates js-templates">
+      <span class="guide js-guide vertical" style=""></span>
+      <span class="js-selection selection"></span>
     </div>
 
     <div class="panel-shell">

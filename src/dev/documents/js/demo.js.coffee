@@ -9,29 +9,58 @@ $(document).on 'click', '.js-color-switcher-color', (event) ->
 
   $('body').attr 'class', $(this).attr 'data-theme-name'
 
-$(document).on 'mousedown', '.js-artboard', (event) ->
+$(document).on 'mousedown', '.js-document', (event) ->
+  event.originalEvent.preventDefault()
   return if $(event.target).hasClass 'js-selection'
 
-  $('.js-artboard').find('.js-selection').remove()
+  $('.js-document').find('.js-selection').remove()
 
-  anchorX = event.pageX
-  anchorY = event.pageY
+  doc =
+    top:    $('.js-document').offset().top
+    left:   $('.js-document').offset().left
+
+  artboard = 
+    top:    $('.js-artboard').offset().top
+    left:   $('.js-artboard').offset().left
+    width:  $('.js-artboard').width()
+    height: $('.js-artboard').height()
+
+  selection =
+    anchorTop:    event.pageY
+    anchorLeft:   event.pageX
+
   css =
-    top:  anchorY - $('.js-artboard').offset().top
-    left: anchorX - $('.js-artboard').offset().left
+    top:  selection.top - doc.top
+    left: selection.left - doc.top
 
-  $selection = $('.js-document').find('.js-selection').clone().css(css)
-  $('.js-artboard').append($selection)
+  $selection = $('.js-templates').find('.js-selection').clone().css(css)
+  $('.js-document').append($selection)
 
 
-  $(document).on 'mousemove', '.js-artboard', (event) ->
-    offset = $selection.offset()
-    css = {}
+  $(document).on 'mousemove', '.js-document', (event) ->
+    selection.left   = if event.pageX >= selection.anchorLeft then selection.anchorLeft else event.pageX
+    selection.left   = artboard.left - 1 if selection.left < artboard.left
+    selection.left   = selection.left if selection.left > selection.left
+    selection.top    = if event.pageY >= selection.anchorTop then selection.anchorTop else event.pageY
+    selection.top    = artboard.top - 1 if selection.top < artboard.top
+    selection.top    = selection.anchorTop if selection.top > selection.anchorTop
 
-    css.width  = Math.abs event.pageX - anchorX
-    css.left   = anchorX - $('.js-artboard').offset().left - css.width if event.pageX < anchorX
-    css.height = Math.abs event.pageY - anchorY
-    css.top    = anchorY - $('.js-artboard').offset().top - css.height if event.pageY < anchorY
+    selection.width  = event.pageX - selection.anchorLeft
+    selection.width  = artboard.left - selection.anchorLeft if event.pageX < artboard.left
+    selection.width  = artboard.width - Math.abs (selection.left-artboard.left) + 1 if event.pageX > (artboard.left + artboard.width)
+
+    selection.height = event.pageY - selection.anchorTop
+    selection.height = artboard.top - selection.anchorTop if event.pageY < artboard.top
+    selection.height = artboard.height - Math.abs (selection.top-artboard.top) + 1 if event.pageY > (artboard.top + artboard.height)
+
+    css = 
+      left:   selection.left - doc.left
+      width:  Math.abs selection.width
+      top:    selection.top - doc.top
+      height: Math.abs selection.height
+
+    # TODO: handle out of artboard bounds selections. Currently going top left will still resize the selection
+    # going bottom right will go out of bounds
 
     $selection.css(css)
 
