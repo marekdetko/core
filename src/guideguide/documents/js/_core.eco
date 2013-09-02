@@ -196,11 +196,31 @@ class window.GuideGuideCore
     event.preventDefault()
     @clearGuides()
 
-  # Removes all guides from the document
+  # Removes guides from the document based on document or selection
+  #
+  #   guides - collection of all existing guides before clearing
   #
   # Returns nothing.
   clearGuides: =>
     console.log "Clear guides"
+    info = @getDocumentInfo()
+
+    if info.isSelection
+      bounds =
+        top:    info.offsetY
+        left:   info.offsetX
+        bottom: info.offsetY + info.height
+        right:  info.offsetX + info.width
+      guides = @consolidateGuides [@getExistingGuides()], bounds, true
+      @addGuides guides if guides
+    else
+      @resetGuides()
+
+  # Removes all guides from the document
+  #
+  # Returns nothing.
+  resetGuides: =>
+    console.log 'Resetting guides'
 
   # Add a collection of guides to the document.
   #
@@ -208,7 +228,7 @@ class window.GuideGuideCore
   #
   # Returns nothing
   addGuides: (guides) =>
-    @clearGuides()
+    @resetGuides()
     console.log 'Adding guides:', guides
 
   # Highlight all field icons of similar type
@@ -516,7 +536,7 @@ class window.GuideGuideCore
 
   # Turn a GuideGuide object into a collection of guides.
   #
-  # ggn - GuideGuide Object to pull guides from
+  #   ggn - GuideGuide Object to pull guides from
   #
   # Returns a collection of guides
   getGuidesFromGGN: (ggn) =>
@@ -617,10 +637,12 @@ class window.GuideGuideCore
 
   # Create a collection of unique guides from multiple guide arrrays
   #
-  #   guideArrays = (Array) collection of guide arrays
+  #   guideArrays - (Array) collection of guide arrays
+  #   bounds      - (Object) boundaries within which guides must fall to be included
+  #   invert      - (Boolean) If true, include only guides outside the bounds
   #
   # Returns an array of guides
-  consolidateGuides: (guideArrays) =>
+  consolidateGuides: (guideArrays, bounds = null, invert = false) =>
     uniqueGuides =
       horizontal: {}
       vertical: {}
@@ -630,10 +652,28 @@ class window.GuideGuideCore
     for array in guideArrays
       guides = guides.concat array
 
-    guides = $.grep guides, (el) =>
-      unique = !uniqueGuides[el.orientation][el.location]
-      uniqueGuides[el.orientation][el.location] = true
-      unique
+    if bounds
+      guides = $.grep guides, (el) =>
+        unique = !uniqueGuides[el.orientation][el.location]
+        if unique
+          uniqueGuides[el.orientation][el.location] = true
+          if el.orientation == 'vertical'
+            if invert
+              return el.location < bounds.left or el.location > bounds.right
+            else
+              return el.location >= bounds.left and el.location <= bounds.right
+          if el.orientation == 'horizontal'
+            if invert
+              return el.location < bounds.top or el.location > bounds.bottom
+            else
+              return el.location >= bounds.top and el.location <= bounds.bottom
+        else
+          return false
+    else
+      guides = $.grep guides, (el) =>
+        unique = !uniqueGuides[el.orientation][el.location]
+        uniqueGuides[el.orientation][el.location] = true
+        unique
 
   stringifyFormData: (data) ->
     info = @getDocumentInfo

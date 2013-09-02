@@ -16,6 +16,7 @@ class GuideGuide extends window.GuideGuideCore
     artboardPosition = activeDocument.position()
     $selection = $('.js-document').find('.js-selection')
     info =
+      isSelection: if $selection.length then true else false
       width: if $selection.length then $selection.width()+1 else activeDocument.width()
       height: if $selection.length then $selection.height()+1 else activeDocument.height()
       ruler: 'pixels'
@@ -26,9 +27,9 @@ class GuideGuide extends window.GuideGuideCore
   # Removes all guides from the document
   #
   # Returns nothing.
-  clearGuides: =>
-    super
+  resetGuides: =>
     $('.js-document').find('.js-guide').remove()
+    super
 
   # Get GuideGuide's data, including usage data, user preferences, and sets
   #
@@ -54,7 +55,6 @@ class GuideGuide extends window.GuideGuideCore
     $.each guides, (index,guide) =>
       @addGuide guide.location, guide.orientation
     
-
   # Add a guide to the document
   #
   #   location    - coordinate position for the guide to be added
@@ -62,7 +62,9 @@ class GuideGuide extends window.GuideGuideCore
   #
   # Returns false
   addGuide: (location,orientation) =>
-    guide = $('.js-templates').find('.js-guide').clone().addClass 'guide js-guide ' + orientation
+    guide = $('.js-templates').find('.js-guide')
+    .clone().attr('class','')
+    .addClass 'guide js-guide ' + orientation
 
     if orientation == 'horizontal'
       guide.css 'top', location + 'px'
@@ -76,6 +78,9 @@ class GuideGuide extends window.GuideGuideCore
 
     docGuides = $('.js-document').find('.js-guide')
 
+    $selection = $('.js-document').find('.js-selection')
+    $artboard = $('.js-document').find('.js-artboard')
+
     docGuides.each (index, el) =>
       $el = $(el)
       guide = {}
@@ -83,7 +88,6 @@ class GuideGuide extends window.GuideGuideCore
       if $el.hasClass 'horizontal'
         guide.orientation = 'horizontal'
         guide.location = $el.position().top
-
       if $el.hasClass 'vertical'
         guide.orientation = 'vertical'
         guide.location = $el.position().left
