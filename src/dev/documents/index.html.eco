@@ -3,16 +3,18 @@
 <head>
   <title>GuideGuide Open Demo</title>
 
+  <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.custom.min.css">
   <link rel="stylesheet" type="text/css" href="/css/demo.css">
   <link rel="stylesheet" type="text/css" href="/css/guideguide.css">
 
   <script type="text/javascript" src="/js/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="/js/demo.js"></script>
+  <script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.min.js"></script>
   <script type="text/javascript" src="/js/guideguide-core.js"></script>
   <script type="text/javascript" src="/js/guideguide-web.js"></script>
 </head>
 <body class="guideguide-dark">
-  <h1 class="page-title">GuideGuide Open</h1>
+  <h1 class="page-title">GuideGuide Dev</h1>
 
   <ul class="color-switcher js-color-switcher">
     <li><a href class="js-color-switcher-color" data-theme-name="guideguide-lighter">lighter</a></li>
@@ -21,9 +23,9 @@
     <li><a href class="js-color-switcher-color" data-theme-name="guideguide-darker">darker</a></li>
   </ul>
 
-  <div class="faux-app">
+  <div class="fauxtoshop">
     <div class="document js-document">
-      <div class="document-header">
+      <div class="document-header js-document-handle">
         GuideGuide Demo
       </div>
 
@@ -34,9 +36,9 @@
       <span class="js-selection selection"></span>
     </div>
 
-    <div class="panel-shell">
+    <div class="panel-shell js-panel">
 
-      <div class="panel-header">
+      <div class="panel-header js-panel-handle">
         <span class="panel-tab">GuideGuide</span>
       </div>
 

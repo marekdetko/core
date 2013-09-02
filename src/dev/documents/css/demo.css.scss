@@ -55,6 +55,8 @@ body {
   position: absolute;
   top: 150px;
   left: 50px;
+  height: 200px;
+  width: 300px;
   box-shadow: 0 3px 5px rgba(#000,.1);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -104,11 +106,12 @@ body {
   border-top-right-radius: 5px;
   text-align: center;
   z-index: 1;
+  cursor: move;
 }
 
 .document-artboard {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   background-image: url(../img/ps_neutral.png);
   box-sizing: border-box;
   overflow: hidden;
@@ -120,9 +123,10 @@ body {
   background-color: #999;
   width: 300px;
   position: absolute;
-  right: 38px;
+  left: 450px;
   top: 150px;
   padding-top: 1px;
+  z-index: 2;
 }
 
 .panel-header {
@@ -130,6 +134,7 @@ body {
   font-family: 'myriad pro';
   font-size: 11px;
   z-index: 1;
+  cursor: move;
 }
 
 .panel-tab {

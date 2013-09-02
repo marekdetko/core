@@ -5,13 +5,13 @@ $(document).on 'click', '.js-color-switcher-color', (event) ->
   $(this).closest('.js-color-switcher').find('.js-color-switcher-color').removeClass 'is-selected'
   $(this).addClass 'is-selected'
 
-  $('#guideguide').trigger 'guideguide:updateTheme', $(this).attr 'data-theme-name'
+  window.guideguide.updateTheme $(this).attr 'data-theme-name'
 
   $('body').attr 'class', $(this).attr 'data-theme-name'
 
 $(document).on 'mousedown', '.js-document', (event) ->
   event.originalEvent.preventDefault()
-  return if $(event.target).hasClass 'js-selection'
+  return unless $(event.target).hasClass 'js-artboard'
 
   $('.js-document').find('.js-selection').remove()
 
@@ -68,3 +68,13 @@ $(document).on 'mousedown', '.js-document', (event) ->
     $('.js-artboard').find('.js-selection').remove() if $('.js-selection').width() <= 1 and $('.js-selection').height() <= 1
     $(document).off 'mousemove'
     $(document).off 'mouseup'
+
+$ ->
+  $(".js-panel").draggable({ handle: ".js-panel-handle" }).resizable({ handles: "n, e, s, w, ne, se, sw, nw" })
+  $(".js-document").draggable({ handle: ".js-document-handle" }).resizable({ handles: "n, e, s, w, ne, se, sw, nw" })
+
+  $(document).delegate '.js-guide.horizontal', 'mousedown', (event) ->
+    $(this).draggable({ axis: "y", stop: => $(this).draggable("destroy") })
+
+  $(document).delegate '.js-guide.vertical', 'mousedown', (event) ->
+    $(this).draggable({ axis: "x", stop: => $(this).draggable("destroy") })
