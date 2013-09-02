@@ -79,7 +79,7 @@ parseUnit = (string) ->
     when 'percent', 'pct', '%'
       '%'
     when ''
-      info = appAdapter.getInfo()
+      info = window.guideguide.guideguideData
       parseUnit info.ruler
     else
       null
