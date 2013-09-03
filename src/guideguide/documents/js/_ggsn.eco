@@ -245,12 +245,13 @@ class GGSN
     gapStrings = string.split /\s/
 
     $.each gapStrings, (index,value) =>
-      gap = value
-      gaps.forString.push gap
+      gap = new Gap value
+       
       if value == '|'
+        gaps.forString.push '|'
         gaps = @allocate value, gaps
       else
-        gap = new Gap gap
+        gaps.forString.push gap
         for i in [1..gap.multiplier]
           gaps = @allocate gap, gaps
 
@@ -307,4 +308,4 @@ class GGSN
   # Returns nothing
   defineGapErrors: (gap) =>
     $.each gap.errors, (key,error) =>
-      error.id =  @error error.message
+      error.id = @error error.message

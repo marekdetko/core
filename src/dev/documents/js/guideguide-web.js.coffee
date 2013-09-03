@@ -5,7 +5,7 @@ class GuideGuide extends window.GuideGuideCore
     console.log 'Running GuideGuide in Web mode'
     super @panel
 
-  getLocalization(): =>
+  getLocalization: =>
     'en-us'
 
   # Get information about the current active document.
@@ -22,8 +22,8 @@ class GuideGuide extends window.GuideGuideCore
       width: if $selection.length then $selection.width()+1 else activeDocument.width()
       height: if $selection.length then $selection.height()+1 else activeDocument.height()
       ruler: 'pixels'
-      offsetX: if $selection.length then $selection.position().left else artboardPosition.left
-      offsetY: if $selection.length then $selection.position().top else artboardPosition.top
+      offsetX: if $selection.length then $selection.position().left - artboardPosition.left else 0
+      offsetY: if $selection.length then $selection.position().top - artboardPosition.top else 0
     super info
 
   # Removes all guides from the document
@@ -64,14 +64,15 @@ class GuideGuide extends window.GuideGuideCore
   #
   # Returns false
   addGuide: (location,orientation) =>
+    artboardPosition = $('.js-document').find('.js-artboard').position()
     guide = $('.js-templates').find('.js-guide')
     .clone().attr('class','')
     .addClass 'guide js-guide ' + orientation
 
     if orientation == 'horizontal'
-      guide.css 'top', location + 'px'
+      guide.css 'top', ( location + artboardPosition.top ) + 'px'
     else
-      guide.css 'left', location + 'px'
+      guide.css 'left', ( location + artboardPosition.left ) + 'px'
 
     $('.js-document').append guide
 
@@ -89,10 +90,10 @@ class GuideGuide extends window.GuideGuideCore
 
       if $el.hasClass 'horizontal'
         guide.orientation = 'horizontal'
-        guide.location = $el.position().top
+        guide.location = $el.position().top - $artboard.position().top
       if $el.hasClass 'vertical'
         guide.orientation = 'vertical'
-        guide.location = $el.position().left
+        guide.location = $el.position().left - $artboard.position().left
 
       guides.push guide
       

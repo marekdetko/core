@@ -18,6 +18,7 @@ class Messages
       'ggsn.undefinedVariable': "Undefined variable"
       'ggsn.oneFillPerGrid': "A grid can only contain one fill"
       'ggsn.moreThanOneHundredPercent': "A grid cannot contain more than 100%"
+      'ggsn.stringFromExistingGuides': "String generated from existing guides"
 
   constructor: (i18n) ->
     if @messages[i18n]
