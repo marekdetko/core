@@ -573,7 +573,7 @@ class window.GuideGuideCore
 
       # Subtract arbitrary gap value from non-margin area to get wildcard area,
       # which is used to calculate the size of the wildcards
-      arbitrarySum = if grid.gaps.arbitrary then sum grid.gaps.arbitrary, 'value' else 0
+      arbitrarySum = if grid.gaps.arbitrary then @sum grid.gaps.arbitrary, 'value' else 0
       wildcardArea = measuredWidth - arbitrarySum
 
       if wildcardArea and fill
