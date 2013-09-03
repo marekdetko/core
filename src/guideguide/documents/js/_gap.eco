@@ -152,10 +152,19 @@ class Gap
 
     string
 
+  # Duplicate this gap. Used to disassociate gap objects so they can be
+  # modified independantly.
+  #
+  # This is pretty ugly right now. I'm not quite sure at the moment why this
+  # needs so many redundant calls. I'll need to look into/refactor this.
+  #
+  # Returns a gap
   clone: () ->
     gap = new Gap @original
     gap.multiplier = 1
-    new Gap gap.toString(false)
+    gap = new Gap gap.toString(false)
+    gap.errors = @errors
+    gap
 
 
   sum: (variables={}) ->
