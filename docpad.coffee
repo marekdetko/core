@@ -1,6 +1,8 @@
 docpadConfig =
   outPath: 'dev'
 
+  renderPasses: 2
+
   documentsPaths: [
     'dev/documents',
     'guideguide/documents',
