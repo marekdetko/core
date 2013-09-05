@@ -1,0 +1,28 @@
+{
+  "name": "adapter-web",
+  "version": "0.0.2",
+  "main": [
+    "src/adapter-web/"
+  ],
+  "ignore": [
+    "dev/",
+    "node_modules/",
+    "script/",
+    "src/components/",
+    "src/dev/"
+  ],
+  "dependencies": {
+    "guideguide-core": "https://github.com/guideguide/core.git",
+    "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git"
+  },
+  "homepage": "https://github.com/guideguide/adapter-web",
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.2",
+    "commit": "bc4d953b4f52bb3f4417b1a74c8128196b841ecf"
+  },
+  "_source": "https://github.com/guideguide/adapter-web.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/guideguide/adapter-web.git"
+}

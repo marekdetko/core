@@ -1,0 +1,17 @@
+{
+  "name": "fauxtoshop",
+  "version": "0.0.2",
+  "main": [
+    "src/fauxtoshop/"
+  ],
+  "ignore": [
+    "dev/",
+    "node_modules/",
+    "script/",
+    "src/components/",
+    "src/dev/"
+  ],
+  "dependencies": {
+    "guideguide-core": "https://github.com/guideguide/core.git"
+  }
+}

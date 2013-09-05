@@ -1,6 +1,6 @@
 {
   "name": "guideguide-core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": [
     "src/guideguide/"
   ],
@@ -9,6 +9,11 @@
     "node_modules/",
     "script/",
     "src/dev/",
-    "docs/"
-  ]
+    "docs/",
+    "bower.json"
+  ],
+  "dependencies": {
+    "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git",
+    "adapter-web": "https://github.com/guideguide/adapter-web.git"
+  }
 }

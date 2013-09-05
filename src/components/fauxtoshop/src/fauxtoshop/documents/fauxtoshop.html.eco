@@ -1,0 +1,27 @@
+---
+write: false
+---
+
+<div class="fauxtoshop">
+  <div class="document js-document">
+    <div class="document-header js-document-handle">
+      GuideGuide Demo
+    </div>
+
+    <div class="document-artboard js-artboard"></div>
+  </div>
+  <div class="templates js-templates">
+    <span class="guide js-guide vertical" style=""></span>
+    <span class="js-selection selection"></span>
+  </div>
+
+  <div class="panel-shell js-panel">
+
+    <div class="panel-header js-panel-handle">
+      <span class="panel-tab">GuideGuide</span>
+    </div>
+
+    <%- @include('panel.html') %>
+
+  </div>
+</div>

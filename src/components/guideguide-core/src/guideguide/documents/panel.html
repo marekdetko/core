@@ -1,0 +1,151 @@
+---
+write: false
+---
+
+<div class="js-tabbed-pages" id="guideguide" data-theme="guideguide-dark">
+  <ul class="nav">
+    <li><a class="nav-item js-tabbed-page-tab js-grid-tab is-selected" data-page="form" data-localize="ui.gridTab" href>Grid</a></li>
+    <li><a class="nav-item js-tabbed-page-tab js-custom-tab" data-page="custom" data-localize="ui.customTab" href>Custom</a></li>
+    <li><a class="nav-item js-tabbed-page-tab js-sets-tab" data-page="sets" data-localize="ui.setsTab" href>Sets</a></li>
+  </ul>
+
+  <div class="tabbed-page js-tabbed-page js-grid-form is-selected" data-page="form">
+    <div class="form-wrapper">
+      <table class="grid-form">
+        <tr class="set-name-row js-set-name-row">
+          <td colspan="2">
+            <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="margin">
+              <a class="icon icon-margin-left js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="marginLeft" title="Left margin">
+            </span>
+          </td>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="margin">
+              <a class="icon icon-margin-top js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="marginTop" title="Top margin">
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="margin">
+              <a class="icon icon-margin-right js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="marginRight" title="Right margin">
+            </span>
+          </td>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="margin">
+              <a class="icon icon-margin-bottom js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="marginBottom" title="Bottom margin">
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="count">
+              <a class="icon icon-count-column js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="countColumn" title="Column count" data-integer="true">
+            </span>
+          </td>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="count">
+              <a class="icon icon-count-row js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="countRow" title="Row count" data-integer="true">
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="width">
+              <a class="icon icon-width-column js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="widthColumn" title="Column width">
+            </span>
+          </td>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="width">
+              <a class="icon icon-width-row js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="widthRow" title="Row width">
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="gutter">
+              <a class="icon icon-width-column-gutter js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="gutterColumn" title="Column gutter">
+            </span>
+          </td>
+          <td>
+            <span class="form-iconned-input js-grid-form-iconned-input" data-distribute="gutter">
+              <a class="icon icon-width-row-gutter js-iconned-input-button" tabindex="-1" href></a>
+              <input type="text" spellcheck="false" class="js-grid-form-input" data-type="gutterRow" title="Row gutter">
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="form-action-buttons">
+      <a class="button primary js-make-grid make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
+      <a class="button primary js-save-set save-set" href>Save set</a>
+      <a class="button icon-button js-new-set add-set" href><span class="icon icon-set-add"></span></a>
+      <a class="button icon-button js-cancel-set cancel-set" href><span class="icon icon-clear-guides"></span></a>
+    </div>
+  </div>
+
+  <div class="ggsn-form tabbed-page js-tabbed-page js-custom-form" data-page="custom">
+    <div class="form-wrapper">
+      <table class="grid-form">
+        <tr class="set-name-row js-set-name-row">
+          <td colspan="2">
+            <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
+            <input type="hidden" class="js-set-id">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <textarea class="js-custom-input" spellcheck="false"></textarea>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="form-action-buttons">
+      <a class="button primary js-make-grid make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
+      <a class="button primary js-save-set save-set" href>Save set</a>
+      <a class="button icon-button js-new-set add-set" href><span class="icon icon-set-add"></span></a>
+      <a class="button icon-button js-cancel-set cancel-set" href><span class="icon icon-clear-guides"></span></a>
+    </div>
+  </div>
+
+  <div class="tabbed-page js-tabbed-page js-sets-form" data-page="sets">
+    <ul class="set-list js-set-list">
+    </ul>
+    <!-- template for set list -->
+    <li class="js-set-item-template js-set set-list-set" style="display:none;">
+      <a class="js-set-select" href>
+        <span class="js-set-item-name">Foo</span>
+      </a>
+      <a class="js-edit-set icon icon-edit set-action" href></a>
+      <a class="js-delete-set icon icon-clear-guides set-action" href></a>
+    </li>
+    <!-- end template for set list -->
+    <div class="form-action-buttons">
+      <a class="button primary js-make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
+      <a class="button icon-button js-new-set" href><span class="icon icon-set-add"></span></a>
+    </div>
+  </div>
+
+  <div class="action-bar js-action-bar">
+    <a class="button js-left" tabindex="-1" href><span class="icon icon-quick-left"></span></a>
+    <a class="button js-vertical-midpoint" tabindex="-1" href><span class="icon icon-quick-vertical-midpoint"></span></a>
+    <a class="button js-right" tabindex="-1" href><span class="icon icon-quick-right"></span></a>
+    <a class="button button-clear-guides js-clear" tabindex="-1" href><span class="icon icon-clear-guides"></span></a>
+    <a class="button js-top" tabindex="-1" href><span class="icon icon-quick-top"></span></a>
+    <a class="button js-horizontal-midpoint" tabindex="-1" href><span class="icon icon-quick-horizontal-midpoint"></span></a>
+    <a class="button js-bottom" tabindex="-1" href><span class="icon icon-quick-bottom"></span></a>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+@mixin theme( $background, $dark, $darker, $darkest, $text, $highlight, $darkHighlight, $danger ){
+
+  color: $text;
+  background-color: $background;
+
+  // Base
+
+  a {
+    color: $text;
+
+    &:hover { color: $highlight; }
+  }
+
+  .nav a.is-selected {
+    color: $darkest;
+  }
+
+  // Forms
+
+  input, textarea {
+    background-color: $dark;
+    color: $text;
+
+    &:focus { border-color: $highlight; }
+
+    &[data-valid="false"]{ border-color: $danger; }
+  }
+
+  .distribute-highlight .icon { color: $highlight; }
+
+  // Action Bar
+
+  .button {
+    background-color: $dark;
+
+    &:hover {
+      background-color: $darker;
+      color: $text;
+    }
+
+    &.primary {
+      background-color: $highlight;
+      color: #fff;
+
+      &:hover {
+        background-color: $darkHighlight;
+        color: #fff;      
+      }
+    }
+  }
+
+  .button-clear-guides:hover {
+    background-color: $danger;
+    color: #fff;
+  }
+
+  // Sets
+
+  .set-list-set {
+    background-color: $dark;
+
+    &:hover {
+      background-color: $darker;
+
+      a { color: $text; }
+    }
+  }
+
+  .set-list-set.is-selected {
+    background-color: $highlight;
+    color: #fff;
+
+    &:hover { background-color: $darkHighlight; }
+  }
+}

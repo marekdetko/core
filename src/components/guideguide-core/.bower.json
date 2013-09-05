@@ -1,0 +1,24 @@
+{
+  "name": "guideguide-core",
+  "version": "0.0.2",
+  "main": [
+    "src/guideguide/"
+  ],
+  "ignore": [
+    "dev/",
+    "node_modules/",
+    "script/",
+    "src/dev/",
+    "docs/"
+  ],
+  "homepage": "https://github.com/guideguide/core",
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.2",
+    "commit": "74c6a575f32a74561187461a3d51dfa2c80f9634"
+  },
+  "_source": "https://github.com/guideguide/core.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/guideguide/core.git"
+}

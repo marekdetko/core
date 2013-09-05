@@ -1,0 +1,119 @@
+input, textarea {
+  margin: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: 3px 5px;
+  font: normal normal 13px/16px 'open-sans-regular', sans-serif;
+  outline: none;
+}
+
+textarea {
+  font-family: 'open-sans-regular'
+}
+
+.form-wrapper {
+  overflow: scroll;
+  height: 100%;
+  padding: 0 10px;
+}
+
+.set-name-row {
+  display: none;
+  height: 0%;
+
+  .is-showing-new-set-form & { display: table-row; }
+}
+
+// A two column form used to collect user input for grids.
+.grid-form {
+  width: 100%;
+  border-collapse: collapse;
+
+  td {
+    padding: 0 0 2px 0;
+    &:first-child { padding-right: 1px; }
+    &:last-child { padding-left: 1px; }
+    &:first-child:last-child {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  tr:last-child td { padding-bottom: 0; }
+
+  textarea {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .set-name { width: 100%; }
+}
+
+// A text field that contains GuideGuide String Notation.
+.ggsn-form {
+  box-sizing: border-box;
+
+  textarea {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    resize: none;
+  }
+
+  .grid-form { height: 100%; }
+}
+
+// An icon next to a text input. The icon can be a button.
+.form-iconned-input {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  display: block;
+
+  .icon {
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    left: 5px;
+    width: 16px;
+    height: 16px;
+    transition: 0.1s color linear;
+  }
+
+  input {
+    width: 100%;
+    padding-left: 25px;
+  }
+}
+
+// A horizontal list of buttons at the bottom of a form.
+// Primary buttons are highlighted and take up the most room.
+.form-action-buttons {
+  position: absolute;
+  display: table;
+  bottom: 37px;
+  left: 0;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+
+  .button {
+    display: table-cell;
+    padding: 3px 10px;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+
+    &.primary { width: 100%; }
+
+    &.save-set, &.cancel-set { display: none; }
+
+    .is-showing-new-set-form &.save-set { display: table-cell; }
+    .is-showing-new-set-form &.cancel-set { display: table-cell; }
+    .is-showing-new-set-form &.make-grid { display: none; }
+    .is-showing-new-set-form &.add-set { display: none; }
+  }
+
+  .icon-button { line-height: 0; }
+}
