@@ -1,12 +1,14 @@
 {
   "name": "guideguide-core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": [
     "src/guideguide/"
   ],
   "ignore": [
     "dev/",
     "node_modules/",
-    "script/"
+    "script/",
+    "src/dev/",
+    "docs/"
   ]
 }

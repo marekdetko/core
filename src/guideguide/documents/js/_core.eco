@@ -33,6 +33,14 @@ class window.GuideGuideCore
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
     @panel.on 'click', '.js-grid-form .js-make-grid', @onMakeGridFromForm
 
+
+
+    # TODO: When trying to save a set without a name, invalidate the name field.
+    # Clear invalidation on focus in.
+
+
+
+
     @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
 
@@ -335,8 +343,8 @@ class window.GuideGuideCore
   #
   # Returns nothing
   onExitCustomForm: =>
-    @panel.find('.js-custom-form .js-set-name').val('') if @panel.hasClass('is-showing-new-set-form')
-    @panel.find('.js-custom-input').val('') if @panel.hasClass('is-showing-new-set-form')
+    @panel.find('.js-custom-form .js-set-name').val('').attr('data-valid', true) if @panel.hasClass('is-showing-new-set-form')
+    @panel.find('.js-custom-input').val('').attr('data-valid', true) if @panel.hasClass('is-showing-new-set-form')
     @hideNewSetForm()
 
   # Open Custom form with data from the set to be edited
@@ -379,6 +387,9 @@ class window.GuideGuideCore
         @updateSet(obj)
 
       @panel.find('.js-sets-tab').click()
+    else
+      $('.js-set-name').attr 'data-valid', false if name.length == 0
+      $('.js-custom-input').attr 'data-valid', false if string.length == 0
 
   # Fire save set event and pass it the contents of the grid form
   #
