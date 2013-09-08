@@ -32,14 +32,7 @@ class window.GuideGuideCore
     @panel.on 'focus', '.js-grid-form .js-grid-form-input', @onFocusFormInput
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
     @panel.on 'click', '.js-grid-form .js-make-grid', @onMakeGridFromForm
-
-
-
-    # TODO: When trying to save a set without a name, invalidate the name field.
-    # Clear invalidation on focus in.
-
-
-
+    @panel.on 'focus', '.js-set-name', @onFocusSetName
 
     @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
@@ -320,6 +313,12 @@ class window.GuideGuideCore
       $input.attr 'data-valid', ggsn.isValid
       $input.val ggsn.toString()
 
+  # When focusing into the new set name field, reset it as valid.
+  #
+  # Returns nothing.
+  onFocusSetName: (event) =>
+    $(event.currentTarget).attr 'data-valid', true
+
   # Select a set in the sets list when it is clicked
   #
   # Returns nothing.
@@ -365,7 +364,7 @@ class window.GuideGuideCore
 
     @showCustomSetForm(set[0].string)
 
-  # Fire save set event and pass it the contents of the custom form
+  # Save a set from the Custom form.
   #
   # Returns nothing.
   onSaveSetFromCustom: (event) =>
