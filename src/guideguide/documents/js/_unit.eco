@@ -43,7 +43,7 @@ class Unit
         @type = 'integer'
         @isValid = true
 
-    if !@value
+    if !@value ?
       @isValid = false
     if !@type
       @isValid = false
@@ -53,7 +53,7 @@ class Unit
   # based on the original string value
   toString: =>
     if @isValid
-      "#{@value if @value}#{if @type and @type != 'integer' then @type else ''}"
+      "#{ @value }#{if @type and @type != 'integer' then @type else ''}"
     else
       @original
 
