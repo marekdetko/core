@@ -165,7 +165,7 @@ class window.GuideGuideCore
   onClickTopGuide: (event) =>
     console.log 'Top guide'  
     event.preventDefault()
-    @addGuides @getGuidesFromGGN new GGSN "| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @addGuides @getGuidesFromGGN new GGN "| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
 
   # Draw a guide at the bottom of the document/selection
   #
@@ -173,7 +173,7 @@ class window.GuideGuideCore
   onClickBottomGuide: (event) =>
     console.log 'Bottom guide'  
     event.preventDefault()
-    @addGuides @getGuidesFromGGN new GGSN "~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @addGuides @getGuidesFromGGN new GGN "~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
 
   # Draw a guide to the left of the document/selection
   #
@@ -181,7 +181,7 @@ class window.GuideGuideCore
   onClickLeftGuide: (event) =>
     console.log 'Top guide'  
     event.preventDefault()
-    @addGuides @getGuidesFromGGN new GGSN "| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @addGuides @getGuidesFromGGN new GGN "| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
 
   # Draw a guide to the right of the document/selection
   #
@@ -189,7 +189,7 @@ class window.GuideGuideCore
   onClickRightGuide: (event) =>
     console.log 'Bottom guide'  
     event.preventDefault()
-    @addGuides @getGuidesFromGGN new GGSN "~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @addGuides @getGuidesFromGGN new GGN "~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
 
   # Draw a guide at the horizontal midpoint of the document/selection
   #
@@ -197,7 +197,7 @@ class window.GuideGuideCore
   onClickHorizontalMidpoint: (event) =>
     console.log 'Horizontal midpoint'  
     event.preventDefault()
-    @addGuides @getGuidesFromGGN new GGSN "~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @addGuides @getGuidesFromGGN new GGN "~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
 
   # Draw a guide at the vertical midpoint of the document/selection
   #
@@ -205,7 +205,7 @@ class window.GuideGuideCore
   onClickVerticalMidpoint: (event) =>
     console.log 'Vertical midpoint'  
     event.preventDefault()
-    @addGuides @getGuidesFromGGN new GGSN "~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @addGuides @getGuidesFromGGN new GGN "~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
 
   # Handle clicks on the clear guides button.
   #
@@ -317,9 +317,9 @@ class window.GuideGuideCore
   onBlurCustomForm: (event) =>
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
-      ggsn = new GGSN $input.val()
-      $input.attr 'data-valid', ggsn.isValid
-      $input.val ggsn.toString()
+      ggn = new GGN $input.val()
+      $input.attr 'data-valid', ggn.isValid
+      $input.val ggn.toString()
 
   # When focusing into the new set name field, reset it as valid.
   #
@@ -428,9 +428,9 @@ class window.GuideGuideCore
 
     console.group 'Add guides from grid form'
     console.log string
-    ggsn = new GGSN(string)
-    console.log ggsn
-    @addGuides @getGuidesFromGGN new GGSN string
+    ggn = new GGN(string)
+    console.log ggn
+    @addGuides @getGuidesFromGGN new GGN string
     console.groupEnd()
 
   # Create a grid from the Custom form
@@ -445,7 +445,7 @@ class window.GuideGuideCore
 
     console.log 'Custom Grid'
     console.log string
-    @addGuides @getGuidesFromGGN new GGSN string
+    @addGuides @getGuidesFromGGN new GGN string
 
   # Create a grid from a set
   #
@@ -459,7 +459,7 @@ class window.GuideGuideCore
     console.log 'Grid from set'
     data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
     console.log data
-    @addGuides @getGuidesFromGGN new GGSN data[0].string
+    @addGuides @getGuidesFromGGN new GGN data[0].string
 
   createNewSet: (data) =>
     newSet =
@@ -476,7 +476,7 @@ class window.GuideGuideCore
     set = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt(data.id)
 
     set[0].name = data.name
-    set[0].string = data.ggsn
+    set[0].string = data.ggn
 
     @saveGuideGuideData(@guideguideData)
     @refreshSets()
@@ -540,7 +540,7 @@ class window.GuideGuideCore
     string += '\n' if xString
     string += yString
     string += '\n' if yString
-    string += '\n# ' + @messages['ggsn.stringFromExistingGuides'] if xString or yString
+    string += '\n# ' + @messages['ggn.stringFromExistingGuides'] if xString or yString
 
     @showCustomSetForm string
 

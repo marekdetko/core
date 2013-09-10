@@ -12,13 +12,13 @@ class Messages
       'ui.btnMakeGrid': "Make grid"
       'gap.unrecognized': "Unrecognized gap"
       'gap.noFillWildcards': "Wildcards cannot be fills"
-      'ggsn.noGrids': "This string does not contain any grids"
-      'ggsn.fillInVariable': "Variables cannot contain a fill"
-      'ggsn.noWildcardsInVariableFills': "A variable used as a fill can not contain a wildcard"
-      'ggsn.undefinedVariable': "Undefined variable"
-      'ggsn.oneFillPerGrid': "A grid can only contain one fill"
-      'ggsn.moreThanOneHundredPercent': "A grid cannot contain more than 100%"
-      'ggsn.stringFromExistingGuides': "String generated from existing guides"
+      'ggn.noGrids': "This string does not contain any grids"
+      'ggn.fillInVariable': "Variables cannot contain a fill"
+      'ggn.noWildcardsInVariableFills': "A variable used as a fill can not contain a wildcard"
+      'ggn.undefinedVariable': "Undefined variable"
+      'ggn.oneFillPerGrid': "A grid can only contain one fill"
+      'ggn.moreThanOneHundredPercent': "A grid cannot contain more than 100%"
+      'ggn.stringFromExistingGuides': "String generated from existing guides"
 
   constructor: (i18n) ->
     if @messages[i18n]

@@ -33,7 +33,7 @@ class Gap
   isUnrecognized: null
   isPercent: null
 
-  # ggsn symbol that represents this type of gap
+  # ggn symbol that represents this type of gap
   typePrefix: ''
 
   # Create a unit object

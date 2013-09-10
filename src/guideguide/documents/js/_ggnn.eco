@@ -6,15 +6,15 @@ write: false
 # Parse convert gap strings to guide arrays.
 # https://github.com/cameronmcefee/guideguide-string-notation/blob/master/spec.md
 
-class GGSN
+class GGN
 
-  # Original ggsn string
-  ggsn: ''
+  # Original ggn string
+  ggn: ''
 
   # Collection of variables to be used when calculating the grid
   variables: {}
 
-  # Array of errors and error codes present in this ggsn object
+  # Array of errors and error codes present in this ggn object
   errors: {}
 
   # Used to label new errors
@@ -33,10 +33,10 @@ class GGSN
     @errors    = {}
     @variables = {}
     @grids     = []
-    @ggsn      = string.replace /\s*$|^\s*/gm, ''
-    @parse @ggsn
+    @ggn      = string.replace /\s*$|^\s*/gm, ''
+    @parse @ggn
 
-  # Turn a ggsn string into a collection of grids
+  # Turn a ggn string into a collection of grids
   #
   #   string - gssn string to be parsed
   #
@@ -100,12 +100,12 @@ class GGSN
     fills = 0
     percent = 0
     variablesWithWildcards = {}
-    @error messages['ggsn.noGrids'] if !@grids.length
+    @error messages['ggn.noGrids'] if !@grids.length
 
     # Check variables
     $.each @variables, (key,variable) =>
       $.each variable, (index, gap) =>
-        @error messages['ggsn.fillInVariable'] if gap.isFill
+        @error messages['ggn.fillInVariable'] if gap.isFill
         @defineGapErrors gap if !gap.isValid and gap != '|'
         variablesWithWildcards[key] = true if gap.isWildcard
         percent += gap.value if gap.isPercent
@@ -115,9 +115,9 @@ class GGSN
     # Check grids
     $.each @grids, (key,grid) =>
       $.each grid.gaps.all, (index, gap) =>
-        @error messages['ggsn.noWildcardsInVariableFills'] if gap.isVariable and variablesWithWildcards[gap.id]
-        @error messages['ggsn.undefinedVariable'] if gap.isVariable and !@variables[gap.id] 
-        @error messages['ggsn.oneFillPerGrid'] if gap.isFill and fills
+        @error messages['ggn.noWildcardsInVariableFills'] if gap.isVariable and variablesWithWildcards[gap.id]
+        @error messages['ggn.undefinedVariable'] if gap.isVariable and !@variables[gap.id] 
+        @error messages['ggn.oneFillPerGrid'] if gap.isFill and fills
         @defineGapErrors gap if !gap.isValid && gap != '|'
         percent += gap.value if gap.isPercent
         wildcards++ if gap.isWildcard
@@ -126,7 +126,7 @@ class GGSN
       if grid.options.width
         width = new Gap grid.options.width.toString()
         @defineGapErrors width if !width.isValid
-    @error messages['ggsn.moreThanOneHundredPercent'] if percent > 100
+    @error messages['ggn.moreThanOneHundredPercent'] if percent > 100
     @wildcards = wildcards
     
   # Deterime a grid's gaps and options
