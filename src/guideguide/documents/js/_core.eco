@@ -33,6 +33,7 @@ class window.GuideGuideCore
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
     @panel.on 'click', '.js-grid-form .js-make-grid', @onMakeGridFromForm
     @panel.on 'focus', '.js-set-name', @onFocusSetName
+    @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
 
     @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
@@ -134,6 +135,13 @@ class window.GuideGuideCore
     # Select tab and bucket
     tab.addClass 'is-selected'
     tabBucket.addClass 'is-selected'
+
+  # Toggle guide visibility.
+  #
+  # Returns nothing.
+  onToggleGuides: (event) =>
+    event.preventDefault()
+    console.log "Toggle guides"
 
   # Get GuideGuide's data, including usage data, user preferences, and sets
   #
