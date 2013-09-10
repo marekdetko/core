@@ -47,10 +47,9 @@ a {
   top: 0;
   left: 0;
   list-style-type: none;
-  padding: 10px;
+  padding: 9px 10px;
   margin: 0;
   z-index: 1;
-  width: 100%;
   box-sizing: border-box;
 
   li {
@@ -63,6 +62,22 @@ a {
 
     &.is-selected { cursor: default; }
   }
+}
+
+.header-actions {
+  position: relative;
+  float: right;
+  list-style-type: none;
+  margin: 0;
+  padding: 8px;
+  z-index: 1;
+
+  li {
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  a { transition: 0.1s color linear; }
 }
 
 // Content of a tab.
