@@ -1,6 +1,6 @@
 {
   "name": "fauxtoshop",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": [
     "src/fauxtoshop/"
   ],
@@ -11,15 +11,16 @@
     "src/components/",
     "src/dev/"
   ],
-  "dependencies": {
-    "guideguide-core": "https://github.com/guideguide/core.git"
+  "devDependencies": {
+    "guideguide-core": "https://github.com/guideguide/core.git",
+    "adapter-web": "https://github.com/guideguide/adapter-web.git"
   },
   "homepage": "https://github.com/guideguide/fauxtoshop",
-  "_release": "0.0.2",
+  "_release": "0.0.4",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.2",
-    "commit": "316d97ff6cbb62fad9c681865bdb19e7bb126342"
+    "tag": "0.0.4",
+    "commit": "8ea32069d81d1c81c876a779e12a3ae5ecf236c3"
   },
   "_source": "https://github.com/guideguide/fauxtoshop.git",
   "_target": "*",

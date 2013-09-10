@@ -76,12 +76,12 @@ class GuideGuide extends window.GuideGuideCore
 
     $('.js-document').append guide
 
+  # Get the guides that already exist on the stage
+  #
+  # Returns an Array of guides
   getExistingGuides: =>
-    guides = []
-
+    guides    = []
     docGuides = $('.js-document').find('.js-guide')
-
-    $selection = $('.js-document').find('.js-selection')
     $artboard = $('.js-document').find('.js-artboard')
 
     docGuides.each (index, el) =>
@@ -98,6 +98,10 @@ class GuideGuide extends window.GuideGuideCore
       guides.push guide
       
     super guides
+
+  onToggleGuides: =>
+    $(".js-document").toggleClass 'is-showing-guides'
+    super
 
 $ ->
   window.guideguide = new GuideGuide $('#guideguide')

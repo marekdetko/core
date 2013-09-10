@@ -1,6 +1,6 @@
 {
   "name": "fauxtoshop",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": [
     "src/fauxtoshop/"
   ],
@@ -11,7 +11,8 @@
     "src/components/",
     "src/dev/"
   ],
-  "dependencies": {
-    "guideguide-core": "https://github.com/guideguide/core.git"
+  "devDependencies": {
+    "guideguide-core": "https://github.com/guideguide/core.git",
+    "adapter-web": "https://github.com/guideguide/adapter-web.git"
   }
 }

@@ -12,7 +12,7 @@
 
     .guide {
       position: absolute;
-      display: block;
+      display: none;
       background-color: #3bffff;
       
       &.vertical {
@@ -28,7 +28,9 @@
       }
     }
 
-    .templates { display: none; }
+    &.is-showing-guides .guide { display: block; }
+
+    .templates { display: block; }
 
     .selection {
       position: absolute;
