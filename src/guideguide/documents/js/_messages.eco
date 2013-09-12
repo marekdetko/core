@@ -10,6 +10,7 @@ class Messages
       'ui.customTab': "Custom"
       'ui.setsTab': "Sets"
       'ui.btnMakeGrid': "Make grid"
+      'ui.btnSaveSettings': "Save settings"
       'gap.unrecognized': "Unrecognized gap"
       'gap.noFillWildcards': "Wildcards cannot be fills"
       'ggn.noGrids': "This string does not contain any grids"
