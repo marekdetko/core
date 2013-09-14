@@ -35,6 +35,9 @@ class window.GuideGuideCore
     @panel.on 'focus', '.js-set-name', @onFocusSetName
     @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
     @panel.on 'click', '.js-dropdown', @onClickDropdown
+    @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
+    @panel.on 'click', '.js-import-sets', @onClickImportSets
+    @panel.on 'click', '.js-export-sets', @onClickExportSets
 
     @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
@@ -43,6 +46,7 @@ class window.GuideGuideCore
 
     if @guideguideData
       @refreshSets()
+      @initSettings()
     else
       @bootstrap()
 
@@ -55,6 +59,17 @@ class window.GuideGuideCore
     $elements = $('[data-localize]')
     $elements.each (index, el) =>
       $(el).text @messages[$(el).attr('data-localize')]
+
+  # Display the correct settings in the Settings tab.
+  #
+  # Returns nothing.
+  initSettings: =>
+    $dropdowns = $('.js-dropdown')
+
+    $dropdowns.each (index, el) =>
+      $el = $ el
+      setting = $el.attr 'data-setting'
+      $el.find('.js-dropdown-button').text @guideguideData.settings[setting]
 
   # Set default data the first time GuideGuide run.
   #
@@ -87,7 +102,10 @@ class window.GuideGuideCore
       settings: # User settings
         horizontalRemainder: 'last'
         verticalRemainder:   'last'
+        horizontalPosition:  'first'
+        verticalPosition:    'first'
         calculation:         'pixel'
+        reportAnonymousData: 'no'
 
     @saveGuideGuideData(@guideguideData)
     @refreshSets()
@@ -139,9 +157,26 @@ class window.GuideGuideCore
     tab.addClass 'is-selected'
     tabBucket.addClass 'is-selected'
 
+  # Toggle dropdown visibilty
+  #
+  # Returns nothing.
   onClickDropdown: (event) =>
     event.preventDefault()
     $(event.currentTarget).toggleClass 'is-active'
+
+  # Update settings and dropdown button when a dropdown item is clicked.
+  #
+  # Returns nothing.
+  onClickDropdownItem: (event) =>
+    event.preventDefault()
+    $item     = $ event.currentTarget
+    $dropdown = $item.closest '.js-dropdown'
+    setting   = $dropdown.attr 'data-setting'
+    value     = $item.attr 'data-value'
+
+    $dropdown.find('.js-dropdown-button').text value
+    @guideguideData.settings[setting] = value
+    @saveGuideGuideData @guideguideData
 
   # Toggle guide visibility.
   #
@@ -164,7 +199,7 @@ class window.GuideGuideCore
   #
   # Returns nothing.
   saveGuideGuideData: (data) =>
-    console.log if data then "Saved data" else "Failed to retrieve data"
+    console.log (if data then "Saved data" else "Failed to save data"), data
 
   # Draw a guide at the top of the document/selection
   #
@@ -352,6 +387,20 @@ class window.GuideGuideCore
 
     @saveGuideGuideData(@guideguideData)
     @refreshSets()
+
+  # Add sets to GuideGuide from an external source. 
+  #
+  # Returns nothing.
+  onClickImportSets: (event) =>
+    event.preventDefault()
+    console.log 'Import sets'
+
+  # Export GuideGuide's sets to an external source.
+  #
+  # Returns nothing.
+  onClickExportSets: (event) =>
+    event.preventDefault()
+    console.log 'Export sets'
 
   # When exiting the Custom form, clear it.
   #

@@ -147,13 +147,68 @@ write: false
   <div class="tabbed-page js-tabbed-page js-settingss-form" data-page="settings">
     <div class="settings-list">
       <div class="setting">
+        <h3>Sets</h3>
+        <ul class="button-group">
+          <li><a class="button js-import-sets" href>Import</a></li>
+          <li><a class="button js-export-sets" href>Export</a></li>
+        </ul>
+      </div>
+
+      <div class="setting">
         <h3>Horizontal position</h3>
-        <div class="dropdown js-dropdown">
-          <a class="dropdown-button js-dropdown-button" href>Left</a>
+        <div class="dropdown js-dropdown" data-setting="horizontalPosition">
+          <a class="dropdown-button js-dropdown-button" href>left</a>
           <ul class="dropdown-list">
-            <li><a class="dropdown-item js-dropdown-item is-selected" href>Left</a></li>
-            <li><a class="dropdown-item js-dropdown-item" href>Center</a></li>
-            <li><a class="dropdown-item js-dropdown-item" href>Right</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="first" href>first (left)</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="center" href>center</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="last" href>last (right)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="setting">
+        <h3>Vertical position</h3>
+        <div class="dropdown js-dropdown" data-setting="verticalPosition">
+          <a class="dropdown-button js-dropdown-button" href>top</a>
+          <ul class="dropdown-list">
+            <li><a class="dropdown-item js-dropdown-item" data-value="first" href>first (top)</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="center" href>center</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="last" href>bottom (bottom)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="setting">
+        <h3>Horizontal remainder</h3>
+        <div class="dropdown js-dropdown" data-setting="horizontalRemainder">
+          <a class="dropdown-button js-dropdown-button" href>left</a>
+          <ul class="dropdown-list">
+            <li><a class="dropdown-item js-dropdown-item" data-value="first" href>first (left)</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="center" href>center</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="last" href>last (right)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="setting">
+        <h3>Vertical remainder</h3>
+        <div class="dropdown js-dropdown" data-setting="verticalRemainder">
+          <a class="dropdown-button js-dropdown-button" href>top</a>
+          <ul class="dropdown-list">
+            <li><a class="dropdown-item js-dropdown-item" data-value="first" href>first (top)</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="center" href>center</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="last" href>bottom (bottom)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="setting">
+        <h3>Report anonymous data</h3>
+        <div class="dropdown js-dropdown" data-setting="reportAnonymousData">
+          <a class="dropdown-button js-dropdown-button" href>no</a>
+          <ul class="dropdown-list">
+            <li><a class="dropdown-item js-dropdown-item" data-value="yes" href>yes</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-value="no" href>no</a></li>
           </ul>
         </div>
       </div>

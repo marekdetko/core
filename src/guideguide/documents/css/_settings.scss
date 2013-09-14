@@ -1,14 +1,21 @@
 .settings-list {
   margin: 0;
-  padding: 0 10px;
+  padding: 0 10px 20px;
   height: 100%;
   overflow: auto;
   font-size: 13px;
   line-height: 18px;
+  box-sizing: border-box;
 
   h3 {
-    margin: 0 0 15px;
+    margin: 15px 3px 5px;
+    font-size: 14px;
+    font-weight: normal;
   }
+}
+
+.setting:first-child h3 {
+  margin-top: 3px;
 }
 
 .dropdown {
@@ -54,9 +61,36 @@
   padding: 0 28px 0 0;
   width: 100%;
   box-sizing: border-box;
+  z-index: 1;
 }
 
 .dropdown-item {
   display: block;
   padding: 3px 20px 3px 5px;
+}
+
+.setting {
+  .button-group {
+    display: table;
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    margin: 0;
+
+    li { display: table-cell; }
+
+    li:first-child { padding-right: 1px; }
+    li:last-child { padding-left: 1px; }
+    li:first-child:last-child { margin: 0px; }
+
+    .button {
+      display: block;
+      padding: 3px 10px 5px;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
 }
