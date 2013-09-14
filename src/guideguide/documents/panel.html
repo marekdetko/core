@@ -7,7 +7,7 @@ write: false
     <li><a class="nav-item js-tabbed-page-tab js-grid-tab is-selected" data-page="form" data-localize="ui.gridTab" href>Grid</a></li>
     <li><a class="nav-item js-tabbed-page-tab js-custom-tab" data-page="custom" data-localize="ui.customTab" href>Custom</a></li>
     <li><a class="nav-item js-tabbed-page-tab js-sets-tab" data-page="sets" data-localize="ui.setsTab" href>Sets</a></li>
-    <li><a class="nav-item js-tabbed-page-tab js-settings-tab" data-page="settings" href>Settings</a></li>
+    <li><a class="nav-item js-tabbed-page-tab js-settings-tab" data-page="settings" href><span class="icon icon-settings"></span></a></li>
   </ul>
 
   <ul class="header-actions">
@@ -145,8 +145,19 @@ write: false
   </div>
 
   <div class="tabbed-page js-tabbed-page js-settingss-form" data-page="settings">
-    
-
+    <div class="settings-list">
+      <div class="setting">
+        <div class="js-dropdown">
+          <h3>Horizontal position</h3>
+          <a class="dropdown-button js-dropdown-button" href>Left</a>
+          <ul class="dropdown-list">
+            <li class="dropdown-item js-dropdown-item is-selected">Left</li>
+            <li class="dropdown-item js-dropdown-item">Center</li>
+            <li class="dropdown-item js-dropdown-item">Right</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
     <div class="form-action-buttons">
       <a class="button primary js-save-settings" data-localize="ui.btnSaveSettings" href>Save settings</a>

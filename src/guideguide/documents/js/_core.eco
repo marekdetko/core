@@ -45,6 +45,8 @@ class window.GuideGuideCore
     else
       @bootstrap()
 
+    $('.js-settings-tab').click()
+
   getLocalization: =>
     'en-us'
 

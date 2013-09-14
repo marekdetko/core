@@ -72,4 +72,17 @@
 
     &:hover { background-color: $darkHighlight; }
   }
+
+  .dropdown-button {
+    background-color: $dark;
+
+    &:before { border-color: $text transparent transparent; }
+
+    &:hover, &:hover:after { background-color: $darker; }
+
+    &:after {
+      background-color: $dark;
+      border-left: 2px solid $background;
+    }
+  }
 }
