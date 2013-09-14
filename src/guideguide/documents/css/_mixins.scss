@@ -73,6 +73,14 @@
     &:hover { background-color: $darkHighlight; }
   }
 
+  .dropdown.is-active .dropdown-button {
+    background-color: $darker;
+
+    &:after { background-color: $darker; }
+
+    &:hover, &:hover:after { background-color: $darkest; }
+  }
+
   .dropdown-button {
     background-color: $dark;
 
@@ -80,9 +88,21 @@
 
     &:hover, &:hover:after { background-color: $darker; }
 
+    &:hover { color: $text; }
+
     &:after {
       background-color: $dark;
       border-left: 2px solid $background;
+    }
+  }
+
+  .dropdown-item {
+    background-color: $dark;
+    border-top: 2px solid $background;
+
+    &:hover {
+      color: $text;
+      background-color: $darker;
     }
   }
 }
