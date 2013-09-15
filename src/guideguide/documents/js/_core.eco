@@ -42,13 +42,13 @@ class window.GuideGuideCore
     @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
 
-    @localizeUI()
-
     if @guideguideData
       @refreshSets()
-      @initSettings()
     else
       @bootstrap()
+
+    @initSettings()
+    @localizeUI()
 
     $('.js-settings-tab').click()
 
@@ -67,9 +67,11 @@ class window.GuideGuideCore
     $dropdowns = $('.js-dropdown')
 
     $dropdowns.each (index, el) =>
-      $el = $ el
-      setting = $el.attr 'data-setting'
-      $el.find('.js-dropdown-button').text @guideguideData.settings[setting]
+      $dropdown = $ el
+      setting   = $dropdown.attr 'data-setting'
+      value     = @guideguideData.settings[setting]
+      $selected = $dropdown.find("[data-value='#{ value }']")
+      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]
 
   # Set default data the first time GuideGuide run.
   #
@@ -105,7 +107,7 @@ class window.GuideGuideCore
         horizontalPosition:  'first'
         verticalPosition:    'first'
         calculation:         'pixel'
-        reportAnonymousData: 'no'
+        reportAnonymousData: false
 
     @saveGuideGuideData(@guideguideData)
     @refreshSets()
@@ -173,8 +175,10 @@ class window.GuideGuideCore
     $dropdown = $item.closest '.js-dropdown'
     setting   = $dropdown.attr 'data-setting'
     value     = $item.attr 'data-value'
+    value     = true if value is "true"
+    value     = false if value is "false"
 
-    $dropdown.find('.js-dropdown-button').text value
+    $dropdown.find('.js-dropdown-button').text @messages[$item.attr('data-localize')]
     @guideguideData.settings[setting] = value
     @saveGuideGuideData @guideguideData
 
