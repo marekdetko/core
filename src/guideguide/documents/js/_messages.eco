@@ -6,11 +6,26 @@ write: false
 class Messages
   messages:
     'en-us':
-      'ui.gridTab': "Grid"
-      'ui.customTab': "Custom"
-      'ui.setsTab': "Sets"
+      'ui.grid': "Grid"
+      'ui.custom': "Custom"
+      'ui.sets': "Sets"
       'ui.btnMakeGrid': "Make grid"
       'ui.btnSaveSettings': "Save settings"
+      'ui.btnImport': "Import"
+      'ui.btnExport': "Export"
+      'ui.titleHorizontalPosition': "Horizontal position"
+      'ui.titleVerticalPosition': "Vertical position"
+      'ui.titleHorizontalRemainder': "Horizontal remainder"
+      'ui.titleVerticalPosition': "Vertical remainder"
+      'ui.titleReportAnonymousData': "Report anonymous data"
+      'ui.settingHorizontalFirst': 'Left'
+      'ui.settingHorizontalCenter': 'Center'
+      'ui.settingHorizontalLast': 'Right'
+      'ui.settingVerticalFirst': 'Top'
+      'ui.settingVerticalCenter': 'Center'
+      'ui.settingVerticalLast': 'Bottom'
+      'ui.yes': 'Yes'
+      'ui.no': 'No'
       'gap.unrecognized': "Unrecognized gap"
       'gap.noFillWildcards': "Wildcards cannot be fills"
       'ggn.noGrids': "This string does not contain any grids"

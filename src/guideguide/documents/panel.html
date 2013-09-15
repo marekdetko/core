@@ -4,9 +4,9 @@ write: false
 
 <div class="js-tabbed-pages" id="guideguide" data-theme="guideguide-dark">
   <ul class="nav">
-    <li><a class="nav-item js-tabbed-page-tab js-grid-tab is-selected" data-page="form" data-localize="ui.gridTab" href>Grid</a></li>
-    <li><a class="nav-item js-tabbed-page-tab js-custom-tab" data-page="custom" data-localize="ui.customTab" href>Custom</a></li>
-    <li><a class="nav-item js-tabbed-page-tab js-sets-tab" data-page="sets" data-localize="ui.setsTab" href>Sets</a></li>
+    <li><a class="nav-item js-tabbed-page-tab js-grid-tab is-selected" data-page="form" data-localize="ui.grid" href>Grid</a></li>
+    <li><a class="nav-item js-tabbed-page-tab js-custom-tab" data-page="custom" data-localize="ui.custom" href>Custom</a></li>
+    <li><a class="nav-item js-tabbed-page-tab js-sets-tab" data-page="sets" data-localize="ui.sets" href>Sets</a></li>
     <li><a class="nav-item js-tabbed-page-tab js-settings-tab" data-page="settings" href><span class="icon icon-settings"></span></a></li>
   </ul>
 
@@ -147,68 +147,68 @@ write: false
   <div class="tabbed-page js-tabbed-page js-settingss-form" data-page="settings">
     <div class="settings-list">
       <div class="setting">
-        <h3>Sets</h3>
+        <h3 data-localize="ui.sets">Sets</h3>
         <ul class="button-group">
-          <li><a class="button js-import-sets" href>Import</a></li>
-          <li><a class="button js-export-sets" href>Export</a></li>
+          <li><a class="button js-import-sets" data-localize="ui.btnImport" href>Import</a></li>
+          <li><a class="button js-export-sets" data-localize="ui.btnExport" href>Export</a></li>
         </ul>
       </div>
 
       <div class="setting">
-        <h3>Horizontal position</h3>
+        <h3 data-localize="ui.titleHorizontalPosition">Horizontal position</h3>
         <div class="dropdown js-dropdown" data-setting="horizontalPosition">
           <a class="dropdown-button js-dropdown-button" href>left</a>
           <ul class="dropdown-list">
-            <li><a class="dropdown-item js-dropdown-item" data-value="first" href>first (left)</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="center" href>center</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="last" href>last (right)</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingHorizontalFirst" data-value="first" href>Left</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingHorizontalCenter" data-value="center" href>Center</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingHorizontalLast" data-value="last" href>Right</a></li>
           </ul>
         </div>
       </div>
 
       <div class="setting">
-        <h3>Vertical position</h3>
+        <h3 data-localize="ui.titleVerticalPosition">Vertical position</h3>
         <div class="dropdown js-dropdown" data-setting="verticalPosition">
           <a class="dropdown-button js-dropdown-button" href>top</a>
           <ul class="dropdown-list">
-            <li><a class="dropdown-item js-dropdown-item" data-value="first" href>first (top)</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="center" href>center</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="last" href>bottom (bottom)</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingVerticalFirst" data-value="first" href>Top</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingVerticalCenter" data-value="center" href>Center</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingVerticalLast" data-value="last" href>Bottom</a></li>
           </ul>
         </div>
       </div>
 
       <div class="setting">
-        <h3>Horizontal remainder</h3>
+        <h3 data-localize="ui.titleHorizontalRemainder">Horizontal remainder</h3>
         <div class="dropdown js-dropdown" data-setting="horizontalRemainder">
           <a class="dropdown-button js-dropdown-button" href>left</a>
           <ul class="dropdown-list">
-            <li><a class="dropdown-item js-dropdown-item" data-value="first" href>first (left)</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="center" href>center</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="last" href>last (right)</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingHorizontalFirst" data-value="first" href>Top</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingHorizontalCenter" data-value="center" href>Center</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingHorizontalLast" data-value="last" href>Last</a></li>
           </ul>
         </div>
       </div>
 
       <div class="setting">
-        <h3>Vertical remainder</h3>
+        <h3 data-localize="ui.titleVerticalRemainder">Vertical remainder</h3>
         <div class="dropdown js-dropdown" data-setting="verticalRemainder">
           <a class="dropdown-button js-dropdown-button" href>top</a>
           <ul class="dropdown-list">
-            <li><a class="dropdown-item js-dropdown-item" data-value="first" href>first (top)</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="center" href>center</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="last" href>bottom (bottom)</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingVerticalFirst" data-value="first" href>First</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingVerticalCenter" data-value="center" href>Center</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.settingVerticalLast" data-value="last" href>Last</a></li>
           </ul>
         </div>
       </div>
 
       <div class="setting">
-        <h3>Report anonymous data</h3>
+        <h3 data-localization="ui.titleReportAnonymousData">Report anonymous data</h3>
         <div class="dropdown js-dropdown" data-setting="reportAnonymousData">
           <a class="dropdown-button js-dropdown-button" href>no</a>
           <ul class="dropdown-list">
-            <li><a class="dropdown-item js-dropdown-item" data-value="yes" href>yes</a></li>
-            <li><a class="dropdown-item js-dropdown-item" data-value="no" href>no</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.yes" data-value="yes" href>Yes</a></li>
+            <li><a class="dropdown-item js-dropdown-item" data-localize="ui.no" data-value="no" href>No</a></li>
           </ul>
         </div>
       </div>
