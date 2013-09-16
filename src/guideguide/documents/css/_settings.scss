@@ -58,10 +58,10 @@
   top: 26px;
   display: none;
   margin: 0;
-  padding: 0 28px 0 0;
+  padding: 0;
   width: 100%;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 21;
 }
 
 .dropdown-item {
@@ -93,4 +93,16 @@
       box-sizing: border-box;
     }
   }
+}
+
+.dropdown-backdrop {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+
+  #guideguide.has-dropdown & { display: block; }
 }

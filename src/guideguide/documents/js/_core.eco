@@ -34,7 +34,8 @@ class window.GuideGuideCore
     @panel.on 'click', '.js-grid-form .js-make-grid', @onMakeGridFromForm
     @panel.on 'focus', '.js-set-name', @onFocusSetName
     @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
-    @panel.on 'click', '.js-dropdown', @onClickDropdown
+    @panel.on 'click', '.js-dropdown', @onToggleDropdown
+    @panel.on 'click', '.js-dropdown-backdrop', @onToggleDropdown
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
     @panel.on 'click', '.js-import-sets', @onClickImportSets
     @panel.on 'click', '.js-export-sets', @onClickExportSets
@@ -162,9 +163,14 @@ class window.GuideGuideCore
   # Toggle dropdown visibilty
   #
   # Returns nothing.
-  onClickDropdown: (event) =>
+  onToggleDropdown: (event) =>
     event.preventDefault()
-    $(event.currentTarget).toggleClass 'is-active'
+    if $(event.target).hasClass 'js-dropdown-backdrop'
+      $('.js-dropdown').removeClass('is-active')
+    else
+      $(event.currentTarget).toggleClass 'is-active'
+
+    @panel.toggleClass 'has-dropdown'
 
   # Update settings and dropdown button when a dropdown item is clicked.
   #
