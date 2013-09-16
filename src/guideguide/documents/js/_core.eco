@@ -165,12 +165,21 @@ class window.GuideGuideCore
   # Returns nothing.
   onToggleDropdown: (event) =>
     event.preventDefault()
+
     if $(event.target).hasClass 'js-dropdown-backdrop'
       $('.js-dropdown').removeClass('is-active')
     else
-      $(event.currentTarget).toggleClass 'is-active'
+      $dropdown = $(event.currentTarget)
+      $dropdown.toggleClass 'is-active'
+      $list = $dropdown.find('.js-dropdown-list')
+      visibleBottom = $('.js-settings-list').scrollTop() + $('.js-settings-list').outerHeight()
+      listBottom = $dropdown.position().top + $list.position().top + $list.outerHeight() + 3
 
-    @panel.toggleClass 'has-dropdown'
+      if listBottom > visibleBottom
+        offset = listBottom - visibleBottom
+        $('.js-settings-list').scrollTop $('.js-settings-list').scrollTop() + offset 
+
+    @panel.toggleClass 'has-dropdown'    
 
   # Update settings and dropdown button when a dropdown item is clicked.
   #

@@ -6,6 +6,7 @@
   font-size: 13px;
   line-height: 18px;
   box-sizing: border-box;
+  position: relative;
 
   h3 {
     margin: 15px 3px 5px;
@@ -14,8 +15,35 @@
   }
 }
 
-.setting:first-child h3 {
-  margin-top: 3px;
+.settings-inner { position: relative; }
+
+.setting {
+
+  &:first-child h3 { margin-top: 3px; }
+
+  .button-group {
+    display: table;
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    margin: 0;
+
+    li { display: table-cell; }
+
+    li:first-child { padding-right: 1px; }
+    li:last-child { padding-left: 1px; }
+    li:first-child:last-child { margin: 0px; }
+
+    .button {
+      display: block;
+      padding: 3px 10px 5px;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
 }
 
 .dropdown {
@@ -67,32 +95,6 @@
 .dropdown-item {
   display: block;
   padding: 3px 20px 5px 5px;
-}
-
-.setting {
-  .button-group {
-    display: table;
-    list-style-type: none;
-    padding: 0;
-    width: 100%;
-    margin: 0;
-
-    li { display: table-cell; }
-
-    li:first-child { padding-right: 1px; }
-    li:last-child { padding-left: 1px; }
-    li:first-child:last-child { margin: 0px; }
-
-    .button {
-      display: block;
-      padding: 3px 10px 5px;
-      vertical-align: middle;
-      text-align: center;
-      white-space: nowrap;
-      width: 100%;
-      box-sizing: border-box;
-    }
-  }
 }
 
 .dropdown-backdrop {
