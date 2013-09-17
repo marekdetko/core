@@ -51,8 +51,6 @@ class window.GuideGuideCore
     @initSettings()
     @localizeUI()
 
-    $('.js-settings-tab').click()
-
   getLocalization: =>
     'en-us'
 
