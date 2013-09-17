@@ -130,13 +130,15 @@ write: false
     <ul class="set-list js-set-list">
     </ul>
     <!-- template for set list -->
-    <li class="js-set-item-template js-set set-list-set" style="display:none;">
-      <a class="js-set-select" href>
-        <span class="js-set-item-name">Foo</span>
-      </a>
-      <a class="js-edit-set icon icon-edit set-action" href></a>
-      <a class="js-delete-set icon icon-clear-guides set-action" href></a>
-    </li>
+    <ul class="hidden-template">
+      <li class="js-set-item-template js-set set-list-set">
+        <a class="js-set-select" href>
+          <span class="js-set-item-name">Foo</span>
+        </a>
+        <a class="js-edit-set icon icon-edit set-action" href></a>
+        <a class="js-delete-set icon icon-clear-guides set-action" href></a>
+      </li>
+    </ul>
     <!-- end template for set list -->
     <div class="form-action-buttons">
       <a class="button primary js-make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
@@ -213,6 +215,7 @@ write: false
             </ul>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -231,5 +234,22 @@ write: false
     <a class="button js-bottom" tabindex="-1" href><span class="icon icon-quick-bottom"></span></a>
   </div>
 
+  <div class="alert">
+    <h3>Alert</h3>
+    <p>Message!</p>
+
+    <ul class="button-group">
+      <li><a class="button js-import-sets" data-localize="ui.btnImport" href>Import</a></li>
+      <li><a class="button js-export-sets" data-localize="ui.btnExport" href>Export</a></li>
+    </ul>
+    <!-- alerts will go here when needed -->
+  </div>
+
+  <!-- templates for alerts -->
+  <div class="hidden-template">
+  </div>
+  <!-- end templates for alerts -->
+
   <div class="dropdown-backdrop js-dropdown-backdrop"></div>
+  <div class="alert-backdrop"></div>
 </div>

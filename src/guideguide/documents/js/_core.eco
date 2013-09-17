@@ -177,7 +177,7 @@ class window.GuideGuideCore
         offset = listBottom - visibleBottom
         $('.js-settings-list').scrollTop $('.js-settings-list').scrollTop() + offset 
 
-    @panel.toggleClass 'has-dropdown'    
+    @panel.toggleClass 'has-dropdown'
 
   # Update settings and dropdown button when a dropdown item is clicked.
   #
@@ -563,7 +563,7 @@ class window.GuideGuideCore
     $list = @panel.find('.js-set-list')
     $list.find('.js-set').remove()
     $.each @guideguideData.sets, (index,set) =>
-      item = $('.js-set-item-template').clone(true).removeClass('js-set-item-template').css('display','')
+      item = $('.js-set-item-template').clone(true).removeClass('js-set-item-template')
       item.find('.js-set-item-name').html set.name
       item.attr 'data-id', set.id
       $list.append item

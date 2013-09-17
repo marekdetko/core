@@ -80,6 +80,30 @@ a {
   a { transition: 0.1s color linear; }
 }
 
+.button-group {
+  display: table;
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  margin: 0;
+
+  li { display: table-cell; }
+
+  li:first-child { padding-right: 1px; }
+  li:last-child { padding-left: 1px; }
+  li:first-child:last-child { margin: 0px; }
+
+  .button {
+    display: block;
+    padding: 3px 10px 5px;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 // Content of a tab.
 .tabbed-page {
   position: relative;
@@ -91,4 +115,84 @@ a {
   &.is-selected {
     display: block;
   }
+}
+
+// Hidden markup. Contents are templates.
+.hidden-template { display: none }
+
+.dropdown {
+  position: relative;
+
+  &.is-active .dropdown-list { display: block; }
+}
+
+.dropdown-button {
+  display: block;
+  padding: 3px 20px 5px 5px;
+  position: relative;
+
+  &:before {
+    position: absolute;
+    top: 10px;
+    right: 7px;
+    display: block;
+    width: 0;
+    height: 0;
+    content: "";
+    border: 6px solid #fff;
+    z-index: 1;
+  }
+
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    height: 100%;
+    width: 26px;
+    content: "";
+  }
+}
+
+.dropdown-list {
+  position: absolute;
+  left: 0;
+  top: 26px;
+  display: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 21;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 3px 20px 5px 5px;
+}
+
+.alert-backdrop,
+.dropdown-backdrop {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+}
+
+#guideguide.has-dropdown .dropdown-backdrop { display: block; }
+#guideguide.has-alert .alert-backdrop { display: block; }
+
+.alert {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 21;
+
+  #guideguide.has-alert & { display: block; }
 }
