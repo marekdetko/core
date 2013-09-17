@@ -41,6 +41,7 @@ class window.GuideGuideCore
     @panel.on 'click', '.js-export-sets', @onClickExportSets
     @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
     @panel.on 'click', '.js-deny-submit-data', @onDenySubmitData
+    @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
 
     @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
@@ -471,6 +472,13 @@ class window.GuideGuideCore
 
     @saveGuideGuideData(@guideguideData)
     @refreshSets()
+
+  # Check the GuideGuide server to see if there are updates available.
+  #
+  # Returns nothing.
+  onClickCheckForUpdates: (event) =>
+    event.preventDefault()
+    console.log 'Check for updates'
 
   # Add sets to GuideGuide from an external source. 
   #
