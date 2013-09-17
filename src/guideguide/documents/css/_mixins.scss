@@ -106,5 +106,10 @@
     }
   }
 
-  .alert-backdrop { background-color: rgba($background, .5) }
+  .alert-body {
+    background-color: $background;
+    border-top: 2px solid $darker;
+
+    
+  }
 }

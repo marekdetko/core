@@ -235,21 +235,23 @@ write: false
   </div>
 
   <div class="alert">
-    <h3>Alert</h3>
-    <p>Message!</p>
-
-    <ul class="button-group">
-      <li><a class="button js-import-sets" data-localize="ui.btnImport" href>Import</a></li>
-      <li><a class="button js-export-sets" data-localize="ui.btnExport" href>Export</a></li>
-    </ul>
+    <div class="alert-body js-alert-body">
+      <div class="alert-content">
+        <h3 class="alert-title js-alert-title"></h3>
+        <div class="js-alert-message"></div>
+      </div>
+      <ul class="button-group js-alert-actions">
+        <li><a class="button" href>Button</a></li>
+      </ul>
+    </div>
     <!-- alerts will go here when needed -->
   </div>
 
   <!-- templates for alerts -->
   <div class="hidden-template">
+    <li class="js-button-template"><a class="button" href>Button</a></li>
   </div>
   <!-- end templates for alerts -->
 
   <div class="dropdown-backdrop js-dropdown-backdrop"></div>
-  <div class="alert-backdrop"></div>
 </div>
