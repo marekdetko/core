@@ -25,6 +25,8 @@
     <li><a href class="js-color-switcher-color" data-theme-name="guideguide-darker">darker</a></li>
   </ul>
 
+  <a class="control js-toggle-submit-data" href>Submit data: <span class="js-submit-data-status">false</span></a>
+
   <%- @include('fauxtoshop.html') or '{}' %>
 
 </body>

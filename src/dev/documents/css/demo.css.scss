@@ -37,6 +37,7 @@ body {
   list-style-type: none;
   padding-left: 0;
   font-family: 'open-sans-regular', helvetica, arial, sans-serif;
+  margin-bottom: 5px;
 
   li {
     display: inline-block;
@@ -51,6 +52,18 @@ body {
   }
 }
 
-.fauxtoshop .panel-shell {
-  left: 440px;
+.control {
+  font-family: 'open-sans-regular', helvetica, arial, sans-serif;
+  color: #333;
+  opacity: .5;
+
+  &:hover, &.is-selected { opacity: 1; }
+}
+
+.fauxtoshop {
+  margin-top: 30px;
+  
+  .panel-shell {
+    left: 440px;
+  }
 }

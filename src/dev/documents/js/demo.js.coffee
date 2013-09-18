@@ -66,7 +66,32 @@ $(document).on 'mousedown', '.js-document', (event) ->
     $(document).off 'mousemove'
     $(document).off 'mouseup'
 
+$(document).on 'click', '.js-toggle-submit-data', (event) =>
+  event.preventDefault()
+
+  data = getData()
+
+  data.submitData = !data.submitData
+  
+  $('#guideguide').toggleClass 'submitData', data.submitData
+  $('.js-submit-data-status').text data.submitData
+
+  saveData data
+
+getData = ->
+  JSON.parse localStorage.getItem 'guideguidedev' if localStorage
+
+saveData = (data) ->
+  localStorage.setItem 'guideguidedev', JSON.stringify data if localStorage
+
 $ ->
+  data = getData() or new Object
+  data.submitData or= false
+  saveData data
+
+  $('#guideguide').toggleClass 'submitData', data.submitData
+  $('.js-submit-data-status').text data.submitData
+
   $(".js-panel").draggable({ handle: ".js-panel-handle" }).resizable({ handles: "n, e, s, w, ne, se, sw, nw" })
   $(".js-document").draggable({ handle: ".js-document-handle" }).resizable({ handles: "n, e, s, w, ne, se, sw, nw" })
 
