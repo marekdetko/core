@@ -3,6 +3,7 @@ write: false
 ---
 
 class window.GuideGuideCore
+
   constructor: (@panel) ->
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
     @panel.on 'click', '.js-custom-form .js-make-grid', @onMakeGridFromCusom
@@ -119,13 +120,32 @@ class window.GuideGuideCore
   # Set default data the first time GuideGuide run.
   #
   # Returns nothing.
-  bootstrap: =>
+  bootstrap: (data) =>
     console.log 'Bootstrapping GuideGuide'
     @guideguideData =
       panel: # Info about this install of GuideGuide
         newSetId: 3
         launchCount: 0
         askedAboutAnonymousData: false
+        data:
+          id: null
+          version: '0.0.0'
+          appID: data.appID
+          appVersion: '0.0.0'
+          os: 'Unknown OS'
+          localization: @getLocalization()
+        usage:
+          guideActions: 0
+          grid: 0
+          custom: 0
+          set: 0
+          top: 0
+          bottom: 0
+          left: 0
+          right: 0
+          verticalMidpoint: 0
+          horizontalMidpoint: 0
+          clear: 0
       sets: [ # User sets
           id: 0
           name:'Outline'
