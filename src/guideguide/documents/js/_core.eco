@@ -463,6 +463,9 @@ class window.GuideGuideCore
     $set.closest('.js-sets-form').find('.is-selected').removeClass('is-selected')
     $set.closest('.js-set').addClass('is-selected')
 
+  # Delete a set and update the set list.
+  #
+  # Returns nothing.
   onDeleteSet: (event) =>
     event.preventDefault()
     $set = $(event.currentTarget).closest '.js-set'
