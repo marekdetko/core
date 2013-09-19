@@ -58,6 +58,7 @@ class window.GuideGuideCore
 
     @refreshSettings()
     @localizeUI()
+    @submitData() if @guideguideData.settings.reportAnonymousData
 
   # Determine the language for the app in which GuideGuide is running.
   #
