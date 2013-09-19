@@ -502,6 +502,37 @@ class window.GuideGuideCore
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
     console.log 'Check for updates'
+
+  # Submit anonymous usage data to the GuideGuide servers.
+  #
+  #   dev - if true, data is sent to a local update server
+  #
+  # Returns nothing.
+  submitData: (dev) =>
+    dev or= false
+
+    data =
+      usage: @guideguideData.panel.usage
+
+    if @guideguideData.panel.data.id?
+      data._id = @guideguideData.panel.data.id
+    else
+      data.version = @getVersion()
+      data.appID = @guideguideData.panel.data.appID
+      data.AppVersion = @getAppVersion()
+      data.os = @getOS()
+      data.localization = @guideguideData.panel.data.localization
+
+    url = if dev then 'http://localhost:5000/installs' else 'http://guideguide.me/installs'
+
+    $.ajax
+      type: 'POST'
+      url: url
+      data: data
+      success: (data) =>
+        @guideguideData.panel.data.id = data if data
+        @saveGuideGuideData @guideguideData
+
   # Get the version of this install of GuideGuide.
   #
   # Returns a semantic version string http://semver.org/
