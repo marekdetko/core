@@ -502,6 +502,23 @@ class window.GuideGuideCore
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
     console.log 'Check for updates'
+  # Get the version of this install of GuideGuide.
+  #
+  # Returns a semantic version string http://semver.org/
+  getVersion: =>
+    '0.0.0'
+
+  # Determine the version of the app in which GuideGuide is running.
+  #
+  # Returns a semantic version string http://semver.org/
+  getAppVersion: =>
+    '0.0.0'
+
+  # Determine the operating system in which GuideGuide is running
+  #
+  # Returns a String.
+  getOS: =>
+    'Unknown OS'
 
   # Add sets to GuideGuide from an external source. 
   #
