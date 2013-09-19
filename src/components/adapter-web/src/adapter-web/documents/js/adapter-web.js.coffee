@@ -5,8 +5,50 @@ class GuideGuide extends window.GuideGuideCore
     console.log 'Running GuideGuide in Web mode'
     super @panel
 
+  # Determine the language for the app in which GuideGuide is running.
+  #
+  # Returns nothing.
   getLocalization: =>
     'en-us'
+
+  # Set default data the first time GuideGuide run.
+  #
+  # Returns nothing.
+  bootstrap: =>
+    data =
+      appID: 'web'
+    super data
+
+  # Get the version of this install of GuideGuide.
+  #
+  # Returns a semantic version string http://semver.org/
+  getVersion: =>
+    '0.0.0'
+
+  # Determine the version of the app in which GuideGuide is running.
+  #
+  # Returns a semantic version string http://semver.org/
+  getAppVersion: =>
+    '0.0.0'
+
+  # Determine the operating system in which GuideGuide is running
+  #
+  # Returns a String.
+  getOS: =>
+    os = 'Unknown'
+    os = 'MacOS' if navigator.appVersion.indexOf("Mac") >= 0
+    os = 'Win' if navigator.appVersion.indexOf("Windows") >= 0
+    os = 'UNIX' if navigator.appVersion.indexOf("X11") >= 0
+    os = 'Linux' if navigator.appVersion.indexOf("Linux") >= 0
+    os
+
+  # Submit anonymous usage data to the GuideGuide servers. In GuideGuide Web,
+  # this is only a debug feature and must enabled intentionally.
+  #
+  # Returns nothing.
+  submitData: =>
+    if @panel.hasClass 'submitData'
+      super true
 
   # Get information about the current active document.
   #
