@@ -510,6 +510,7 @@ class window.GuideGuideCore
   #
   # Returns nothing.
   submitData: (dev) =>
+    console.log 'Submitting anonymous data'
     dev or= false
 
     data =
@@ -531,7 +532,8 @@ class window.GuideGuideCore
       url: url
       data: data
       success: (data) =>
-        @guideguideData.panel.data.id = data if data
+        console.log 'Anonymous data submitted successfully'
+        @guideguideData.panel.data.id = data._id if typeof data is 'object' and data._id
         @saveGuideGuideData @guideguideData
 
   # Get the version of this install of GuideGuide.
