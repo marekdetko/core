@@ -85,9 +85,9 @@ class GuideGuide extends window.GuideGuideCore
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
   # Returns nothing.
-  saveGuideGuideData: (data) =>
-    localStorage.setItem 'guideguide', JSON.stringify data if localStorage
-    super data
+  saveGuideGuideData: =>
+    localStorage.setItem 'guideguide', JSON.stringify @guideguideData if localStorage
+    super
 
   # Add a collection of guides to the document.
   #

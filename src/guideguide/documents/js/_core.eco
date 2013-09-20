@@ -50,7 +50,7 @@ class window.GuideGuideCore
     if @guideguideData
       @refreshSets()
       @guideguideData.panel.launchCount++
-      @saveGuideGuideData @guideguideData
+      @saveGuideGuideData()
     else
       @bootstrap()
 
@@ -175,7 +175,7 @@ class window.GuideGuideCore
         calculation:         'pixel'
         reportAnonymousData: false
 
-    @saveGuideGuideData(@guideguideData)
+    @saveGuideGuideData()
     @refreshSets()
 
   # Update the panel's color theme  
@@ -260,7 +260,7 @@ class window.GuideGuideCore
 
     $dropdown.find('.js-dropdown-button').text @messages[$item.attr('data-localize')]
     @guideguideData.settings[setting] = value
-    @saveGuideGuideData @guideguideData
+    @saveGuideGuideData()
 
   # Toggle guide visibility.
   #
@@ -282,8 +282,8 @@ class window.GuideGuideCore
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
   # Returns nothing.
-  saveGuideGuideData: (data) =>
-    console.log (if data then "Saved data" else "Failed to save data"), data
+  saveGuideGuideData: =>
+    console.log "Saved data", @guideguideData
 
   # When the user grants data collection permission, update the settings and
   # dismiss the alert.
@@ -293,7 +293,7 @@ class window.GuideGuideCore
     event.preventDefault()
     @guideguideData.settings.reportAnonymousData = true
     @guideguideData.panel.askedAboutAnonymousData = true
-    @saveGuideGuideData @guideguideData
+    @saveGuideGuideData()
     @refreshSettings()
     @dismissAlert()
 
@@ -304,7 +304,7 @@ class window.GuideGuideCore
   onDenySubmitData: (event) =>
     event.preventDefault()
     @guideguideData.panel.askedAboutAnonymousData = true
-    @saveGuideGuideData @guideguideData
+    @saveGuideGuideData()
     @dismissAlert()
 
   # Draw a guide at the top of the document/selection
@@ -494,7 +494,7 @@ class window.GuideGuideCore
 
     @guideguideData.sets = $.grep @guideguideData.sets, (set) -> parseInt(set.id) != parseInt(id)
 
-    @saveGuideGuideData(@guideguideData)
+    @saveGuideGuideData()
     @refreshSets()
 
   # Check the GuideGuide server to see if there are updates available.
@@ -534,7 +534,7 @@ class window.GuideGuideCore
       success: (data) =>
         console.log 'Anonymous data submitted successfully'
         @guideguideData.panel.data.id = data._id if typeof data is 'object' and data._id
-        @saveGuideGuideData @guideguideData
+        @saveGuideGuideData()
 
   # Get the version of this install of GuideGuide.
   #
@@ -691,7 +691,7 @@ class window.GuideGuideCore
 
     @guideguideData.panel.newSetId++
     @guideguideData.sets.push newSet
-    @saveGuideGuideData(@guideguideData)
+    @saveGuideGuideData()
     @refreshSets()
 
   updateSet: (data) =>
@@ -700,7 +700,7 @@ class window.GuideGuideCore
     set[0].name = data.name
     set[0].string = data.ggn
 
-    @saveGuideGuideData(@guideguideData)
+    @saveGuideGuideData()
     @refreshSets()
 
   # Remove any sets in the markup and update the list with a new set items for
