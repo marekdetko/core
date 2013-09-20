@@ -285,6 +285,17 @@ class window.GuideGuideCore
   saveGuideGuideData: =>
     console.log "Saved data", @guideguideData
 
+  # Increment a usage counter of a given property.
+  #
+  #   property - usage property to increment
+  #
+  # Returns nothing.
+  recordUsage: (property) =>
+    if @guideguideData.panel.usage[property]?
+      @guideguideData.panel.usage[property]++
+      @guideguideData.panel.usage.guideActions++ if property isnt 'clear'
+      @saveGuideGuideData()
+
   # When the user grants data collection permission, update the settings and
   # dismiss the alert.
   #
@@ -314,6 +325,7 @@ class window.GuideGuideCore
     console.log 'Top guide'  
     event.preventDefault()
     @addGuides @getGuidesFromGGN new GGN "| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @recordUsage 'top'
 
   # Draw a guide at the bottom of the document/selection
   #
@@ -322,6 +334,7 @@ class window.GuideGuideCore
     console.log 'Bottom guide'  
     event.preventDefault()
     @addGuides @getGuidesFromGGN new GGN "~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @recordUsage 'bottom'
 
   # Draw a guide to the left of the document/selection
   #
@@ -330,6 +343,7 @@ class window.GuideGuideCore
     console.log 'Top guide'  
     event.preventDefault()
     @addGuides @getGuidesFromGGN new GGN "| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @recordUsage 'left'
 
   # Draw a guide to the right of the document/selection
   #
@@ -338,6 +352,7 @@ class window.GuideGuideCore
     console.log 'Bottom guide'  
     event.preventDefault()
     @addGuides @getGuidesFromGGN new GGN "~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @recordUsage 'right'
 
   # Draw a guide at the horizontal midpoint of the document/selection
   #
@@ -346,6 +361,7 @@ class window.GuideGuideCore
     console.log 'Horizontal midpoint'  
     event.preventDefault()
     @addGuides @getGuidesFromGGN new GGN "~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @recordUsage 'horizontalMidpoint'
 
   # Draw a guide at the vertical midpoint of the document/selection
   #
@@ -354,6 +370,7 @@ class window.GuideGuideCore
     console.log 'Vertical midpoint'  
     event.preventDefault()
     @addGuides @getGuidesFromGGN new GGN "~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"
+    @recordUsage 'verticalMidpoint'
 
   # Handle clicks on the clear guides button.
   #
@@ -361,6 +378,7 @@ class window.GuideGuideCore
   onClickClearGuides: (event) =>
     event.preventDefault()
     @clearGuides()
+    @recordUsage 'clear'
 
   # Removes guides from the document based on document or selection
   #
@@ -657,6 +675,7 @@ class window.GuideGuideCore
     console.log ggn
     @addGuides @getGuidesFromGGN new GGN string
     console.groupEnd()
+    @recordUsage 'grid'
 
   # Create a grid from the Custom form
   #
@@ -671,6 +690,7 @@ class window.GuideGuideCore
     console.log 'Custom Grid'
     console.log string
     @addGuides @getGuidesFromGGN new GGN string
+    @recordUsage 'custom'
 
   # Create a grid from a set
   #
@@ -685,6 +705,7 @@ class window.GuideGuideCore
     data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
     console.log data
     @addGuides @getGuidesFromGGN new GGN data[0].string
+    @recordUsage 'set'
 
   createNewSet: (data) =>
     newSet =
