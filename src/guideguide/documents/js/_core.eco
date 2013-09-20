@@ -641,6 +641,9 @@ class window.GuideGuideCore
       @createNewSet(obj)
       @panel.find('.js-sets-tab').click()
 
+  # Create a grid from the Grid form
+  #
+  # Returns Nothing.
   onMakeGridFromForm: (event) =>
     event.preventDefault()
     $form  = $(event.currentTarget).closest '.js-grid-form'
@@ -793,6 +796,9 @@ class window.GuideGuideCore
     event.preventDefault()
     @hideNewSetForm()
 
+  # Hide the new set form and clear any data if it exists.
+  #
+  # Returns nothing.
   hideNewSetForm: =>
     @panel.find('.js-grid-form').find('.js-set-name').val('')
     @panel.find('.js-grid-form').find('.js-set-id').val('')
