@@ -515,15 +515,28 @@ class window.GuideGuideCore
     @saveGuideGuideData()
     @refreshSets()
 
-  # Check the GuideGuide server to see if there are updates available.
+  # Handle clicks on the check for updates button
   #
   # Returns nothing.
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
     @checkForUpdates()
 
-  checkForUpdates: =>
+  # Check the GuideGuide server to see if there are updates available.
+  #
+  # Returns nothing.
+  checkForUpdates: (dev) =>
     console.log 'Checking for updates'
+    dev or= false
+    url = if dev then 'http://localhost:5000' else 'http://guideguide.me'
+
+    $.ajax
+      type: 'GET'
+      url: "#{ url }/panel/#{ @guideguideData.panel.data.appID }"
+      data:
+        version: @guideguideData.panel.data.appVersion || '0.0.0'
+      success: (data) =>
+        console.log 'data:', data
 
   # Submit anonymous usage data to the GuideGuide servers.
   #
