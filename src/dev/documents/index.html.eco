@@ -25,7 +25,10 @@
     <li><a href class="js-color-switcher-color" data-theme-name="guideguide-darker">darker</a></li>
   </ul>
 
-  <a class="control js-toggle-submit-data" href>Submit data: <span class="js-submit-data-status">false</span></a>
+  <ul class="dev-options">
+    <li><a class="control js-dev-option" data-dev-option='submitData' href>Submit data: <span class="js-dev-option-value">false</span></a></li>
+    <li><a class="control js-dev-option" data-dev-option='checkForUpdates' href>Check for updates: <span class="js-dev-option-value">false</span></a></li>
+  </ul>
 
   <%- @include('fauxtoshop.html') or '{}' %>
 

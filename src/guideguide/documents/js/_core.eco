@@ -543,16 +543,17 @@ class window.GuideGuideCore
       data.os = @getOS()
       data.localization = @guideguideData.panel.data.localization
 
-    url = if dev then 'http://localhost:5000/installs' else 'http://guideguide.me/installs'
+    url = if dev then 'http://localhost:5000' else 'http://guideguide.me'
 
     $.ajax
       type: 'POST'
-      url: url
+      url: "#{ url }/install"
       data: data
       success: (data) =>
         console.log 'Anonymous data submitted successfully'
-        @guideguideData.panel.data.id = data._id if typeof data is 'object' and data._id
-        @saveGuideGuideData()
+        if typeof data is 'object' and data._id
+          @guideguideData.panel.data.id = data._id
+          @saveGuideGuideData()
 
   # Get the version of this install of GuideGuide.
   #

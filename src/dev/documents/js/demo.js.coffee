@@ -66,15 +66,17 @@ $(document).on 'mousedown', '.js-document', (event) ->
     $(document).off 'mousemove'
     $(document).off 'mouseup'
 
-$(document).on 'click', '.js-toggle-submit-data', (event) =>
+$(document).on 'click', '.js-dev-option', (event) =>
   event.preventDefault()
 
+  $option = $(event.currentTarget)
+  key = $option.attr 'data-dev-option'
   data = getData()
 
-  data.submitData = !data.submitData
+  data[key] = !data[key]
   
-  $('#guideguide').toggleClass 'submitData', data.submitData
-  $('.js-submit-data-status').text data.submitData
+  $('#guideguide').toggleClass key, data[key]
+  $option.find('.js-dev-option-value').text data[key]
 
   saveData data
 
@@ -87,10 +89,14 @@ saveData = (data) ->
 $ ->
   data = getData() or new Object
   data.submitData or= false
+  data.checkForUpdates or= false
+
   saveData data
 
-  $('#guideguide').toggleClass 'submitData', data.submitData
-  $('.js-submit-data-status').text data.submitData
+  $('.js-dev-option').each (index, el) ->
+    key = $(el).attr 'data-dev-option'
+    $('#guideguide').toggleClass key, data[key]
+    $(el).find('.js-dev-option-value').text data[key]
 
   $(".js-panel").draggable({ handle: ".js-panel-handle" }).resizable({ handles: "n, e, s, w, ne, se, sw, nw" })
   $(".js-document").draggable({ handle: ".js-document-handle" }).resizable({ handles: "n, e, s, w, ne, se, sw, nw" })

@@ -52,12 +52,14 @@ body {
   }
 }
 
-.control {
-  font-family: 'open-sans-regular', helvetica, arial, sans-serif;
-  color: #333;
-  opacity: .5;
+.dev-options {
+  a {
+    font-family: 'open-sans-regular', helvetica, arial, sans-serif;
+    color: #333;
+    opacity: .5;
 
-  &:hover, &.is-selected { opacity: 1; }
+    &:hover, &.is-selected { opacity: 1; }
+  }
 }
 
 .fauxtoshop {
