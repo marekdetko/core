@@ -47,7 +47,13 @@ class GuideGuide extends window.GuideGuideCore
   #
   # Returns nothing.
   submitData: =>
-    if @panel.hasClass 'submitData'
+    devData = JSON.parse localStorage.getItem 'guideguidedev'
+    if devData? and devData.submitData
+      super true
+
+  checkForUpdates: =>
+    devData = JSON.parse localStorage.getItem 'guideguidedev'
+    if devData? and devData.checkForUpdates
       super true
 
   # Get information about the current active document.

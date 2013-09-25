@@ -1,6 +1,6 @@
 {
   "name": "adapter-web",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": [
     "src/adapter-web/"
   ],
@@ -17,13 +17,12 @@
     "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git"
   },
   "homepage": "https://github.com/guideguide/adapter-web",
-  "_release": "0.0.7",
+  "_release": "0.0.8",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.7",
-    "commit": "3da06a0d7353732cf66fc7a592c185096d02ce98"
+    "tag": "0.0.8",
+    "commit": "13cd67458478bbe26e8855323f7ec0d5193384a4"
   },
   "_source": "https://github.com/guideguide/adapter-web.git",
-  "_target": "*",
-  "_originalSource": "https://github.com/guideguide/adapter-web.git"
+  "_target": "*"
 }
