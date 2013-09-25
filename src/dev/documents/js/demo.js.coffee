@@ -75,7 +75,6 @@ $(document).on 'click', '.js-dev-option', (event) =>
 
   data[key] = !data[key]
   
-  $('#guideguide').toggleClass key, data[key]
   $option.find('.js-dev-option-value').text data[key]
 
   saveData data
@@ -95,7 +94,6 @@ $ ->
 
   $('.js-dev-option').each (index, el) ->
     key = $(el).attr 'data-dev-option'
-    $('#guideguide').toggleClass key, data[key]
     $(el).find('.js-dev-option-value').text data[key]
 
   $(".js-panel").draggable({ handle: ".js-panel-handle" }).resizable({ handles: "n, e, s, w, ne, se, sw, nw" })

@@ -520,7 +520,10 @@ class window.GuideGuideCore
   # Returns nothing.
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
-    console.log 'Check for updates'
+    @checkForUpdates()
+
+  checkForUpdates: =>
+    console.log 'Checking for updates'
 
   # Submit anonymous usage data to the GuideGuide servers.
   #
