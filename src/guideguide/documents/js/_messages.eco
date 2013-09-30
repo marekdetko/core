@@ -40,6 +40,8 @@ class Messages
       'ggn.stringFromExistingGuides': "String generated from existing guides"
       'alertTitle.welcome': "Welcome to GuideGuide"
       'alertMessage.welcome': "This is the begining of something special. To help GuideGuide get more and more awesome, would you allow GuideGuide to submit anonymous usage data?"
+      'alertTitle.upToDate': "Up to date"
+      'alertMessage.upToDate': "GuideGuide is currently up to date."
 
   constructor: (i18n) ->
     if @messages[i18n]

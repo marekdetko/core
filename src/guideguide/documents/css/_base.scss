@@ -39,6 +39,9 @@ a {
 #guideguide {
   position: relative;
   font-family: 'open-sans-regular', sans-serif;
+
+  &.has-dropdown .dropdown-backdrop { display: block; }
+  &.has-update .update-indicator { display: inline-block; }
 }
 
 // Horizontal text nav used to switch tabs.
@@ -78,6 +81,8 @@ a {
   }
 
   a { transition: 0.1s color linear; }
+
+  .update-indicator { display: none; }
 }
 
 .button-group {
@@ -183,8 +188,6 @@ a {
   height: 100%;
   z-index: 20;
 }
-
-#guideguide.has-dropdown .dropdown-backdrop { display: block; }
 
 .alert {
   display: none;

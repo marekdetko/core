@@ -18,6 +18,8 @@ class window.GuideGuideCore
     @panel.on 'click', '.js-custom-form .js-save-set', @onSaveSetFromCustom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onEditSet
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
+    @panel.on 'guideguide:hasUpdate', @onHasUpdate
+    @panel.on 'guideguide:upToDate', @onUpToDate
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
     @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
@@ -43,6 +45,8 @@ class window.GuideGuideCore
     @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
     @panel.on 'click', '.js-deny-submit-data', @onDenySubmitData
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
+    @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
+    @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
 
     @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
@@ -59,6 +63,7 @@ class window.GuideGuideCore
     @refreshSettings()
     @localizeUI()
     @submitData() if @guideguideData.settings.reportAnonymousData
+    @checkForUpdates()
 
   # Determine the language for the app in which GuideGuide is running.
   #
@@ -76,16 +81,21 @@ class window.GuideGuideCore
 
   # Show the alert and fill its fields
   #
-  #   messageId     - ID of the message to be added to the alert
+  #   data          - If a string, data is an ID of the message to be added to the alert. If
+  #                   an array, the first value is the title to be used, and the second is the message.
   #   buttonClasses - Array of class strings for buttons. A button will be created for each
   #   buttonIDs     - Array of IDs of button messages
   #
   # Returns nothing.
-  alert: (messageId, buttonClasses, buttonNames) =>
+  alert: (data, buttonClasses, buttonNames) =>
     buttonClasses or= ['primary js-dismiss-alert']
     buttonNames   or= ['ui.btnOk']
-    @panel.find('.js-alert-title').text @messages["alertTitle.#{ messageId }"]
-    @panel.find('.js-alert-message').text @messages["alertMessage.#{ messageId }"]
+
+    title = if typeof data is 'string' then @messages["alertTitle.#{ data }"] else data[0]
+    message = if typeof data is 'string' then @messages["alertMessage.#{ data }"] else data[1]
+
+    @panel.find('.js-alert-title').text title
+    @panel.find('.js-alert-message').text message
     @panel.find('.js-alert-actions').html ''
 
     $.each buttonClasses, (i, value) =>
@@ -96,6 +106,13 @@ class window.GuideGuideCore
       @panel.find('.js-alert-actions').append button
 
     @panel.addClass 'has-alert'
+
+  # Handle click on .js-dismiss-alert
+  #
+  # Returns nothing
+  onClickDismissAlert: (event) =>
+    event.preventDefault()
+    @dismissAlert()
 
   # Dismiss the alert window and reset its text
   #
@@ -535,8 +552,34 @@ class window.GuideGuideCore
       url: "#{ url }/panel/#{ @guideguideData.panel.data.appID }"
       data:
         version: @guideguideData.panel.data.appVersion || '0.0.0'
+        i18n: @getLocalization()
       success: (data) =>
-        console.log 'data:', data
+        console.log data
+        if data? and data.hasUpdate
+          @panel.trigger 'guideguide:hasUpdate', data
+        else
+          @panel.trigger 'guideguide:upToDate'
+
+  onClickHasUpdateButton: (event) =>
+    event.preventDefault()
+    title = $(event.currentTarget).attr 'data-title'
+    message = $(event.currentTarget).attr 'data-message'
+    @alert [title, message], ['primary js-dismiss-alert'], ['ui.btnOk']
+
+  # When this install of GuideGuide is out of date, alert the user.
+  #
+  # Returns nothing.
+  onHasUpdate: (event, data) =>
+    @panel.addClass 'has-update'
+    button = @panel.find '.js-has-update-button'
+    button.attr 'data-title', data.title
+    button.attr 'data-message', data.message
+
+  # When this install is up to date, tell the user if they initiated the update check
+  #
+  # Returns nothing
+  onUpToDate: (event) =>
+    @alert 'upToDate', ['primary js-dismiss-alert'], ['ui.btnOk']
 
   # Submit anonymous usage data to the GuideGuide servers.
   #
