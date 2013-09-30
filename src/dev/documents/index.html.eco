@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>GuideGuide Open Demo</title>
+  <title>GuideGuide Core Dev</title>
 
   <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.custom.min.css">
   <link rel="stylesheet" type="text/css" href="/css/demo.css">
@@ -16,7 +16,7 @@
   <script type="text/javascript" src="/js/adapter-web.js"></script>
 </head>
 <body class="guideguide-dark">
-  <h1 class="page-title">GuideGuide Dev</h1>
+  <h1 class="page-title">GuideGuide Core Dev</h1>
 
   <ul class="color-switcher js-color-switcher">
     <li><a href class="js-color-switcher-color" data-theme-name="guideguide-lighter">lighter</a></li>
