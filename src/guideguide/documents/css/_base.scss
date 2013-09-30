@@ -87,7 +87,10 @@ a {
   width: 100%;
   margin: 0;
 
-  li { display: table-cell; }
+  li {
+    display: table-cell;
+    width: 1%;
+  }
 
   li:first-child { padding-right: 1px; }
   li:last-child { padding-left: 1px; }
