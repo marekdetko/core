@@ -4,6 +4,9 @@ write: false
 
 class window.GuideGuideCore
 
+  siteUrl: 'http://guideguide.me'
+  env:     'production'
+
   constructor: (@panel) ->
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
     @panel.on 'click', '.js-custom-form .js-make-grid', @onMakeGridFromCusom
@@ -48,6 +51,9 @@ class window.GuideGuideCore
     @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
 
+    @env = @getEnv()
+    @siteUrl = 'http://localhost:5000' if @env is 'development'
+
     @messages = new Messages(@getLocalization())
     @guideguideData = @getGuideGuideData()
 
@@ -61,12 +67,20 @@ class window.GuideGuideCore
     else
       @bootstrap()
 
+    console.log "Running GuideGuide #{ @guideguideData.panel.data.appID } in #{ @env } mode"
+
     @alert 'welcome', ['primary js-confirm-submit-data', 'js-deny-submit-data'], ['ui.yes','ui.no'] if !@guideguideData.panel.askedAboutAnonymousData
 
     @refreshSettings()
     @localizeUI()
     @submitData() if @guideguideData.settings.reportAnonymousData
     @checkForUpdates()
+
+  # Determine which environment we're in
+  #
+  # Returns nothing.
+  getEnv: (env) =>
+    return if env? then env else 'production'
 
   # Determine the language for the app in which GuideGuide is running.
   #
@@ -545,16 +559,14 @@ class window.GuideGuideCore
   # Check the GuideGuide server to see if there are updates available.
   #
   # Returns nothing.
-  checkForUpdates: (dev) =>
+  checkForUpdates: =>
     console.log 'Checking for updates'
-    dev or= false
-    url = if dev then 'http://localhost:5000' else 'http://guideguide.me'
 
     $.ajax
       type: 'GET'
-      url: "#{ url }/panel/#{ @guideguideData.panel.data.appID }"
+      url: "#{ @siteUrl }/panel/#{ @guideguideData.panel.data.appID }"
       data:
-        version: @guideguideData.panel.data.appVersion || '0.0.0'
+        version: @guideguideData.panel.data.version || '0.0.0'
         i18n: @getLocalization()
       success: (data) =>
         console.log data
@@ -589,9 +601,8 @@ class window.GuideGuideCore
   #   dev - if true, data is sent to a local update server
   #
   # Returns nothing.
-  submitData: (dev) =>
+  submitData: =>
     console.log 'Submitting anonymous data'
-    dev or= false
 
     data =
       usage: @guideguideData.panel.usage
@@ -605,11 +616,9 @@ class window.GuideGuideCore
       data.os           = @guideguideData.panel.data.os
       data.localization = @guideguideData.panel.data.localization
 
-    url = if dev then 'http://localhost:5000' else 'http://guideguide.me'
-
     $.ajax
       type: 'POST'
-      url: "#{ url }/install"
+      url: "#{ @siteUrl }/install"
       data: data
       success: (data) =>
         console.log 'Anonymous data submitted successfully'
