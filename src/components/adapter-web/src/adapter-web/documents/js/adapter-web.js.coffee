@@ -2,8 +2,17 @@
 
 class GuideGuide extends window.GuideGuideCore
   constructor: (@panel) ->
-    console.log 'Running GuideGuide in Web mode'
     super @panel
+
+  # Determine which environment we're in
+  #
+  # Returns nothing.
+  getEnv: =>
+    env = $('[data-environment]').attr 'data-environment'
+    if env
+      super env
+    else
+      super
 
   # Determine the language for the app in which GuideGuide is running.
   #
@@ -49,12 +58,12 @@ class GuideGuide extends window.GuideGuideCore
   submitData: =>
     devData = JSON.parse localStorage.getItem 'guideguidedev'
     if devData? and devData.submitData
-      super true
+      super
 
   checkForUpdates: =>
     devData = JSON.parse localStorage.getItem 'guideguidedev'
     if devData? and devData.checkForUpdates
-      super true
+      super
 
   # Get information about the current active document.
   #
