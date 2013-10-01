@@ -74,7 +74,9 @@ class window.GuideGuideCore
     @refreshSettings()
     @localizeUI()
     @submitData() if @guideguideData.settings.reportAnonymousData
-    @checkForUpdates()
+    @checkForUpdates (data) =>
+      if data? and data.hasUpdate
+        @panel.trigger 'guideguide:hasUpdate', data
 
   # Determine which environment we're in
   #
@@ -554,12 +556,18 @@ class window.GuideGuideCore
   # Returns nothing.
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
-    @checkForUpdates()
+    @checkForUpdates (data) =>
+      console.log data
+      if data? and data.hasUpdate
+        @panel.trigger 'guideguide:hasUpdate', data
+        $('.js-has-update-button').click()
+      else
+        @panel.trigger 'guideguide:upToDate'
 
   # Check the GuideGuide server to see if there are updates available.
   #
   # Returns nothing.
-  checkForUpdates: =>
+  checkForUpdates: (callback) =>
     console.log 'Checking for updates'
 
     $.ajax
@@ -569,11 +577,9 @@ class window.GuideGuideCore
         version: @guideguideData.panel.data.version || '0.0.0'
         i18n: @getLocalization()
       success: (data) =>
-        console.log data
-        if data? and data.hasUpdate
-          @panel.trigger 'guideguide:hasUpdate', data
-        else
-          @panel.trigger 'guideguide:upToDate'
+        callback(data)
+      error: (error) =>
+        console.log error
 
   onClickHasUpdateButton: (event) =>
     event.preventDefault()
