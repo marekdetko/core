@@ -15,7 +15,7 @@
   <script type="text/javascript" src="/js/guideguide-core.js"></script>
   <script type="text/javascript" src="/js/adapter-web.js"></script>
 </head>
-<body class="guideguide-dark">
+<body class="guideguide-dark" data-environment="development">
   <h1 class="page-title">GuideGuide Core Dev</h1>
 
   <ul class="color-switcher js-color-switcher">
