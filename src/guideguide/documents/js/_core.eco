@@ -54,6 +54,9 @@ class window.GuideGuideCore
     if @guideguideData
       @refreshSets()
       @guideguideData.panel.launchCount++
+      @guideguideData.panel.data.version = @getVersion()
+      @guideguideData.panel.AppVersion = @getAppVersion()
+      @guideguideData.panel.os = @getOS()
       @saveGuideGuideData()
     else
       @bootstrap()
@@ -594,12 +597,12 @@ class window.GuideGuideCore
       usage: @guideguideData.panel.usage
 
     if @guideguideData.panel.data.id?
-      data._id = @guideguideData.panel.data.id
+      data._id          = @guideguideData.panel.data.id
     else
-      data.version = @getVersion()
-      data.appID = @guideguideData.panel.data.appID
-      data.AppVersion = @getAppVersion()
-      data.os = @getOS()
+      data.version      = @guideguideData.panel.data.version
+      data.appID        = @guideguideData.panel.data.appID
+      data.AppVersion   = @guideguideData.panel.data.AppVersion
+      data.os           = @guideguideData.panel.data.os
       data.localization = @guideguideData.panel.data.localization
 
     url = if dev then 'http://localhost:5000' else 'http://guideguide.me'
