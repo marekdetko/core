@@ -301,6 +301,7 @@ class GuideGuide
   onToggleGuides: (event) =>
     event.preventDefault()
     console.log "Toggle guides"
+    @application.trigger 'guideguide:toggleGuides'
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
@@ -429,6 +430,7 @@ class GuideGuide
   # Returns nothing.
   resetGuides: =>
     console.log 'Resetting guides'
+    @application.trigger 'guideguide:resetGuides'
 
   # Add a collection of guides to the document.
   #
