@@ -5,4 +5,4 @@
 <%- @include('./_core') %>
 
 $ ->
-  window.GuideGuide = new GuideGuide $('#guideguide')
+  parent.window.GuideGuide = new GuideGuide $('#guideguide')
