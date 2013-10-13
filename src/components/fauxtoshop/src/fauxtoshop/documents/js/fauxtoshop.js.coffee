@@ -1,3 +1,26 @@
+window.Application =
+  id: 'web'
+  name: 'GuideGuide web'
+  version: '0.0.0'
+  os: 'Unknown OS'
+  localization: 'en-us'
+  env: 'development'
+  guideguideVersion: '0.0.0'
+  submitAnonymousData: false
+  checkForUpdates: false
+
+# Listen for requests for data from GuideGuide and send the data back.
+$(document).on 'guideguide:getData', (event, callback) ->
+
+  data = JSON.parse(localStorage.getItem('guideguide')) or new Object()
+  data.application = Application
+  console.log 'GuideGuide web returned', data
+  callback(data)
+
+$(document).on 'guideguide:setData', (event, data) ->
+  localStorage.setItem 'guideguide', JSON.stringify data
+  console.log 'GuideGuide web saved:', data
+
 # Lazy load mouse move listeners. Add a selection object to the stage.
 $(document).on 'mousedown', '.js-document', (event) ->
   event.originalEvent.preventDefault()

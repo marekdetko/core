@@ -3,11 +3,15 @@ write: false
 ---
 
 class GuideGuide
-
   siteUrl: 'http://guideguide.me'
   env:     'production'
 
   constructor: (@panel) ->
+    # Set the application element. This is used because in certain cases
+    # GuideGuide is in an iframe.
+    @application = parent.$(window.parent.document)
+
+    # Set up general GuideGuide UI events.
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
     @panel.on 'click', '.js-custom-form .js-make-grid', @onMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-make-grid', @onMakeGridFromSet
@@ -51,29 +55,94 @@ class GuideGuide
     @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
 
-    @env = @getEnv()
-    @siteUrl = 'http://localhost:5000' if @env is 'development'
+    @requestDataFromApp()
 
-    @messages = new Messages(@getLocalization())
-    @guideguideData = @getGuideGuideData()
+  # Fire an async event requesting GuideGuide and application data from the
+  # application.
+  #
+  # Returns nothing.
+  requestDataFromApp: () =>
+    console.log 'Requesting data from application'
+    @application.trigger 'guideguide:getData', @onAppDataReceived
 
-    if @guideguideData
-      @refreshSets()
-      @guideguideData.panel.launchCount++
-      @guideguideData.panel.data.version = @getVersion()
-      @guideguideData.panel.AppVersion = @getAppVersion()
-      @guideguideData.panel.os = @getOS()
-      @saveGuideGuideData()
-    else
-      @bootstrap()
+  # When data is received from the application, handle it.
+  #
+  # Returns nothing.
+  onAppDataReceived: (data) =>
+    console.log 'Received data from application'
+    @guideguideData = data
 
-    console.log "Running GuideGuide #{ @guideguideData.panel.data.appID } in #{ @env } mode"
+    # Info about this install of GuideGuide
+    panelBootstrap = 
+      id: null
+      newSetId: 3
+      launchCount: 0
+      askedAboutAnonymousData: false
+      usage:
+        guideActions: 0
+        grid: 0
+        custom: 0
+        set: 0
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+        verticalMidpoint: 0
+        horizontalMidpoint: 0
+        clear: 0
+
+    # User sets
+    setsBootstrap = [ 
+        id: 0
+        name:'Outline'
+        string: """
+        | ~ | (hFl)
+        | ~ | (vFl)
+        """
+      ,
+        id: 1
+        name:'Two column grid'
+        string: """
+        | ~ | ~ | (hFl)
+        """
+      ,
+        id: 2
+        name:'Three column grid'
+        string: """
+        | ~ | ~ | ~ | (hFl)
+        """
+    ]
+
+    # User settings
+    settingsBootstrap =
+      horizontalRemainder: 'last'
+      verticalRemainder:   'last'
+      horizontalPosition:  'first'
+      verticalPosition:    'first'
+      calculation:         'pixel'
+      reportAnonymousData: false
+
+    @guideguideData.panel    or= panelBootstrap
+    @guideguideData.sets     or= setsBootstrap
+    @guideguideData.settings or= settingsBootstrap
+    @guideguideData.panel.launchCount++
+
+    @saveGuideGuideData()
+
+    @completeSetup()
+
+  completeSetup: =>
+    @refreshSets()
+    console.log "Running #{ @guideguideData.application.name } in #{ @guideguideData.application.env } mode"
+
+    @siteUrl = 'http://localhost:5000' if @guideguideData.application.env is 'development'
+    @messages = new Messages @guideguideData.application.localization
 
     @alert 'welcome', ['primary js-confirm-submit-data', 'js-deny-submit-data'], ['ui.yes','ui.no'] if !@guideguideData.panel.askedAboutAnonymousData
 
     @refreshSettings()
     @localizeUI()
-    @submitData() if @guideguideData.settings.reportAnonymousData
+    @submitData()
     @checkForUpdates (data) =>
       if data? and data.hasUpdate
         @panel.trigger 'guideguide:hasUpdate', data
@@ -153,66 +222,6 @@ class GuideGuide
       value     = @guideguideData.settings[setting]
       $selected = $dropdown.find("[data-value='#{ value }']")
       $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]
-
-  # Set default data the first time GuideGuide run.
-  #
-  # Returns nothing.
-  bootstrap: (data) =>
-    console.log 'Bootstrapping GuideGuide'
-    @guideguideData =
-      panel: # Info about this install of GuideGuide
-        newSetId: 3
-        launchCount: 0
-        askedAboutAnonymousData: false
-        data:
-          id: null
-          version: '0.0.0'
-          appID: data.appID
-          appVersion: '0.0.0'
-          os: 'Unknown OS'
-          localization: @getLocalization()
-        usage:
-          guideActions: 0
-          grid: 0
-          custom: 0
-          set: 0
-          top: 0
-          bottom: 0
-          left: 0
-          right: 0
-          verticalMidpoint: 0
-          horizontalMidpoint: 0
-          clear: 0
-      sets: [ # User sets
-          id: 0
-          name:'Outline'
-          string: """
-          | ~ | (hFl)
-          | ~ | (vFl)
-          """
-        ,
-          id: 1
-          name:'Two column grid'
-          string: """
-          | ~ | ~ | (hFl)
-          """
-        ,
-          id: 2
-          name:'Three column grid'
-          string: """
-          | ~ | ~ | ~ | (hFl)
-          """
-      ]
-      settings: # User settings
-        horizontalRemainder: 'last'
-        verticalRemainder:   'last'
-        horizontalPosition:  'first'
-        verticalPosition:    'first'
-        calculation:         'pixel'
-        reportAnonymousData: false
-
-    @saveGuideGuideData()
-    @refreshSets()
 
   # Update the panel's color theme  
   #
@@ -305,20 +314,11 @@ class GuideGuide
     event.preventDefault()
     console.log "Toggle guides"
 
-  # Get GuideGuide's data, including usage data, user preferences, and sets
-  #
-  # Returns an Object or null if no data exists.
-  getGuideGuideData: (data = null) =>
-    if data
-      console.log "Retrieved data:", data
-      return data
-    else
-      console.log "Failed to retrieve data"
-
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
   # Returns nothing.
   saveGuideGuideData: =>
+    @application.trigger 'guideguide:setData', @guideguideData
     console.log "Saved data", @guideguideData
 
   # Increment a usage counter of a given property.
@@ -568,18 +568,19 @@ class GuideGuide
   #
   # Returns nothing.
   checkForUpdates: (callback) =>
+    return unless @guideguideData.application.checkForUpdates
     console.log 'Checking for updates'
 
     $.ajax
       type: 'GET'
-      url: "#{ @siteUrl }/panel/#{ @guideguideData.panel.data.appID }"
+      url: "#{ @siteUrl }/panel/#{ @guideguideData.application.id }"
       data:
-        version: @guideguideData.panel.data.version || '0.0.0'
-        i18n: @getLocalization()
+        version: @guideguideData.application.guideguideVersion || '0.0.0'
+        i18n: @guideguideData.application.localization
       success: (data) =>
         callback(data)
       error: (error) =>
-        console.log error
+        console.error error
 
   onClickHasUpdateButton: (event) =>
     event.preventDefault()
@@ -608,19 +609,21 @@ class GuideGuide
   #
   # Returns nothing.
   submitData: =>
+    return unless @guideguideData.settings.reportAnonymousData and @guideguideData.application.submitAnonymousData
     console.log 'Submitting anonymous data'
 
     data =
       usage: @guideguideData.panel.usage
 
-    if @guideguideData.panel.data.id?
-      data._id          = @guideguideData.panel.data.id
+    if @guideguideData.panel.id?
+      data._id          = @guideguideData.panel.id
     else
-      data.version      = @guideguideData.panel.data.version
-      data.appID        = @guideguideData.panel.data.appID
-      data.AppVersion   = @guideguideData.panel.data.AppVersion
-      data.os           = @guideguideData.panel.data.os
-      data.localization = @guideguideData.panel.data.localization
+      data.version      = @guideguideData.application.guideguideVersion
+      data.appID        = @guideguideData.application.id
+      data.appName      = @guideguideData.application.name
+      data.AppVersion   = @guideguideData.application.version
+      data.os           = @guideguideData.application.os
+      data.localization = @guideguideData.application.localization
 
     $.ajax
       type: 'POST'
@@ -629,7 +632,7 @@ class GuideGuide
       success: (data) =>
         console.log 'Anonymous data submitted successfully'
         if typeof data is 'object' and data._id
-          @guideguideData.panel.data.id = data._id
+          @guideguideData.panel.id = data._id
           @saveGuideGuideData()
 
   # Get the version of this install of GuideGuide.
