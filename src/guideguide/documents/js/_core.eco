@@ -147,18 +147,6 @@ class GuideGuide
       if data? and data.hasUpdate
         @panel.trigger 'guideguide:hasUpdate', data
 
-  # Determine which environment we're in
-  #
-  # Returns nothing.
-  getEnv: (env) =>
-    return if env? then env else 'production'
-
-  # Determine the language for the app in which GuideGuide is running.
-  #
-  # Returns nothing.
-  getLocalization: =>
-    'en-us'
-
   # Update all of the ui with local messages.
   #
   # Returns nothing.
