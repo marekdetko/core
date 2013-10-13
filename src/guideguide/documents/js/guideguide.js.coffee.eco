@@ -3,3 +3,6 @@
 <%- @include('./_ggn') %>
 <%- @include('./_gap') %>
 <%- @include('./_core') %>
+
+$ ->
+  window.GuideGuide = new GuideGuide $('#guideguide')

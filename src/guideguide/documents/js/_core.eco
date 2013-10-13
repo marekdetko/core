@@ -2,7 +2,7 @@
 write: false
 ---
 
-class window.GuideGuideCore
+class GuideGuide
 
   siteUrl: 'http://guideguide.me'
   env:     'production'
