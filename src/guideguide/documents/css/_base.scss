@@ -31,6 +31,15 @@
   font-style: normal;
 }
 
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
 a {
   text-decoration: none;
   outline: none;
@@ -39,6 +48,7 @@ a {
 #guideguide {
   position: relative;
   font-family: 'open-sans-regular', sans-serif;
+  height: 100%;
 
   &.has-dropdown .dropdown-backdrop { display: block; }
   &.has-update .update-indicator { display: inline-block; }
