@@ -46,7 +46,6 @@ class GGN
     lines = string.split /\n/g
 
     $.each lines, (index,line) =>
-
       if /^\$.*?\s?=.*$/i.test line
         @parseVariable line
       else if /^\s*#/i.test line
@@ -246,7 +245,7 @@ class GGN
 
     $.each gapStrings, (index,value) =>
       gap = new Gap value
-       
+
       if value == '|'
         gaps.forString.push '|'
         gaps = @allocate value, gaps
