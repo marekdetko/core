@@ -45,7 +45,7 @@ class Gap
     @errors = {}
     @original = string = string.replace /\s/g, ''
 
-    @messages = window.guideguide.messages
+    @messages = parent.window.GuideGuide.messages
 
     if variableRegexp.test string
       @parseVariable string
