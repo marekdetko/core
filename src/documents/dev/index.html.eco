@@ -27,7 +27,7 @@
     <li><a class="control js-dev-option" data-dev-option='checkForUpdates' href>Check for updates: <span class="js-dev-option-value">false</span></a></li>
   </ul>
 
-  <iframe src="guideguide/panel.html"></iframe>
+  <%- @include('fauxtoshop.html') or '{}' %>
 
 </body>
 </html>
