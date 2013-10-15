@@ -1,0 +1,31 @@
+{
+  "name": "fauxtoshop",
+  "version": "0.0.11",
+  "main": [
+    "src/fauxtoshop/"
+  ],
+  "ignore": [
+    "bower.json",
+    "docpad.coffee",
+    "docs/",
+    "packages.json",
+    "node_modules/",
+    "script/",
+    "src/",
+    "fauxtoshop/css/",
+    "fauxtoshop/img/",
+    "fauxtoshop/guideguide/",
+    "fauxtoshop/guideguide-core/",
+    "fauxtoshop/js/",
+    "fauxtoshop/index.html"
+  ],
+  "homepage": "https://github.com/guideguide/fauxtoshop",
+  "_release": "0.0.11",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.11",
+    "commit": "d174ead722ac59d1193054e21e9090810091a9e7"
+  },
+  "_source": "https://github.com/guideguide/fauxtoshop.git",
+  "_target": "*"
+}
