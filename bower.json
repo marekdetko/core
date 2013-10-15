@@ -13,7 +13,6 @@
     "bower.json"
   ],
   "devDependencies": {
-    "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git",
-    "adapter-web": "https://github.com/guideguide/adapter-web.git"
+    "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git"
   }
 }
