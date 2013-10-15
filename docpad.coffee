@@ -1,5 +1,5 @@
 docpadConfig =
-  outPath: '.'
+  outPath: 'guideguide'
 
   renderPasses: 2
 

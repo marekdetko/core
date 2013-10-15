@@ -1,5 +1,5 @@
 {
-  "name": "guideguide-core",
+  "name": "guideguide",
   "version": "0.0.7",
   "main": [
     "src/guideguide/"
