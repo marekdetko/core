@@ -1,16 +1,22 @@
 {
   "name": "guideguide",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": [
-    "src/guideguide/"
+    "guideguide/guideguide/panel.html"
   ],
   "ignore": [
-    "dev/",
     "node_modules/",
     "script/",
-    "src/dev/",
+    "src/",
     "docs/",
-    "bower.json"
+    "bower.json",
+    "docpad.coffee",
+    "package.json",
+    "guideguide/guideguide/fauxtoshop.html",
+    "guideguide/guideguide/css",
+    "guideguide/guideguide/img",
+    "guideguide/guideguide/index.html",
+    "guideguide/guideguide/js"
   ],
   "devDependencies": {
     "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git"
