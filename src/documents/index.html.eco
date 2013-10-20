@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>GuideGuide Core Dev</title>
+
+  <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.custom.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/demo.css">
+  <link rel="stylesheet" type="text/css" href="/css/fauxtoshop.css">
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/demo.js"></script>
+  <script type="text/javascript" src="/js/fauxtoshop.js"></script>
+  <script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.min.js"></script>
+</head>
+<body class="guideguide-dark" data-environment="development">
+  <h1 class="page-title">GuideGuide Core Dev</h1>
+
+  <ul class="color-switcher js-color-switcher">
+    <li><a href class="js-color-switcher-color" data-theme-name="guideguide-lighter">lighter</a></li>
+    <li><a href class="js-color-switcher-color" data-theme-name="guideguide-light">light</a></li>
+    <li><a href class="js-color-switcher-color is-selected" data-theme-name="guideguide-dark">dark</a></li>
+    <li><a href class="js-color-switcher-color" data-theme-name="guideguide-darker">darker</a></li>
+  </ul>
+
+  <ul class="dev-options">
+    <li><a class="control js-dev-option" data-dev-option='submitData' href>Submit data: <span class="js-dev-option-value">false</span></a></li>
+    <li><a class="control js-dev-option" data-dev-option='checkForUpdates' href>Check for updates: <span class="js-dev-option-value">false</span></a></li>
+  </ul>
+
+  <%- @include('fauxtoshop.html') or '{}' %>
+
+</body>
+</html>

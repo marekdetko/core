@@ -1,0 +1,8 @@
+<%- @include('./_unit') %>
+<%- @include('./_messages') %>
+<%- @include('./_ggn') %>
+<%- @include('./_gap') %>
+<%- @include('./_core') %>
+
+$ ->
+  parent.window.GuideGuide = new GuideGuide $('#guideguide')

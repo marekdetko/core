@@ -1,19 +1,16 @@
 docpadConfig =
-  outPath: 'dev'
+  outPath: 'guideguide'
 
   renderPasses: 2
 
   documentsPaths: [
-    'dev/documents',
-    'guideguide/documents',
-    'components/adapter-web/src/adapter-web/documents',
-    'components/fauxtoshop/src/fauxtoshop/documents',
+    'documents',
+    'components/fauxtoshop/src/documents/fauxtoshop'
   ]
 
   filesPaths: [
-    'dev/files',
-    'guideguide/files',
-    'components/fauxtoshop/src/fauxtoshop/files',
+    'files',
+    'components/fauxtoshop/src/files/fauxtoshop'
   ]
 
 module.exports = docpadConfig

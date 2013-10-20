@@ -1,5 +1,0 @@
-<%- @include('./_unit') %>
-<%- @include('./_messages') %>
-<%- @include('./_ggn') %>
-<%- @include('./_gap') %>
-<%- @include('./_core') %>
