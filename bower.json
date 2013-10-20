@@ -12,11 +12,11 @@
     "bower.json",
     "docpad.coffee",
     "package.json",
-    "guideguide/guideguide/fauxtoshop.html",
-    "guideguide/guideguide/css",
-    "guideguide/guideguide/img",
-    "guideguide/guideguide/index.html",
-    "guideguide/guideguide/js"
+    "guideguide/fauxtoshop.html",
+    "guideguide/css",
+    "guideguide/img",
+    "guideguide/index.html",
+    "guideguide/js"
   ],
   "devDependencies": {
     "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git"
