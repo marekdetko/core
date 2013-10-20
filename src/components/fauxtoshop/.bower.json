@@ -1,6 +1,6 @@
 {
   "name": "fauxtoshop",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "main": [
     "src/fauxtoshop/"
   ],
@@ -11,20 +11,14 @@
     "packages.json",
     "node_modules/",
     "script/",
-    "src/",
-    "fauxtoshop/css/",
-    "fauxtoshop/img/",
-    "fauxtoshop/guideguide/",
-    "fauxtoshop/guideguide-core/",
-    "fauxtoshop/js/",
-    "fauxtoshop/index.html"
+    "fauxtoshop/"
   ],
   "homepage": "https://github.com/guideguide/fauxtoshop",
-  "_release": "0.0.11",
+  "_release": "0.0.13",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.11",
-    "commit": "d174ead722ac59d1193054e21e9090810091a9e7"
+    "tag": "0.0.13",
+    "commit": "79866c21b4fd5dd5aadc749613d04167f2e8e0fa"
   },
   "_source": "https://github.com/guideguide/fauxtoshop.git",
   "_target": "*"
