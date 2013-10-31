@@ -1,32 +1,32 @@
 @font-face {
   font-family: 'open-sans-bold';
-  src: url('../font/opensans-bold.eot');
-  src: url('../font/opensans-bold.eot?#iefix') format('embedded-opentype'),
-       url('../font/opensans-bold.woff') format('woff'),
-       url('../font/opensans-bold.ttf') format('truetype'),
-       url('../font/opensans-bold.svg#open_sansbold') format('svg');
+  src: url('opensans-bold.eot');
+  src: url('opensans-bold.eot?#iefix') format('embedded-opentype'),
+       url('opensans-bold.woff') format('woff'),
+       url('opensans-bold.ttf') format('truetype'),
+       url('opensans-bold.svg#open_sansbold') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'open-sans-light';
-  src: url('../font/opensans-light.eot');
-  src: url('../font/opensans-light.eot?#iefix') format('embedded-opentype'),
-       url('../font/opensans-light.woff') format('woff'),
-       url('../font/opensans-light.ttf') format('truetype'),
-       url('../font/opensans-light.svg#open_sanslight') format('svg');
+  src: url('opensans-light.eot');
+  src: url('opensans-light.eot?#iefix') format('embedded-opentype'),
+       url('opensans-light.woff') format('woff'),
+       url('opensans-light.ttf') format('truetype'),
+       url('opensans-light.svg#open_sanslight') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'open-sans-regular';
-  src: url('../font/opensans-regular.eot');
-  src: url('../font/opensans-regular.eot?#iefix') format('embedded-opentype'),
-       url('../font/opensans-regular.woff') format('woff'),
-       url('../font/opensans-regular.ttf') format('truetype'),
-       url('../font/opensans-regular.svg#open_sansregular') format('svg');
+  src: url('opensans-regular.eot');
+  src: url('opensans-regular.eot?#iefix') format('embedded-opentype'),
+       url('opensans-regular.woff') format('woff'),
+       url('opensans-regular.ttf') format('truetype'),
+       url('opensans-regular.svg#open_sansregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
