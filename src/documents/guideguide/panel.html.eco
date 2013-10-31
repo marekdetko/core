@@ -3,10 +3,12 @@
 <head>
   <title>GuideGuide</title>
 
-  <link rel="stylesheet" type="text/css" href="guideguide.css">
+  <style type="text/css">
+    <%- @include('guideguide/style.css') or '{}' %>
+  </style>
 
   <script type="text/javascript" src="jquery-1.10.2.js"></script>
-  <script type="text/javascript" src="guideguide.js"></script>
+  <script type="text/javascript" src="script.js"></script>
 </head>
 <body class="guideguide-dark" data-environment="development">
 
