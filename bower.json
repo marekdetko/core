@@ -11,7 +11,8 @@
     "docs/",
     "bower.json",
     "docpad.coffee",
-    "package.json"
+    "package.json",
+    "dev/"
   ],
   "devDependencies": {
     "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git"
