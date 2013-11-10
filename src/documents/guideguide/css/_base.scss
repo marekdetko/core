@@ -49,7 +49,6 @@ a {
   position: relative;
   font-family: 'open-sans-regular', sans-serif;
   height: 100%;
-  border-collapse: collapse;
 
   &.has-dropdown .dropdown-backdrop { display: block; }
   &.has-update .update-indicator { display: inline-block; }
@@ -57,7 +56,10 @@ a {
 
 .bottom-row { height: 0; }
 
-table { width: 100%; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
 // Horizontal text nav used to switch tabs.
 .nav {
@@ -135,10 +137,27 @@ table { width: 100%; }
   height: 100%;
   display: none;
   box-sizing: border-box;
+  vertical-align: top;
 
   &.is-selected {
-    display: block;
+    display: table-row;
   }
+
+  & > td {
+    display: table;
+    height: 100%;
+    width: 100%;
+  }
+
+  td {
+    vertical-align: top;
+    padding: 0;
+  }
+}
+
+.tabbed-page-padding {
+  margin: 0 10px;
+  height: 100%;
 }
 
 // Hidden markup. Contents are templates.

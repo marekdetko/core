@@ -11,10 +11,17 @@ textarea {
   font-family: 'open-sans-regular'
 }
 
+.form-table {
+  height: 100%;
+}
+
+.fomr-actions {
+  height: 0;
+}
+
 .form-wrapper {
   overflow: scroll;
   height: 100%;
-  padding: 0 10px;
 }
 
 .set-name-row {
@@ -90,13 +97,9 @@ textarea {
 // A horizontal list of buttons at the bottom of a form.
 // Primary buttons are highlighted and take up the most room.
 .form-action-buttons {
-  position: absolute;
   display: table;
-  bottom: 37px;
-  left: 0;
   width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
+  margin-bottom: 10px;
 
   .button {
     display: table-cell;
