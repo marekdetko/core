@@ -7,10 +7,10 @@
     "npm": "1.2"
   },
   "dependencies": {
-    "docpad": "~6.53.4",
-    "docpad-plugin-coffeescript": "~2.2.2",
+    "docpad": "~6.54.5",
+    "docpad-plugin-coffeescript": "~2.2.3",
     "docpad-plugin-sass": "~2.6.1",
-    "docpad-plugin-partials": "~2.8.0"
+    "docpad-plugin-partials": "~2.8.1"
   },
   "main": "node_modules/docpad/bin/docpad-server",
   "scripts": {
