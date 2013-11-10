@@ -22,6 +22,10 @@ textarea {
 .form-wrapper {
   overflow: scroll;
   height: 100%;
+
+  & > td {
+    padding-bottom: 10px;
+  }
 }
 
 .set-name-row {
