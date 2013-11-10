@@ -3,9 +3,7 @@
 <head>
   <title>GuideGuide</title>
 
-  <style type="text/css">
-    <%- @include('guideguide/style.css') or '{}' %>
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
 
   <script type="text/javascript" src="jquery-1.10.2.js"></script>
   <script type="text/javascript" src="script.js"></script>
@@ -14,17 +12,23 @@
 
   <table class="js-tabbed-pages" id="guideguide" data-theme="guideguide-dark">
     <tr class="nav">
-      <td class="left">
-        <a class="nav-item js-tabbed-page-tab js-grid-tab is-selected" data-page="form" data-localize="ui.grid" href>Grid</a>
-        <a class="nav-item js-tabbed-page-tab js-custom-tab" data-page="custom" data-localize="ui.custom" href>Custom</a>
-        <a class="nav-item js-tabbed-page-tab js-sets-tab" data-page="sets" data-localize="ui.sets" href>Sets</a>
-        <a class="nav-item js-tabbed-page-tab js-settings-tab" data-page="settings" href><span class="icon icon-settings"></span></a>
-      </td>
-      <td class="right">
-        <span class="update-indicator">
-          <a class="header-action js-has-update-button" href><span class="icon icon-arrow-up"></span></a>
-        </span>
-        <a class="header-action js-toggle-guide-visibility" href><span class="icon icon-visibility"></span></a>
+      <td>
+        <table>
+          <tr>
+            <td class="left">
+              <a class="nav-item js-tabbed-page-tab js-grid-tab is-selected" data-page="form" data-localize="ui.grid" href>Grid</a>
+              <a class="nav-item js-tabbed-page-tab js-custom-tab" data-page="custom" data-localize="ui.custom" href>Custom</a>
+              <a class="nav-item js-tabbed-page-tab js-sets-tab" data-page="sets" data-localize="ui.sets" href>Sets</a>
+              <a class="nav-item js-tabbed-page-tab js-settings-tab" data-page="settings" href><span class="icon icon-settings"></span></a>
+            </td>
+            <td class="right">
+              <span class="update-indicator">
+                <a class="header-action js-has-update-button" href><span class="icon icon-arrow-up"></span></a>
+              </span>
+              <a class="header-action js-toggle-guide-visibility" href><span class="icon icon-visibility"></span></a>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
 
@@ -244,8 +248,8 @@
         </div>
       </td>
     </tr>
-    
-    <tr>
+
+    <tr class="bottom-row">
       <td class="action-bar js-action-bar">
         <a class="button js-left" tabindex="-1" href><span class="icon icon-quick-left"></span></a>
         <a class="button js-vertical-midpoint" tabindex="-1" href><span class="icon icon-quick-vertical-midpoint"></span></a>

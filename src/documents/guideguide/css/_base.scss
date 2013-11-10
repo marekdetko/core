@@ -49,31 +49,38 @@ a {
   position: relative;
   font-family: 'open-sans-regular', sans-serif;
   height: 100%;
+  border-collapse: collapse;
 
   &.has-dropdown .dropdown-backdrop { display: block; }
   &.has-update .update-indicator { display: inline-block; }
 }
 
+.bottom-row { height: 0; }
+
+table { width: 100%; }
+
 // Horizontal text nav used to switch tabs.
 .nav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  list-style-type: none;
-  padding: 9px 10px;
   margin: 0;
-  z-index: 1;
-  box-sizing: border-box;
-
-  li {
-    display: inline-block;
-    margin-right: 10px;
-  }
+  height: 0;
 
   a {
     transition: 0.1s color linear;
 
     &.is-selected { cursor: default; }
+  }
+
+  .left {
+    padding: 5px 10px;
+
+    a { margin-right: 5px; }
+  }
+
+  .right {
+    text-align: right;
+    padding: 5px 10px;
+
+    a { margin-left: 5px; }
   }
 }
 
@@ -128,7 +135,6 @@ a {
   height: 100%;
   display: none;
   box-sizing: border-box;
-  padding: 42px 0 75px;
 
   &.is-selected {
     display: block;
