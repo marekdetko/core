@@ -1,9 +1,9 @@
 input, textarea {
   margin: 0;
-  border: 1px solid transparent;
-  padding: 3px 5px;
+  border: 0;
   font: normal normal 13px/16px 'open-sans-regular', sans-serif;
   outline: none;
+  background-color: transparent;
 }
 
 textarea {
@@ -70,29 +70,6 @@ textarea {
   }
 
   .grid-form { height: 100%; }
-}
-
-// An icon next to a text input. The icon can be a button.
-.form-iconned-input {
-  position: relative;
-  width: 100%;
-  display: block;
-
-  .icon {
-    display: block;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    left: 5px;
-    width: 16px;
-    height: 16px;
-    transition: 0.1s color linear;
-  }
-
-  input {
-    width: 100%;
-    padding-left: 25px;
-  }
 }
 
 // A horizontal list of buttons at the bottom of a form.
