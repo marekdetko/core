@@ -127,7 +127,6 @@ table {
     text-align: center;
     white-space: nowrap;
     width: 100%;
-    box-sizing: border-box;
   }
 }
 
@@ -136,7 +135,6 @@ table {
   position: relative;
   height: 100%;
   display: none;
-  box-sizing: border-box;
   vertical-align: top;
 
   &.is-selected {
@@ -205,7 +203,6 @@ table {
   margin: 0;
   padding: 0;
   width: 100%;
-  box-sizing: border-box;
   z-index: 21;
 }
 
@@ -237,7 +234,6 @@ table {
     padding: 20px 20px 70px;
     font-size: 13px;
     line-height: 21px;
-    box-sizing: border-box;
     position: absolute;
     bottom: 0;
     width: 100%;
