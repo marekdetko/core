@@ -56,7 +56,7 @@ class GuideGuide
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
     @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
-    @panel.on 'input:invalidate', '.js-input-target', @onInputInvalidate
+    @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
 
     @requestDataFromApp()
 
@@ -163,18 +163,19 @@ class GuideGuide
   # Returns nothing.
   onInputFocus: (event) =>
     $(event.currentTarget).closest('.js-input').addClass 'is-focused'
+    $(event.currentTarget).closest('.js-input').removeClass 'is-invalid'
 
   # When an input blurs remove its outline.
   #
   # Returns nothing.
   onInputBlur: (event) =>
-    $(event.currentTarget).closest('.js-input').removeClass 'is-invalid is-focused'
+    $(event.currentTarget).closest('.js-input').removeClass 'is-focused'
 
   # Outline an invalid input with red.
   #
   # Returns nothing.
-  onInputInvalidate: (input) =>
-    $(this).closest('.js-input').addClass 'is-invalid'
+  onInputInvalidate: (event) =>
+    $(event.currentTarget).addClass 'is-invalid'
 
   # Show the alert and fill its fields
   #
@@ -495,12 +496,6 @@ class GuideGuide
     $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
     $fields.find('.js-grid-form-input').val value
 
-  # When a field is focused, reset it's validity.
-  #
-  # Returns nothing.
-  onFocusFormInput: (event) =>
-    $(event.currentTarget).attr 'data-valid', true
-
   # When a field is unfocused, validate its contents
   #
   # Returns noting.
@@ -510,11 +505,12 @@ class GuideGuide
       int = false
 
       if $input.attr 'data-integer'
-        $input.val Math.round parseFloat $input.val()
+        val = Math.round parseFloat $input.val()
+        $input.val val if val
         int = true
 
       if !@isValid $input.val(), int
-        $input.attr 'data-valid', false
+        $input.trigger 'input:invalidate'
       else
         @formatField $input
 
@@ -523,7 +519,6 @@ class GuideGuide
   # Returns nothing.
   onFocusCustomForm: (event) =>
     $input = $(event.currentTarget)
-    $input.attr 'data-valid', true
     $input.val $input.val().replace(/[\{\}]|\[.*?\]|^#.*?$/gm, '').replace(/\s+$/g,'')
 
   # Validate the contents of the Custom form
@@ -533,14 +528,8 @@ class GuideGuide
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
       ggn = new GGN $input.val()
-      $input.attr 'data-valid', ggn.isValid
+      $input.trigger 'input:invalidate' if !ggn.isValid
       $input.val ggn.toString()
-
-  # When focusing into the new set name field, reset it as valid.
-  #
-  # Returns nothing.
-  onFocusSetName: (event) =>
-    $(event.currentTarget).attr 'data-valid', true
 
   # Select a set in the sets list when it is clicked
   #
@@ -684,8 +673,6 @@ class GuideGuide
   #
   # Returns nothing
   onExitCustomForm: =>
-    @panel.find('.js-custom-form .js-set-name').val('').attr('data-valid', true) if @panel.hasClass('is-showing-new-set-form')
-    @panel.find('.js-custom-input').val('').attr('data-valid', true) if @panel.hasClass('is-showing-new-set-form')
     @hideNewSetForm()
 
   # Open Custom form with data from the set to be edited
@@ -714,7 +701,9 @@ class GuideGuide
     $form      = @panel.find('.js-custom-form')
     string     = $('.js-custom-input').val().replace /^\s+|\s+$/g, ''
     name       = $form.find('.js-set-name').val()
-    executable = $form.find('[data-valid="false"]').length == 0 and string.length > 0 and name.length > 0
+    executable = $form.find('.js-input.is-invalid').length == 0 and string.length > 0 and name.length > 0
+    console.log 'foo: ', $form
+
 
     if executable
       obj =
@@ -729,8 +718,8 @@ class GuideGuide
 
       @panel.find('.js-sets-tab').click()
     else
-      $('.js-set-name').attr 'data-valid', false if name.length == 0
-      $('.js-custom-input').attr 'data-valid', false if string.length == 0
+      $('.js-set-name').trigger 'input:invalidate' if name.length == 0
+      $('.js-custom-input').trigger 'input:invalidate' if string.length == 0
 
   # Fire save set event and pass it the contents of the grid form
   #
@@ -740,7 +729,7 @@ class GuideGuide
     $form      = @panel.find('.js-grid-form')
     data       = @getFormData $form
     @stringifyFormData data, (string) =>
-      executable = $form.find('[data-valid="false"]').length == 0 and string
+      executable = $form.find('.js-input.is-invalid').length == 0 and string
 
       if executable
         console.group 'New set from form'
@@ -761,7 +750,7 @@ class GuideGuide
     $form  = $(event.currentTarget).closest '.js-grid-form'
     @stringifyFormData @getFormData($form), (string) =>
 
-      return unless $form.find('[data-valid="false"]').length == 0 and string
+      return unless $form.find('.js-input.is-invalid').length == 0 and string
 
       @application.trigger 'guideguide:getDocumentInfo', (info) =>
         return unless info
@@ -783,7 +772,7 @@ class GuideGuide
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
     
-    return unless $form.find('[data-valid="false"]').length == 0 and string
+    return unless $form.find('.js-input.is-invalid').length == 0 and string
 
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       return unless info

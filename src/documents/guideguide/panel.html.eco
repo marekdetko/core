@@ -164,13 +164,21 @@
                 <table class="grid-form">
                   <tr class="set-name-row js-set-name-row">
                     <td colspan="2">
-                      <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
-                      <input type="hidden" class="js-set-id">
+                      <span class="input js-input">
+                        <span class="input-shell">
+                          <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
+                          <input type="hidden" class="js-set-id">
+                        </span>
+                      </span>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <textarea class="js-custom-input" spellcheck="false"></textarea>
+                      <span class="input height-fill js-input">
+                        <span class="input-shell">
+                          <textarea class="js-custom-input" spellcheck="false"></textarea>
+                        </span>
+                      </span>
                     </td>
                   </tr>
                 </table>
