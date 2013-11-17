@@ -46,7 +46,7 @@
                   </tr>
                   <tr>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="margin">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
                         <span class="input-shell">
                           <a class="icon icon-margin-left js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="marginLeft" title="Left margin">
@@ -54,7 +54,7 @@
                       </span>
                     </td>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="margin">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
                         <span class="input-shell">
                           <a class="icon icon-margin-top js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="marginTop" title="Top margin">
@@ -64,7 +64,7 @@
                   </tr>
                   <tr>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="margin">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
                         <span class="input-shell">
                           <a class="icon icon-margin-right js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="marginRight" title="Right margin">
@@ -72,7 +72,7 @@
                       </span>
                     </td>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="margin">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
                         <span class="input-shell">
                           <a class="icon icon-margin-bottom js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="marginBottom" title="Bottom margin">
@@ -82,7 +82,7 @@
                   </tr>
                   <tr>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="count">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="count">
                         <span class="input-shell">
                           <a class="icon icon-count-column js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="countColumn" title="Column count" data-integer="true">
@@ -90,7 +90,7 @@
                       </span>
                     </td>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="count">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="count">
                         <span class="input-shell">
                           <a class="icon icon-count-row js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="countRow" title="Row count" data-integer="true">
@@ -100,7 +100,7 @@
                   </tr>
                   <tr>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="width">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="width">
                         <span class="input-shell">
                           <a class="icon icon-width-column js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="widthColumn" title="Column width">
@@ -108,7 +108,7 @@
                       </span>
                     </td>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="width">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="width">
                         <span class="input-shell">
                           <a class="icon icon-width-row js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="widthRow" title="Row width">
@@ -118,7 +118,7 @@
                   </tr>
                   <tr>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="gutter">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="gutter">
                         <span class="input-shell">
                           <a class="icon icon-width-column-gutter js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="gutterColumn" title="Column gutter">
@@ -126,7 +126,7 @@
                       </span>
                     </td>
                     <td>
-                      <span class="input js-input js-grid-form-iconned-input" data-distribute="gutter">
+                      <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="gutter">
                         <span class="input-shell">
                           <a class="icon icon-width-row-gutter js-iconned-input-button" tabindex="-1" href></a>
                           <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="gutterRow" title="Row gutter">

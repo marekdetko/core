@@ -99,12 +99,6 @@ textarea {
   .icon-button { line-height: 0; }
 }
 
-.grid-form {
-  .input .input-shell {
-    padding-left: 25px;
-  }
-}
-
 // A basic input. This is required to be able to do 100% width AND have
 // padding, since box-sizing isn't supported.
 //
@@ -113,6 +107,8 @@ textarea {
 //     <input type="text" class="js-input-target">
 //   </div>
 // </div>
+//
+// .iconned inputs have extra room to the left to account for a nested icon.
 .input {
   display: block;
 
@@ -122,6 +118,8 @@ textarea {
     padding: 2px 5px;
     line-height: 0;
   }
+
+  &.iconned .input-shell { padding-left: 25px; }
 
   input { width: 100%; }
 
