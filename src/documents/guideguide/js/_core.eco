@@ -54,8 +54,8 @@ class GuideGuide
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
     @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
-    @panel.on 'focus', '.js-input-target', @onInputFocus
-    @panel.on 'blur', '.js-input-target', @onInputBlur
+    @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
+    @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
     @panel.on 'input:invalidate', '.js-input-target', @onInputInvalidate
 
     @requestDataFromApp()

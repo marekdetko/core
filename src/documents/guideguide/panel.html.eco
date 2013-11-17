@@ -43,7 +43,7 @@
                     <td colspan="2">
                       <span class="input js-input">
                         <span class="input-shell">
-                          <input type="text" spellcheck="false" class="set-name js-set-name js-input-target" data-type="setName" title="Set name" placeholder="Set name">
+                          <input type="text" spellcheck="false" class="set-name js-set-name " data-type="setName" title="Set name" placeholder="Set name">
                         </span>
                       </span>
                     </td>
@@ -53,7 +53,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
                         <span class="input-shell">
                           <a class="icon icon-margin-left js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="marginLeft" title="Left margin">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="marginLeft" title="Left margin">
                         </span>
                       </span>
                     </td>
@@ -61,7 +61,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
                         <span class="input-shell">
                           <a class="icon icon-margin-top js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="marginTop" title="Top margin">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="marginTop" title="Top margin">
                         </span>
                       </span>
                     </td>
@@ -71,7 +71,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
                         <span class="input-shell">
                           <a class="icon icon-margin-right js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="marginRight" title="Right margin">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="marginRight" title="Right margin">
                         </span>
                       </span>
                     </td>
@@ -79,7 +79,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
                         <span class="input-shell">
                           <a class="icon icon-margin-bottom js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="marginBottom" title="Bottom margin">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="marginBottom" title="Bottom margin">
                         </span>
                       </span>
                     </td>
@@ -89,7 +89,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="count">
                         <span class="input-shell">
                           <a class="icon icon-count-column js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="countColumn" title="Column count" data-integer="true">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="countColumn" title="Column count" data-integer="true">
                         </span>
                       </span>
                     </td>
@@ -97,7 +97,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="count">
                         <span class="input-shell">
                           <a class="icon icon-count-row js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="countRow" title="Row count" data-integer="true">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="countRow" title="Row count" data-integer="true">
                         </span>
                       </span>
                     </td>
@@ -107,7 +107,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="width">
                         <span class="input-shell">
                           <a class="icon icon-width-column js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="widthColumn" title="Column width">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="widthColumn" title="Column width">
                         </span>
                       </span>
                     </td>
@@ -115,7 +115,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="width">
                         <span class="input-shell">
                           <a class="icon icon-width-row js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="widthRow" title="Row width">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="widthRow" title="Row width">
                         </span>
                       </span>
                     </td>
@@ -125,7 +125,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="gutter">
                         <span class="input-shell">
                           <a class="icon icon-width-column-gutter js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="gutterColumn" title="Column gutter">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="gutterColumn" title="Column gutter">
                         </span>
                       </span>
                     </td>
@@ -133,7 +133,7 @@
                       <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="gutter">
                         <span class="input-shell">
                           <a class="icon icon-width-row-gutter js-iconned-input-button" tabindex="-1" href></a>
-                          <input type="text" spellcheck="false" class="js-grid-form-input js-input-target" data-type="gutterRow" title="Row gutter">
+                          <input type="text" spellcheck="false" class="js-grid-form-input " data-type="gutterRow" title="Row gutter">
                         </span>
                       </span>
                     </td>
