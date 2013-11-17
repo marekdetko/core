@@ -121,3 +121,43 @@ textarea {
 
   .icon-button { line-height: 0; }
 }
+
+.grid-form {
+  .input .input-shell {
+    padding-left: 25px;
+  }
+}
+
+// A basic input. This is required to be able to do 100% width AND have
+// padding, since box-sizing isn't supported.
+//
+// <div class="input js-input">
+//   <div class="input-shell">
+//     <input type="text" class="js-input-target">
+//   </div>
+// </div>
+.input {
+  display: block;
+
+  .input-shell {
+    display: block;
+    border: 1px solid transparent;
+    padding: 2px 5px;
+    line-height: 0;
+  }
+
+  input { width: 100%; }
+
+  position: relative;
+
+  .icon {
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    left: 5px;
+    width: 16px;
+    height: 16px;
+    transition: 0.1s color linear;
+  }
+}

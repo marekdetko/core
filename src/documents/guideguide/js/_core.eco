@@ -54,6 +54,9 @@ class GuideGuide
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
     @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
+    @panel.on 'focus', '.js-input-target', @onInputFocus
+    @panel.on 'blur', '.js-input-target', @onInputBlur
+    @panel.on 'input:invalidate', '.js-input-target', @onInputInvalidate
 
     @requestDataFromApp()
 
@@ -154,6 +157,24 @@ class GuideGuide
     $elements = $('[data-localize]')
     $elements.each (index, el) =>
       $(el).text @messages[$(el).attr('data-localize')]
+
+  # When an input gains focus, outline it's parent.
+  #
+  # Returns nothing.
+  onInputFocus: (event) =>
+    $(event.currentTarget).closest('.js-input').addClass 'is-focused'
+
+  # When an input blurs remove its outline.
+  #
+  # Returns nothing.
+  onInputBlur: (event) =>
+    $(event.currentTarget).closest('.js-input').removeClass 'is-invalid is-focused'
+
+  # Outline an invalid input with red.
+  #
+  # Returns nothing.
+  onInputInvalidate: (input) =>
+    $(this).closest('.js-input').addClass 'is-invalid'
 
   # Show the alert and fill its fields
   #
