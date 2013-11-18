@@ -1,20 +1,31 @@
 input, textarea {
   margin: 0;
-  box-sizing: border-box;
-  border: 1px solid transparent;
-  padding: 3px 5px;
+  border: 0;
+  padding: 0;
   font: normal normal 13px/16px 'open-sans-regular', sans-serif;
   outline: none;
+  background-color: transparent;
 }
 
 textarea {
   font-family: 'open-sans-regular'
 }
 
+.form-table {
+  height: 100%;
+}
+
+.fomr-actions {
+  height: 0;
+}
+
 .form-wrapper {
   overflow: scroll;
   height: 100%;
-  padding: 0 10px;
+
+  & > td {
+    padding-bottom: 10px;
+  }
 }
 
 .set-name-row {
@@ -51,52 +62,36 @@ textarea {
 
 // A text field that contains GuideGuide String Notation.
 .ggn-form {
-  box-sizing: border-box;
 
   textarea {
-    width: 100%;
-    height: 100%;
     margin: 0;
+    padding: 0;
+    height: 100%;
     resize: none;
+  }
+
+  .input.height-fill {
+    height: 100%;
+
+    .input-shell {
+      position: absolute;
+      height: auto;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
 
   .grid-form { height: 100%; }
 }
 
-// An icon next to a text input. The icon can be a button.
-.form-iconned-input {
-  position: relative;
-  box-sizing: border-box;
-  width: 100%;
-  display: block;
-
-  .icon {
-    display: block;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    left: 5px;
-    width: 16px;
-    height: 16px;
-    transition: 0.1s color linear;
-  }
-
-  input {
-    width: 100%;
-    padding-left: 25px;
-  }
-}
-
 // A horizontal list of buttons at the bottom of a form.
 // Primary buttons are highlighted and take up the most room.
 .form-action-buttons {
-  position: absolute;
   display: table;
-  bottom: 37px;
-  left: 0;
   width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
+  margin-bottom: 10px;
 
   .button {
     display: table-cell;
@@ -116,4 +111,42 @@ textarea {
   }
 
   .icon-button { line-height: 0; }
+}
+
+// A basic input. This is required to be able to do 100% width AND have
+// padding, since box-sizing isn't supported.
+//
+// <div class="input js-input">
+//   <div class="input-shell">
+//     <input type="text" class="js-input-target">
+//   </div>
+// </div>
+//
+// .iconned inputs have extra room to the left to account for a nested icon.
+.input {
+  display: block;
+
+  .input-shell {
+    display: block;
+    border: 1px solid transparent;
+    padding: 3px 5px;
+    line-height: 0;
+  }
+
+  &.iconned .input-shell { padding-left: 25px; }
+
+  input { width: 100%; }
+
+  position: relative;
+
+  .icon {
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    left: 5px;
+    width: 16px;
+    height: 16px;
+    transition: 0.1s color linear;
+  }
 }

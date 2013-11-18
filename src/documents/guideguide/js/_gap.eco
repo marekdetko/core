@@ -54,6 +54,7 @@ class Gap
     else if wildcardRegexp.test string
       @parseWildcard string
     else
+      @multiplier = 1
       @invalidBecause @messages['gap.unrecognized']
 
   # Determine wildcard validity, string and multiplier

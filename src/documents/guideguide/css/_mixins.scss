@@ -17,13 +17,14 @@
 
   // Forms
 
-  input, textarea {
+  .input {
     background-color: $dark;
-    color: $text;
 
-    &:focus { border-color: $highlight; }
+    input, textarea { color: $text; }
 
-    &[data-valid="false"]{ border-color: $danger; }
+    &.is-focused .input-shell { border-color: $highlight; }
+
+    &.is-invalid .input-shell { border-color: $danger; }
   }
 
   .distribute-highlight .icon { color: $highlight; }

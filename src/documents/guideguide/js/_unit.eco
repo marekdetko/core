@@ -35,7 +35,7 @@ class Unit
 
     if !integerOnly
       unitString = unitGaps[2] || ''
-      @type      = parseUnit unitString
+      @type      = parseUnit unitString if @value
       @baseValue = getBaseValue(@value,@type)
       @isValid   = @type != null
     else
@@ -79,8 +79,7 @@ parseUnit = (string) ->
     when 'percent', 'pct', '%'
       '%'
     when ''
-      info = window.guideguide.guideguideData
-      parseUnit info.ruler
+      'px'
     else
       null
 
