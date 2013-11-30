@@ -11,7 +11,7 @@
 <body class="guideguide-dark" data-environment="development">
   <div id="guideguide" data-theme="guideguide-dark">
 
-    <div class="pages js-tabbed-pages">
+    <div class="panel-forms js-tabbed-pages">
 
       <div class="nav">
         <div class="left">

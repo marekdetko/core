@@ -54,7 +54,7 @@ a {
   &.has-update .update-indicator { display: inline-block; }
 }
 
-.pages {
+.panel-forms {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -64,10 +64,8 @@ a {
   padding-bottom: 28px;
 }
 
-.action-bar {
-  position: absolute;
-  bottom: 0;
-  height: 28px;
+.pages {
+  padding: 0 10px;
 }
 
 table {
