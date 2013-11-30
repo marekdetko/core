@@ -1,3 +1,6 @@
+$actionBarHeight: 28px;
+$tabsHeight: 32px;
+
 @mixin theme( $background, $dark, $darker, $darkest, $text, $highlight, $darkHighlight, $danger ){
 
   color: $text;
