@@ -54,7 +54,21 @@ a {
   &.has-update .update-indicator { display: inline-block; }
 }
 
-.bottom-row { height: 0; }
+.pages {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding-bottom: 28px;
+}
+
+.action-bar {
+  position: absolute;
+  bottom: 0;
+  height: 28px;
+}
 
 table {
   width: 100%;
@@ -65,6 +79,8 @@ table {
 .nav {
   margin: 0;
   height: 0;
+  display: table;
+  width: 100%;
 
   a {
     transition: 0.1s color linear;
@@ -73,12 +89,14 @@ table {
   }
 
   .left {
+    display: table-cell;
     padding: 5px 10px;
 
     a { margin-right: 5px; }
   }
 
   .right {
+    display: table-cell;
     text-align: right;
     padding: 5px 10px;
 

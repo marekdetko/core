@@ -3,39 +3,32 @@
 <head>
   <title>GuideGuide</title>
 
-  <style type="text/css">
-    <%- @include('guideguide/style.css') or '{}' %>
-  </style>
+  <link rel="stylesheet" href="style.css" type="text/css">
 
   <script type="text/javascript" src="jquery-1.10.2.js"></script>
   <script type="text/javascript" src="script.js"></script>
 </head>
 <body class="guideguide-dark" data-environment="development">
+  <div id="guideguide" data-theme="guideguide-dark">
 
-  <table class="js-tabbed-pages" id="guideguide" data-theme="guideguide-dark">
-    <tr class="nav">
-      <td>
-        <table>
-          <tr>
-            <td class="left">
-              <a class="nav-item js-tabbed-page-tab js-grid-tab is-selected" data-page="form" data-localize="ui.grid" href>Grid</a>
-              <a class="nav-item js-tabbed-page-tab js-custom-tab" data-page="custom" data-localize="ui.custom" href>Custom</a>
-              <a class="nav-item js-tabbed-page-tab js-sets-tab" data-page="sets" data-localize="ui.sets" href>Sets</a>
-              <a class="nav-item js-tabbed-page-tab js-settings-tab" data-page="settings" href><span class="icon icon-settings"></span></a>
-            </td>
-            <td class="right">
-              <span class="update-indicator">
-                <a class="header-action js-has-update-button" href><span class="icon icon-arrow-up"></span></a>
-              </span>
-              <a class="header-action js-toggle-guide-visibility" href><span class="icon icon-visibility"></span></a>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+    <div class="pages js-tabbed-pages">
 
-    <tr class="tabbed-page js-tabbed-page js-grid-form is-selected" data-page="form">
-      <td>
+      <div class="nav">
+        <div class="left">
+          <a class="nav-item js-tabbed-page-tab js-grid-tab is-selected" data-page="form" data-localize="ui.grid" href>Grid</a>
+          <a class="nav-item js-tabbed-page-tab js-custom-tab" data-page="custom" data-localize="ui.custom" href>Custom</a>
+          <a class="nav-item js-tabbed-page-tab js-sets-tab" data-page="sets" data-localize="ui.sets" href>Sets</a>
+          <a class="nav-item js-tabbed-page-tab js-settings-tab" data-page="settings" href><span class="icon icon-settings"></span></a>
+        </div>
+        <div class="right">
+          <span class="update-indicator">
+            <a class="header-action js-has-update-button" href><span class="icon icon-arrow-up"></span></a>
+          </span>
+          <a class="header-action js-toggle-guide-visibility" href><span class="icon icon-visibility"></span></a>
+        </div>
+      </div> <!-- end .nav -->
+
+      <div class="tabbed-page js-tabbed-page js-grid-form is-selected" data-page="form">
         <div class="tabbed-page-padding">
           <table class="form-table">
             <tr class="form-wrapper">
@@ -155,10 +148,9 @@
             </tr>
           </table>
         </div>
-      </td>
-    </tr>
-    <tr class="ggn-form tabbed-page js-tabbed-page js-custom-form" data-page="custom">
-      <td>
+      </div> <!-- end .tabbed-page -->
+
+      <div class="ggn-form tabbed-page js-tabbed-page js-custom-form" data-page="custom">
         <div class="tabbed-page-padding">
           <table class="form-table">
             <tr class="form-wrapper">
@@ -198,10 +190,9 @@
             </tr>
           </table>
         </div>
-      </td>
-    </tr>
-    <tr class="tabbed-page js-tabbed-page js-sets-form" data-page="sets">
-      <td>
+      </div> <!-- end .tabbed-page -->
+
+      <div class="tabbed-page js-tabbed-page js-sets-form" data-page="sets">
         <div class="tabbed-page-padding">
           <table class="form-table">
             <tr class="form-wrapper">
@@ -231,11 +222,9 @@
             </tr>
           </table>
         </div>
-      </td>
-    </tr>
-    <tr class="tabbed-page js-tabbed-page js-settings-form" data-page="settings">
-      <td>
+      </div> <!-- end .tabbed-page -->
 
+      <div class="tabbed-page js-tabbed-page js-settings-form" data-page="settings">
         <div class="tabbed-page-padding">
           <table class="form-table">
             <tr class="form-wrapper">
@@ -330,42 +319,41 @@
             </tr>
           </table>
         </div>
-      </td>
-    </tr>
+      </div> <!-- end .tabbed-page -->
 
-    <tr class="bottom-row">
-      <td class="action-bar js-action-bar">
-        <a class="button js-left" tabindex="-1" href><span class="icon icon-quick-left"></span></a>
-        <a class="button js-vertical-midpoint" tabindex="-1" href><span class="icon icon-quick-vertical-midpoint"></span></a>
-        <a class="button js-right" tabindex="-1" href><span class="icon icon-quick-right"></span></a>
-        <a class="button button-clear-guides js-clear" tabindex="-1" href><span class="icon icon-clear-guides"></span></a>
-        <a class="button js-top" tabindex="-1" href><span class="icon icon-quick-top"></span></a>
-        <a class="button js-horizontal-midpoint" tabindex="-1" href><span class="icon icon-quick-horizontal-midpoint"></span></a>
-        <a class="button js-bottom" tabindex="-1" href><span class="icon icon-quick-bottom"></span></a>
-      </td>
-    </tr>
-  </table>
-
-  <div class="alert">
-    <div class="alert-body js-alert-body">
-      <div class="alert-content">
-        <h3 class="alert-title js-alert-title"></h3>
-        <div class="js-alert-message"></div>
-      </div>
-      <ul class="button-group js-alert-actions">
-        <li><a class="button" href>Button</a></li>
-      </ul>
     </div>
-    <!-- alerts will go here when needed -->
+
+    <div class="action-bar js-action-bar">
+      <a class="button js-left" tabindex="-1" href><span class="icon icon-quick-left"></span></a>
+      <a class="button js-vertical-midpoint" tabindex="-1" href><span class="icon icon-quick-vertical-midpoint"></span></a>
+      <a class="button js-right" tabindex="-1" href><span class="icon icon-quick-right"></span></a>
+      <a class="button button-clear-guides js-clear" tabindex="-1" href><span class="icon icon-clear-guides"></span></a>
+      <a class="button js-top" tabindex="-1" href><span class="icon icon-quick-top"></span></a>
+      <a class="button js-horizontal-midpoint" tabindex="-1" href><span class="icon icon-quick-horizontal-midpoint"></span></a>
+      <a class="button js-bottom" tabindex="-1" href><span class="icon icon-quick-bottom"></span></a>
+    </div> <!-- end .action-bar -->
+
+    <div class="alert">
+      <div class="alert-body js-alert-body">
+        <div class="alert-content">
+          <h3 class="alert-title js-alert-title"></h3>
+          <div class="js-alert-message"></div>
+        </div>
+        <ul class="button-group js-alert-actions">
+          <li><a class="button" href>Button</a></li>
+        </ul>
+      </div>
+      <!-- alerts will go here when needed -->
+    </div>
+
+    <!-- templates for alerts -->
+    <div class="hidden-template">
+      <li class="js-button-template"><a class="button" href>Button</a></li>
+    </div>
+    <!-- end templates for alerts -->
+
+    <div class="dropdown-backdrop js-dropdown-backdrop"></div>
+
   </div>
-
-  <!-- templates for alerts -->
-  <div class="hidden-template">
-    <li class="js-button-template"><a class="button" href>Button</a></li>
-  </div>
-  <!-- end templates for alerts -->
-
-  <div class="dropdown-backdrop js-dropdown-backdrop"></div>
-
 </body>
 </html>

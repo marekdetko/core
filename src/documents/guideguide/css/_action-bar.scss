@@ -1,8 +1,11 @@
 // A horizontal section at the bottom of the panel where
 // top level actions live.
 .action-bar {
+  position: absolute;
+  bottom: 0;
   display: table;
   width: 100%;
+  height: 28px;
 
   .button {
     display: table-cell;
