@@ -142,80 +142,65 @@
         </div> <!-- end .tabbed-page -->
 
         <div class="ggn-form tabbed-page js-tabbed-page js-custom-form" data-page="custom">
-          <table class="form-table">
-            <tr class="form-wrapper">
-              <td>
-                <table class="grid-form">
-                  <tr class="set-name-row js-set-name-row">
-                    <td colspan="2">
-                      <span class="input js-input">
-                        <span class="input-shell">
-                          <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
-                          <input type="hidden" class="js-set-id">
-                        </span>
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span class="input height-fill js-input">
-                        <span class="input-shell">
-                          <textarea class="js-custom-input" spellcheck="false"></textarea>
-                        </span>
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr class="form-actions">
-              <td>
-                <div class="form-action-buttons">
-                  <a class="button primary js-make-grid make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
-                  <a class="button primary js-save-set save-set" href>Save set</a>
-                  <a class="button icon-button js-new-set add-set" href><span class="icon icon-set-add"></span></a>
-                  <a class="button icon-button js-cancel-set cancel-set" href><span class="icon icon-clear-guides"></span></a>
-                </div>
-              </td>
-            </tr>
-          </table>
+          <div class="height-stretch stretch-form">
+            <table class="grid-form">
+              <tr class="set-name-row js-set-name-row">
+                <td colspan="2">
+                  <span class="input js-input">
+                    <span class="input-shell">
+                      <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
+                      <input type="hidden" class="js-set-id">
+                    </span>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="input height-fill js-input">
+                    <span class="input-shell">
+                      <textarea class="js-custom-input" spellcheck="false"></textarea>
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="form-action-buttons">
+            <a class="button primary js-make-grid make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
+            <a class="button primary js-save-set save-set" href>Save set</a>
+            <a class="button icon-button js-new-set add-set" href><span class="icon icon-set-add"></span></a>
+            <a class="button icon-button js-cancel-set cancel-set" href><span class="icon icon-clear-guides"></span></a>
+          </div>
         </div> <!-- end .tabbed-page -->
 
         <div class="tabbed-page js-tabbed-page js-sets-form" data-page="sets">
-          <table class="form-table">
-            <tr class="form-wrapper">
-              <td>
-                <ul class="set-list js-set-list">
-                </ul>
-                <!-- template for set list -->
-                <ul class="hidden-template">
-                  <li class="js-set-item-template js-set set-list-set">
-                    <a class="js-set-select" href>
-                      <span class="js-set-item-name">Foo</span>
-                    </a>
-                    <a class="js-edit-set icon icon-edit set-action" href></a>
-                    <a class="js-delete-set icon icon-clear-guides set-action" href></a>
-                  </li>
-                </ul>
-                <!-- end template for set list -->
-              </td>
-            </tr>
-            <tr class="form-actions">
-              <td>
-                <div class="form-action-buttons">
-                  <a class="button primary js-make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
-                  <a class="button icon-button js-new-set" href><span class="icon icon-set-add"></span></a>
-                </div>
-              </td>
-            </tr>
-          </table>
+          <div class="height-stretch stretch-form">
+            <ul class="set-list js-set-list">
+            </ul>
+
+            <!-- template for set list -->
+            <ul class="hidden-template">
+              <li class="js-set-item-template js-set set-list-set">
+                <a class="js-set-select" href>
+                  <span class="js-set-item-name">Foo</span>
+                </a>
+                <a class="js-edit-set icon icon-edit set-action" href></a>
+                <a class="js-delete-set icon icon-clear-guides set-action" href></a>
+              </li>
+            </ul>
+            <!-- end template for set list -->
+          </div>
+
+          <div class="form-action-buttons">
+            <a class="button primary js-make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
+            <a class="button icon-button js-new-set" href><span class="icon icon-set-add"></span></a>
+          </div>
+
         </div> <!-- end .tabbed-page -->
 
         <div class="tabbed-page js-tabbed-page js-settings-form" data-page="settings">
-          <table class="form-table">
-            <tr class="form-wrapper">
-              <td>
-                <div class="settings-list js-settings-list">
+          <div class="height-stretch stretch-form">
+            <div class="settings-list js-settings-list">
               <div class="settings-inner">
 
                 <div class="setting">
@@ -292,18 +277,12 @@
                   </div>
                 </div>
 
-                </div>
               </div>
-              </td>
-            </tr>
-            <tr class="form-actions">
-              <td>
-                <div class="form-action-buttons">
-                  <a class="button primary js-save-settings" data-localize="ui.btnSaveSettings" href>Save settings</a>
-                </div>
-              </td>
-            </tr>
-          </table>
+            </div>
+            <div class="form-action-buttons">
+              <a class="button primary js-save-settings" data-localize="ui.btnSaveSettings" href>Save settings</a>
+            </div>
+          </div>
         </div> <!-- end .tabbed-page -->
       </div>
     </div>
