@@ -63,9 +63,16 @@ class GuideGuide
   # A built in logger, because not all enviroments contain a console
   console:
     log: (args...) =>
-      console.log.apply(console, args) if console
+      if console
+        console.log.apply(console, args)
+      else
+        @application.trigger 'guideguide:consoleLog', args.join ' '
+
     error: (args...) =>
-      console.error.apply(console, args) if console
+      if console
+        console.error.apply(console, args)
+      else
+        @application.trigger 'guideguide:consoleError', args.join ' '
 
   # Fire an async event requesting GuideGuide and application data from the
   # application.
