@@ -91,7 +91,10 @@ a {
     opacity: 1;
   }
 
-  .track { height: 100%; }
+  .track {
+    height: 100%;
+    overflow: hidden;
+  }
 
   .handle {
     width: 8px;
