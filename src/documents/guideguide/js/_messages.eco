@@ -48,4 +48,4 @@ class Messages
       $.each @messages['en-us'], (key,value) =>
         @[key] = if @messages[i18n][key] then @messages[i18n][key] else value
     else
-      console.log "GuideGuide doesn't recognize the \"#{ i18n }\" localization."
+      window.GuideGuide.console.error "GuideGuide doesn't recognize the \"#{ i18n }\" localization."

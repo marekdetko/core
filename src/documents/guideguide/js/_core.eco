@@ -60,19 +60,26 @@ class GuideGuide
 
     @requestDataFromApp()
 
+  # A built in logger, because not all enviroments contain a console
+  console:
+    log: (args...) =>
+      console.log.apply(console, args) if console
+    error: (args...) =>
+      console.error.apply(console, args) if console
+
   # Fire an async event requesting GuideGuide and application data from the
   # application.
   #
   # Returns nothing.
   requestDataFromApp: () =>
-    console.log 'Requesting data from application'
+    @console.log 'Requesting data from application'
     @application.trigger 'guideguide:getData', @onAppDataReceived
 
   # When data is received from the application, handle it.
   #
   # Returns nothing.
   onAppDataReceived: (data) =>
-    console.log 'Received data from application'
+    @console.log 'Received data from application'
     @guideguideData = data
 
     # Info about this install of GuideGuide
@@ -136,7 +143,7 @@ class GuideGuide
 
   completeSetup: =>
     @refreshSets()
-    console.log "Running #{ @guideguideData.application.name } in #{ @guideguideData.application.env } mode"
+    @console.log "Running #{ @guideguideData.application.name } in #{ @guideguideData.application.env } mode"
 
     @siteUrl = 'http://localhost:5000' if @guideguideData.application.env is 'development'
     @messages = new Messages @guideguideData.application.localization
@@ -322,7 +329,7 @@ class GuideGuide
   # Returns nothing.
   onToggleGuides: (event) =>
     event.preventDefault()
-    console.log "Toggle guides"
+    @console.log "Toggle guides"
     @application.trigger 'guideguide:toggleGuides'
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
@@ -330,7 +337,7 @@ class GuideGuide
   # Returns nothing.
   saveGuideGuideData: =>
     @application.trigger 'guideguide:setData', @guideguideData
-    console.log "Saved data", @guideguideData
+    @console.log "Saved data", @guideguideData
 
   # Increment a usage counter of a given property.
   #
@@ -369,7 +376,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickTopGuide: (event) =>
-    console.log 'Top guide'  
+    @console.log 'Top guide'  
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -380,7 +387,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickBottomGuide: (event) =>
-    console.log 'Bottom guide'  
+    @console.log 'Bottom guide'  
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -391,7 +398,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickLeftGuide: (event) =>
-    console.log 'Left guide'  
+    @console.log 'Left guide'  
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -402,7 +409,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickRightGuide: (event) =>
-    console.log 'Bottom guide'  
+    @console.log 'Bottom guide'  
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -413,7 +420,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickHorizontalMidpoint: (event) =>
-    console.log 'Horizontal midpoint'  
+    @console.log 'Horizontal midpoint'  
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -424,7 +431,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickVerticalMidpoint: (event) =>
-    console.log 'Vertical midpoint'  
+    @console.log 'Vertical midpoint'  
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -445,7 +452,7 @@ class GuideGuide
   #
   # Returns nothing.
   clearGuides: =>
-    console.log "Clear guides"
+    @console.log "Clear guides"
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       if info.isSelection
         bounds =
@@ -462,7 +469,7 @@ class GuideGuide
   #
   # Returns nothing.
   resetGuides: =>
-    console.log 'Resetting guides'
+    @console.log 'Resetting guides'
     @application.trigger 'guideguide:resetGuides'
 
   # Highlight all field icons of similar type
@@ -559,7 +566,7 @@ class GuideGuide
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
     @checkForUpdates (data) =>
-      console.log data
+      @console.log data
       if data? and data.hasUpdate
         @panel.trigger 'guideguide:hasUpdate', data
         $('.js-has-update-button').click()
@@ -571,7 +578,7 @@ class GuideGuide
   # Returns nothing.
   checkForUpdates: (callback) =>
     return unless @guideguideData.application.checkForUpdates
-    console.log 'Checking for updates'
+    @console.log 'Checking for updates'
 
     $.ajax
       type: 'GET'
@@ -582,7 +589,7 @@ class GuideGuide
       success: (data) =>
         callback(data)
       error: (error) =>
-        console.error error
+        @console.error error
 
   onClickHasUpdateButton: (event) =>
     event.preventDefault()
@@ -612,7 +619,7 @@ class GuideGuide
   # Returns nothing.
   submitData: =>
     return unless @guideguideData.settings.reportAnonymousData and @guideguideData.application.submitAnonymousData
-    console.log 'Submitting anonymous data'
+    @console.log 'Submitting anonymous data'
 
     data =
       usage: @guideguideData.panel.usage
@@ -632,7 +639,7 @@ class GuideGuide
       url: "#{ @siteUrl }/install"
       data: data
       success: (data) =>
-        console.log 'Anonymous data submitted successfully'
+        @console.log 'Anonymous data submitted successfully'
         if typeof data is 'object' and data._id
           @guideguideData.panel.id = data._id
           @saveGuideGuideData()
@@ -660,14 +667,14 @@ class GuideGuide
   # Returns nothing.
   onClickImportSets: (event) =>
     event.preventDefault()
-    console.log 'Import sets'
+    @console.log 'Import sets'
 
   # Export GuideGuide's sets to an external source.
   #
   # Returns nothing.
   onClickExportSets: (event) =>
     event.preventDefault()
-    console.log 'Export sets'
+    @console.log 'Export sets'
 
   # When exiting the Custom form, clear it.
   #
@@ -702,7 +709,7 @@ class GuideGuide
     string     = $('.js-custom-input').val().replace /^\s+|\s+$/g, ''
     name       = $form.find('.js-set-name').val()
     executable = $form.find('.js-input.is-invalid').length == 0 and string.length > 0 and name.length > 0
-    console.log 'foo: ', $form
+    @console.log 'foo: ', $form
 
 
     if executable
@@ -733,7 +740,7 @@ class GuideGuide
 
       if executable
         console.group 'New set from form'
-        console.log string
+        @console.log string
         console.groupEnd()
         obj =
           name: data.name
@@ -756,9 +763,9 @@ class GuideGuide
         return unless info
 
         console.group 'Add guides from grid form'
-        console.log string
+        @console.log string
         ggn = new GGN(string)
-        console.log ggn
+        @console.log ggn
         @getGuidesFromGGN new GGN(string), info, (guides) =>
           @application.trigger 'guideguide:addGuides', [guides]
         console.groupEnd()
@@ -777,8 +784,8 @@ class GuideGuide
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       return unless info
 
-      console.log 'Custom Grid'
-      console.log string
+      @console.log 'Custom Grid'
+      @console.log string
       @getGuidesFromGGN new GGN(string), info, (guides) =>
         @application.trigger 'guideguide:addGuides', [guides]
       @recordUsage 'custom'
@@ -795,9 +802,9 @@ class GuideGuide
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       return unless info
 
-      console.log 'Grid from set'
+      @console.log 'Grid from set'
       data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
-      console.log data
+      @console.log data
       @getGuidesFromGGN new GGN(data[0].string), info, (guides) =>
         @application.trigger 'guideguide:addGuides', [guides]
       @recordUsage 'set'
@@ -827,7 +834,7 @@ class GuideGuide
   #
   # Returns nothing.
   refreshSets: =>
-    console.log 'Refreshing sets'
+    @console.log 'Refreshing sets'
     $list = @panel.find('.js-set-list')
     $list.find('.js-set').remove()
     $.each @guideguideData.sets, (index,set) =>
