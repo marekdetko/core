@@ -1,3 +1,5 @@
+@import 'mixins';
+
 @font-face {
   font-family: 'open-sans-bold';
   src: url('opensans-bold.eot');
@@ -54,7 +56,24 @@ a {
   &.has-update .update-indicator { display: inline-block; }
 }
 
-.bottom-row { height: 0; }
+.panel-forms {
+  width: 100%;
+  padding-bottom: $actionBarHeight;
+}
+
+.pages {
+  padding: 32px 10px $actionBarHeight;
+}
+
+.height-stretch {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .stretch-form { padding-bottom: 48px; }
+}
 
 table {
   width: 100%;
@@ -65,6 +84,10 @@ table {
 .nav {
   margin: 0;
   height: 0;
+  display: table;
+  width: 100%;
+  position: relative;
+  z-index: 2;
 
   a {
     transition: 0.1s color linear;
@@ -73,12 +96,14 @@ table {
   }
 
   .left {
+    display: table-cell;
     padding: 5px 10px;
 
     a { margin-right: 5px; }
   }
 
   .right {
+    display: table-cell;
     text-align: right;
     padding: 5px 10px;
 
@@ -137,7 +162,7 @@ table {
   vertical-align: top;
 
   &.is-selected {
-    display: table-row;
+    display: block;
   }
 
   & > td {
@@ -150,11 +175,6 @@ table {
     vertical-align: top;
     padding: 0;
   }
-}
-
-.tabbed-page-padding {
-  margin: 0 10px;
-  height: 100%;
 }
 
 // Hidden markup. Contents are templates.
