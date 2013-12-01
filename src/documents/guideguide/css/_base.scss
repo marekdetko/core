@@ -51,6 +51,7 @@ a {
   position: relative;
   font-family: 'open-sans-regular', sans-serif;
   height: 100%;
+  overflow: hidden;
 
   &.has-dropdown .dropdown-backdrop { display: block; }
   &.has-update .update-indicator { display: inline-block; }
@@ -103,12 +104,13 @@ a {
     border-radius: 10px;
     margin: 2px;
     cursor: pointer;
-    overflow: hidden;
   }
 }
 
 .scroll-content {
-  overflow: hidden;
+  overflow: auto;
+  width: 100%;
+  padding-right: 20px;
 }
 
 table {
