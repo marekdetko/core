@@ -45,7 +45,6 @@ class GuideGuide
     @panel.on 'focus', '.js-set-name', @onFocusSetName
     @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
     @panel.on 'click', '.js-dropdown', @onToggleDropdown
-    @panel.on 'click', '.js-dropdown-backdrop', @onToggleDropdown
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
     @panel.on 'click', '.js-import-sets', @onClickImportSets
     @panel.on 'click', '.js-export-sets', @onClickExportSets
@@ -57,8 +56,11 @@ class GuideGuide
     @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
+    @panel.on 'click', '.js-input-shell', @onClickInputBackground
 
     @requestDataFromApp()
+
+    @panel.find('textarea').autosize();
 
   # A built in logger, because not all enviroments contain a console
   log: (args...) =>
@@ -89,7 +91,7 @@ class GuideGuide
     @guideguideData = data
 
     # Info about this install of GuideGuide
-    panelBootstrap = 
+    panelBootstrap =
       id: null
       newSetId: 3
       launchCount: 0
@@ -108,7 +110,7 @@ class GuideGuide
         clear: 0
 
     # User sets
-    setsBootstrap = [ 
+    setsBootstrap = [
         id: 0
         name:'Outline'
         string: """
@@ -190,6 +192,18 @@ class GuideGuide
   onInputInvalidate: (event) =>
     $(event.currentTarget).addClass 'is-invalid'
 
+  # When the input shell is clicked rather than the input inside, focus the
+  # input.
+  #
+  # Returns nothing.
+  onClickInputBackground: (event) =>
+    return unless $(event.target).hasClass "js-input-shell"
+    $inputs = $(event.currentTarget).find('input')
+    $textAreas = $(event.currentTarget).find('textarea')
+
+    $inputs.focus() if $inputs.length
+    $textAreas.focus() if $textAreas.length
+
   # Show the alert and fill its fields
   #
   #   data          - If a string, data is an ID of the message to be added to the alert. If
@@ -246,7 +260,7 @@ class GuideGuide
       $selected = $dropdown.find("[data-value='#{ value }']")
       $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]
 
-  # Update the panel's color theme  
+  # Update the panel's color theme
   #
   #   theme - (String) name of the theme to be used
   #
@@ -310,7 +324,7 @@ class GuideGuide
 
       if listBottom > visibleBottom
         offset = listBottom - visibleBottom
-        $('.js-settings-list').scrollTop $('.js-settings-list').scrollTop() + offset 
+        $('.js-settings-list').scrollTop $('.js-settings-list').scrollTop() + offset
 
     @panel.toggleClass 'has-dropdown'
 
@@ -382,7 +396,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickTopGuide: (event) =>
-    @log 'Top guide'  
+    @log 'Top guide'
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -393,7 +407,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickBottomGuide: (event) =>
-    @log 'Bottom guide'  
+    @log 'Bottom guide'
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -404,7 +418,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickLeftGuide: (event) =>
-    @log 'Left guide'  
+    @log 'Left guide'
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -415,7 +429,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickRightGuide: (event) =>
-    @log 'Bottom guide'  
+    @log 'Bottom guide'
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -426,7 +440,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickHorizontalMidpoint: (event) =>
-    @log 'Horizontal midpoint'  
+    @log 'Horizontal midpoint'
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -437,7 +451,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickVerticalMidpoint: (event) =>
-    @log 'Vertical midpoint'  
+    @log 'Vertical midpoint'
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -543,6 +557,7 @@ class GuideGuide
       ggn = new GGN $input.val()
       $input.trigger 'input:invalidate' if !ggn.isValid
       $input.val ggn.toString()
+      $input.trigger('autosize.resize')
 
   # Select a set in the sets list when it is clicked
   #
@@ -668,7 +683,7 @@ class GuideGuide
   getOS: =>
     'Unknown OS'
 
-  # Add sets to GuideGuide from an external source. 
+  # Add sets to GuideGuide from an external source.
   #
   # Returns nothing.
   onClickImportSets: (event) =>
@@ -697,9 +712,9 @@ class GuideGuide
 
     $set = $(event.currentTarget).closest('.js-set')
     id = $set.attr('data-id')
-    
+
     set = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt(id)
-    
+
     $form = @panel.find('.js-custom-form')
     $form.find('.js-set-name').val(set[0].name)
     $form.find('.js-set-id').val(set[0].id)
@@ -784,7 +799,7 @@ class GuideGuide
     event.preventDefault()
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
-    
+
     return unless $form.find('.js-input.is-invalid').length == 0 and string
 
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
@@ -802,7 +817,7 @@ class GuideGuide
   onMakeGridFromSet: (event) =>
     event.preventDefault()
     $set = $('.js-set-list').find('.is-selected').first()
-    
+
     return unless $set.length
 
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
@@ -915,7 +930,7 @@ class GuideGuide
   onShowGridNewSetForm: (event) =>
     event.preventDefault()
     @panel.addClass('is-showing-new-set-form')
-    @panel.find('.js-grid-form').find('.js-set-name').focus() 
+    @panel.find('.js-grid-form').find('.js-set-name').focus()
 
   # On both forms, Hide new set name, swap out save set and cancel set buttons, show make
   # grid and new set buttons
@@ -1134,7 +1149,7 @@ class GuideGuide
 
       # Rather than fiddle with spaces and duplicate pipes in the string calculation,
       # just do a second pass on the string to clean everything up.
-      callback string.replace(/\|+/g,'|').replace(/\|/g, ' | ').replace(/^[^\S\n]+|[^\S\n]+$/mg,'') 
+      callback string.replace(/\|+/g,'|').replace(/\|/g, ' | ').replace(/^[^\S\n]+|[^\S\n]+$/mg,'')
 
   # Calculate the sum of an array of values
   #

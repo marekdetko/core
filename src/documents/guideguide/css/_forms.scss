@@ -48,8 +48,7 @@ textarea {
 
   textarea {
     margin: 0;
-    padding: 0;
-    height: 100%;
+    padding: 3px 0;
     resize: none;
   }
 
@@ -67,6 +66,24 @@ textarea {
   }
 
   .grid-form { height: 100%; }
+
+  .scrollbar { padding-bottom: 0; }
+
+  .ggn-input {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .ggn-input-padding { padding: 0 5px; }
+
+  .scroll-content {
+    position: absolute;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }
 
 // A horizontal list of buttons at the bottom of a form.
@@ -117,6 +134,7 @@ textarea {
     border: 1px solid transparent;
     padding: 3px 5px;
     line-height: 0;
+    cursor: text;
   }
 
   &.iconned .input-shell { padding-left: 25px; }
