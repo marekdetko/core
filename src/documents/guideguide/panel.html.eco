@@ -39,7 +39,7 @@
               <tr class="set-name-row js-set-name-row">
                 <td colspan="2">
                   <span class="input js-input">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <input type="text" spellcheck="false" class="set-name js-set-name " data-type="setName" title="Set name" placeholder="Set name">
                     </span>
                   </span>
@@ -48,7 +48,7 @@
               <tr>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-margin-left js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="marginLeft" title="Left margin">
                     </span>
@@ -56,7 +56,7 @@
                 </td>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-margin-top js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="marginTop" title="Top margin">
                     </span>
@@ -66,7 +66,7 @@
               <tr>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-margin-right js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="marginRight" title="Right margin">
                     </span>
@@ -74,7 +74,7 @@
                 </td>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-margin-bottom js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="marginBottom" title="Bottom margin">
                     </span>
@@ -84,7 +84,7 @@
               <tr>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="count">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-count-column js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="countColumn" title="Column count" data-integer="true">
                     </span>
@@ -92,7 +92,7 @@
                 </td>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="count">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-count-row js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="countRow" title="Row count" data-integer="true">
                     </span>
@@ -102,7 +102,7 @@
               <tr>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="width">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-width-column js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="widthColumn" title="Column width">
                     </span>
@@ -110,7 +110,7 @@
                 </td>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="width">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-width-row js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="widthRow" title="Row width">
                     </span>
@@ -120,7 +120,7 @@
               <tr>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="gutter">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-width-column-gutter js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="gutterColumn" title="Column gutter">
                     </span>
@@ -128,7 +128,7 @@
                 </td>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="gutter">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <a class="icon icon-width-row-gutter js-iconned-input-button" tabindex="-1" href></a>
                       <input type="text" spellcheck="false" class="js-grid-form-input " data-type="gutterRow" title="Row gutter">
                     </span>
@@ -151,7 +151,7 @@
               <tr class="set-name-row js-set-name-row">
                 <td colspan="2">
                   <span class="input js-input">
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
                       <input type="hidden" class="js-set-id">
                     </span>
@@ -167,7 +167,7 @@
                       </div>
                     </div>
 
-                    <span class="input-shell">
+                    <span class="input-shell js-input-shell">
                       <textarea class="js-custom-input" spellcheck="false"></textarea>
                     </span>
                   </span>

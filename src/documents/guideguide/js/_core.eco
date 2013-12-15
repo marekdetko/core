@@ -56,6 +56,7 @@ class GuideGuide
     @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
+    @panel.on 'click', '.js-input-shell', @onClickInputBackground
 
     @requestDataFromApp()
 
@@ -190,6 +191,18 @@ class GuideGuide
   # Returns nothing.
   onInputInvalidate: (event) =>
     $(event.currentTarget).addClass 'is-invalid'
+
+  # When the input shell is clicked rather than the input inside, focus the
+  # input.
+  #
+  # Returns nothing.
+  onClickInputBackground: (event) =>
+    return unless $(event.target).hasClass "js-input-shell"
+    $inputs = $(event.currentTarget).find('input')
+    $textAreas = $(event.currentTarget).find('textarea')
+
+    $inputs.focus() if $inputs.length
+    $textAreas.focus() if $textAreas.length
 
   # Show the alert and fill its fields
   #
