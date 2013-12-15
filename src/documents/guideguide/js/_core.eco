@@ -59,6 +59,8 @@ class GuideGuide
 
     @requestDataFromApp()
 
+    @panel.find('textarea').autosize();
+
   # A built in logger, because not all enviroments contain a console
   log: (args...) =>
     if console?
