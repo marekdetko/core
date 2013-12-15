@@ -160,15 +160,17 @@
               </tr>
               <tr>
                 <td>
-                  <span class="input height-fill js-input">
-                    <div class="scrollbar js-scrollbar js-scrollable">
+                  <span class="input ggn-input height-fill js-input js-scrollable">
+                    <div class="scrollbar js-scrollbar">
                       <div class="track js-scrollbar-track">
                         <div class="handle js-scrollbar-handle"></div>
                       </div>
                     </div>
 
-                    <span class="input-shell js-input-shell">
-                      <textarea class="js-custom-input" spellcheck="false"></textarea>
+                    <span class="input-shell ggn-input-shell">
+                      <div class="scroll-content js-input-shell js-scroll-outer">
+                        <div class="ggn-input-padding"><textarea class="js-custom-input js-scroll-inner" spellcheck="false"></textarea></div>
+                      </div>
                     </span>
                   </span>
                 </td>

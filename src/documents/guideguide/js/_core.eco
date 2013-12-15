@@ -557,6 +557,7 @@ class GuideGuide
       ggn = new GGN $input.val()
       $input.trigger 'input:invalidate' if !ggn.isValid
       $input.val ggn.toString()
+      $input.trigger('autosize.resize')
 
   # Select a set in the sets list when it is clicked
   #

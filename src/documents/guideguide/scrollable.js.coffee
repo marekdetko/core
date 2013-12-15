@@ -57,7 +57,6 @@ onScroll = (event) ->
   scrollPercent = 0 if scrollPercent < 0
 
   scrollAmmount = scrollPercent * ( $scrollTrack.outerHeight() - $scrollHandle.outerHeight(true) )
-  console.log $scrollHandle
   $scrollHandle.css 'top', scrollAmmount
 
 # When the mouse leaves the scroll area, remove events and set a timer to
