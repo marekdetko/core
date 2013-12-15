@@ -49,7 +49,6 @@ textarea {
   textarea {
     margin: 0;
     padding: 0;
-    height: 100%;
     resize: none;
   }
 
@@ -67,6 +66,8 @@ textarea {
   }
 
   .grid-form { height: 100%; }
+
+  .scrollbar { padding-bottom: 0; }
 }
 
 // A horizontal list of buttons at the bottom of a form.
