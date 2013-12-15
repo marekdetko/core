@@ -193,7 +193,7 @@
               </div>
             </div>
 
-            <div class="scroll-content js-scroll-outer">
+            <div class="scroll-content sets-scroll-content js-scroll-outer">
               <ul class="set-list js-set-list js-scroll-inner">
               </ul>
             </div>
@@ -227,7 +227,7 @@
             </div>
 
             <div class="settings-list js-settings-list scroll-content js-scroll-outer">
-              <div class="settings-inner js-scroll-content-wrap js-scroll-inner">
+              <div class="settings-inner js-scroll-inner">
 
                 <div class="setting">
                   <h3 data-localize="ui.updates">Updates</h3>
