@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="style.css" type="text/css">
 
   <script type="text/javascript" src="jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
   <script type="text/javascript" src="jquery-ui-1.10.3.custom.min.js"></script>
   <script type="text/javascript" src="script.js"></script>
   <script type="text/javascript" src="scrollable.js"></script>
