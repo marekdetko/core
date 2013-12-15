@@ -80,17 +80,6 @@ onMouseLeave = (event) ->
       1000
     )
 
-  # Scroll events fire when the scrollTop is changed, so there will need to be
-  # a distinction made as to whether the scroll is coming from the wheel or
-  # dragging. Dragging should be ignored.
-  #
-  # When scrolling comes from the wheel, the dragger will need to be adjusted to match.
-  #
-  # This works mostly well. It behaves strangely when clicking a setting
-  # dropdown, which jumps the menu up and ruins it.
-  #
-  # Menu dropdown appears over the scrollbar
-
 $ ->
   $(".js-scrollbar-handle").draggable
     addClasses: false
