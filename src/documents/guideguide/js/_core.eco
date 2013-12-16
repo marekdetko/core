@@ -392,7 +392,7 @@ class GuideGuide
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'top'
 
   # Draw a guide at the bottom of the document/selection
@@ -403,7 +403,7 @@ class GuideGuide
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'bottom'
 
   # Draw a guide to the left of the document/selection
@@ -414,7 +414,7 @@ class GuideGuide
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'left'
 
   # Draw a guide to the right of the document/selection
@@ -425,7 +425,7 @@ class GuideGuide
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'right'
 
   # Draw a guide at the horizontal midpoint of the document/selection
@@ -436,7 +436,7 @@ class GuideGuide
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'horizontalMidpoint'
 
   # Draw a guide at the vertical midpoint of the document/selection
@@ -447,7 +447,7 @@ class GuideGuide
     event.preventDefault()
     @application.trigger 'guideguide:getDocumentInfo', (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'verticalMidpoint'
 
   # Handle clicks on the clear guides button.
@@ -473,7 +473,7 @@ class GuideGuide
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
         @application.trigger 'guideguide:getExistingGuides', (guides) =>
-          @application.trigger 'guideguide:addGuides', [@consolidateGuides [guides], bounds, true]
+          @bridge.addGuides @consolidateGuides [guides], bounds, true
       else
         @resetGuides()
 
@@ -780,7 +780,7 @@ class GuideGuide
         ggn = new GGN(string)
         @log ggn
         @getGuidesFromGGN new GGN(string), info, (guides) =>
-          @application.trigger 'guideguide:addGuides', [guides]
+          @bridge.addGuides guides
         console.groupEnd()
         @recordUsage 'grid'
 
@@ -800,7 +800,7 @@ class GuideGuide
       @log 'Custom Grid'
       @log string
       @getGuidesFromGGN new GGN(string), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
       @recordUsage 'custom'
 
   # Create a grid from a set
@@ -819,7 +819,7 @@ class GuideGuide
       data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
       @log data
       @getGuidesFromGGN new GGN(data[0].string), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
       @recordUsage 'set'
 
   createNewSet: (data) =>
