@@ -349,8 +349,7 @@ class GuideGuide
   #
   # Returns nothing.
   saveGuideGuideData: =>
-    @application.trigger 'guideguide:setData', @guideguideData
-    @log "Saved data", @guideguideData
+    @bridge.setData @guideguideData
 
   # Increment a usage counter of a given property.
   #
