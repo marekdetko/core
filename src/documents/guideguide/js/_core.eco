@@ -482,7 +482,7 @@ class GuideGuide
   # Returns nothing.
   resetGuides: =>
     @log 'Resetting guides'
-    @application.trigger 'guideguide:resetGuides'
+    @bridge.resetGuides()
 
   # Highlight all field icons of similar type
   #
