@@ -343,7 +343,7 @@ class GuideGuide
   onToggleGuides: (event) =>
     event.preventDefault()
     @log "Toggle guides"
-    @application.trigger 'guideguide:toggleGuides'
+    @bridge.toggleGuides()
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
