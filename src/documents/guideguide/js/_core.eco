@@ -10,6 +10,7 @@ class GuideGuide
     # Set the application element. This is used because in certain cases
     # GuideGuide is in an iframe.
     @application = parent.$(window.parent.document) || $(document)
+    @bridge = parent.window.PanelBridge
 
     # Set up general GuideGuide UI events.
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
@@ -58,7 +59,7 @@ class GuideGuide
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
 
-    @requestDataFromApp()
+    @bridge.getData @initData
 
     @panel.find('textarea').autosize();
 
@@ -75,19 +76,11 @@ class GuideGuide
     else
       @application.trigger 'guideguide:consoleError', args.join ' '
 
-  # Fire an async event requesting GuideGuide and application data from the
-  # application.
-  #
-  # Returns nothing.
-  requestDataFromApp: () =>
-    @log 'Requesting data from application'
-    @application.trigger 'guideguide:getData', @onAppDataReceived
-
   # When data is received from the application, handle it.
   #
   # Returns nothing.
-  onAppDataReceived: (data) =>
-    @log 'Received data from application'
+  initData: (data) =>
+    @bridge.log 'Setting up data from application'
     @guideguideData = data
 
     # Info about this install of GuideGuide
