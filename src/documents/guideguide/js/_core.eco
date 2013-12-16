@@ -390,7 +390,7 @@ class GuideGuide
   onClickTopGuide: (event) =>
     @log 'Top guide'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides guides
     @recordUsage 'top'
@@ -401,7 +401,7 @@ class GuideGuide
   onClickBottomGuide: (event) =>
     @log 'Bottom guide'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides guides
     @recordUsage 'bottom'
@@ -412,7 +412,7 @@ class GuideGuide
   onClickLeftGuide: (event) =>
     @log 'Left guide'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides guides
     @recordUsage 'left'
@@ -423,7 +423,7 @@ class GuideGuide
   onClickRightGuide: (event) =>
     @log 'Bottom guide'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides guides
     @recordUsage 'right'
@@ -434,7 +434,7 @@ class GuideGuide
   onClickHorizontalMidpoint: (event) =>
     @log 'Horizontal midpoint'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides guides
     @recordUsage 'horizontalMidpoint'
@@ -445,7 +445,7 @@ class GuideGuide
   onClickVerticalMidpoint: (event) =>
     @log 'Vertical midpoint'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides guides
     @recordUsage 'verticalMidpoint'
@@ -465,7 +465,7 @@ class GuideGuide
   # Returns nothing.
   clearGuides: =>
     @log "Clear guides"
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       if info.isSelection
         bounds =
           top:    info.offsetY
@@ -772,7 +772,7 @@ class GuideGuide
 
       return unless $form.find('.js-input.is-invalid').length == 0 and string
 
-      @application.trigger 'guideguide:getDocumentInfo', (info) =>
+      @bridge.getDocumentInfo (info) =>
         return unless info
 
         console.group 'Add guides from grid form'
@@ -794,7 +794,7 @@ class GuideGuide
 
     return unless $form.find('.js-input.is-invalid').length == 0 and string
 
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       return unless info
 
       @log 'Custom Grid'
@@ -812,7 +812,7 @@ class GuideGuide
 
     return unless $set.length
 
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       return unless info
 
       @log 'Grid from set'
@@ -866,7 +866,7 @@ class GuideGuide
   onShowSetsNewSetForm: (event) =>
     event.preventDefault()
 
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       xString = ''
       yString = ''
       prevHorizontal = if info.isSelection then info.offsetY else 0
@@ -1082,7 +1082,7 @@ class GuideGuide
         unique
 
   stringifyFormData: (data, callback) ->
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       string = ''
       # Variables
       if data.countColumn or data.widthColumn
