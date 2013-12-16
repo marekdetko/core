@@ -873,7 +873,7 @@ class GuideGuide
       prevVertical = if info.isSelection then info.offsetX else 0
       guides = []
 
-      @application.trigger 'guideguide:getExistingGuides', (guides) =>
+      @bridge.getExistingGuides (guides) =>
         if info.isSelection
           bounds =
             top:    info.offsetY
@@ -1038,7 +1038,7 @@ class GuideGuide
         else
           insertMarker += item.value
 
-    @application.trigger 'guideguide:getExistingGuides', (existing) =>
+    @bridge.getExistingGuides (existing) =>
       callback @consolidateGuides [guides, existing]
 
   # Create a collection of unique guides from multiple guide arrrays
