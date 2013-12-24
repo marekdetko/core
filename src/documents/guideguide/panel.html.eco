@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html class="height-stretch">
 <head>
   <title>GuideGuide</title>
 
@@ -12,7 +12,7 @@
   <script type="text/javascript" src="script.js"></script>
   <script type="text/javascript" src="scrollable.js"></script>
 </head>
-<body class="guideguide-dark" data-environment="development">
+<body class="guideguide-dark height-stretch" data-environment="development">
   <div id="guideguide" data-theme="guideguide-dark">
 
     <div class="panel-forms js-tabbed-pages height-stretch">
