@@ -10,6 +10,7 @@ class GuideGuide
     # Set the application element. This is used because in certain cases
     # GuideGuide is in an iframe.
     @application = parent.$(window.parent.document) || $(document)
+    @bridge = parent.window.PanelBridge
 
     # Set up general GuideGuide UI events.
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
@@ -58,7 +59,7 @@ class GuideGuide
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
 
-    @requestDataFromApp()
+    @bridge.getData @initData
 
     @panel.find('textarea').autosize();
 
@@ -75,19 +76,11 @@ class GuideGuide
     else
       @application.trigger 'guideguide:consoleError', args.join ' '
 
-  # Fire an async event requesting GuideGuide and application data from the
-  # application.
-  #
-  # Returns nothing.
-  requestDataFromApp: () =>
-    @log 'Requesting data from application'
-    @application.trigger 'guideguide:getData', @onAppDataReceived
-
   # When data is received from the application, handle it.
   #
   # Returns nothing.
-  onAppDataReceived: (data) =>
-    @log 'Received data from application'
+  initData: (data) =>
+    @bridge.log 'Setting up data from application'
     @guideguideData = data
 
     # Info about this install of GuideGuide
@@ -350,14 +343,13 @@ class GuideGuide
   onToggleGuides: (event) =>
     event.preventDefault()
     @log "Toggle guides"
-    @application.trigger 'guideguide:toggleGuides'
+    @bridge.toggleGuides()
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
   # Returns nothing.
   saveGuideGuideData: =>
-    @application.trigger 'guideguide:setData', @guideguideData
-    @log "Saved data", @guideguideData
+    @bridge.setData @guideguideData
 
   # Increment a usage counter of a given property.
   #
@@ -398,9 +390,9 @@ class GuideGuide
   onClickTopGuide: (event) =>
     @log 'Top guide'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'top'
 
   # Draw a guide at the bottom of the document/selection
@@ -409,9 +401,9 @@ class GuideGuide
   onClickBottomGuide: (event) =>
     @log 'Bottom guide'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'bottom'
 
   # Draw a guide to the left of the document/selection
@@ -420,9 +412,9 @@ class GuideGuide
   onClickLeftGuide: (event) =>
     @log 'Left guide'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'left'
 
   # Draw a guide to the right of the document/selection
@@ -431,9 +423,9 @@ class GuideGuide
   onClickRightGuide: (event) =>
     @log 'Bottom guide'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'right'
 
   # Draw a guide at the horizontal midpoint of the document/selection
@@ -442,9 +434,9 @@ class GuideGuide
   onClickHorizontalMidpoint: (event) =>
     @log 'Horizontal midpoint'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'horizontalMidpoint'
 
   # Draw a guide at the vertical midpoint of the document/selection
@@ -453,9 +445,9 @@ class GuideGuide
   onClickVerticalMidpoint: (event) =>
     @log 'Vertical midpoint'
     event.preventDefault()
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
     @recordUsage 'verticalMidpoint'
 
   # Handle clicks on the clear guides button.
@@ -473,7 +465,7 @@ class GuideGuide
   # Returns nothing.
   clearGuides: =>
     @log "Clear guides"
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       if info.isSelection
         bounds =
           top:    info.offsetY
@@ -481,7 +473,7 @@ class GuideGuide
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
         @application.trigger 'guideguide:getExistingGuides', (guides) =>
-          @application.trigger 'guideguide:addGuides', [@consolidateGuides [guides], bounds, true]
+          @bridge.addGuides @consolidateGuides [guides], bounds, true
       else
         @resetGuides()
 
@@ -490,7 +482,7 @@ class GuideGuide
   # Returns nothing.
   resetGuides: =>
     @log 'Resetting guides'
-    @application.trigger 'guideguide:resetGuides'
+    @bridge.resetGuides()
 
   # Highlight all field icons of similar type
   #
@@ -780,7 +772,7 @@ class GuideGuide
 
       return unless $form.find('.js-input.is-invalid').length == 0 and string
 
-      @application.trigger 'guideguide:getDocumentInfo', (info) =>
+      @bridge.getDocumentInfo (info) =>
         return unless info
 
         console.group 'Add guides from grid form'
@@ -788,7 +780,7 @@ class GuideGuide
         ggn = new GGN(string)
         @log ggn
         @getGuidesFromGGN new GGN(string), info, (guides) =>
-          @application.trigger 'guideguide:addGuides', [guides]
+          @bridge.addGuides guides
         console.groupEnd()
         @recordUsage 'grid'
 
@@ -802,13 +794,13 @@ class GuideGuide
 
     return unless $form.find('.js-input.is-invalid').length == 0 and string
 
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       return unless info
 
       @log 'Custom Grid'
       @log string
       @getGuidesFromGGN new GGN(string), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
       @recordUsage 'custom'
 
   # Create a grid from a set
@@ -820,14 +812,14 @@ class GuideGuide
 
     return unless $set.length
 
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       return unless info
 
       @log 'Grid from set'
       data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
       @log data
       @getGuidesFromGGN new GGN(data[0].string), info, (guides) =>
-        @application.trigger 'guideguide:addGuides', [guides]
+        @bridge.addGuides guides
       @recordUsage 'set'
 
   createNewSet: (data) =>
@@ -874,14 +866,14 @@ class GuideGuide
   onShowSetsNewSetForm: (event) =>
     event.preventDefault()
 
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       xString = ''
       yString = ''
       prevHorizontal = if info.isSelection then info.offsetY else 0
       prevVertical = if info.isSelection then info.offsetX else 0
       guides = []
 
-      @application.trigger 'guideguide:getExistingGuides', (guides) =>
+      @bridge.getExistingGuides (guides) =>
         if info.isSelection
           bounds =
             top:    info.offsetY
@@ -1046,7 +1038,7 @@ class GuideGuide
         else
           insertMarker += item.value
 
-    @application.trigger 'guideguide:getExistingGuides', (existing) =>
+    @bridge.getExistingGuides (existing) =>
       callback @consolidateGuides [guides, existing]
 
   # Create a collection of unique guides from multiple guide arrrays
@@ -1090,7 +1082,7 @@ class GuideGuide
         unique
 
   stringifyFormData: (data, callback) ->
-    @application.trigger 'guideguide:getDocumentInfo', (info) =>
+    @bridge.getDocumentInfo (info) =>
       string = ''
       # Variables
       if data.countColumn or data.widthColumn
