@@ -193,12 +193,6 @@ table {
     display: block;
   }
 
-  & > td {
-    display: table;
-    height: 100%;
-    width: 100%;
-  }
-
   td {
     vertical-align: top;
     padding: 0;
