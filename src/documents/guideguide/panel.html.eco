@@ -33,7 +33,7 @@
       </div> <!-- end .nav -->
 
       <div class="pages height-stretch">
-        <div class="tabbed-page js-tabbed-page js-grid-form is-selected" data-page="form">
+        <div class="tabbed-page height-stretch js-tabbed-page js-grid-form is-selected" data-page="form">
           <div class="set-name-row js-set-name-row">
             <span class="input js-input">
               <span class="input-shell js-input-shell">
@@ -144,7 +144,7 @@
           </div>
         </div> <!-- end .tabbed-page -->
 
-        <div class="ggn-form tabbed-page js-tabbed-page js-custom-form" data-page="custom">
+        <div class="ggn-form tabbed-page height-stretch js-tabbed-page js-custom-form" data-page="custom">
 
             <div class="set-name-row js-set-name-row">
               <span class="input js-input">
@@ -176,7 +176,7 @@
             </div>
         </div> <!-- end .tabbed-page -->
 
-        <div class="tabbed-page js-tabbed-page js-sets-form" data-page="sets">
+        <div class="tabbed-page height-stretch js-tabbed-page js-sets-form" data-page="sets">
           <div class="height-stretch stretch-form js-scrollable">
             <div class="scrollbar js-scrollbar">
               <div class="track js-scrollbar-track">
@@ -209,7 +209,7 @@
 
         </div> <!-- end .tabbed-page -->
 
-        <div class="tabbed-page js-tabbed-page js-settings-form" data-page="settings">
+        <div class="tabbed-page height-stretch js-tabbed-page js-settings-form" data-page="settings">
           <div class="height-stretch stretch-form js-scrollable">
             <div class="scrollbar js-scrollbar">
               <div class="track js-scrollbar-track">

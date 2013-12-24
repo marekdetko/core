@@ -186,10 +186,9 @@ table {
 
 // Content of a tab.
 .tabbed-page {
-  position: relative;
-  height: 100%;
   display: none;
   vertical-align: top;
+  margin: 32px 10px 28px;
 
   &.is-selected {
     display: block;
