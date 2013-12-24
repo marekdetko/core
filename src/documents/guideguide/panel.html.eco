@@ -226,7 +226,7 @@
               </div>
             </div>
 
-            <div class="settings-list js-settings-list scroll-content js-scroll-outer">
+            <div class="settings-list height-stretch js-settings-list scroll-content js-scroll-outer">
               <div class="settings-inner js-scroll-inner">
 
                 <div class="setting">
