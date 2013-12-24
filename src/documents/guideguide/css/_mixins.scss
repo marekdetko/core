@@ -1,5 +1,5 @@
-$actionBarHeight: 28px;
-$tabsHeight: 32px;
+$actionBarHeight: 30px;
+$tabsHeight: 38px;
 
 @mixin theme( $background, $dark, $darker, $darkest, $text, $highlight, $darkHighlight, $danger ){
 
@@ -48,7 +48,7 @@ $tabsHeight: 32px;
 
       &:hover {
         background-color: $darkHighlight;
-        color: #fff;      
+        color: #fff;
       }
     }
   }
@@ -114,6 +114,6 @@ $tabsHeight: 32px;
     background-color: $background;
     border-top: 2px solid $darker;
 
-    
+
   }
 }
