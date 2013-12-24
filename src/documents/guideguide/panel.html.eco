@@ -314,9 +314,9 @@
       <a class="button js-bottom" tabindex="-1" href><span class="icon icon-quick-bottom"></span></a>
     </div> <!-- end .action-bar -->
 
-    <div class="alert">
+    <div class="alert height-stretch">
       <div class="alert-body js-alert-body">
-        <div class="alert-content">
+        <div class="alert-content height-stretch">
           <h3 class="alert-title js-alert-title"></h3>
           <div class="js-alert-message"></div>
         </div>
