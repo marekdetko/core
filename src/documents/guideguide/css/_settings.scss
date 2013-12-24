@@ -1,5 +1,5 @@
 .settings-list {
-  margin: 0 0 48px 0;
+  margin: 0;
   font-size: 13px;
   line-height: 18px;
 
@@ -15,4 +15,8 @@
 .setting {
 
   &:first-child h3 { margin-top: 3px; }
+}
+
+.settings-list-wrap {
+  margin-bottom: 48px;
 }

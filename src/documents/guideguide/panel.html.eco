@@ -42,7 +42,7 @@
             </span>
           </div>
 
-          <div class="height-stretch stretch-form set-name-padding">
+          <div class="height-stretch set-name-padding">
             <table class="grid-form">
               <tr>
                 <td>
@@ -177,7 +177,7 @@
         </div> <!-- end .tabbed-page -->
 
         <div class="tabbed-page height-stretch js-tabbed-page js-sets-form" data-page="sets">
-          <div class="height-stretch stretch-form js-scrollable">
+          <div class="height-stretch js-scrollable">
             <div class="scrollbar js-scrollbar">
               <div class="track js-scrollbar-track">
                 <div class="handle js-scrollbar-handle"></div>
@@ -210,7 +210,7 @@
         </div> <!-- end .tabbed-page -->
 
         <div class="tabbed-page height-stretch js-tabbed-page js-settings-form" data-page="settings">
-          <div class="height-stretch stretch-form js-scrollable">
+          <div class="height-stretch settings-list-wrap js-scrollable">
             <div class="scrollbar js-scrollbar">
               <div class="track js-scrollbar-track">
                 <div class="handle js-scrollbar-handle"></div>
@@ -296,9 +296,9 @@
 
               </div>
             </div>
-            <div class="form-action-buttons">
-              <a class="button primary js-save-settings" data-localize="ui.btnSaveSettings" href>Save settings</a>
-            </div>
+          </div>
+          <div class="form-action-buttons">
+            <a class="button primary js-save-settings" data-localize="ui.btnSaveSettings" href>Save settings</a>
           </div>
         </div> <!-- end .tabbed-page -->
       </div>
