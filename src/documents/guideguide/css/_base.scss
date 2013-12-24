@@ -1,38 +1,5 @@
 @import 'mixins';
 
-@font-face {
-  font-family: 'open-sans-bold';
-  src: url('opensans-bold.eot');
-  src: url('opensans-bold.eot?#iefix') format('embedded-opentype'),
-       data-uri('opensans-bold.woff') format('woff'),
-       data-uri('opensans-bold.ttf') format('truetype'),
-       url('opensans-bold.svg#open_sansbold') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'open-sans-light';
-  src: url('opensans-light.eot');
-  src: url('opensans-light.eot?#iefix') format('embedded-opentype'),
-       data-uri('opensans-light.woff') format('woff'),
-       data-uri('opensans-light.ttf') format('truetype'),
-       url('opensans-light.svg#open_sanslight') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'open-sans-regular';
-  src: url('opensans-regular.eot');
-  src: url('opensans-regular.eot?#iefix') format('embedded-opentype'),
-       data-uri('opensans-regular.woff') format('woff'),
-       data-uri('opensans-regular.ttf') format('truetype'),
-       url('opensans-regular.svg#open_sansregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
 body {
   margin: 0;
 }
@@ -43,7 +10,7 @@ a {
 }
 
 #guideguide {
-  font-family: 'open-sans-regular', sans-serif;
+  font-family: $sansSerif;
   overflow: hidden;
 
   &.has-update .update-indicator { display: inline-block; }

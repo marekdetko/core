@@ -2,13 +2,9 @@ input, textarea {
   margin: 0;
   border: 0;
   padding: 0;
-  font: normal normal 13px/16px 'open-sans-regular', sans-serif;
+  font: normal normal 13px/16px $sansSerif;
   outline: none;
   background-color: transparent;
-}
-
-textarea {
-  font-family: 'open-sans-regular'
 }
 
 .set-name-row {
