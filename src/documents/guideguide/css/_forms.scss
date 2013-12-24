@@ -14,8 +14,6 @@ textarea {
 .set-name-row {
   display: none;
   height: 0%;
-
-  .is-showing-new-set-form & { display: table-row; }
 }
 
 // A two column form used to collect user input for grids.
@@ -43,35 +41,33 @@ textarea {
   .set-name { width: 100%; }
 }
 
+.is-showing-new-set-form {
+
+  .set-name-padding {
+    margin-top: 28px;
+  }
+
+  .set-name-row { display: block; }
+}
+
 // A text field that contains GuideGuide String Notation.
 .ggn-form {
 
   textarea {
     margin: 0;
     padding: 3px 0;
+    width: 100%;
     resize: none;
   }
 
-  .input.height-fill {
-    height: 100%;
-
-    .input-shell {
-      position: absolute;
-      height: auto;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
+  .grid-form {
+    margin-bottom: 48px;
   }
 
-  .grid-form { height: 100%; }
-
-  .scrollbar { padding-bottom: 0; }
-
   .ggn-input {
-    height: 100%;
     overflow: hidden;
+    position: absolute;
+    margin-bottom: 48px;
   }
 
   .ggn-input-padding { padding: 0 5px; }
@@ -98,7 +94,7 @@ textarea {
 
   .button {
     display: table-cell;
-    padding: 3px 10px;
+    padding: 5px 10px;
     vertical-align: middle;
     text-align: center;
     white-space: nowrap;
@@ -132,7 +128,7 @@ textarea {
   .input-shell {
     display: block;
     border: 1px solid transparent;
-    padding: 3px 5px;
+    padding: 4px 5px;
     line-height: 0;
     cursor: text;
   }
