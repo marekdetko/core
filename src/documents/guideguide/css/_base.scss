@@ -43,9 +43,7 @@ a {
 }
 
 #guideguide {
-  position: relative;
   font-family: 'open-sans-regular', sans-serif;
-  height: 100%;
   overflow: hidden;
 
   &.has-update .update-indicator { display: inline-block; }
