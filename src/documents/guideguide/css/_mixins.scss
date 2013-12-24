@@ -1,6 +1,8 @@
 $actionBarHeight: 30px;
 $tabsHeight: 38px;
 
+$sansSerif: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 @mixin theme( $background, $dark, $darker, $darkest, $text, $highlight, $darkHighlight, $danger ){
 
   color: $text;
