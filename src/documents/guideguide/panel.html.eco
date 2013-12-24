@@ -184,7 +184,7 @@
               </div>
             </div>
 
-            <div class="scroll-content sets-scroll-content js-scroll-outer">
+            <div class="scroll-content sets-scroll-content height-stretch js-scroll-outer">
               <ul class="set-list js-set-list js-scroll-inner">
               </ul>
             </div>
