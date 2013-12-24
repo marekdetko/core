@@ -34,17 +34,16 @@
 
       <div class="pages height-stretch">
         <div class="tabbed-page js-tabbed-page js-grid-form is-selected" data-page="form">
-          <div class="height-stretch stretch-form">
+          <div class="set-name-row js-set-name-row">
+            <span class="input js-input">
+              <span class="input-shell js-input-shell">
+                <input type="text" spellcheck="false" class="set-name js-set-name " data-type="setName" title="Set name" placeholder="Set name">
+              </span>
+            </span>
+          </div>
+
+          <div class="height-stretch stretch-form set-name-padding">
             <table class="grid-form">
-              <tr class="set-name-row js-set-name-row">
-                <td colspan="2">
-                  <span class="input js-input">
-                    <span class="input-shell js-input-shell">
-                      <input type="text" spellcheck="false" class="set-name js-set-name " data-type="setName" title="Set name" placeholder="Set name">
-                    </span>
-                  </span>
-                </td>
-              </tr>
               <tr>
                 <td>
                   <span class="input iconned js-input js-grid-form-iconned-input" data-distribute="margin">
@@ -146,43 +145,35 @@
         </div> <!-- end .tabbed-page -->
 
         <div class="ggn-form tabbed-page js-tabbed-page js-custom-form" data-page="custom">
-          <div class="height-stretch stretch-form">
-            <table class="grid-form">
-              <tr class="set-name-row js-set-name-row">
-                <td colspan="2">
-                  <span class="input js-input">
-                    <span class="input-shell js-input-shell">
-                      <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
-                      <input type="hidden" class="js-set-id">
-                    </span>
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="input ggn-input height-fill js-input js-scrollable">
-                    <div class="scrollbar js-scrollbar">
-                      <div class="track js-scrollbar-track">
-                        <div class="handle js-scrollbar-handle"></div>
-                      </div>
-                    </div>
 
-                    <span class="input-shell ggn-input-shell">
-                      <div class="scroll-content js-input-shell js-scroll-outer">
-                        <div class="ggn-input-padding"><textarea class="js-custom-input js-scroll-inner" spellcheck="false"></textarea></div>
-                      </div>
-                    </span>
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="form-action-buttons">
-            <a class="button primary js-make-grid make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
-            <a class="button primary js-save-set save-set" href>Save set</a>
-            <a class="button icon-button js-new-set add-set" href><span class="icon icon-set-add"></span></a>
-            <a class="button icon-button js-cancel-set cancel-set" href><span class="icon icon-clear-guides"></span></a>
-          </div>
+            <div class="set-name-row js-set-name-row">
+              <span class="input js-input">
+                <span class="input-shell js-input-shell">
+                  <input type="text" spellcheck="false" class="set-name js-set-name" data-type="setName" title="Set name" placeholder="Set name">
+                  <input type="hidden" class="js-set-id">
+                </span>
+              </span>
+            </div>
+
+            <span class="input ggn-input height-stretch set-name-padding js-input js-scrollable">
+              <div class="scrollbar js-scrollbar">
+                <div class="track js-scrollbar-track">
+                  <div class="handle js-scrollbar-handle"></div>
+                </div>
+              </div>
+              <span class="input-shell ggn-input-shell height-stretch">
+                <div class="scroll-content js-input-shell js-scroll-outer height-stretch">
+                  <div class="ggn-input-padding"><textarea class="js-custom-input js-scroll-inner" spellcheck="false"></textarea></div>
+                </div>
+              </span>
+            </span>
+
+            <div class="form-action-buttons">
+              <a class="button primary js-make-grid make-grid" data-localize="ui.btnMakeGrid" href>Make grid</a>
+              <a class="button primary js-save-set save-set" href>Save set</a>
+              <a class="button icon-button js-new-set add-set" href><span class="icon icon-set-add"></span></a>
+              <a class="button icon-button js-cancel-set cancel-set" href><span class="icon icon-clear-guides"></span></a>
+            </div>
         </div> <!-- end .tabbed-page -->
 
         <div class="tabbed-page js-tabbed-page js-sets-form" data-page="sets">
