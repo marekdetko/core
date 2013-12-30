@@ -135,7 +135,7 @@ class GuideGuide
 
   completeSetup: =>
     @refreshSets()
-    @log "Running #{ @guideguideData.application.name } in #{ @guideguideData.application.env } mode"
+    @bridge.log "Running #{ @guideguideData.application.name } in #{ @guideguideData.application.env } mode"
 
     @siteUrl = 'http://localhost:5000' if @guideguideData.application.env is 'development'
     @messages = new Messages @guideguideData.application.localization
@@ -333,7 +333,7 @@ class GuideGuide
   # Returns nothing.
   onToggleGuides: (event) =>
     event.preventDefault()
-    @log "Toggle guides"
+    @bridge.log "Toggle guides"
     @bridge.toggleGuides()
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
@@ -379,7 +379,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickTopGuide: (event) =>
-    @log 'Top guide'
+    @bridge.log 'Top guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -390,7 +390,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickBottomGuide: (event) =>
-    @log 'Bottom guide'
+    @bridge.log 'Bottom guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -401,7 +401,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickLeftGuide: (event) =>
-    @log 'Left guide'
+    @bridge.log 'Left guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -412,7 +412,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickRightGuide: (event) =>
-    @log 'Bottom guide'
+    @bridge.log 'Bottom guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -423,7 +423,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickHorizontalMidpoint: (event) =>
-    @log 'Horizontal midpoint'
+    @bridge.log 'Horizontal midpoint'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -434,7 +434,7 @@ class GuideGuide
   #
   # Return nothing.
   onClickVerticalMidpoint: (event) =>
-    @log 'Vertical midpoint'
+    @bridge.log 'Vertical midpoint'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
@@ -455,7 +455,7 @@ class GuideGuide
   #
   # Returns nothing.
   clearGuides: =>
-    @log "Clear guides"
+    @bridge.log "Clear guides"
     @bridge.getDocumentInfo (info) =>
       if info.isSelection
         bounds =
@@ -472,7 +472,7 @@ class GuideGuide
   #
   # Returns nothing.
   resetGuides: =>
-    @log 'Resetting guides'
+    @bridge.log 'Resetting guides'
     @bridge.resetGuides()
 
   # Highlight all field icons of similar type
@@ -570,7 +570,7 @@ class GuideGuide
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
     @checkForUpdates (data) =>
-      @log data
+      @bridge.log data
       if data? and data.hasUpdate
         @panel.trigger 'guideguide:hasUpdate', data
         $('.js-has-update-button').click()
@@ -582,7 +582,7 @@ class GuideGuide
   # Returns nothing.
   checkForUpdates: (callback) =>
     return unless @guideguideData.application.checkForUpdates
-    @log 'Checking for updates'
+    @bridge.log 'Checking for updates'
 
     $.ajax
       type: 'GET'
@@ -593,7 +593,7 @@ class GuideGuide
       success: (data) =>
         callback(data)
       error: (error) =>
-        @log error
+        @bridge.log error
 
   onClickHasUpdateButton: (event) =>
     event.preventDefault()
@@ -623,7 +623,7 @@ class GuideGuide
   # Returns nothing.
   submitData: =>
     return unless @guideguideData.settings.reportAnonymousData and @guideguideData.application.submitAnonymousData
-    @log 'Submitting anonymous data'
+    @bridge.log 'Submitting anonymous data'
 
     data =
       usage: @guideguideData.panel.usage
@@ -643,7 +643,7 @@ class GuideGuide
       url: "#{ @siteUrl }/install"
       data: data
       success: (data) =>
-        @log 'Anonymous data submitted successfully'
+        @bridge.log 'Anonymous data submitted successfully'
         if typeof data is 'object' and data._id
           @guideguideData.panel.id = data._id
           @saveGuideGuideData()
@@ -671,14 +671,14 @@ class GuideGuide
   # Returns nothing.
   onClickImportSets: (event) =>
     event.preventDefault()
-    @log 'Import sets'
+    @bridge.log 'Import sets'
 
   # Export GuideGuide's sets to an external source.
   #
   # Returns nothing.
   onClickExportSets: (event) =>
     event.preventDefault()
-    @log 'Export sets'
+    @bridge.log 'Export sets'
 
   # When exiting the Custom form, clear it.
   #
@@ -713,7 +713,7 @@ class GuideGuide
     string     = $('.js-custom-input').val().replace /^\s+|\s+$/g, ''
     name       = $form.find('.js-set-name').val()
     executable = $form.find('.js-input.is-invalid').length == 0 and string.length > 0 and name.length > 0
-    @log 'foo: ', $form
+    @bridge.log 'foo: ', $form
 
 
     if executable
@@ -744,7 +744,7 @@ class GuideGuide
 
       if executable
         console.group 'New set from form'
-        @log string
+        @bridge.log string
         console.groupEnd()
         obj =
           name: data.name
@@ -767,9 +767,9 @@ class GuideGuide
         return unless info
 
         console.group 'Add guides from grid form'
-        @log string
+        @bridge.log string
         ggn = new GGN(string)
-        @log ggn
+        @bridge.log ggn
         @getGuidesFromGGN new GGN(string), info, (guides) =>
           @bridge.addGuides guides
         console.groupEnd()
@@ -788,8 +788,8 @@ class GuideGuide
     @bridge.getDocumentInfo (info) =>
       return unless info
 
-      @log 'Custom Grid'
-      @log string
+      @bridge.log 'Custom Grid'
+      @bridge.log string
       @getGuidesFromGGN new GGN(string), info, (guides) =>
         @bridge.addGuides guides
       @recordUsage 'custom'
@@ -806,9 +806,9 @@ class GuideGuide
     @bridge.getDocumentInfo (info) =>
       return unless info
 
-      @log 'Grid from set'
+      @bridge.log 'Grid from set'
       data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
-      @log data
+      @bridge.log data
       @getGuidesFromGGN new GGN(data[0].string), info, (guides) =>
         @bridge.addGuides guides
       @recordUsage 'set'
@@ -838,7 +838,7 @@ class GuideGuide
   #
   # Returns nothing.
   refreshSets: =>
-    @log 'Refreshing sets'
+    @bridge.log 'Refreshing sets'
     $list = @panel.find('.js-set-list')
     $list.find('.js-set').remove()
     $.each @guideguideData.sets, (index,set) =>
