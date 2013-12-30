@@ -59,10 +59,13 @@ class GuideGuide
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
 
-    @bridge.getData @initData
-
     @panel.find('textarea').autosize();
 
+  # Start GuideGuide
+  #
+  # Returns nothing
+  init: =>
+    @bridge.getData @initData
 
   # When data is received from the application, handle it.
   #
