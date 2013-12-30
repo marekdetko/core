@@ -48,4 +48,4 @@ class Messages
       $.each @messages['en-us'], (key,value) =>
         @[key] = if @messages[i18n][key] then @messages[i18n][key] else value
     else
-      window.GuideGuide.log "GuideGuide doesn't recognize the \"#{ i18n }\" localization."
+      parent.window.PanelBridge.log "GuideGuide doesn't recognize the \"#{ i18n }\" localization."
