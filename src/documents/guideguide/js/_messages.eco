@@ -39,7 +39,7 @@ class Messages
       'ggn.moreThanOneHundredPercent': "A grid cannot contain more than 100%"
       'ggn.stringFromExistingGuides': "String generated from existing guides"
       'alertTitle.welcome': "Welcome to GuideGuide"
-      'alertMessage.welcome': "This is the begining of something special. To help GuideGuide get more and more awesome, would you allow GuideGuide to submit anonymous usage data?"
+      'alertMessage.welcome': "This is the beginning of something special. To help GuideGuide get more and more awesome, would you allow GuideGuide to submit anonymous usage data?"
       'alertTitle.upToDate': "Up to date"
       'alertMessage.upToDate': "GuideGuide is currently up to date."
 
