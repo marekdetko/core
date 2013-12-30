@@ -63,18 +63,6 @@ class GuideGuide
 
     @panel.find('textarea').autosize();
 
-  # A built in logger, because not all enviroments contain a console
-  log: (args...) =>
-    if console?
-      console.log.apply(console, args)
-    else
-      @application.trigger 'guideguide:consoleLog', args.join ' '
-
-  error: (args...) =>
-    if console?
-      console.error.apply(console, args)
-    else
-      @application.trigger 'guideguide:consoleError', args.join ' '
 
   # When data is received from the application, handle it.
   #
