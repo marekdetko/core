@@ -45,7 +45,7 @@ class Messages
 
   constructor: (i18n) ->
     if @messages[i18n]
-      $.each @messages['en-us'], (key,value) =>
+      $.each @messages['en_us'], (key,value) =>
         @[key] = if @messages[i18n][key] then @messages[i18n][key] else value
     else
       parent.window.PanelBridge.log "GuideGuide doesn't recognize the \"#{ i18n }\" localization."
