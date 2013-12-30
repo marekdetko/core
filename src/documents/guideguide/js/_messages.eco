@@ -5,7 +5,7 @@ write: false
 # Get an object full of messages in the correct language
 class Messages
   messages:
-    'en-us':
+    'en_us':
       'ui.grid': "Grid"
       'ui.custom': "Custom"
       'ui.sets': "Sets"
