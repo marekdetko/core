@@ -383,7 +383,7 @@ class GuideGuide
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides guides
+        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'top'
 
   # Draw a guide at the bottom of the document/selection
@@ -394,7 +394,7 @@ class GuideGuide
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides guides
+        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'bottom'
 
   # Draw a guide to the left of the document/selection
@@ -405,7 +405,7 @@ class GuideGuide
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides guides
+        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'left'
 
   # Draw a guide to the right of the document/selection
@@ -416,7 +416,7 @@ class GuideGuide
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides guides
+        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'right'
 
   # Draw a guide at the horizontal midpoint of the document/selection
@@ -427,7 +427,7 @@ class GuideGuide
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides guides
+        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'horizontalMidpoint'
 
   # Draw a guide at the vertical midpoint of the document/selection
@@ -438,7 +438,7 @@ class GuideGuide
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides guides
+        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'verticalMidpoint'
 
   # Handle clicks on the clear guides button.
@@ -463,8 +463,7 @@ class GuideGuide
           left:   info.offsetX
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
-        @application.trigger 'guideguide:getExistingGuides', (guides) =>
-          @bridge.addGuides @consolidateGuides [guides], bounds, true
+        @bridge.addGuides @consolidateGuides [guides, info.existingGuides], bounds, true
       else
         @resetGuides()
 
@@ -771,7 +770,7 @@ class GuideGuide
         ggn = new GGN(string)
         @bridge.log ggn
         @getGuidesFromGGN new GGN(string), info, (guides) =>
-          @bridge.addGuides guides
+          @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
         console.groupEnd()
         @recordUsage 'grid'
 
@@ -791,7 +790,7 @@ class GuideGuide
       @bridge.log 'Custom Grid'
       @bridge.log string
       @getGuidesFromGGN new GGN(string), info, (guides) =>
-        @bridge.addGuides guides
+        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'custom'
 
   # Create a grid from a set
@@ -810,7 +809,7 @@ class GuideGuide
       data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
       @bridge.log data
       @getGuidesFromGGN new GGN(data[0].string), info, (guides) =>
-        @bridge.addGuides guides
+        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'set'
 
   createNewSet: (data) =>
@@ -864,37 +863,36 @@ class GuideGuide
       prevVertical = if info.isSelection then info.offsetX else 0
       guides = []
 
-      @bridge.getExistingGuides (guides) =>
-        if info.isSelection
-          bounds =
-            top:    info.offsetY
-            left:   info.offsetX
-            bottom: info.offsetY + info.height
-            right:  info.offsetX + info.width
-          guides = @consolidateGuides [guides], bounds
+      if info.isSelection
+        bounds =
+          top:    info.offsetY
+          left:   info.offsetX
+          bottom: info.offsetY + info.height
+          right:  info.offsetX + info.width
+        guides = @consolidateGuides [guides, info.existingGuides], bounds
 
-        guides.sort (a,b) =>
-          a.location - b.location
+      guides.sort (a,b) =>
+        a.location - b.location
 
-        $.each guides, (index, guide) =>
-          if guide.orientation == 'vertical'
-            xString = "#{ xString }#{ guide.location - prevVertical }px | "
-            prevVertical = guide.location
-          if guide.orientation == 'horizontal'
-            yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
-            prevHorizontal = guide.location
+      $.each guides, (index, guide) =>
+        if guide.orientation == 'vertical'
+          xString = "#{ xString }#{ guide.location - prevVertical }px | "
+          prevVertical = guide.location
+        if guide.orientation == 'horizontal'
+          yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
+          prevHorizontal = guide.location
 
-        xString = "#{ xString }(h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if xString != ''
-        yString = "#{ yString }(v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if yString != ''
+      xString = "#{ xString }(h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if xString != ''
+      yString = "#{ yString }(v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if yString != ''
 
-        string = ''
-        string += xString
-        string += '\n' if xString
-        string += yString
-        string += '\n' if yString
-        string += '\n# ' + @messages['ggn.stringFromExistingGuides'] if xString or yString
+      string = ''
+      string += xString
+      string += '\n' if xString
+      string += yString
+      string += '\n' if yString
+      string += '\n# ' + @messages['ggn.stringFromExistingGuides'] if xString or yString
 
-        @showCustomSetForm string
+      @showCustomSetForm string
 
   # On the Grid page, display and focus new set name field, swap in save set
   # and cancel set buttons, hide make grid and new set buttons.
@@ -1029,8 +1027,7 @@ class GuideGuide
         else
           insertMarker += item.value
 
-    @bridge.getExistingGuides (existing) =>
-      callback @consolidateGuides [guides, existing]
+    callback(guides)
 
   # Create a collection of unique guides from multiple guide arrrays
   #
