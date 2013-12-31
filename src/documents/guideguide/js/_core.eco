@@ -463,7 +463,8 @@ class GuideGuide
           left:   info.offsetX
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
-        @bridge.addGuides @consolidateGuides [guides, info.existingGuides], bounds, true
+        @resetGuides()
+        @bridge.addGuides @consolidateGuides [info.existingGuides], bounds, true
       else
         @resetGuides()
 
@@ -1068,6 +1069,8 @@ class GuideGuide
         unique = !uniqueGuides[el.orientation][el.location]
         uniqueGuides[el.orientation][el.location] = true
         unique
+
+    guides
 
   stringifyFormData: (data, callback) ->
     @bridge.getDocumentInfo (info) =>
