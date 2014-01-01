@@ -25,6 +25,7 @@ class GuideGuide
     @panel.on 'click', '.js-grid-form .js-save-set', @onSaveSetFromGrid
     @panel.on 'click', '.js-custom-form .js-save-set', @onSaveSetFromCustom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onEditSet
+    @panel.on 'guideguide:exitform', @onExitGridForm
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'guideguide:hasUpdate', @onHasUpdate
     @panel.on 'guideguide:upToDate', @onUpToDate
@@ -680,6 +681,12 @@ class GuideGuide
     event.preventDefault()
     @bridge.log 'Export sets'
 
+  # When exiting the Custom form, clear the new set form.
+  #
+  # Returns nothing
+  onExitGridForm: =>
+    @hideNewSetForm()
+
   # When exiting the Custom form, clear it.
   #
   # Returns nothing
@@ -743,9 +750,9 @@ class GuideGuide
       executable = $form.find('.js-input.is-invalid').length == 0 and string
 
       if executable
-        console.group 'New set from form'
+        @bridge.group 'New set from form'
         @bridge.log string
-        console.groupEnd()
+        @bridge.groupEnd()
         obj =
           name: data.name
           ggn: string
@@ -766,13 +773,13 @@ class GuideGuide
       @bridge.getDocumentInfo (info) =>
         return unless info
 
-        console.group 'Add guides from grid form'
+        @bridge.group 'Add guides from grid form'
         @bridge.log string
         ggn = new GGN(string)
         @bridge.log ggn
         @getGuidesFromGGN new GGN(string), info, (guides) =>
           @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
-        console.groupEnd()
+        @bridge.groupEnd()
         @recordUsage 'grid'
 
   # Create a grid from the Custom form
