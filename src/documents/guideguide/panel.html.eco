@@ -316,13 +316,22 @@
 
     <div class="alert height-stretch">
       <div class="alert-body js-alert-body">
-        <div class="alert-content height-stretch">
-          <h3 class="alert-title js-alert-title"></h3>
-          <div class="js-alert-message"></div>
+        <div class="alert-content height-stretch js-scrollable">
+          <div class="scrollbar js-scrollbar">
+            <div class="track js-scrollbar-track">
+              <div class="handle js-scrollbar-handle"></div>
+            </div>
+          </div>
+          <div class="js-scroll-outer scroll-outer scroll-content height-stretch">
+            <div class="js-scroll-inner">
+              <h3 class="alert-title js-alert-title"></h3>
+              <div class="js-alert-message"></div>
+            </div>
+          </div>
+          <ul class="button-group js-alert-actions">
+            <li><a class="button" href>Button</a></li>
+          </ul>
         </div>
-        <ul class="button-group js-alert-actions">
-          <li><a class="button" href>Button</a></li>
-        </ul>
       </div>
       <!-- alerts will go here when needed -->
     </div>
