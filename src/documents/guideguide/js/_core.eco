@@ -1327,4 +1327,7 @@ class GuideGuide
       #guideguide .alert-body {
         background-color: #{ colors.background };
       }
+      #guideguide .scrollbar .handle {
+        background-color: #{ colors.buttonSelect };
+      }
       """
