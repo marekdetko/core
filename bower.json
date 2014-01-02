@@ -1,6 +1,6 @@
 {
   "name": "guideguide",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "main": [
     "guideguide/panel.html"
   ],
@@ -12,7 +12,8 @@
     "bower.json",
     "docpad.coffee",
     "package.json",
-    "dev/"
+    "dev/",
+    "plugins/"
   ],
   "devDependencies": {
     "fauxtoshop": "https://github.com/guideguide/fauxtoshop.git"
