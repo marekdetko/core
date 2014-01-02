@@ -383,7 +383,7 @@ class GuideGuide
     @bridge.log 'Top guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
-      @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
+      @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'top'
 
@@ -394,7 +394,7 @@ class GuideGuide
     @bridge.log 'Bottom guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
-      @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
+      @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'bottom'
 
@@ -405,7 +405,7 @@ class GuideGuide
     @bridge.log 'Left guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
-      @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
+      @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'left'
 
@@ -416,7 +416,7 @@ class GuideGuide
     @bridge.log 'Bottom guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
-      @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
+      @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'right'
 
@@ -427,7 +427,7 @@ class GuideGuide
     @bridge.log 'Horizontal midpoint'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
-      @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
+      @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'horizontalMidpoint'
 
@@ -438,7 +438,7 @@ class GuideGuide
     @bridge.log 'Vertical midpoint'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
-      @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
+      @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'verticalMidpoint'
 
@@ -890,8 +890,8 @@ class GuideGuide
           yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
           prevHorizontal = guide.location
 
-      xString = "#{ xString }(h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if xString != ''
-      yString = "#{ yString }(v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if yString != ''
+      xString = "#{ xString }(v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if xString != ''
+      yString = "#{ yString }(h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if yString != ''
 
       string = ''
       string += xString
@@ -947,13 +947,12 @@ class GuideGuide
 
     $.each ggn.grids, (index,grid) =>
       positionOffset   = 0
-      gridOrientation  = grid.options.orientation.value
-      guideOrientation = if gridOrientation == 'horizontal' then 'vertical' else 'horizontal'
+      guideOrientation = grid.options.orientation.value
       wholePixels      = grid.options.calculation && grid.options.calculation.value == 'pixel'
       fill             = grid.gaps.fill if grid.gaps.fill
-      measuredWidth    = if gridOrientation == 'horizontal' then info.width else info.height
+      measuredWidth    = if guideOrientation == 'horizontal' then info.height else info.width
       measuredWidth    = grid.options.width.value if grid.options.width
-      offset           = if gridOrientation == 'horizontal' then info.offsetX else info.offsetY
+      offset           = if guideOrientation == 'horizontal' then info.offsetY else info.offsetX
 
       # Calculate and set the value percent gaps. This calculation is based on
       # the document or selection width, less the margin area if it is greater
@@ -1013,7 +1012,7 @@ class GuideGuide
       # Figure out where the grid starts
       insertMarker = offset
       if grid.options.width && grid.options.position.value == 'last'
-        areaWidth = if gridOrientation == 'horizontal' then info.width else info.height
+        areaWidth = if guideOrientation == 'horizontal' then info.height else info.width
         insertMarker += areaWidth - grid.options.width.value
 
       if grid.options.offset
@@ -1084,14 +1083,14 @@ class GuideGuide
       string = ''
       # Variables
       if data.countColumn or data.widthColumn
-        string += '$v =|'
+        string += '$h =|'
         string += if data.widthColumn then data.widthColumn else '~'
         string += '|'
         string += data.gutterColumn if data.gutterColumn
         string += '\n'
 
       if data.countRow or data.widthRow
-        string += '$h =|'
+        string += '$v =|'
         string += if data.widthRow then data.widthRow else '~'
         string += '|'
         string += data.gutterRow if data.gutterRow
@@ -1103,7 +1102,7 @@ class GuideGuide
         # Grids
         string += '|' + data.marginLeft.replace(/\s/g,'').split(',').join('|') + '|' if data.marginLeft
         if data.countColumn or data.widthColumn
-          string += '|$v*'
+          string += '|$h*'
           string += data.countColumn - 1 if data.countColumn
           string += '|' + data.widthColumn if (data.widthColumn and data.countColumn) or (data.widthColumn and data.gutterColumn)
           string += '|~' if !data.widthColumn
@@ -1111,7 +1110,7 @@ class GuideGuide
         if data.marginRight
           string += '~' if (!data.countColumn and !data.widthColumn) or (data.countColumn and data.widthColumn)
           string += '|' + data.marginRight.replace(/\s/g,'').split(',').join('|') + '|'
-        string += ' (hF'
+        string += ' (vF'
         string += 'f' if @guideguideData.settings.horizontalRemainder == 'first'
         string += 'c' if @guideguideData.settings.horizontalRemainder == 'center'
         string += 'l' if @guideguideData.settings.horizontalRemainder == 'last'
@@ -1122,7 +1121,7 @@ class GuideGuide
         # Grids
         string += '|' + data.marginTop.replace(/\s/g,'').split(',').join('|') + '|' if data.marginTop
         if data.countRow or data.widthRow
-          string += '|$h*'
+          string += '|$v*'
           string += data.countRow - 1 if data.countRow
           string += '|' + data.widthRow if (data.widthRow and data.countRow) or (data.widthRow and data.gutterRow)
           string += '|~' if !data.widthRow
@@ -1130,7 +1129,7 @@ class GuideGuide
         if data.marginBottom
           string += '~' if (!data.countRow and !data.widthRow) or (data.countRow and data.widthRow)
           string += '|' + data.marginBottom.replace(/\s/g,'').split(',').join('|') + '|'
-        string += ' (vF'
+        string += ' (hF'
         string += 'f' if @guideguideData.settings.horizontalRemainder == 'first'
         string += 'c' if @guideguideData.settings.horizontalRemainder == 'center'
         string += 'l' if @guideguideData.settings.horizontalRemainder == 'last'
