@@ -13,7 +13,7 @@
   <script type="text/javascript" src="scrollable.js"></script>
 </head>
 <body class="guideguide-dark height-stretch" data-environment="development">
-  <div id="guideguide" class="height-stretch" data-theme="guideguide-dark">
+  <div id="guideguide" class="height-stretch">
 
     <div class="panel-forms js-tabbed-pages height-stretch">
 
