@@ -30,7 +30,7 @@ class Unit
   # Returns an object
   constructor: (string, integerOnly = false) ->
     @original = string = string.replace /\s/g, ''
-    unitGaps = string.match(/([-0-9\.]+)([a-z]+)?/i) || ''
+    unitGaps = string.match(/([-0-9\.]+)([a-z%]+)?/i) || ''
     @value    = parseFloat unitGaps[1]
 
     if !integerOnly

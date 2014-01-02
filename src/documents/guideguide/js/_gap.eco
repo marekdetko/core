@@ -110,7 +110,6 @@ class Gap
   # Returns nothing
   convertPercent: (value) =>
     @isPercent = false
-    @parseType ''
     @unit = new Unit "#{value}px"
     @value = @unit.value
 
