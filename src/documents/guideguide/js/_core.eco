@@ -869,7 +869,7 @@ class GuideGuide
       yString = ''
       prevHorizontal = if info.isSelection then info.offsetY else 0
       prevVertical = if info.isSelection then info.offsetX else 0
-      guides = []
+      guides = info.existingGuides
 
       if info.isSelection
         bounds =
