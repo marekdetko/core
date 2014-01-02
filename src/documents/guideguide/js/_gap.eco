@@ -92,7 +92,7 @@ class Gap
     @unit       = new Unit(gapBits[1])
     @multiplier = parseInt(gapBits[4]) || 1
     @isFill     = gapBits[3] && !gapBits[4] || false
-      
+
     @isPercent = true if @unit.type == '%'
 
     if @unit.isValid
@@ -173,5 +173,5 @@ class Gap
       $.each variables[@id], (index, gap) ->
         sum += gap.value if gap.value
       sum
-    else 
+    else
       @value * @multiplier
