@@ -529,6 +529,9 @@ class GuideGuide
         $input.trigger 'input:invalidate'
       else
         @formatField $input
+        $form  = $input.closest '.js-grid-form'
+        @stringifyFormData @getFormData($form), (string) =>
+          @panel.find('.js-custom-input').val(string).trigger('autosize.resize')
 
   # Clear any error reporting text and reset the Custom forms's validation
   #
@@ -1115,12 +1118,12 @@ class GuideGuide
         if data.marginRight
           string += '~' if (!data.countColumn and !data.widthColumn) or (data.countColumn and data.widthColumn)
           string += '|' + data.marginRight.replace(/\s/g,'').split(',').join('|') + '|'
-        string += ' (vF'
+        string += '( vF'
         string += 'f' if @guideguideData.settings.horizontalRemainder == 'first'
         string += 'c' if @guideguideData.settings.horizontalRemainder == 'center'
         string += 'l' if @guideguideData.settings.horizontalRemainder == 'last'
         string += 'p' if @guideguideData.settings.calculation == 'pixel'
-        string += ')\n'
+        string += ' )\n'
 
       if data.marginTop or data.marginBottom or data.countRow or data.widthRow
         # Grids
@@ -1134,12 +1137,12 @@ class GuideGuide
         if data.marginBottom
           string += '~' if (!data.countRow and !data.widthRow) or (data.countRow and data.widthRow)
           string += '|' + data.marginBottom.replace(/\s/g,'').split(',').join('|') + '|'
-        string += ' (hF'
+        string += '( hF'
         string += 'f' if @guideguideData.settings.horizontalRemainder == 'first'
         string += 'c' if @guideguideData.settings.horizontalRemainder == 'center'
         string += 'l' if @guideguideData.settings.horizontalRemainder == 'last'
         string += 'p' if @guideguideData.settings.calculation == 'pixel'
-        string += ')'
+        string += ' )'
 
       # Rather than fiddle with spaces and duplicate pipes in the string calculation,
       # just do a second pass on the string to clean everything up.
