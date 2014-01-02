@@ -5,6 +5,8 @@ write: false
 class GuideGuide
   siteUrl: 'http://guideguide.me'
   env:     'production'
+  activeDocumentInfo:
+    ruler: 'px'
 
   constructor: (@panel) ->
     # Set the application element. This is used because in certain cases
@@ -158,12 +160,15 @@ class GuideGuide
     $elements.each (index, el) =>
       $(el).text @messages[$(el).attr('data-localize')]
 
-  # When an input gains focus, outline it's parent.
+  # When an input gains focus, outline it's parent and get the most up to date
+  # document info.
   #
   # Returns nothing.
   onInputFocus: (event) =>
     $(event.currentTarget).closest('.js-input').addClass 'is-focused'
     $(event.currentTarget).closest('.js-input').removeClass 'is-invalid'
+    @bridge.getDocumentInfo (info) =>
+      @activeDocumentInfo = info
 
   # When an input blurs remove its outline.
   #

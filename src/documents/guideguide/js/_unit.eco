@@ -79,7 +79,7 @@ parseUnit = (string) ->
     when 'percent', 'pct', '%'
       '%'
     when ''
-      'px'
+      parseUnit parent.window.GuideGuide.activeDocumentInfo.ruler
     else
       null
 
