@@ -45,8 +45,6 @@ a {
   width: 12px;
   z-index: 30;
   opacity: 0;
-  -webkit-transition: opacity .2s;
-  transition: opactiy .2s;
 
   .scrollbar-is-visible & {
     opacity: 1;
@@ -89,8 +87,6 @@ table {
   z-index: 2;
 
   a {
-    transition: 0.1s color linear;
-
     &.is-selected { cursor: default; }
   }
 
@@ -124,8 +120,6 @@ table {
     display: inline-block;
     margin-left: 3px;
   }
-
-  a { transition: 0.1s color linear; }
 }
 
 .update-indicator { display: none; }
