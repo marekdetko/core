@@ -7,11 +7,11 @@ resolution = 72
 # A unit of measurement formed of a number/type pair
 
 class Unit
-  
-  # number - entered value 
+
+  # number - entered value
   value: null
 
-  # string - entered unit type, reformatted 
+  # string - entered unit type, reformatted
   type: null
 
   # number - value in base units, usually pixels
@@ -98,7 +98,7 @@ getBaseValue = (value,type) ->
     px:    resolution,
     point: 72,
     pica:  6
-  
+
   # convert to inch
   switch type
     when 'cm' then tmpValue = value / unitCanon.cm
@@ -112,4 +112,4 @@ getBaseValue = (value,type) ->
     else
       return 0
 
-  tmpValue * unitCanon.px 
+  tmpValue * unitCanon.px
