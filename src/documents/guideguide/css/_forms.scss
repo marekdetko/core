@@ -5,6 +5,7 @@ input, textarea {
   font: normal normal 13px/16px $sansSerif;
   outline: none;
   background-color: transparent;
+  @include userSelect(text);
 }
 
 .set-name-row {

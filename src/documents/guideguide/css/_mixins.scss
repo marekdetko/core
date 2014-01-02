@@ -3,11 +3,11 @@ $tabsHeight: 38px;
 
 $sansSerif: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-@mixin noSelect(){
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+@mixin userSelect($val){
+  -webkit-user-select: $val;
+  -moz-user-select: $val;
+  -ms-user-select: $val;
+  user-select: $val;
 }
 
 @mixin theme( $background, $dark, $darker, $darkest, $text, $highlight, $darkHighlight, $danger ){

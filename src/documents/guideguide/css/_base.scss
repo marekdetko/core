@@ -1,7 +1,7 @@
 @import 'mixins';
 
 *{
-  @include noSelect();
+  @include userSelect(none);
 }
 
 body {
