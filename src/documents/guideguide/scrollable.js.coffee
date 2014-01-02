@@ -13,6 +13,8 @@ $(document).on 'mouseenter', '.js-scrollable', (event) ->
     clearTimeout scrollTimer
     $container.addClass 'scrollbar-is-visible'
 
+    adjustScrollbar $container
+
     $container.on 'drag.scrollable', '.js-scrollbar-handle', ( $.throttle 100, onDragHandle )
 
     $container.on 'dragstart.scrollable', '.js-scrollbar-handle', (event, ui) ->
@@ -21,10 +23,13 @@ $(document).on 'mouseenter', '.js-scrollable', (event) ->
     $container.on 'dragstop.scrollable', '.js-scrollbar-handle', (event, ui) ->
       $container.removeClass 'is-dragging'
 
-    $contentOuter.on 'scroll.scrollable', ( $.throttle 50, onScroll )
+    $contentOuter.on 'scroll.scrollable', ( $.throttle 50, onAdjust )
 
     # When the scroll area is left, wait, then hide the scroll handle.
     $(document).on 'mouseleave.scrollable', '.js-scrollable', onMouseLeave
+
+    $(document).on 'keyup.scrollable', '.js-scrollable', onAdjust
+
 
 # While the scrollbar handle is being dragged, scroll the content
 #
@@ -40,11 +45,19 @@ onDragHandle = (event, ui) ->
   scrollAmmount = ( $contentInner.outerHeight() - $contentOuter.outerHeight() ) * scrollPercent
   $contentOuter.scrollTop(scrollAmmount)
 
-# While scrolling, update the scrollbar handle position
+# While scrolling or when the scroll area size changes, update the scrollbar
+# handle position
 #
 # Returns nothing
-onScroll = (event) ->
-  $container    = $(this).closest '.js-scrollable'
+onAdjust = (event) ->
+  adjustScrollbar $(event.currentTarget).closest '.js-scrollable'
+
+# Reposition the scroll handle based on the scroll content's position
+#
+#   $container - instance of .js-scrollable for this scrollbar
+#
+# Returns nothing
+adjustScrollbar = ($container) ->
   return if $container.hasClass 'is-dragging'
 
   $contentOuter = $container.find '.js-scroll-outer'
