@@ -30,7 +30,6 @@ class GuideGuide
     @panel.on 'guideguide:exitform', @onExitGridForm
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'guideguide:hasUpdate', @onHasUpdate
-    @panel.on 'guideguide:upToDate', @onUpToDate
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
     @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
@@ -589,11 +588,14 @@ class GuideGuide
     event.preventDefault()
     @checkForUpdates (data) =>
       @bridge.log data
-      if data? and data.hasUpdate
-        @panel.trigger 'guideguide:hasUpdate', data
-        $('.js-has-update-button').click()
+      if data?
+        if data.hasUpdate
+          @panel.trigger 'guideguide:hasUpdate', data
+          $('.js-has-update-button').click()
+        else
+          @alert 'upToDate', ['primary js-dismiss-alert'], ['ui.btnOk']
       else
-        @panel.trigger 'guideguide:upToDate'
+        @alert 'updateError', ['primary js-dismiss-alert'], ['ui.btnOk']
 
   # Check the GuideGuide server to see if there are updates available.
   #
@@ -612,6 +614,7 @@ class GuideGuide
         callback(data)
       error: (error) =>
         @bridge.log error
+        callback(null)
 
   onClickHasUpdateButton: (event) =>
     event.preventDefault()
@@ -627,12 +630,6 @@ class GuideGuide
     button = @panel.find '.js-has-update-button'
     button.attr 'data-title', data.title
     button.attr 'data-message', data.message
-
-  # When this install is up to date, tell the user if they initiated the update check
-  #
-  # Returns nothing
-  onUpToDate: (event) =>
-    @alert 'upToDate', ['primary js-dismiss-alert'], ['ui.btnOk']
 
   # Submit anonymous usage data to the GuideGuide servers.
   #
