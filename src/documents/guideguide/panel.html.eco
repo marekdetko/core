@@ -12,8 +12,8 @@
   <script type="text/javascript" src="script.js"></script>
   <script type="text/javascript" src="scrollable.js"></script>
 </head>
-<body class="guideguide-dark height-stretch" data-environment="development">
-  <div id="guideguide" class="height-stretch">
+<body class="height-stretch">
+  <div id="guideguide" class="height-stretch hideUI">
 
     <div class="panel-forms js-tabbed-pages height-stretch">
 

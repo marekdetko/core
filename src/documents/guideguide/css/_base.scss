@@ -18,6 +18,8 @@ a {
   overflow: hidden;
 
   &.has-update .update-indicator { display: inline-block; }
+
+  &.hideUI { display: none; }
 }
 
 .panel-forms {

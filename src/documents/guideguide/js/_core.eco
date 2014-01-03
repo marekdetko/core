@@ -69,6 +69,7 @@ class GuideGuide
   # Returns nothing
   init: =>
     @bridge.getData @initData
+    @panel.removeClass 'hideUI'
 
   # When data is received from the application, handle it.
   #
