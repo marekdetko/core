@@ -1097,14 +1097,14 @@ class GuideGuide
       string = ''
       # Variables
       if data.countColumn or data.widthColumn
-        string += '$h =|'
+        string += '$v =|'
         string += if data.widthColumn then data.widthColumn else '~'
         string += '|'
         string += data.gutterColumn if data.gutterColumn
         string += '\n'
 
       if data.countRow or data.widthRow
-        string += '$v =|'
+        string += '$h =|'
         string += if data.widthRow then data.widthRow else '~'
         string += '|'
         string += data.gutterRow if data.gutterRow
@@ -1116,7 +1116,7 @@ class GuideGuide
         # Grids
         string += '|' + data.marginLeft.replace(/\s/g,'').split(',').join('|') + '|' if data.marginLeft
         if data.countColumn or data.widthColumn
-          string += '|$h*'
+          string += '|$v*'
           string += data.countColumn - 1 if data.countColumn
           string += '|' + data.widthColumn if (data.widthColumn and data.countColumn) or (data.widthColumn and data.gutterColumn)
           string += '|~' if !data.widthColumn
@@ -1135,7 +1135,7 @@ class GuideGuide
         # Grids
         string += '|' + data.marginTop.replace(/\s/g,'').split(',').join('|') + '|' if data.marginTop
         if data.countRow or data.widthRow
-          string += '|$v*'
+          string += '|$h*'
           string += data.countRow - 1 if data.countRow
           string += '|' + data.widthRow if (data.widthRow and data.countRow) or (data.widthRow and data.gutterRow)
           string += '|~' if !data.widthRow
