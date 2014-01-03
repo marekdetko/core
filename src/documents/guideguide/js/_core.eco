@@ -388,9 +388,10 @@ class GuideGuide
     @bridge.log 'Top guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
+      return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
-    @recordUsage 'top'
+      @recordUsage 'top'
 
   # Draw a guide at the bottom of the document/selection
   #
@@ -399,9 +400,10 @@ class GuideGuide
     @bridge.log 'Bottom guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
+      return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
-    @recordUsage 'bottom'
+      @recordUsage 'bottom'
 
   # Draw a guide to the left of the document/selection
   #
@@ -421,9 +423,10 @@ class GuideGuide
     @bridge.log 'Bottom guide'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
+      return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
-    @recordUsage 'right'
+      @recordUsage 'right'
 
   # Draw a guide at the horizontal midpoint of the document/selection
   #
@@ -432,9 +435,10 @@ class GuideGuide
     @bridge.log 'Horizontal midpoint'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
+      return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
-    @recordUsage 'horizontalMidpoint'
+      @recordUsage 'horizontalMidpoint'
 
   # Draw a guide at the vertical midpoint of the document/selection
   #
@@ -443,17 +447,21 @@ class GuideGuide
     @bridge.log 'Vertical midpoint'
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
+      return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
         @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
-    @recordUsage 'verticalMidpoint'
+      @recordUsage 'verticalMidpoint'
 
   # Handle clicks on the clear guides button.
   #
   # Returns nothing.
   onClickClearGuides: (event) =>
     event.preventDefault()
-    @clearGuides()
-    @recordUsage 'clear'
+    @bridge.getDocumentInfo (info) =>
+      return unless info.hasOpenDocuments
+
+      @clearGuides()
+      @recordUsage 'clear'
 
   # Removes guides from the document based on document or selection
   #
@@ -779,7 +787,7 @@ class GuideGuide
       return unless $form.find('.js-input.is-invalid').length == 0 and string
 
       @bridge.getDocumentInfo (info) =>
-        return unless info
+        return unless info and info.hasOpenDocuments
 
         @bridge.group 'Add guides from grid form'
         @bridge.log string
@@ -801,7 +809,7 @@ class GuideGuide
     return unless $form.find('.js-input.is-invalid').length == 0 and string
 
     @bridge.getDocumentInfo (info) =>
-      return unless info
+      return unless info and info.hasOpenDocuments
 
       @bridge.log 'Custom Grid'
       @bridge.log string
@@ -819,7 +827,7 @@ class GuideGuide
     return unless $set.length
 
     @bridge.getDocumentInfo (info) =>
-      return unless info
+      return unless info and info.hasOpenDocuments
 
       @bridge.log 'Grid from set'
       data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
