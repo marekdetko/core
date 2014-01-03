@@ -102,20 +102,20 @@ class GuideGuide
         id: 0
         name:'Outline'
         string: """
-        | ~ | (hFl)
         | ~ | (vFl)
+        | ~ | (hFl)
         """
       ,
         id: 1
         name:'Two column grid'
         string: """
-        | ~ | ~ | (hFl)
+        | ~ | ~ | (vFl)
         """
       ,
         id: 2
         name:'Three column grid'
         string: """
-        | ~ | ~ | ~ | (hFl)
+        | ~ | ~ | ~ | (vFl)
         """
     ]
 
