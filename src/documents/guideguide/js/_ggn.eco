@@ -66,7 +66,7 @@ class GGN
     # Variables
     $.each @variables, (key,variable) =>
       string += "$#{if key != '_' then key else ''} = "
-      gaps = $.map variable, (gap) -> return gap.toString()
+      gaps = $.map variable.forString, (gap) -> return gap.toString()
       string += gaps.join ' '
       string += '\n'
 
@@ -104,7 +104,7 @@ class GGN
 
     # Check variables
     $.each @variables, (key,variable) =>
-      $.each variable, (index, gap) =>
+      $.each variable.all, (index, gap) =>
         @error @messages['ggn.fillInVariable'] if gap.isFill
         @defineGapErrors gap if !gap.isValid and gap != '|'
         variablesWithWildcards[key] = true if gap.isWildcard
@@ -229,7 +229,7 @@ class GGN
     varRegexp = /^\$([^=\s]+)?\s?=\s?(.*)$/i
     varBits = varRegexp.exec(string)
     id = varBits[1] if varBits[1]
-    @variables[id] = @parseGridGaps(varBits[2]).all
+    @variables[id] = @parseGridGaps(varBits[2])
 
   # Turn a grid string into a collection of gaps and objects
   #
@@ -261,7 +261,7 @@ class GGN
     gap = gap.clone() if gap != '|'
 
     if gap.isVariable and !gap.isFill
-      $.each @variables[gap.id], (index, varGap) =>
+      $.each @variables[gap.id].all, (index, varGap) =>
           gaps = @allocate varGap, gaps
         gaps
     else
