@@ -3,7 +3,7 @@ write: false
 ---
 
 variableRegexp = /^\$([^\*]+)?(\*(\d+)?)?$/i
-arbitraryRegexp   = /^(([-0-9]+)?[a-z%]+)(\*(\d+)?)?$/i
+arbitraryRegexp   = /^(([-0-9\.]+)?[a-z%]+)(\*(\d+)?)?$/i
 wildcardRegexp = /^~(\*(\d*))?$/i
 
 # A unit object that defines a guide position with special properties
