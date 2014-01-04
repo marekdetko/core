@@ -138,8 +138,8 @@ class GGN
     obj =
       options:
         orientation:
-          id: "h"
-          value: 'horizontal'
+          id: "v"
+          value: 'vertical'
         position:
           id: "F"
           value: 'first'
