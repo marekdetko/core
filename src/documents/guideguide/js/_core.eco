@@ -143,14 +143,17 @@ class GuideGuide
     @siteUrl = 'http://localhost:5000' if @guideguideData.application.env is 'development'
     @messages = new Messages @guideguideData.application.localization
 
-    @alert 'welcome', ['primary js-confirm-submit-data', 'js-deny-submit-data'], ['ui.yes','ui.no'] if !@guideguideData.panel.askedAboutAnonymousData
+    if !@guideguideData.panel.askedAboutAnonymousData and @guideguideData.application.env != 'demo'
+      @alert 'welcome', ['primary js-confirm-submit-data', 'js-deny-submit-data'], ['ui.yes','ui.no']
 
     @refreshSettings()
     @localizeUI()
-    @submitData()
-    @checkForUpdates (data) =>
-      if data? and data.hasUpdate
-        @panel.trigger 'guideguide:hasUpdate', data
+
+    if @guideguideData.application.env != 'demo'
+      @submitData()
+      @checkForUpdates (data) =>
+        if data? and data.hasUpdate
+          @panel.trigger 'guideguide:hasUpdate', data
 
   # Update all of the ui with local messages.
   #
