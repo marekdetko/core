@@ -923,7 +923,7 @@ class GuideGuide
   showCustomSetForm: (prefill = '') =>
     @panel.find('.js-custom-tab').click() if @panel.find('.js-sets-tab.is-selected').length
     @panel.addClass('is-showing-new-set-form')
-    @panel.find('.js-custom-input').val prefill
+    @panel.find('.js-custom-input').val prefill if prefill
     @panel.find('.js-custom-form').find('.js-set-name').focus()
 
   # On the Custom page, display and focus new set name field, swap in save set
