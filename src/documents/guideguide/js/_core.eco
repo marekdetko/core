@@ -212,8 +212,14 @@ class GuideGuide
   # Returns nothing
   onClickCheckbox: (event) =>
     event.preventDefault()
-    val = $(event.currentTarget).attr('data-checked') == 'true'
-    $(event.currentTarget).attr 'data-checked', !val
+    $checkbox = $(event.currentTarget)
+    val       = $checkbox.attr('data-checked') == 'true'
+    $checkbox.attr 'data-checked', !val
+
+    $form  = $checkbox.closest '.js-grid-form'
+    @stringifyFormData @getFormData($form), (string) =>
+      @updateCustomField string
+
 
   # Show the alert and fill its fields
   #
