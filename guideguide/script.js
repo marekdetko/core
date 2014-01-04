@@ -175,7 +175,9 @@
         'alertTitle.welcome': "Welcome to GuideGuide",
         'alertMessage.welcome': "This is the beginning of something special. To help GuideGuide get more and more awesome, would you allow GuideGuide to submit anonymous usage data?",
         'alertTitle.upToDate': "Up to date",
-        'alertMessage.upToDate': "GuideGuide is currently up to date."
+        'alertMessage.upToDate': "GuideGuide is currently up to date.",
+        'alertTitle.updateError': "Error Checking for updates",
+        'alertMessage.updateError': "Unfortunately, GuideGuide is unable to check for updates at this time. Please try again later."
       }
     };
 
@@ -224,6 +226,7 @@
       this.variables = {};
       this.grids = [];
       this.ggn = string.replace(/\s*$|^\s*/gm, '');
+      this.messages = parent.window.GuideGuide.messages;
       this.parse(this.ggn);
     }
 
@@ -297,12 +300,12 @@
       percent = 0;
       variablesWithWildcards = {};
       if (!this.grids.length) {
-        this.error(messages['ggn.noGrids']);
+        this.error(this.messages['ggn.noGrids']);
       }
       $.each(this.variables, function(key, variable) {
         return $.each(variable, function(index, gap) {
           if (gap.isFill) {
-            _this.error(messages['ggn.fillInVariable']);
+            _this.error(_this.messages['ggn.fillInVariable']);
           }
           if (!gap.isValid && gap !== '|') {
             _this.defineGapErrors(gap);
@@ -325,13 +328,13 @@
         var width;
         $.each(grid.gaps.all, function(index, gap) {
           if (gap.isVariable && variablesWithWildcards[gap.id]) {
-            _this.error(messages['ggn.noWildcardsInVariableFills']);
+            _this.error(_this.messages['ggn.noWildcardsInVariableFills']);
           }
           if (gap.isVariable && !_this.variables[gap.id]) {
-            _this.error(messages['ggn.undefinedVariable']);
+            _this.error(_this.messages['ggn.undefinedVariable']);
           }
           if (gap.isFill && fills) {
-            _this.error(messages['ggn.oneFillPerGrid']);
+            _this.error(_this.messages['ggn.oneFillPerGrid']);
           }
           if (!gap.isValid && gap !== '|') {
             _this.defineGapErrors(gap);
@@ -354,7 +357,7 @@
         }
       });
       if (percent > 100) {
-        this.error(messages['ggn.moreThanOneHundredPercent']);
+        this.error(this.messages['ggn.moreThanOneHundredPercent']);
       }
       return this.wildcards = wildcards;
     };
@@ -565,7 +568,7 @@
 
   variableRegexp = /^\$([^\*]+)?(\*(\d+)?)?$/i;
 
-  arbitraryRegexp = /^(([-0-9]+)?[a-z%]+)(\*(\d+)?)?$/i;
+  arbitraryRegexp = /^(([-0-9\.]+)?[a-z%]+)(\*(\d+)?)?$/i;
 
   wildcardRegexp = /^~(\*(\d*))?$/i;
 
@@ -780,7 +783,6 @@
       this.getAppVersion = __bind(this.getAppVersion, this);
       this.getVersion = __bind(this.getVersion, this);
       this.submitData = __bind(this.submitData, this);
-      this.onUpToDate = __bind(this.onUpToDate, this);
       this.onHasUpdate = __bind(this.onHasUpdate, this);
       this.onClickHasUpdateButton = __bind(this.onClickHasUpdateButton, this);
       this.checkForUpdates = __bind(this.checkForUpdates, this);
@@ -841,7 +843,6 @@
       this.panel.on('guideguide:exitform', this.onExitGridForm);
       this.panel.on('guideguide:exitcustom', this.onExitCustomForm);
       this.panel.on('guideguide:hasUpdate', this.onHasUpdate);
-      this.panel.on('guideguide:upToDate', this.onUpToDate);
       this.panel.on('focus', '.js-custom-form .js-custom-input', this.onFocusCustomForm);
       this.panel.on('blur', '.js-custom-form .js-custom-input', this.onBlurCustomForm);
       this.panel.on('click', '.js-action-bar .js-clear', this.onClickClearGuides);
@@ -876,7 +877,8 @@
     }
 
     GuideGuide.prototype.init = function() {
-      return this.bridge.getData(this.initData);
+      this.bridge.getData(this.initData);
+      return this.panel.removeClass('hideUI');
     };
 
     GuideGuide.prototype.initData = function(data) {
@@ -906,15 +908,15 @@
         {
           id: 0,
           name: 'Outline',
-          string: "| ~ | (hFl)\n| ~ | (vFl)"
+          string: "| ~ | (vFl)\n| ~ | (hFl)"
         }, {
           id: 1,
           name: 'Two column grid',
-          string: "| ~ | ~ | (hFl)"
+          string: "| ~ | ~ | (vFl)"
         }, {
           id: 2,
           name: 'Three column grid',
-          string: "| ~ | ~ | ~ | (hFl)"
+          string: "| ~ | ~ | ~ | (vFl)"
         }
       ];
       settingsBootstrap = {
@@ -941,17 +943,19 @@
         this.siteUrl = 'http://localhost:5000';
       }
       this.messages = new Messages(this.guideguideData.application.localization);
-      if (!this.guideguideData.panel.askedAboutAnonymousData) {
+      if (!this.guideguideData.panel.askedAboutAnonymousData && this.guideguideData.application.env !== 'demo') {
         this.alert('welcome', ['primary js-confirm-submit-data', 'js-deny-submit-data'], ['ui.yes', 'ui.no']);
       }
       this.refreshSettings();
       this.localizeUI();
-      this.submitData();
-      return this.checkForUpdates(function(data) {
-        if ((data != null) && data.hasUpdate) {
-          return _this.panel.trigger('guideguide:hasUpdate', data);
-        }
-      });
+      if (this.guideguideData.application.env !== 'demo') {
+        this.submitData();
+        return this.checkForUpdates(function(data) {
+          if ((data != null) && data.hasUpdate) {
+            return _this.panel.trigger('guideguide:hasUpdate', data);
+          }
+        });
+      }
     };
 
     GuideGuide.prototype.localizeUI = function() {
@@ -1152,24 +1156,30 @@
       var _this = this;
       this.bridge.log('Top guide');
       event.preventDefault();
-      this.bridge.getDocumentInfo(function(info) {
-        return _this.getGuidesFromGGN(new GGN("| ~ (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
+      return this.bridge.getDocumentInfo(function(info) {
+        if (!info.hasOpenDocuments) {
+          return;
+        }
+        _this.getGuidesFromGGN(new GGN("| ~ (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
           return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
         });
+        return _this.recordUsage('top');
       });
-      return this.recordUsage('top');
     };
 
     GuideGuide.prototype.onClickBottomGuide = function(event) {
       var _this = this;
       this.bridge.log('Bottom guide');
       event.preventDefault();
-      this.bridge.getDocumentInfo(function(info) {
-        return _this.getGuidesFromGGN(new GGN("~ | (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
+      return this.bridge.getDocumentInfo(function(info) {
+        if (!info.hasOpenDocuments) {
+          return;
+        }
+        _this.getGuidesFromGGN(new GGN("~ | (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
           return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
         });
+        return _this.recordUsage('bottom');
       });
-      return this.recordUsage('bottom');
     };
 
     GuideGuide.prototype.onClickLeftGuide = function(event) {
@@ -1188,42 +1198,57 @@
       var _this = this;
       this.bridge.log('Bottom guide');
       event.preventDefault();
-      this.bridge.getDocumentInfo(function(info) {
-        return _this.getGuidesFromGGN(new GGN("~ | (v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
+      return this.bridge.getDocumentInfo(function(info) {
+        if (!info.hasOpenDocuments) {
+          return;
+        }
+        _this.getGuidesFromGGN(new GGN("~ | (v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
           return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
         });
+        return _this.recordUsage('right');
       });
-      return this.recordUsage('right');
     };
 
     GuideGuide.prototype.onClickHorizontalMidpoint = function(event) {
       var _this = this;
       this.bridge.log('Horizontal midpoint');
       event.preventDefault();
-      this.bridge.getDocumentInfo(function(info) {
-        return _this.getGuidesFromGGN(new GGN("~ | ~ (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
+      return this.bridge.getDocumentInfo(function(info) {
+        if (!info.hasOpenDocuments) {
+          return;
+        }
+        _this.getGuidesFromGGN(new GGN("~ | ~ (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
           return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
         });
+        return _this.recordUsage('horizontalMidpoint');
       });
-      return this.recordUsage('horizontalMidpoint');
     };
 
     GuideGuide.prototype.onClickVerticalMidpoint = function(event) {
       var _this = this;
       this.bridge.log('Vertical midpoint');
       event.preventDefault();
-      this.bridge.getDocumentInfo(function(info) {
-        return _this.getGuidesFromGGN(new GGN("~ | ~ (v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
+      return this.bridge.getDocumentInfo(function(info) {
+        if (!info.hasOpenDocuments) {
+          return;
+        }
+        _this.getGuidesFromGGN(new GGN("~ | ~ (v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
           return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
         });
+        return _this.recordUsage('verticalMidpoint');
       });
-      return this.recordUsage('verticalMidpoint');
     };
 
     GuideGuide.prototype.onClickClearGuides = function(event) {
+      var _this = this;
       event.preventDefault();
-      this.clearGuides();
-      return this.recordUsage('clear');
+      return this.bridge.getDocumentInfo(function(info) {
+        if (!info.hasOpenDocuments) {
+          return;
+        }
+        _this.clearGuides();
+        return _this.recordUsage('clear');
+      });
     };
 
     GuideGuide.prototype.clearGuides = function() {
@@ -1345,11 +1370,15 @@
       event.preventDefault();
       return this.checkForUpdates(function(data) {
         _this.bridge.log(data);
-        if ((data != null) && data.hasUpdate) {
-          _this.panel.trigger('guideguide:hasUpdate', data);
-          return $('.js-has-update-button').click();
+        if (data != null) {
+          if (data.hasUpdate) {
+            _this.panel.trigger('guideguide:hasUpdate', data);
+            return $('.js-has-update-button').click();
+          } else {
+            return _this.alert('upToDate', ['primary js-dismiss-alert'], ['ui.btnOk']);
+          }
         } else {
-          return _this.panel.trigger('guideguide:upToDate');
+          return _this.alert('updateError', ['primary js-dismiss-alert'], ['ui.btnOk']);
         }
       });
     };
@@ -1371,7 +1400,8 @@
           return callback(data);
         },
         error: function(error) {
-          return _this.bridge.log(error);
+          _this.bridge.log(error);
+          return callback(null);
         }
       });
     };
@@ -1390,10 +1420,6 @@
       button = this.panel.find('.js-has-update-button');
       button.attr('data-title', data.title);
       return button.attr('data-message', data.message);
-    };
-
-    GuideGuide.prototype.onUpToDate = function(event) {
-      return this.alert('upToDate', ['primary js-dismiss-alert'], ['ui.btnOk']);
     };
 
     GuideGuide.prototype.submitData = function() {
@@ -1539,7 +1565,7 @@
         }
         return _this.bridge.getDocumentInfo(function(info) {
           var ggn;
-          if (!info) {
+          if (!(info && info.hasOpenDocuments)) {
             return;
           }
           _this.bridge.group('Add guides from grid form');
@@ -1565,7 +1591,7 @@
         return;
       }
       return this.bridge.getDocumentInfo(function(info) {
-        if (!info) {
+        if (!(info && info.hasOpenDocuments)) {
           return;
         }
         _this.bridge.log('Custom Grid');
@@ -1587,7 +1613,7 @@
       }
       return this.bridge.getDocumentInfo(function(info) {
         var data;
-        if (!info) {
+        if (!(info && info.hasOpenDocuments)) {
           return;
         }
         _this.bridge.log('Grid from set');
@@ -1708,7 +1734,9 @@
         this.panel.find('.js-custom-tab').click();
       }
       this.panel.addClass('is-showing-new-set-form');
-      this.panel.find('.js-custom-input').val(prefill);
+      if (prefill) {
+        this.panel.find('.js-custom-input').val(prefill);
+      }
       return this.panel.find('.js-custom-form').find('.js-set-name').focus();
     };
 
@@ -1890,7 +1918,7 @@
         var string;
         string = '';
         if (data.countColumn || data.widthColumn) {
-          string += '$h =|';
+          string += '$v =|';
           string += data.widthColumn ? data.widthColumn : '~';
           string += '|';
           if (data.gutterColumn) {
@@ -1899,7 +1927,7 @@
           string += '\n';
         }
         if (data.countRow || data.widthRow) {
-          string += '$v =|';
+          string += '$h =|';
           string += data.widthRow ? data.widthRow : '~';
           string += '|';
           if (data.gutterRow) {
@@ -1915,7 +1943,7 @@
             string += '|' + data.marginLeft.replace(/\s/g, '').split(',').join('|') + '|';
           }
           if (data.countColumn || data.widthColumn) {
-            string += '|$h*';
+            string += '|$v*';
             if (data.countColumn) {
               string += data.countColumn - 1;
             }
@@ -1953,7 +1981,7 @@
             string += '|' + data.marginTop.replace(/\s/g, '').split(',').join('|') + '|';
           }
           if (data.countRow || data.widthRow) {
-            string += '|$v*';
+            string += '|$h*';
             if (data.countRow) {
               string += data.countRow - 1;
             }
