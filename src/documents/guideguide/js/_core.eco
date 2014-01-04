@@ -85,6 +85,7 @@ class GuideGuide
       launchCount: 0
       askedAboutAnonymousData: false
       usage:
+        lifetime: 0
         guideActions: 0
         grid: 0
         custom: 0
@@ -401,7 +402,7 @@ class GuideGuide
     @bridge.getDocumentInfo (info) =>
       return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+        @addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'top'
 
   # Draw a guide at the bottom of the document/selection
@@ -413,7 +414,7 @@ class GuideGuide
     @bridge.getDocumentInfo (info) =>
       return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+        @addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'bottom'
 
   # Draw a guide to the left of the document/selection
@@ -424,7 +425,7 @@ class GuideGuide
     event.preventDefault()
     @bridge.getDocumentInfo (info) =>
       @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+        @addGuides @consolidateGuides([guides, info.existingGuides])
     @recordUsage 'left'
 
   # Draw a guide to the right of the document/selection
@@ -436,7 +437,7 @@ class GuideGuide
     @bridge.getDocumentInfo (info) =>
       return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+        @addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'right'
 
   # Draw a guide at the horizontal midpoint of the document/selection
@@ -448,7 +449,7 @@ class GuideGuide
     @bridge.getDocumentInfo (info) =>
       return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+        @addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'horizontalMidpoint'
 
   # Draw a guide at the vertical midpoint of the document/selection
@@ -460,7 +461,7 @@ class GuideGuide
     @bridge.getDocumentInfo (info) =>
       return unless info.hasOpenDocuments
       @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+        @addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'verticalMidpoint'
 
   # Handle clicks on the clear guides button.
@@ -489,7 +490,7 @@ class GuideGuide
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
         @resetGuides()
-        @bridge.addGuides @consolidateGuides [info.existingGuides], bounds, true
+        @addGuides @consolidateGuides [info.existingGuides], bounds, true
       else
         @resetGuides()
 
@@ -499,6 +500,11 @@ class GuideGuide
   resetGuides: =>
     @bridge.log 'Resetting guides'
     @bridge.resetGuides()
+
+  addGuides: (guides) =>
+    @guideguideData.panel.usage.lifetime += guides.length
+    @saveGuideGuideData()
+    @bridge.addGuides guides
 
   # Highlight all field icons of similar type
   #
@@ -803,7 +809,7 @@ class GuideGuide
         ggn = new GGN(string)
         @bridge.log ggn
         @getGuidesFromGGN new GGN(string), info, (guides) =>
-          @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+          @addGuides @consolidateGuides([guides, info.existingGuides])
         @bridge.groupEnd()
         @recordUsage 'grid'
 
@@ -823,7 +829,7 @@ class GuideGuide
       @bridge.log 'Custom Grid'
       @bridge.log string
       @getGuidesFromGGN new GGN(string), info, (guides) =>
-        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+        @addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'custom'
 
   # Create a grid from a set
@@ -842,7 +848,7 @@ class GuideGuide
       data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
       @bridge.log data
       @getGuidesFromGGN new GGN(data[0].string), info, (guides) =>
-        @bridge.addGuides @consolidateGuides([guides, info.existingGuides])
+        @addGuides @consolidateGuides([guides, info.existingGuides])
       @recordUsage 'set'
 
   createNewSet: (data) =>
