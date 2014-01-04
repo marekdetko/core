@@ -44,6 +44,8 @@ class Messages
       'alertMessage.upToDate': "GuideGuide is currently up to date."
       'alertTitle.updateError': "Error Checking for updates"
       'alertMessage.updateError': "Unfortunately, GuideGuide is unable to check for updates at this time. Please try again later."
+      'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area."
+      'help.remainder': "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels."
 
   constructor: (i18n) ->
     if @messages[i18n]

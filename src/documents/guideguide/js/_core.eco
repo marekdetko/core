@@ -49,6 +49,7 @@ class GuideGuide
     @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
     @panel.on 'click', '.js-dropdown', @onToggleDropdown
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
+    @panel.on 'click', '.js-help-target', @onClickHelpTarget
     @panel.on 'click', '.js-import-sets', @onClickImportSets
     @panel.on 'click', '.js-export-sets', @onClickExportSets
     @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
@@ -196,6 +197,13 @@ class GuideGuide
 
     $inputs.focus() if $inputs.length
     $textAreas.focus() if $textAreas.length
+
+  # Hide and reveal help text.
+  #
+  # Returns nothing
+  onClickHelpTarget: (event) =>
+    event.preventDefault()
+    $(event.currentTarget).closest('.js-help').toggleClass "is-helping"
 
   # Show the alert and fill its fields
   #

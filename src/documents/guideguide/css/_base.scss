@@ -259,3 +259,17 @@ table {
 
   #guideguide.has-alert & { display: block; }
 }
+
+.help-text {
+  display: none;
+  padding: 0 3px;
+  margin: 0 0 10px;
+
+  .is-helping & { display: block; }
+}
+
+.help-target {
+  font-size: 9px;
+  font-weight: bold;
+  vertical-align: top;
+}
