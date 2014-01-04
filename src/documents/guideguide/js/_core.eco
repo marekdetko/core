@@ -506,6 +506,12 @@ class GuideGuide
     @saveGuideGuideData()
     @bridge.addGuides guides
 
+  # Updates the text in the custom field and resizes it
+  #
+  # Returns nothing
+  updateCustomField: (text) =>
+    @panel.find('.js-custom-input').val(text).trigger('autosize.resize')
+
   # Highlight all field icons of similar type
   #
   # Returns nothing.
@@ -556,7 +562,7 @@ class GuideGuide
         @formatField $input
         $form  = $input.closest '.js-grid-form'
         @stringifyFormData @getFormData($form), (string) =>
-          @panel.find('.js-custom-input').val(string).trigger('autosize.resize')
+          @updateCustomField string
 
   # Clear any error reporting text and reset the Custom forms's validation
   #
@@ -940,7 +946,7 @@ class GuideGuide
   showCustomSetForm: (prefill = '') =>
     @panel.find('.js-custom-tab').click() if @panel.find('.js-sets-tab.is-selected').length
     @panel.addClass('is-showing-new-set-form')
-    @panel.find('.js-custom-input').val prefill if prefill
+    @updateCustomField prefill if prefill
     @panel.find('.js-custom-form').find('.js-set-name').focus()
 
   # On the Custom page, display and focus new set name field, swap in save set
