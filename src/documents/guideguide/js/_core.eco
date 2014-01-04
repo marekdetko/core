@@ -50,6 +50,7 @@ class GuideGuide
     @panel.on 'click', '.js-dropdown', @onToggleDropdown
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
     @panel.on 'click', '.js-help-target', @onClickHelpTarget
+    @panel.on 'click', '.js-checkbox', @onClickCheckbox
     @panel.on 'click', '.js-import-sets', @onClickImportSets
     @panel.on 'click', '.js-export-sets', @onClickExportSets
     @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
@@ -205,6 +206,14 @@ class GuideGuide
   onClickHelpTarget: (event) =>
     event.preventDefault()
     $(event.currentTarget).closest('.js-help').toggleClass "is-helping"
+
+  # Toggle checkboxes
+  #
+  # Returns nothing
+  onClickCheckbox: (event) =>
+    event.preventDefault()
+    val = $(event.currentTarget).attr('data-checked') == 'true'
+    $(event.currentTarget).attr 'data-checked', !val
 
   # Show the alert and fill its fields
   #

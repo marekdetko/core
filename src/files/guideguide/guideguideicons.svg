@@ -7,6 +7,7 @@
 <font-face font-family="guideguideicons" font-weight="400" font-stretch="normal" units-per-em="1024" ascent="832" descent="-192" />
 <missing-glyph horiz-adv-x="1024" />
 <glyph glyph-name="arrow-up" unicode="&#xf017;" d="M320 640l-320-384h192v-256h256v256h192l-320 384z" horiz-adv-x="640" />
+<glyph glyph-name="check" unicode="&#xf018;" d="M640 640l-384-384-128 128-128-128 256-256 512 512-128 128z" horiz-adv-x="768" />
 <glyph glyph-name="clear-guides" unicode="&#xf00d;" d="M512 768c-247 0-448-201-448-448s201-448 448-448 448 201 448 448-201 448-448 448z m0-128c65 0 126-20 176-53l-443-443c-33 51-53 111-53 176 0 177 143 320 320 320z m0-640c-65 0-126 20-177 53l443 443c34-51 53-111 53-177 0-177-143-320-320-320z" horiz-adv-x="1024" />
 <glyph glyph-name="count-column" unicode="&#xf005;" d="M256 256v128h-128v-128h128z m320 0v128h-128v-128h128z m320 0v128h-128v-128h128z m-896 576v-1024h64v1024h-64z m384-1024v1024h-64v-1024h64z m256 1024v-1024h64v1024h-64z m384-1024v1024h-64v-1024h64z" horiz-adv-x="1024" />
 <glyph glyph-name="count-row" unicode="&#xf004;" d="M448 576h128v128h-128v-128z m0-320h128v128h-128v-128z m0-320h128v128h-128v-128z m576 896h-1024v-64h1024v64z m-1024-384h1024v64h-1024v-64z m1024-256h-1024v-64h1024v64z m-1024-384h1024v64h-1024v-64z" horiz-adv-x="1024" />
