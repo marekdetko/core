@@ -235,7 +235,7 @@
     GGN.prototype.parse = function(string) {
       var lines,
         _this = this;
-      string = string.replace(/^[\s]+|[\s]+$/mg, '').replace(/[^\S\n]+\|[^\S\n]+/g, '|').replace(/\|+/g, ' | ');
+      string = string.replace(/^[\s]+|[\s]+$/mg, '').replace(/[^\S\n]*\|[^\S\n]*/g, '|').replace(/\|+/g, ' | ').replace(/^[\s]+|[\s]+$/mg, '');
       lines = string.split(/\n/g);
       $.each(lines, function(index, line) {
         if (/^\$.*?\s?=.*$/i.test(line)) {
@@ -733,7 +733,7 @@
       }
       if (this.isVariable) {
         sum = 0;
-        $.each(variables[this.id], function(index, gap) {
+        $.each(variables[this.id].all, function(index, gap) {
           if (gap.value) {
             return sum += gap.value;
           }
@@ -1746,8 +1746,8 @@
           fillWidth = 0;
           for (i = _i = 1; 1 <= fillIterations ? _i <= fillIterations : _i >= fillIterations; i = 1 <= fillIterations ? ++_i : --_i) {
             if (fill.isVariable) {
-              fillCollection = fillCollection.concat(ggn.variables[fill.id]);
-              fillWidth += _this.sum(ggn.variables[fill.id], 'value');
+              fillCollection = fillCollection.concat(ggn.variables[fill.id].all);
+              fillWidth += _this.sum(ggn.variables[fill.id].all, 'value');
             } else {
               newGap = fill.clone();
               newGap.isFill = false;
