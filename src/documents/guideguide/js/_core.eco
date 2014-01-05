@@ -378,9 +378,11 @@ class GuideGuide
   # Increment a usage counter of a given property.
   #
   #   property - usage property to increment
+  #   count    - number of guides being added
   #
   # Returns nothing.
-  recordUsage: (property) =>
+  recordUsage: (property, count) =>
+    @guideguideData.panel.usage.lifetime += count
     if @guideguideData.panel.usage[property]?
       @guideguideData.panel.usage[property]++
       @guideguideData.panel.usage.guideActions++ if property isnt 'clear'
