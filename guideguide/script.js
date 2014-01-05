@@ -177,7 +177,9 @@
         'alertTitle.upToDate': "Up to date",
         'alertMessage.upToDate': "GuideGuide is currently up to date.",
         'alertTitle.updateError': "Error Checking for updates",
-        'alertMessage.updateError': "Unfortunately, GuideGuide is unable to check for updates at this time. Please try again later."
+        'alertMessage.updateError': "Unfortunately, GuideGuide is unable to check for updates at this time. Please try again later.",
+        'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area.",
+        'help.remainder': "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels."
       }
     };
 
@@ -233,7 +235,7 @@
     GGN.prototype.parse = function(string) {
       var lines,
         _this = this;
-      string = string.replace(/[^\S\n]*?\|[^\S\n]*?/g, ' | ').replace(/^[^\S\n]+|[^\S\n]+$/mg, '');
+      string = string.replace(/^[\s]+|[\s]+$/mg, '').replace(/[^\S\n]+\|[^\S\n]+/g, '|').replace(/\|+/g, ' | ');
       lines = string.split(/\n/g);
       $.each(lines, function(index, line) {
         if (/^\$.*?\s?=.*$/i.test(line)) {
@@ -254,7 +256,7 @@
       $.each(this.variables, function(key, variable) {
         var gaps;
         string += "$" + (key !== '_' ? key : '') + " = ";
-        gaps = $.map(variable, function(gap) {
+        gaps = $.map(variable.forString, function(gap) {
           return gap.toString();
         });
         string += gaps.join(' ');
@@ -303,7 +305,7 @@
         this.error(this.messages['ggn.noGrids']);
       }
       $.each(this.variables, function(key, variable) {
-        return $.each(variable, function(index, gap) {
+        return $.each(variable.all, function(index, gap) {
           if (gap.isFill) {
             _this.error(_this.messages['ggn.fillInVariable']);
           }
@@ -367,8 +369,8 @@
       obj = {
         options: {
           orientation: {
-            id: "h",
-            value: 'horizontal'
+            id: "v",
+            value: 'vertical'
           },
           position: {
             id: "F",
@@ -470,7 +472,7 @@
       if (varBits[1]) {
         id = varBits[1];
       }
-      return this.variables[id] = this.parseGridGaps(varBits[2]).all;
+      return this.variables[id] = this.parseGridGaps(varBits[2]);
     };
 
     GGN.prototype.parseGridGaps = function(string) {
@@ -506,7 +508,7 @@
         gap = gap.clone();
       }
       if (gap.isVariable && !gap.isFill) {
-        $.each(this.variables[gap.id], function(index, varGap) {
+        $.each(this.variables[gap.id].all, function(index, varGap) {
           return gaps = _this.allocate(varGap, gaps);
         });
         gaps;
@@ -795,6 +797,8 @@
       this.onClickDistributeIcon = __bind(this.onClickDistributeIcon, this);
       this.onMouseOutDistributeIcon = __bind(this.onMouseOutDistributeIcon, this);
       this.onMouseOverDistributeIcon = __bind(this.onMouseOverDistributeIcon, this);
+      this.updateCustomField = __bind(this.updateCustomField, this);
+      this.addGuidesfromGGN = __bind(this.addGuidesfromGGN, this);
       this.resetGuides = __bind(this.resetGuides, this);
       this.clearGuides = __bind(this.clearGuides, this);
       this.onClickClearGuides = __bind(this.onClickClearGuides, this);
@@ -818,6 +822,8 @@
       this.dismissAlert = __bind(this.dismissAlert, this);
       this.onClickDismissAlert = __bind(this.onClickDismissAlert, this);
       this.alert = __bind(this.alert, this);
+      this.onClickCheckbox = __bind(this.onClickCheckbox, this);
+      this.onClickHelpTarget = __bind(this.onClickHelpTarget, this);
       this.onClickInputBackground = __bind(this.onClickInputBackground, this);
       this.onInputInvalidate = __bind(this.onInputInvalidate, this);
       this.onInputBlur = __bind(this.onInputBlur, this);
@@ -862,6 +868,8 @@
       this.panel.on('click', '.js-toggle-guide-visibility', this.onToggleGuides);
       this.panel.on('click', '.js-dropdown', this.onToggleDropdown);
       this.panel.on('click', '.js-dropdown .js-dropdown-item', this.onClickDropdownItem);
+      this.panel.on('click', '.js-help-target', this.onClickHelpTarget);
+      this.panel.on('click', '.js-checkbox', this.onClickCheckbox);
       this.panel.on('click', '.js-import-sets', this.onClickImportSets);
       this.panel.on('click', '.js-export-sets', this.onClickExportSets);
       this.panel.on('click', '.js-confirm-submit-data', this.onConfirmSubmitData);
@@ -891,6 +899,7 @@
         launchCount: 0,
         askedAboutAnonymousData: false,
         usage: {
+          lifetime: 0,
           guideActions: 0,
           grid: 0,
           custom: 0,
@@ -997,6 +1006,24 @@
       if ($textAreas.length) {
         return $textAreas.focus();
       }
+    };
+
+    GuideGuide.prototype.onClickHelpTarget = function(event) {
+      event.preventDefault();
+      return $(event.currentTarget).closest('.js-help').toggleClass("is-helping");
+    };
+
+    GuideGuide.prototype.onClickCheckbox = function(event) {
+      var $checkbox, $form, val,
+        _this = this;
+      event.preventDefault();
+      $checkbox = $(event.currentTarget);
+      val = $checkbox.attr('data-checked') === 'true';
+      $checkbox.attr('data-checked', !val);
+      $form = $checkbox.closest('.js-grid-form');
+      return this.stringifyFormData(this.getFormData($form), function(string) {
+        return _this.updateCustomField(string);
+      });
     };
 
     GuideGuide.prototype.alert = function(data, buttonClasses, buttonNames) {
@@ -1126,7 +1153,8 @@
       return this.bridge.setData(this.guideguideData);
     };
 
-    GuideGuide.prototype.recordUsage = function(property) {
+    GuideGuide.prototype.recordUsage = function(property, count) {
+      this.guideguideData.panel.usage.lifetime += count;
       if (this.guideguideData.panel.usage[property] != null) {
         this.guideguideData.panel.usage[property]++;
         if (property !== 'clear') {
@@ -1153,90 +1181,33 @@
     };
 
     GuideGuide.prototype.onClickTopGuide = function(event) {
-      var _this = this;
-      this.bridge.log('Top guide');
       event.preventDefault();
-      return this.bridge.getDocumentInfo(function(info) {
-        if (!info.hasOpenDocuments) {
-          return;
-        }
-        _this.getGuidesFromGGN(new GGN("| ~ (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
-          return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-        });
-        return _this.recordUsage('top');
-      });
+      return this.addGuidesfromGGN("| ~ (h" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'top');
     };
 
     GuideGuide.prototype.onClickBottomGuide = function(event) {
-      var _this = this;
-      this.bridge.log('Bottom guide');
       event.preventDefault();
-      return this.bridge.getDocumentInfo(function(info) {
-        if (!info.hasOpenDocuments) {
-          return;
-        }
-        _this.getGuidesFromGGN(new GGN("~ | (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
-          return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-        });
-        return _this.recordUsage('bottom');
-      });
+      return this.addGuidesfromGGN("~ | (h" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'bottom');
     };
 
     GuideGuide.prototype.onClickLeftGuide = function(event) {
-      var _this = this;
-      this.bridge.log('Left guide');
       event.preventDefault();
-      this.bridge.getDocumentInfo(function(info) {
-        return _this.getGuidesFromGGN(new GGN("| ~ (v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
-          return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-        });
-      });
-      return this.recordUsage('left');
+      return this.addGuidesfromGGN("| ~ (v" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'left');
     };
 
     GuideGuide.prototype.onClickRightGuide = function(event) {
-      var _this = this;
-      this.bridge.log('Bottom guide');
       event.preventDefault();
-      return this.bridge.getDocumentInfo(function(info) {
-        if (!info.hasOpenDocuments) {
-          return;
-        }
-        _this.getGuidesFromGGN(new GGN("~ | (v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
-          return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-        });
-        return _this.recordUsage('right');
-      });
+      return this.addGuidesfromGGN("~ | (v" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'right');
     };
 
     GuideGuide.prototype.onClickHorizontalMidpoint = function(event) {
-      var _this = this;
-      this.bridge.log('Horizontal midpoint');
       event.preventDefault();
-      return this.bridge.getDocumentInfo(function(info) {
-        if (!info.hasOpenDocuments) {
-          return;
-        }
-        _this.getGuidesFromGGN(new GGN("~ | ~ (h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
-          return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-        });
-        return _this.recordUsage('horizontalMidpoint');
-      });
+      return this.addGuidesfromGGN("~ | ~ (h" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'horizontalMidpoint');
     };
 
     GuideGuide.prototype.onClickVerticalMidpoint = function(event) {
-      var _this = this;
-      this.bridge.log('Vertical midpoint');
       event.preventDefault();
-      return this.bridge.getDocumentInfo(function(info) {
-        if (!info.hasOpenDocuments) {
-          return;
-        }
-        _this.getGuidesFromGGN(new GGN("~ | ~ (v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")"), info, function(guides) {
-          return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-        });
-        return _this.recordUsage('verticalMidpoint');
-      });
+      return this.addGuidesfromGGN("~ | ~ (v" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'verticalMidpoint');
     };
 
     GuideGuide.prototype.onClickClearGuides = function(event) {
@@ -1274,6 +1245,27 @@
     GuideGuide.prototype.resetGuides = function() {
       this.bridge.log('Resetting guides');
       return this.bridge.resetGuides();
+    };
+
+    GuideGuide.prototype.addGuidesfromGGN = function(ggn, source) {
+      var _this = this;
+      return this.bridge.getDocumentInfo(function(info) {
+        var guides;
+        if (!(info && info.hasOpenDocuments)) {
+          return;
+        }
+        guides = [];
+        return _this.getGuidesFromGGN(new GGN(ggn), info, function(g) {
+          guides = _this.consolidateGuides([g, info.existingGuides]);
+          _this.bridge.log("Add guides from " + source);
+          _this.recordUsage(source, guides.length);
+          return _this.bridge.addGuides(guides);
+        });
+      });
+    };
+
+    GuideGuide.prototype.updateCustomField = function(text) {
+      return this.panel.find('.js-custom-input').val(text).trigger('autosize.resize');
     };
 
     GuideGuide.prototype.onMouseOverDistributeIcon = function(event) {
@@ -1320,7 +1312,7 @@
           this.formatField($input);
           $form = $input.closest('.js-grid-form');
           return this.stringifyFormData(this.getFormData($form), function(string) {
-            return _this.panel.find('.js-custom-input').val(string).trigger('autosize.resize');
+            return _this.updateCustomField(string);
           });
         }
       }
@@ -1541,9 +1533,8 @@
         var executable, obj;
         executable = $form.find('.js-input.is-invalid').length === 0 && string;
         if (executable) {
-          _this.bridge.group('New set from form');
+          _this.bridge.log('New set from form');
           _this.bridge.log(string);
-          _this.bridge.groupEnd();
           obj = {
             name: data.name,
             ggn: string
@@ -1563,69 +1554,32 @@
         if (!($form.find('.js-input.is-invalid').length === 0 && string)) {
           return;
         }
-        return _this.bridge.getDocumentInfo(function(info) {
-          var ggn;
-          if (!(info && info.hasOpenDocuments)) {
-            return;
-          }
-          _this.bridge.group('Add guides from grid form');
-          _this.bridge.log(string);
-          ggn = new GGN(string);
-          _this.bridge.log(ggn);
-          _this.getGuidesFromGGN(new GGN(string), info, function(guides) {
-            return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-          });
-          _this.bridge.groupEnd();
-          return _this.recordUsage('grid');
-        });
+        return _this.addGuidesfromGGN(string, 'grid');
       });
     };
 
     GuideGuide.prototype.onMakeGridFromCusom = function(event) {
-      var $form, string,
-        _this = this;
+      var $form, string;
       event.preventDefault();
       $form = this.panel.find('.js-custom-form');
       string = this.panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '');
       if (!($form.find('.js-input.is-invalid').length === 0 && string)) {
         return;
       }
-      return this.bridge.getDocumentInfo(function(info) {
-        if (!(info && info.hasOpenDocuments)) {
-          return;
-        }
-        _this.bridge.log('Custom Grid');
-        _this.bridge.log(string);
-        _this.getGuidesFromGGN(new GGN(string), info, function(guides) {
-          return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-        });
-        return _this.recordUsage('custom');
-      });
+      return this.addGuidesfromGGN(string, 'custom');
     };
 
     GuideGuide.prototype.onMakeGridFromSet = function(event) {
-      var $set,
-        _this = this;
+      var $set, data;
       event.preventDefault();
       $set = $('.js-set-list').find('.is-selected').first();
       if (!$set.length) {
         return;
       }
-      return this.bridge.getDocumentInfo(function(info) {
-        var data;
-        if (!(info && info.hasOpenDocuments)) {
-          return;
-        }
-        _this.bridge.log('Grid from set');
-        data = $.grep(_this.guideguideData.sets, function(set) {
-          return parseInt(set.id) === parseInt($set.attr('data-id'));
-        });
-        _this.bridge.log(data);
-        _this.getGuidesFromGGN(new GGN(data[0].string), info, function(guides) {
-          return _this.bridge.addGuides(_this.consolidateGuides([guides, info.existingGuides]));
-        });
-        return _this.recordUsage('set');
+      data = $.grep(this.guideguideData.sets, function(set) {
+        return parseInt(set.id) === parseInt($set.attr('data-id'));
       });
+      return this.addGuidesfromGGN(data[0].string, 'set');
     };
 
     GuideGuide.prototype.createNewSet = function(data) {
@@ -1735,7 +1689,7 @@
       }
       this.panel.addClass('is-showing-new-set-form');
       if (prefill) {
-        this.panel.find('.js-custom-input').val(prefill);
+        this.updateCustomField(prefill);
       }
       return this.panel.find('.js-custom-form').find('.js-set-name').focus();
     };
@@ -1912,109 +1866,98 @@
       return guides;
     };
 
+    GuideGuide.prototype.stringifyFormGrid = function(data) {
+      var column, firstMargString, gridString, gutter, lastMargString, optionsString, unit, varString;
+      data.count = parseInt(data.count);
+      firstMargString = '';
+      varString = '';
+      gridString = '';
+      lastMargString = '';
+      optionsString = '';
+      if (data.firstMargin) {
+        firstMargString = '|' + data.firstMargin.replace(/\s/g, '').split(',').join('|') + '|';
+      }
+      if (data.lastMargin) {
+        lastMargString = '|' + data.lastMargin.replace(/\s/g, '').split(',').join('|') + '|';
+      }
+      if (data.count || data.width) {
+        column = data.width ? data.width : '~';
+        if (data.columnMidpoint) {
+          if (data.width) {
+            unit = new Unit(data.width);
+          }
+          column = data.width ? "" + (unit.value / 2) + unit.type + "|" + (unit.value / 2) + unit.type : "~|~";
+        }
+        varString += "$" + data.orientation + "=|" + column + "|";
+        if (data.gutter && data.count !== 1) {
+          gutter = data.gutter ? data.gutter : '~';
+          if (data.gutterMidpoint) {
+            if (data.gutter) {
+              unit = new Unit(data.gutter);
+            }
+            gutter = data.gutter ? "" + (unit.value / 2) + unit.type + "|" + (unit.value / 2) + unit.type : "~|~";
+          }
+          varString = "$" + data.orientation + "=|" + column + "|" + gutter + "|";
+          if (data.count) {
+            varString += "\n$" + data.orientation + "C=|" + column + "|";
+          }
+        }
+      }
+      if (data.count || data.width) {
+        gridString += "$" + data.orientation;
+        if (data.count !== 1) {
+          gridString += "*";
+        }
+        if (data.count > 1 && data.gutter) {
+          gridString += data.count - 1;
+        }
+        if (data.count > 1 && !data.gutter) {
+          gridString += data.count;
+        }
+        if (data.count > 1 && data.gutter) {
+          gridString += "|$" + data.orientation + (data.gutter ? 'C' : '') + "|";
+        }
+      }
+      if (data.firstMargin || data.lastMargin || data.count || data.width) {
+        optionsString += "(";
+        optionsString += data.orientation.charAt(0).toLowerCase();
+        optionsString += data.position.charAt(0).toUpperCase();
+        optionsString += data.remainder.charAt(0).toLowerCase();
+        optionsString += ")";
+      }
+      return "" + varString + "\n" + firstMargString + gridString + lastMargString + optionsString + "\n";
+    };
+
     GuideGuide.prototype.stringifyFormData = function(data, callback) {
       var _this = this;
       return this.bridge.getDocumentInfo(function(info) {
         var string;
         string = '';
-        if (data.countColumn || data.widthColumn) {
-          string += '$v =|';
-          string += data.widthColumn ? data.widthColumn : '~';
-          string += '|';
-          if (data.gutterColumn) {
-            string += data.gutterColumn;
-          }
-          string += '\n';
-        }
-        if (data.countRow || data.widthRow) {
-          string += '$h =|';
-          string += data.widthRow ? data.widthRow : '~';
-          string += '|';
-          if (data.gutterRow) {
-            string += data.gutterRow;
-          }
-          string += '\n';
-        }
-        if (data.countColumn || data.widthColumn || data.countRow || data.widthRow) {
-          string += '\n';
-        }
-        if (data.marginLeft || data.marginRight || data.countColumn || data.widthColumn) {
-          if (data.marginLeft) {
-            string += '|' + data.marginLeft.replace(/\s/g, '').split(',').join('|') + '|';
-          }
-          if (data.countColumn || data.widthColumn) {
-            string += '|$v*';
-            if (data.countColumn) {
-              string += data.countColumn - 1;
-            }
-            if ((data.widthColumn && data.countColumn) || (data.widthColumn && data.gutterColumn)) {
-              string += '|' + data.widthColumn;
-            }
-            if (!data.widthColumn) {
-              string += '|~';
-            }
-            string += '|';
-          }
-          if (data.marginRight) {
-            if ((!data.countColumn && !data.widthColumn) || (data.countColumn && data.widthColumn)) {
-              string += '~';
-            }
-            string += '|' + data.marginRight.replace(/\s/g, '').split(',').join('|') + '|';
-          }
-          string += '( vF';
-          if (_this.guideguideData.settings.horizontalRemainder === 'first') {
-            string += 'f';
-          }
-          if (_this.guideguideData.settings.horizontalRemainder === 'center') {
-            string += 'c';
-          }
-          if (_this.guideguideData.settings.horizontalRemainder === 'last') {
-            string += 'l';
-          }
-          if (_this.guideguideData.settings.calculation === 'pixel') {
-            string += 'p';
-          }
-          string += ' )\n';
-        }
-        if (data.marginTop || data.marginBottom || data.countRow || data.widthRow) {
-          if (data.marginTop) {
-            string += '|' + data.marginTop.replace(/\s/g, '').split(',').join('|') + '|';
-          }
-          if (data.countRow || data.widthRow) {
-            string += '|$h*';
-            if (data.countRow) {
-              string += data.countRow - 1;
-            }
-            if ((data.widthRow && data.countRow) || (data.widthRow && data.gutterRow)) {
-              string += '|' + data.widthRow;
-            }
-            if (!data.widthRow) {
-              string += '|~';
-            }
-            string += '|';
-          }
-          if (data.marginBottom) {
-            if ((!data.countRow && !data.widthRow) || (data.countRow && data.widthRow)) {
-              string += '~';
-            }
-            string += '|' + data.marginBottom.replace(/\s/g, '').split(',').join('|') + '|';
-          }
-          string += '( hF';
-          if (_this.guideguideData.settings.horizontalRemainder === 'first') {
-            string += 'f';
-          }
-          if (_this.guideguideData.settings.horizontalRemainder === 'center') {
-            string += 'c';
-          }
-          if (_this.guideguideData.settings.horizontalRemainder === 'last') {
-            string += 'l';
-          }
-          if (_this.guideguideData.settings.calculation === 'pixel') {
-            string += 'p';
-          }
-          string += ' )';
-        }
-        return callback(string.replace(/\|+/g, '|').replace(/\|/g, ' | ').replace(/^[^\S\n]+|[^\S\n]+$/mg, ''));
+        string += _this.stringifyFormGrid({
+          count: data.countColumn,
+          width: data.widthColumn,
+          gutter: data.gutterColumn,
+          firstMargin: data.marginLeft,
+          lastMargin: data.marginRight,
+          columnMidpoint: data.midpointColumn || false,
+          gutterMidpoint: data.midpointColumnGutter || false,
+          orientation: 'v',
+          position: _this.guideguideData.settings.verticalPosition,
+          remainder: _this.guideguideData.settings.verticalRemainder
+        });
+        string += _this.stringifyFormGrid({
+          count: data.countRow,
+          width: data.widthRow,
+          gutter: data.gutterRow,
+          firstMargin: data.marginTop,
+          lastMargin: data.marginBottom,
+          columnMidpoint: data.midpointRow || false,
+          gutterMidpoint: data.midpointRowGutter || false,
+          orientation: 'h',
+          position: _this.guideguideData.settings.horizontalPosition,
+          remainder: _this.guideguideData.settings.horizontalRemainder
+        });
+        return callback(new GGN(string).toString());
       });
     };
 
@@ -2054,7 +1997,7 @@
     };
 
     GuideGuide.prototype.getFormData = function($form) {
-      var $fields, obj;
+      var $checkboxes, $fields, obj;
       obj = {
         name: $('.js-grid-form .js-set-name').val()
       };
@@ -2063,6 +2006,14 @@
         var key;
         key = $(element).attr('data-type');
         return obj[key] = $(element).val();
+      });
+      $checkboxes = $form.find('.js-checkbox');
+      $checkboxes.each(function(index, element) {
+        var key;
+        key = $(element).attr('data-type');
+        if ($(element).attr('data-checked') === 'true') {
+          return obj[key] = true;
+        }
       });
       return obj;
     };
