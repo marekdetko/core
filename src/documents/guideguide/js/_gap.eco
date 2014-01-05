@@ -170,7 +170,7 @@ class Gap
   sum: (variables={}) ->
     if @isVariable
       sum = 0
-      $.each variables[@id], (index, gap) ->
+      $.each variables[@id].all, (index, gap) ->
         sum += gap.value if gap.value
       sum
     else

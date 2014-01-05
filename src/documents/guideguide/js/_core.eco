@@ -978,8 +978,8 @@ class GuideGuide
 
         for i in [1..fillIterations]
           if fill.isVariable
-            fillCollection = fillCollection.concat ggn.variables[fill.id]
-            fillWidth += @sum ggn.variables[fill.id], 'value'
+            fillCollection = fillCollection.concat ggn.variables[fill.id].all
+            fillWidth += @sum ggn.variables[fill.id].all, 'value'
           else
             newGap = fill.clone()
             newGap.isFill = false
