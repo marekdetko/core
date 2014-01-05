@@ -414,72 +414,43 @@ class GuideGuide
   #
   # Return nothing.
   onClickTopGuide: (event) =>
-    @bridge.log 'Top guide'
     event.preventDefault()
-    @bridge.getDocumentInfo (info) =>
-      return unless info.hasOpenDocuments
-      @getGuidesFromGGN new GGN("| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @addGuides @consolidateGuides([guides, info.existingGuides])
-      @recordUsage 'top'
+    @addGuidesfromGGN "| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'top'
 
   # Draw a guide at the bottom of the document/selection
   #
   # Return nothing.
   onClickBottomGuide: (event) =>
-    @bridge.log 'Bottom guide'
     event.preventDefault()
-    @bridge.getDocumentInfo (info) =>
-      return unless info.hasOpenDocuments
-      @getGuidesFromGGN new GGN("~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @addGuides @consolidateGuides([guides, info.existingGuides])
-      @recordUsage 'bottom'
+    @addGuidesfromGGN "~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'bottom'
 
   # Draw a guide to the left of the document/selection
   #
   # Return nothing.
   onClickLeftGuide: (event) =>
-    @bridge.log 'Left guide'
     event.preventDefault()
-    @bridge.getDocumentInfo (info) =>
-      @getGuidesFromGGN new GGN("| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @addGuides @consolidateGuides([guides, info.existingGuides])
-    @recordUsage 'left'
+    @addGuidesfromGGN "| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'left'
 
   # Draw a guide to the right of the document/selection
   #
   # Return nothing.
   onClickRightGuide: (event) =>
-    @bridge.log 'Bottom guide'
     event.preventDefault()
-    @bridge.getDocumentInfo (info) =>
-      return unless info.hasOpenDocuments
-      @getGuidesFromGGN new GGN("~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @addGuides @consolidateGuides([guides, info.existingGuides])
-      @recordUsage 'right'
+    @addGuidesfromGGN "~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'right'
 
   # Draw a guide at the horizontal midpoint of the document/selection
   #
   # Return nothing.
   onClickHorizontalMidpoint: (event) =>
-    @bridge.log 'Horizontal midpoint'
     event.preventDefault()
-    @bridge.getDocumentInfo (info) =>
-      return unless info.hasOpenDocuments
-      @getGuidesFromGGN new GGN("~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @addGuides @consolidateGuides([guides, info.existingGuides])
-      @recordUsage 'horizontalMidpoint'
+    @addGuidesfromGGN "~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'horizontalMidpoint'
 
   # Draw a guide at the vertical midpoint of the document/selection
   #
   # Return nothing.
   onClickVerticalMidpoint: (event) =>
-    @bridge.log 'Vertical midpoint'
     event.preventDefault()
-    @bridge.getDocumentInfo (info) =>
-      return unless info.hasOpenDocuments
-      @getGuidesFromGGN new GGN("~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })"), info, (guides) =>
-        @addGuides @consolidateGuides([guides, info.existingGuides])
-      @recordUsage 'verticalMidpoint'
+    @addGuidesfromGGN "~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'verticalMidpoint'
 
   # Handle clicks on the clear guides button.
   #
@@ -507,7 +478,7 @@ class GuideGuide
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
         @resetGuides()
-        @addGuides @consolidateGuides [info.existingGuides], bounds, true
+        @bridge.addGuides @consolidateGuides [info.existingGuides], bounds, true
       else
         @resetGuides()
 
@@ -518,10 +489,17 @@ class GuideGuide
     @bridge.log 'Resetting guides'
     @bridge.resetGuides()
 
-  addGuides: (guides) =>
-    @guideguideData.panel.usage.lifetime += guides.length
-    @saveGuideGuideData()
-    @bridge.addGuides guides
+  addGuidesfromGGN: (ggn, source) =>
+    @bridge.getDocumentInfo (info) =>
+      return unless info and info.hasOpenDocuments
+      guides = []
+
+      @getGuidesFromGGN new GGN(ggn), info, (g) =>
+        guides = @consolidateGuides([g, info.existingGuides])
+
+        @bridge.log "Add guides from #{ source }"
+        @recordUsage source, guides.length
+        @bridge.addGuides guides
 
   # Updates the text in the custom field and resizes it
   #
@@ -821,20 +799,8 @@ class GuideGuide
     event.preventDefault()
     $form  = $(event.currentTarget).closest '.js-grid-form'
     @stringifyFormData @getFormData($form), (string) =>
-
       return unless $form.find('.js-input.is-invalid').length == 0 and string
-
-      @bridge.getDocumentInfo (info) =>
-        return unless info and info.hasOpenDocuments
-
-        @bridge.group 'Add guides from grid form'
-        @bridge.log string
-        ggn = new GGN(string)
-        @bridge.log ggn
-        @getGuidesFromGGN new GGN(string), info, (guides) =>
-          @addGuides @consolidateGuides([guides, info.existingGuides])
-        @bridge.groupEnd()
-        @recordUsage 'grid'
+      @addGuidesfromGGN string, 'grid'
 
   # Create a grid from the Custom form
   #
@@ -843,17 +809,8 @@ class GuideGuide
     event.preventDefault()
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
-
     return unless $form.find('.js-input.is-invalid').length == 0 and string
-
-    @bridge.getDocumentInfo (info) =>
-      return unless info and info.hasOpenDocuments
-
-      @bridge.log 'Custom Grid'
-      @bridge.log string
-      @getGuidesFromGGN new GGN(string), info, (guides) =>
-        @addGuides @consolidateGuides([guides, info.existingGuides])
-      @recordUsage 'custom'
+    @addGuidesfromGGN string, 'custom'
 
   # Create a grid from a set
   #
@@ -861,18 +818,9 @@ class GuideGuide
   onMakeGridFromSet: (event) =>
     event.preventDefault()
     $set = $('.js-set-list').find('.is-selected').first()
-
     return unless $set.length
-
-    @bridge.getDocumentInfo (info) =>
-      return unless info and info.hasOpenDocuments
-
-      @bridge.log 'Grid from set'
-      data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
-      @bridge.log data
-      @getGuidesFromGGN new GGN(data[0].string), info, (guides) =>
-        @addGuides @consolidateGuides([guides, info.existingGuides])
-      @recordUsage 'set'
+    data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
+    @addGuidesfromGGN data[0].string, 'set'
 
   createNewSet: (data) =>
     newSet =
