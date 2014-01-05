@@ -44,12 +44,12 @@ class GGN
   # Returns an array of grid Objects
   parse: (string) =>
     string = string
-      .replace(/^[\s]+|[\s]+$/mg,'')
-      .replace(/[^\S\n]+\|[^\S\n]+/g, '|')
-      .replace(/\|+/g, ' | ')
+      .replace(/^[\s]+|[\s]+$/mg,'')       # Trim trailing and leading spaces
+      .replace(/[^\S\n]*\|[^\S\n]*/g, '|') # Remove any pipe spaces
+      .replace(/\|+/g, ' | ')              # Reduce duped pipes to singles
+      .replace(/^[\s]+|[\s]+$/mg,'')       # Trim any new whitespace
 
     lines = string.split /\n/g
-
     $.each lines, (index,line) =>
       if /^\$.*?\s?=.*$/i.test line
         @parseVariable line
@@ -162,7 +162,6 @@ class GGN
     if options
       $.each options, (key, value) ->
         obj.options[key] = value
-
     obj.gaps = @parseGridGaps string
     @grids.push obj
 
