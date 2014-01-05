@@ -43,7 +43,7 @@ class GGN
   #
   # Returns an array of grid Objects
   parse: (string) =>
-    string = string.replace(/[^\S\n]*?\|[^\S\n]*?/g,' | ').replace(/^[^\S\n]+|[^\S\n]+$/mg,'')
+    string = string.replace(/[^\S\n]*?\|[^\S\n]*?/g,' | ').replace(/^[\s]+|[\s]+$/mg,'')
     lines = string.split /\n/g
 
     $.each lines, (index,line) =>
