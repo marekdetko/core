@@ -1130,67 +1130,96 @@ class GuideGuide
 
     guides
 
+
+  # Convert a section of the grid from (rows or columns) to a string
+  #
+  #  data   - data from the form
+  #  prefix - prefix
+  #
+  # Returns a string
+  stringifyFormGrid: (data) ->
+    data.count      = parseInt data.count
+    firstMargString = ''
+    varString       = ''
+    gridString      = ''
+    lastMargString  = ''
+    optionsString   = ''
+
+    # Set up the margins, if they exist
+    firstMargString = '|' + data.firstMargin.replace(/\s/g,'').split(',').join('|') + '|' if data.firstMargin
+    lastMargString  = '|' + data.lastMargin.replace(/\s/g,'').split(',').join('|') + '|' if data.lastMargin
+
+    # Set up the columns and gutters variables, if they exist
+    if data.count or data.width
+      column = if data.width then data.width else '~'
+      if data.columnMidpoint
+        unit   = new Unit data.width if data.width
+        column = if data.width then "#{ unit.value/2 }#{ unit.type }|#{ unit.value/2 }#{ unit.type }" else "~|~"
+
+      varString += "$#{ data.orientation }=|#{ column }|"
+
+
+      if data.gutter and data.count != 1
+        gutter = if data.gutter then data.gutter else '~'
+        if data.gutterMidpoint
+          unit   = new Unit data.gutter if data.gutter
+          gutter = if data.gutter then "#{ unit.value/2 }#{ unit.type }|#{ unit.value/2 }#{ unit.type }" else "~|~"
+
+        varString  = "$#{ data.orientation }=|#{ column }|#{ gutter }|"
+        varString += "\n$#{ data.orientation }C=|#{ column }|" if data.count
+
+    # Set up the grid string
+    if data.count or data.width
+      gridString += "$#{ data.orientation }"
+      gridString += "*" if data.count != 1
+      gridString += data.count - 1 if data.count > 1 and data.gutter
+      gridString += data.count if data.count > 1 and !data.gutter
+      gridString += "|$#{ data.orientation }#{ if data.gutter then 'C' else '' }|" if data.count > 1 and data.gutter
+
+    if data.firstMargin or data.lastMargin or data.count or data.width
+      # Set up the options
+      optionsString += "("
+      optionsString += data.orientation.charAt(0).toLowerCase()
+      optionsString += data.position.charAt(0).toUpperCase()
+      optionsString += data.remainder.charAt(0).toLowerCase()
+      optionsString += ")"
+
+    # Bring it all together
+    """
+    #{ varString }
+    #{ firstMargString }#{ gridString }#{ lastMargString }#{ optionsString }\n
+    """
+
   stringifyFormData: (data, callback) ->
     @bridge.getDocumentInfo (info) =>
       string = ''
       # Variables
-      if data.countColumn or data.widthColumn
-        string += '$v =|'
-        string += if data.widthColumn then data.widthColumn else '~'
-        string += '|'
-        string += data.gutterColumn if data.gutterColumn
-        string += '\n'
 
-      if data.countRow or data.widthRow
-        string += '$h =|'
-        string += if data.widthRow then data.widthRow else '~'
-        string += '|'
-        string += data.gutterRow if data.gutterRow
-        string += '\n'
+      string += @stringifyFormGrid
+        count:          data.countColumn
+        width:          data.widthColumn
+        gutter:         data.gutterColumn
+        firstMargin:    data.marginLeft
+        lastMargin:     data.marginRight
+        columnMidpoint: data.midpointColumn || false
+        gutterMidpoint: data.midpointColumnGutter || false
+        orientation:    'v'
+        position:       @guideguideData.settings.verticalPosition
+        remainder:      @guideguideData.settings.verticalRemainder
 
-      string += '\n' if data.countColumn or data.widthColumn or data.countRow or data.widthRow
+      string += @stringifyFormGrid
+        count:          data.countRow
+        width:          data.widthRow
+        gutter:         data.gutterRow
+        firstMargin:    data.marginTop
+        lastMargin:     data.marginBottom
+        columnMidpoint: data.midpointRow || false
+        gutterMidpoint: data.midpointRowGutter || false
+        orientation:    'h'
+        position:       @guideguideData.settings.horizontalPosition
+        remainder:      @guideguideData.settings.horizontalRemainder
 
-      if data.marginLeft or data.marginRight or data.countColumn or data.widthColumn
-        # Grids
-        string += '|' + data.marginLeft.replace(/\s/g,'').split(',').join('|') + '|' if data.marginLeft
-        if data.countColumn or data.widthColumn
-          string += '|$v*'
-          string += data.countColumn - 1 if data.countColumn
-          string += '|' + data.widthColumn if (data.widthColumn and data.countColumn) or (data.widthColumn and data.gutterColumn)
-          string += '|~' if !data.widthColumn
-          string += '|'
-        if data.marginRight
-          string += '~' if (!data.countColumn and !data.widthColumn) or (data.countColumn and data.widthColumn)
-          string += '|' + data.marginRight.replace(/\s/g,'').split(',').join('|') + '|'
-        string += '( vF'
-        string += 'f' if @guideguideData.settings.horizontalRemainder == 'first'
-        string += 'c' if @guideguideData.settings.horizontalRemainder == 'center'
-        string += 'l' if @guideguideData.settings.horizontalRemainder == 'last'
-        string += 'p' if @guideguideData.settings.calculation == 'pixel'
-        string += ' )\n'
-
-      if data.marginTop or data.marginBottom or data.countRow or data.widthRow
-        # Grids
-        string += '|' + data.marginTop.replace(/\s/g,'').split(',').join('|') + '|' if data.marginTop
-        if data.countRow or data.widthRow
-          string += '|$h*'
-          string += data.countRow - 1 if data.countRow
-          string += '|' + data.widthRow if (data.widthRow and data.countRow) or (data.widthRow and data.gutterRow)
-          string += '|~' if !data.widthRow
-          string += '|'
-        if data.marginBottom
-          string += '~' if (!data.countRow and !data.widthRow) or (data.countRow and data.widthRow)
-          string += '|' + data.marginBottom.replace(/\s/g,'').split(',').join('|') + '|'
-        string += '( hF'
-        string += 'f' if @guideguideData.settings.horizontalRemainder == 'first'
-        string += 'c' if @guideguideData.settings.horizontalRemainder == 'center'
-        string += 'l' if @guideguideData.settings.horizontalRemainder == 'last'
-        string += 'p' if @guideguideData.settings.calculation == 'pixel'
-        string += ' )'
-
-      # Rather than fiddle with spaces and duplicate pipes in the string calculation,
-      # just do a second pass on the string to clean everything up.
-      callback string.replace(/\|+/g,'|').replace(/\|/g, ' | ').replace(/^[^\S\n]+|[^\S\n]+$/mg,'')
+      callback new GGN(string).toString()
 
   # Calculate the sum of an array of values
   #
