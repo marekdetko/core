@@ -782,9 +782,8 @@ class GuideGuide
       executable = $form.find('.js-input.is-invalid').length == 0 and string
 
       if executable
-        @bridge.group 'New set from form'
+        @bridge.log 'New set from form'
         @bridge.log string
-        @bridge.groupEnd()
         obj =
           name: data.name
           ggn: string
