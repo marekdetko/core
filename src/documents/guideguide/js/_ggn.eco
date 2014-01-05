@@ -43,7 +43,11 @@ class GGN
   #
   # Returns an array of grid Objects
   parse: (string) =>
-    string = string.replace(/[^\S\n]*?\|[^\S\n]*?/g,' | ').replace(/^[\s]+|[\s]+$/mg,'')
+    string = string
+      .replace(/^[\s]+|[\s]+$/mg,'')
+      .replace(/[^\S\n]+\|[^\S\n]+/g, '|')
+      .replace(/\|+/g, ' | ')
+
     lines = string.split /\n/g
 
     $.each lines, (index,line) =>
@@ -89,7 +93,6 @@ class GGN
     # Errors
     $.each @errors, (key,error) =>
       string += "# #{error.id}: #{error.message}\n"
-
     string
 
   # Check the data for invalid gaps and validate according to the spec
