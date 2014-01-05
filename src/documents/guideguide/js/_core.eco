@@ -1238,9 +1238,14 @@ class GuideGuide
       name: $('.js-grid-form .js-set-name').val()
 
     $fields = $form.find '.js-grid-form-input'
-    $fields.each (index,element) ->
+    $fields.each (index, element) ->
       key = $(element).attr 'data-type'
       obj[key] = $(element).val()
+
+    $checkboxes = $form.find '.js-checkbox'
+    $checkboxes.each (index, element) ->
+      key = $(element).attr 'data-type'
+      obj[key] = true if $(element).attr('data-checked') == 'true'
     obj
 
   # Determine whether the value in the form is valid
