@@ -53,6 +53,7 @@ class GuideGuide
     @panel.on 'click', '.js-checkbox', @onClickCheckbox
     @panel.on 'click', '.js-import-sets', @onClickImportSets
     @panel.on 'click', '.js-export-sets', @onClickExportSets
+    @panel.on 'click', '.js-export-url', @onClickExportURL
     @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
     @panel.on 'click', '.js-deny-submit-data', @onDenySubmitData
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
@@ -237,7 +238,7 @@ class GuideGuide
     message = if typeof data is 'string' then @messages["alertMessage.#{ data }"] else data[1]
 
     @panel.find('.js-alert-title').text title
-    @panel.find('.js-alert-message').text message
+    @panel.find('.js-alert-message').html message
     @panel.find('.js-alert-actions').html ''
 
     $.each buttonClasses, (i, value) =>
@@ -704,6 +705,8 @@ class GuideGuide
   # Returns nothing.
   onClickImportSets: (event) =>
     event.preventDefault()
+    return if @guideguideData.application.env == 'demo'
+
     @bridge.log 'Import sets'
 
   # Export GuideGuide's sets to an external source.
@@ -711,7 +714,34 @@ class GuideGuide
   # Returns nothing.
   onClickExportSets: (event) =>
     event.preventDefault()
+    return if @guideguideData.application.env == 'demo'
+
     @bridge.log 'Export sets'
+    data =
+      description: @messages["help.gistExport"]
+      public: false
+      files:
+        "sets.json":
+          content: JSON.stringify @guideguideData.sets
+    $.ajax
+      url: "https://api.github.com/gists"
+      type: 'POST'
+      data: JSON.stringify data
+      success: (data) =>
+        title = @messages["alertTitle.exportSuccess"]
+        message = "#{ @messages['alertMessage.exportSuccess'] } <a class='js-export-url' href='#{ data.html_url }'>#{ data.html_url }</a>"
+
+        @alert [title, message], ['primary js-dismiss-alert'], ['ui.btnOk']
+      error: (data) =>
+        @alert 'exportError', ['primary js-dismiss-alert'], ['ui.btnOk']
+
+  # Open a exported sets url
+  #
+  # Returns nothing
+  onClickExportURL: (event) =>
+    event.preventDefault()
+    url = $(event.currentTarget).text()
+    @bridge.openURL url
 
   # When exiting the Custom form, clear the new set form.
   #

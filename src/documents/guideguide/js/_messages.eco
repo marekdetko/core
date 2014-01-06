@@ -44,8 +44,13 @@ class Messages
       'alertMessage.upToDate': "GuideGuide is currently up to date."
       'alertTitle.updateError': "Error Checking for updates"
       'alertMessage.updateError': "Unfortunately, GuideGuide is unable to check for updates at this time. Please try again later."
+      'alertTitle.exportSuccess': "Sets have been exported"
+      'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist here: "
+      'alertTitle.exportError': "Unable to export"
+      'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later."
       'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area."
       'help.remainder': "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels."
+      'help.gistExport': 'This is guide set data exported by the GuideGuide plugin. To import them, click the "Import" button in the GuideGuide settings and paste this Gist url, or the contents of `sets.json` into the text field.'
 
   constructor: (i18n) ->
     if @messages[i18n]
