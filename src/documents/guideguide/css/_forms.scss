@@ -67,8 +67,6 @@ input, textarea {
     margin-bottom: 48px;
   }
 
-  .ggn-input-padding { padding: 0 5px; }
-
   .scroll-content {
     position: absolute;
     height: auto;
@@ -147,5 +145,36 @@ input, textarea {
     left: 5px;
     width: 16px;
     height: 16px;
+  }
+
+  .input-padding { padding: 0 5px; }
+}
+
+.importer {
+  position: absolute;
+  z-index: 20;
+  display: none;
+
+  .is-showing-importer & { display: block; }
+
+  .importer-padding {
+    margin: 0 10px;
+  }
+
+  .input {
+    position: absolute;
+    margin-top: 53px;
+    margin-bottom: 50px;
+  }
+
+  .importer-desc {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  textarea {
+    padding: 3px 0;
+    width: 100%;
+    resize: none;
   }
 }
