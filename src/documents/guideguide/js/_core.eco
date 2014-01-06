@@ -51,7 +51,9 @@ class GuideGuide
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
     @panel.on 'click', '.js-help-target', @onClickHelpTarget
     @panel.on 'click', '.js-checkbox', @onClickCheckbox
-    @panel.on 'click', '.js-import-sets', @onClickImportSets
+    @panel.on 'click', '.js-import-sets', @onShowImporter
+    @panel.on 'click', '.js-import', @onClickImportSets
+    @panel.on 'click', '.js-cancel-import', @onClickCancelImport
     @panel.on 'click', '.js-export-sets', @onClickExportSets
     @panel.on 'click', '.js-export-url', @onClickExportURL
     @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
@@ -700,6 +702,46 @@ class GuideGuide
   getOS: =>
     'Unknown OS'
 
+  # Import sets from a gist url
+  #
+  #   gistID - id of the GitHub gist to import
+  #
+  # Returns nothing
+  importSetsFromGist: (gistID) =>
+    $.ajax
+      url: "https://api.github.com/gists/#{ gistID }"
+      type: 'GET'
+      success: (data) =>
+        if data.files["sets.json"] and sets = JSON.parse data.files["sets.json"].content
+          @importSets sets
+          @refreshSets()
+          @selectTab @panel, 'sets'
+          @alert "importSuccess", ['primary js-dismiss-alert'], ['ui.btnOk']
+        else
+          @alert "importGistNoSets", ['primary js-dismiss-alert'], ['ui.btnOk']
+      error: (data) =>
+        @alert "importGistError", ['primary js-dismiss-alert'], ['ui.btnOk']
+
+  # Import an array of sets
+  #
+  #   sets - array of sets to import
+  #
+  # Returns nothing
+  importSets: (sets) =>
+    @bridge.log "Sets imported"
+    @panel.removeClass 'is-showing-importer'
+    @guideguideData.sets = @guideguideData.sets.concat sets
+    @saveGuideGuideData()
+
+  # Show the set importer
+  #
+  # Returns nothing.
+  onShowImporter: (event) =>
+    event.preventDefault()
+    return if @guideguideData.application.env == 'demo'
+    @panel.addClass 'is-showing-importer'
+    @panel.find('.js-import-input').val ''
+
   # Add sets to GuideGuide from an external source.
   #
   # Returns nothing.
@@ -707,7 +749,21 @@ class GuideGuide
     event.preventDefault()
     return if @guideguideData.application.env == 'demo'
 
-    @bridge.log 'Import sets'
+    data = $(".js-import-input").val()
+
+    # Is it a gist?
+    if data.indexOf("gist.github.com") > 0
+      id = data.substring data.lastIndexOf('/') + 1
+      @importSetsFromGist id
+    else
+      @alert "importNotGist", ['primary js-dismiss-alert'], ['ui.btnOk']
+
+  # Dismiss the importer
+  #
+  # Returns nothing
+  onClickCancelImport: (event) =>
+    event.preventDefault()
+    @panel.removeClass 'is-showing-importer'
 
   # Export GuideGuide's sets to an external source.
   #
@@ -724,7 +780,7 @@ class GuideGuide
         "sets.json":
           content: JSON.stringify @guideguideData.sets
     $.ajax
-      url: "https://api.github.com/gists"
+      url: 'https://api.github.com/gists'
       type: 'POST'
       data: JSON.stringify data
       success: (data) =>
@@ -1386,5 +1442,8 @@ class GuideGuide
       }
       #guideguide .scrollbar .handle {
         background-color: #{ colors.buttonSelect };
+      }
+      #guideguide .importer {
+        background-color: #{ colors.background };
       }
       """
