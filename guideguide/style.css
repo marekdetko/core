@@ -237,6 +237,9 @@ table {
   margin: 20px;
   overflow: hidden;
 }
+.alert .alert-crop {
+  overflow-x: hidden;
+}
 .alert .alert-title {
   margin-top: 0;
   font-weight: normal;
@@ -278,7 +281,7 @@ table {
   padding-left: 26px;
   cursor: pointer;
 }
-.checkbox[data-checked="true"] .icon {
+.checkbox.checked .icon {
   display: block;
 }
 .checkbox .square {

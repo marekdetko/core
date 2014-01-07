@@ -1038,12 +1038,11 @@
     };
 
     GuideGuide.prototype.onClickCheckbox = function(event) {
-      var $checkbox, $form, val,
+      var $checkbox, $form,
         _this = this;
       event.preventDefault();
       $checkbox = $(event.currentTarget);
-      val = $checkbox.attr('data-checked') === 'true';
-      $checkbox.attr('data-checked', !val);
+      $checkbox.toggleClass('checked');
       $form = $checkbox.closest('.js-grid-form');
       return this.stringifyFormData(this.getFormData($form), function(string) {
         return _this.updateCustomField(string);
@@ -2124,7 +2123,7 @@
       $checkboxes.each(function(index, element) {
         var key;
         key = $(element).attr('data-type');
-        if ($(element).attr('data-checked') === 'true') {
+        if ($(element).hasClass('checked')) {
           return obj[key] = true;
         }
       });
