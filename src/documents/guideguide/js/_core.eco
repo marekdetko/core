@@ -1254,7 +1254,8 @@ class GuideGuide
         position:       @guideguideData.settings.horizontalPosition
         remainder:      @guideguideData.settings.horizontalRemainder
 
-      callback new GGN(string).toString()
+      string = $.trim string
+      callback if string then new GGN(string).toString() else ""
 
   # Calculate the sum of an array of values
   #
