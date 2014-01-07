@@ -281,7 +281,7 @@ table {
   padding-left: 26px;
   cursor: pointer;
 
-  &[data-checked="true"] .icon { display: block; }
+  &.checked .icon { display: block; }
 
   .square {
     position: absolute;

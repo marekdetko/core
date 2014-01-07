@@ -216,8 +216,7 @@ class GuideGuide
   onClickCheckbox: (event) =>
     event.preventDefault()
     $checkbox = $(event.currentTarget)
-    val       = $checkbox.attr('data-checked') == 'true'
-    $checkbox.attr 'data-checked', !val
+    $checkbox.toggleClass 'checked'
 
     $form  = $checkbox.closest '.js-grid-form'
     @stringifyFormData @getFormData($form), (string) =>
@@ -1310,7 +1309,7 @@ class GuideGuide
     $checkboxes = $form.find '.js-checkbox'
     $checkboxes.each (index, element) ->
       key = $(element).attr 'data-type'
-      obj[key] = true if $(element).attr('data-checked') == 'true'
+      obj[key] = true if $(element).hasClass 'checked'
     obj
 
   # Determine whether the value in the form is valid
