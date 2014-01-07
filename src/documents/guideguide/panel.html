@@ -171,7 +171,7 @@
               </div>
               <span class="input-shell ggn-input-shell height-stretch">
                 <div class="scroll-content js-input-shell js-scroll-outer height-stretch">
-                  <div class="ggn-input-padding"><textarea class="js-custom-input js-scroll-inner" spellcheck="false"></textarea></div>
+                  <div class="input-padding"><textarea class="js-custom-input js-scroll-inner" spellcheck="false"></textarea></div>
                 </div>
               </span>
             </span>
@@ -235,8 +235,9 @@
                   </ul>
                 </div>
 
-                <div class="setting">
-                  <h3 data-localize="ui.sets">Sets</h3>
+                <div class="setting js-help">
+                  <h3><span data-localize="ui.sets">Sets</span> <a class="js-help-target help-target" href>(?)</a></h3>
+                  <p class="help-text"><span data-localize="help.importExport"></span> <a href="https://gist.github.com" class="js-link">GitHub Gist</a>.</p>
                   <ul class="button-group">
                     <li><a class="button js-import-sets" data-localize="ui.btnImport" href>Import</a></li>
                     <li><a class="button js-export-sets" data-localize="ui.btnExport" href>Export</a></li>
@@ -325,6 +326,31 @@
       <a class="button js-horizontal-midpoint" tabindex="-1" href><span class="icon icon-quick-horizontal-midpoint"></span></a>
       <a class="button js-bottom" tabindex="-1" href><span class="icon icon-quick-bottom"></span></a>
     </div> <!-- end .action-bar -->
+
+    <div class="importer height-stretch">
+      <div class="importer-padding height-stretch">
+        <div class="importer-desc">
+          Import sets by pasting set data or a GitHub Gist url below.
+        </div>
+        <span class="input import-input height-stretch js-input js-scrollable">
+          <div class="scrollbar js-scrollbar">
+            <div class="track js-scrollbar-track">
+              <div class="handle js-scrollbar-handle"></div>
+            </div>
+          </div>
+          <span class="input-shell height-stretch">
+            <div class="scroll-content js-input-shell js-scroll-outer height-stretch">
+              <div class="input-padding"><textarea class="js-import-input js-scroll-inner" spellcheck="false"></textarea></div>
+            </div>
+          </span>
+        </span>
+
+        <div class="form-action-buttons">
+          <a class="button js-cancel-import" data-localize="ui.btnCancel" href>Cancel</a>
+          <a class="button primary js-import" data-localize="ui.btnImport" href>Import</a>
+        </div>
+      </div>
+    </div> <!-- end .importer -->
 
     <div class="alert height-stretch">
       <div class="alert-body js-alert-body">

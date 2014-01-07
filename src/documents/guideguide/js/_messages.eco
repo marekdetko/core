@@ -29,6 +29,7 @@ class Messages
       'ui.settingVerticalLast': 'Bottom'
       'ui.yes': 'Yes'
       'ui.no': 'No'
+
       'gap.unrecognized': "Unrecognized gap"
       'gap.noFillWildcards': "Wildcards cannot be fills"
       'ggn.noGrids': "This string does not contain any grids"
@@ -38,14 +39,41 @@ class Messages
       'ggn.oneFillPerGrid': "A grid can only contain one fill"
       'ggn.moreThanOneHundredPercent': "A grid cannot contain more than 100%"
       'ggn.stringFromExistingGuides': "String generated from existing guides"
+
       'alertTitle.welcome': "Welcome to GuideGuide"
       'alertMessage.welcome': "This is the beginning of something special. To help GuideGuide get more and more awesome, would you allow GuideGuide to submit anonymous usage data?"
+
       'alertTitle.upToDate': "Up to date"
       'alertMessage.upToDate': "GuideGuide is currently up to date."
+
       'alertTitle.updateError': "Error Checking for updates"
       'alertMessage.updateError': "Unfortunately, GuideGuide is unable to check for updates at this time. Please try again later."
+
+      'alertTitle.importSuccess': "Sets imported"
+      'alertMessage.importSuccess': "Your sets have successfully been imported."
+
+      'alertTitle.importGistError': "Import Error"
+      'alertMessage.importGistError': "Unfortunately, GuideGuide is unable to import sets at this time. Please try again later."
+
+      'alertTitle.importGistNoSets': "Import Error"
+      'alertMessage.importGistNoSets': "GuideGuide was not able to find sets.json in this Gist."
+
+      'alertTitle.importNotGist': "Import Error"
+      'alertMessage.importNotGist': "The input text does not contain a GitHub Gist url."
+
+      'alertTitle.exportSuccess': "Sets have been exported"
+      'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist here: "
+
+      'alertTitle.exportError': "Unable to export"
+      'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later."
+
       'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area."
+
       'help.remainder': "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels."
+
+      'help.gistExport': 'This is guide set data exported by the GuideGuide plugin. To import them, click the "Import" button in the GuideGuide settings and paste this Gist url, or the contents of `sets.json` into the text field.'
+
+      'help.importExport': 'GuideGuide imports and exports its data via'
 
   constructor: (i18n) ->
     if @messages[i18n]
