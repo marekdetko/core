@@ -364,9 +364,6 @@ input, textarea {
   position: absolute;
   margin-bottom: 48px;
 }
-.ggn-form .ggn-input-padding {
-  padding: 0 5px;
-}
 .ggn-form .scroll-content {
   position: absolute;
   height: auto;
@@ -438,6 +435,35 @@ input, textarea {
   left: 5px;
   width: 16px;
   height: 16px;
+}
+.input .input-padding {
+  padding: 0 5px;
+}
+
+.importer {
+  position: absolute;
+  z-index: 20;
+  display: none;
+}
+.is-showing-importer .importer {
+  display: block;
+}
+.importer .importer-padding {
+  margin: 0 10px;
+}
+.importer .input {
+  position: absolute;
+  margin-top: 53px;
+  margin-bottom: 50px;
+}
+.importer .importer-desc {
+  margin-top: 10px;
+  font-size: 14px;
+}
+.importer textarea {
+  padding: 3px 0;
+  width: 100%;
+  resize: none;
 }
 
 @font-face {

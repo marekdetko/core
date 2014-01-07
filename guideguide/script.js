@@ -145,6 +145,7 @@
         'ui.sets': "Sets",
         'ui.updates': "Updates",
         'ui.btnMakeGrid': "Make grid",
+        'up.btnSaveSet': "Save set",
         'ui.btnSaveSettings': "Save settings",
         'ui.btnImport': "Import",
         'ui.btnExport': "Export",
@@ -178,8 +179,23 @@
         'alertMessage.upToDate': "GuideGuide is currently up to date.",
         'alertTitle.updateError': "Error Checking for updates",
         'alertMessage.updateError': "Unfortunately, GuideGuide is unable to check for updates at this time. Please try again later.",
+        'alertTitle.importSuccess': "Sets imported",
+        'alertMessage.importSuccess': "Your sets have successfully been imported.",
+        'alertTitle.importGistError': "Import Error",
+        'alertMessage.importGistError': "Unfortunately, GuideGuide is unable to import sets at this time. Please try again later.",
+        'alertTitle.importGistNoSets': "Import Error",
+        'alertMessage.importGistNoSets': "GuideGuide was not able to find sets.json in this Gist.",
+        'alertTitle.importNotGist': "Import Error",
+        'alertMessage.importNotGist': "The input text does not contain a GitHub Gist url.",
+        'alertTitle.exportSuccess': "Sets have been exported",
+        'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist here: ",
+        'alertTitle.exportError': "Unable to export",
+        'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later.",
         'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area.",
-        'help.remainder': "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels."
+        'help.remainder': "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels.",
+        'help.importDesc': "Import sets by pasting a GitHub Gist url in the text field below.",
+        'help.gistExport': 'This is guide set data exported by the GuideGuide plugin. To import them, click the "Import" button in the GuideGuide settings and paste this Gist url, or the contents of `sets.json` into the text field.',
+        'help.importExport': 'GuideGuide imports and exports its data via'
       }
     };
 
@@ -235,7 +251,7 @@
     GGN.prototype.parse = function(string) {
       var lines,
         _this = this;
-      string = string.replace(/^[\s]+|[\s]+$/mg, '').replace(/[^\S\n]*\|[^\S\n]*/g, '|').replace(/\|+/g, ' | ').replace(/^[\s]+|[\s]+$/mg, '');
+      string = $.trim(string).replace(/[^\S\n]*\|[^\S\n]*/g, '|').replace(/\|+/g, ' | ');
       lines = string.split(/\n/g);
       $.each(lines, function(index, line) {
         if (/^\$.*?\s?=.*$/i.test(line)) {
@@ -779,8 +795,13 @@
       this.onEditSet = __bind(this.onEditSet, this);
       this.onExitCustomForm = __bind(this.onExitCustomForm, this);
       this.onExitGridForm = __bind(this.onExitGridForm, this);
+      this.onClickLink = __bind(this.onClickLink, this);
       this.onClickExportSets = __bind(this.onClickExportSets, this);
+      this.onClickCancelImport = __bind(this.onClickCancelImport, this);
       this.onClickImportSets = __bind(this.onClickImportSets, this);
+      this.onShowImporter = __bind(this.onShowImporter, this);
+      this.importSets = __bind(this.importSets, this);
+      this.importSetsFromGist = __bind(this.importSetsFromGist, this);
       this.getOS = __bind(this.getOS, this);
       this.getAppVersion = __bind(this.getAppVersion, this);
       this.getVersion = __bind(this.getVersion, this);
@@ -870,8 +891,11 @@
       this.panel.on('click', '.js-dropdown .js-dropdown-item', this.onClickDropdownItem);
       this.panel.on('click', '.js-help-target', this.onClickHelpTarget);
       this.panel.on('click', '.js-checkbox', this.onClickCheckbox);
-      this.panel.on('click', '.js-import-sets', this.onClickImportSets);
+      this.panel.on('click', '.js-import-sets', this.onShowImporter);
+      this.panel.on('click', '.js-import', this.onClickImportSets);
+      this.panel.on('click', '.js-cancel-import', this.onClickCancelImport);
       this.panel.on('click', '.js-export-sets', this.onClickExportSets);
+      this.panel.on('click', '.js-link', this.onClickLink);
       this.panel.on('click', '.js-confirm-submit-data', this.onConfirmSubmitData);
       this.panel.on('click', '.js-deny-submit-data', this.onDenySubmitData);
       this.panel.on('click', '.js-check-for-updates', this.onClickCheckForUpdates);
@@ -1034,7 +1058,7 @@
       title = typeof data === 'string' ? this.messages["alertTitle." + data] : data[0];
       message = typeof data === 'string' ? this.messages["alertMessage." + data] : data[1];
       this.panel.find('.js-alert-title').text(title);
-      this.panel.find('.js-alert-message').text(message);
+      this.panel.find('.js-alert-message').html(message);
       this.panel.find('.js-alert-actions').html('');
       $.each(buttonClasses, function(i, value) {
         var button;
@@ -1460,14 +1484,102 @@
       return 'Unknown OS';
     };
 
-    GuideGuide.prototype.onClickImportSets = function(event) {
+    GuideGuide.prototype.importSetsFromGist = function(gistID) {
+      var _this = this;
+      return $.ajax({
+        url: "https://api.github.com/gists/" + gistID,
+        type: 'GET',
+        success: function(data) {
+          var sets;
+          if (data.files["sets.json"] && (sets = JSON.parse(data.files["sets.json"].content))) {
+            _this.importSets(sets);
+            _this.refreshSets();
+            _this.selectTab(_this.panel, 'sets');
+            return _this.alert("importSuccess", ['primary js-dismiss-alert'], ['ui.btnOk']);
+          } else {
+            return _this.alert("importGistNoSets", ['primary js-dismiss-alert'], ['ui.btnOk']);
+          }
+        },
+        error: function(data) {
+          return _this.alert("importGistError", ['primary js-dismiss-alert'], ['ui.btnOk']);
+        }
+      });
+    };
+
+    GuideGuide.prototype.importSets = function(sets) {
+      this.bridge.log("Sets imported");
+      this.panel.removeClass('is-showing-importer');
+      this.guideguideData.sets = this.guideguideData.sets.concat(sets);
+      return this.saveGuideGuideData();
+    };
+
+    GuideGuide.prototype.onShowImporter = function(event) {
       event.preventDefault();
-      return this.bridge.log('Import sets');
+      if (this.guideguideData.application.env === 'demo') {
+        return;
+      }
+      this.panel.addClass('is-showing-importer');
+      return this.panel.find('.js-import-input').val('');
+    };
+
+    GuideGuide.prototype.onClickImportSets = function(event) {
+      var data, id;
+      event.preventDefault();
+      if (this.guideguideData.application.env === 'demo') {
+        return;
+      }
+      data = $(".js-import-input").val();
+      if (data.indexOf("gist.github.com") > 0) {
+        id = data.substring(data.lastIndexOf('/') + 1);
+        return this.importSetsFromGist(id);
+      } else {
+        return this.alert("importNotGist", ['primary js-dismiss-alert'], ['ui.btnOk']);
+      }
+    };
+
+    GuideGuide.prototype.onClickCancelImport = function(event) {
+      event.preventDefault();
+      return this.panel.removeClass('is-showing-importer');
     };
 
     GuideGuide.prototype.onClickExportSets = function(event) {
+      var data,
+        _this = this;
       event.preventDefault();
-      return this.bridge.log('Export sets');
+      if (this.guideguideData.application.env === 'demo') {
+        return;
+      }
+      this.bridge.log('Export sets');
+      data = {
+        description: this.messages["help.gistExport"],
+        "public": false,
+        files: {
+          "sets.json": {
+            content: JSON.stringify(this.guideguideData.sets)
+          }
+        }
+      };
+      return $.ajax({
+        url: 'https://api.github.com/gists',
+        type: 'POST',
+        data: JSON.stringify(data),
+        success: function(data) {
+          var message, title;
+          title = _this.messages["alertTitle.exportSuccess"];
+          message = "" + _this.messages['alertMessage.exportSuccess'] + " <a class='js-link' href='" + data.html_url + "'>" + data.html_url + "</a>";
+          return _this.alert([title, message], ['primary js-dismiss-alert'], ['ui.btnOk']);
+        },
+        error: function(data) {
+          return _this.alert('exportError', ['primary js-dismiss-alert'], ['ui.btnOk']);
+        }
+      });
+    };
+
+    GuideGuide.prototype.onClickLink = function(event) {
+      var url;
+      event.preventDefault();
+      url = $(event.currentTarget).attr('href');
+      return this.bridge.openURL(url);
     };
 
     GuideGuide.prototype.onExitGridForm = function() {
@@ -1957,7 +2069,8 @@
           position: _this.guideguideData.settings.horizontalPosition,
           remainder: _this.guideguideData.settings.horizontalRemainder
         });
-        return callback(new GGN(string).toString());
+        string = $.trim(string);
+        return callback(string ? new GGN(string).toString() : "");
       });
     };
 
@@ -2037,7 +2150,7 @@
       if (!$("#theme").length) {
         $("head").append('<style id="theme">');
       }
-      return $("#theme").text("#guideguide {\n  color: " + colors.text + ";\n  background-color: " + colors.background + ";\n}\n#guideguide a {\n  color: " + colors.text + ";\n}\n#guideguide a:hover {\n  color: " + colors.highlight + ";\n}\n#guideguide .nav a.is-selected {\n  color: " + colors.buttonSelect + ";\n}\n#guideguide .input {\n  background-color: " + colors.button + ";\n}\n#guideguide .input input, #guideguide .input textarea {\n  color: " + colors.text + ";\n}\n#guideguide .input.is-focused .input-shell {\n  border-color: " + colors.highlight + ";\n}\n#guideguide .input.is-invalid .input-shell {\n  border-color: " + colors.danger + ";\n}\n#guideguide .distribute-highlight .icon {\n  color: " + colors.highlight + ";\n}\n#guideguide .button {\n  background-color: " + colors.button + ";\n}\n#guideguide .button:hover {\n  background-color: " + colors.buttonHover + ";\n  color: " + colors.text + ";\n}\n#guideguide .button.primary {\n  background-color: " + colors.highlight + ";\n  color: #fff;\n}\n#guideguide .button.primary:hover {\n  background-color: " + colors.highlightHover + ";\n  color: #fff;\n}\n#guideguide .button-clear-guides:hover {\n  background-color: " + colors.danger + ";\n  color: #fff;\n}\n#guideguide .set-list-set {\n  background-color: " + colors.button + ";\n}\n#guideguide .set-list-set:hover {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .set-list-set:hover a {\n  color: " + colors.text + ";\n}\n#guideguide .set-list-set.is-selected {\n  background-color: " + colors.highlight + ";\n  color: #fff;\n}\n#guideguide .set-list-set.is-selected:hover {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown.is-active .dropdown-button {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:after {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:hover, #guideguide .dropdown.is-active .dropdown-button:hover:after {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown-button {\n  background-color: " + colors.button + ";\n}\n#guideguide .dropdown-button:before {\n  border-color: " + colors.text + " transparent transparent;\n}\n#guideguide .dropdown-button:hover, #guideguide .dropdown-button:hover:after {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .dropdown-button:hover {\n  color: " + colors.text + ";\n}\n#guideguide .dropdown-button:after {\n  background-color: " + colors.button + ";\n  border-left: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item {\n  background-color: " + colors.button + ";\n  border-top: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item:hover {\n  color: " + colors.text + ";\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .alert-body {\n  background-color: " + colors.background + ";\n}\n#guideguide .scrollbar .handle {\n  background-color: " + colors.buttonSelect + ";\n}");
+      return $("#theme").text("#guideguide {\n  color: " + colors.text + ";\n  background-color: " + colors.background + ";\n}\n#guideguide a {\n  color: " + colors.text + ";\n}\n#guideguide a:hover {\n  color: " + colors.highlight + ";\n}\n#guideguide .nav a.is-selected {\n  color: " + colors.buttonSelect + ";\n}\n#guideguide .input {\n  background-color: " + colors.button + ";\n}\n#guideguide .input input, #guideguide .input textarea {\n  color: " + colors.text + ";\n}\n#guideguide .input.is-focused .input-shell {\n  border-color: " + colors.highlight + ";\n}\n#guideguide .input.is-invalid .input-shell {\n  border-color: " + colors.danger + ";\n}\n#guideguide .distribute-highlight .icon {\n  color: " + colors.highlight + ";\n}\n#guideguide .button {\n  background-color: " + colors.button + ";\n}\n#guideguide .button:hover {\n  background-color: " + colors.buttonHover + ";\n  color: " + colors.text + ";\n}\n#guideguide .button.primary {\n  background-color: " + colors.highlight + ";\n  color: #fff;\n}\n#guideguide .button.primary:hover {\n  background-color: " + colors.highlightHover + ";\n  color: #fff;\n}\n#guideguide .button-clear-guides:hover {\n  background-color: " + colors.danger + ";\n  color: #fff;\n}\n#guideguide .set-list-set {\n  background-color: " + colors.button + ";\n}\n#guideguide .set-list-set:hover {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .set-list-set:hover a {\n  color: " + colors.text + ";\n}\n#guideguide .set-list-set.is-selected {\n  background-color: " + colors.highlight + ";\n  color: #fff;\n}\n#guideguide .set-list-set.is-selected:hover {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown.is-active .dropdown-button {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:after {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:hover, #guideguide .dropdown.is-active .dropdown-button:hover:after {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown-button {\n  background-color: " + colors.button + ";\n}\n#guideguide .dropdown-button:before {\n  border-color: " + colors.text + " transparent transparent;\n}\n#guideguide .dropdown-button:hover, #guideguide .dropdown-button:hover:after {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .dropdown-button:hover {\n  color: " + colors.text + ";\n}\n#guideguide .dropdown-button:after {\n  background-color: " + colors.button + ";\n  border-left: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item {\n  background-color: " + colors.button + ";\n  border-top: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item:hover {\n  color: " + colors.text + ";\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .alert-body {\n  background-color: " + colors.background + ";\n}\n#guideguide .scrollbar .handle {\n  background-color: " + colors.buttonSelect + ";\n}\n#guideguide .importer {\n  background-color: " + colors.background + ";\n}");
     };
 
     return GuideGuide;
