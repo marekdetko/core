@@ -501,6 +501,7 @@ class GuideGuide
 
         @bridge.log "Add guides from #{ source }"
         @recordUsage source, guides.length
+        @bridge.resetGuides()
         @bridge.addGuides guides
 
   # Updates the text in the custom field and resizes it
@@ -1161,7 +1162,6 @@ class GuideGuide
         unique = !uniqueGuides[el.orientation][el.location]
         uniqueGuides[el.orientation][el.location] = true
         unique
-
     guides
 
 
