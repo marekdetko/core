@@ -250,7 +250,8 @@ table {
 
   .scroll-outer {
     margin-bottom: 41px;
-    overflow: scroll;
+    overflow: hidden;
+    overflow-y: scroll;
   }
 
   .scrollbar {
