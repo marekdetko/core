@@ -55,7 +55,7 @@ class GuideGuide
     @panel.on 'click', '.js-import', @onClickImportSets
     @panel.on 'click', '.js-cancel-import', @onClickCancelImport
     @panel.on 'click', '.js-export-sets', @onClickExportSets
-    @panel.on 'click', '.js-export-url', @onClickExportURL
+    @panel.on 'click', '.js-link', @onClickLink
     @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
     @panel.on 'click', '.js-deny-submit-data', @onDenySubmitData
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
@@ -785,7 +785,7 @@ class GuideGuide
       data: JSON.stringify data
       success: (data) =>
         title = @messages["alertTitle.exportSuccess"]
-        message = "#{ @messages['alertMessage.exportSuccess'] } <a class='js-export-url' href='#{ data.html_url }'>#{ data.html_url }</a>"
+        message = "#{ @messages['alertMessage.exportSuccess'] } <a class='js-link' href='#{ data.html_url }'>#{ data.html_url }</a>"
 
         @alert [title, message], ['primary js-dismiss-alert'], ['ui.btnOk']
       error: (data) =>
@@ -794,9 +794,9 @@ class GuideGuide
   # Open a exported sets url
   #
   # Returns nothing
-  onClickExportURL: (event) =>
+  onClickLink: (event) =>
     event.preventDefault()
-    url = $(event.currentTarget).text()
+    url = $(event.currentTarget).attr 'href'
     @bridge.openURL url
 
   # When exiting the Custom form, clear the new set form.
