@@ -43,11 +43,9 @@ class GGN
   #
   # Returns an array of grid Objects
   parse: (string) =>
-    string = string
-      .replace(/^[\s]+|[\s]+$/mg,'')       # Trim trailing and leading spaces
+    string = $.trim(string)
       .replace(/[^\S\n]*\|[^\S\n]*/g, '|') # Remove any pipe spaces
       .replace(/\|+/g, ' | ')              # Reduce duped pipes to singles
-      .replace(/^[\s]+|[\s]+$/mg,'')       # Trim any new whitespace
 
     lines = string.split /\n/g
     $.each lines, (index,line) =>
