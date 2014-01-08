@@ -1033,7 +1033,6 @@ class GuideGuide
     guides = []
 
     $.each ggn.grids, (index,grid) =>
-      positionOffset   = 0
       guideOrientation = grid.options.orientation.value
       wholePixels      = grid.options.calculation && grid.options.calculation.value == 'pixel'
       fill             = grid.gaps.fill if grid.gaps.fill
@@ -1097,16 +1096,7 @@ class GuideGuide
           gap.value++ if index >= remainderOffset && index < remainderOffset + remainderPixels
 
       # Figure out where the grid starts
-      insertMarker = offset
-      if grid.options.width && grid.options.position.value == 'last'
-        areaWidth = if guideOrientation == 'horizontal' then info.height else info.width
-        insertMarker += areaWidth - grid.options.width.value
-
-      if grid.options.offset
-        if grid.options.position.value == 'first'
-          insertMarker += grid.options.offset.value
-        else if grid.options.position.value == 'last'
-          insertMarker -= grid.options.offset.value
+      insertMarker = if grid.options.offset then grid.options.offset.value else offset
 
       # Expand any fills
       $.each grid.gaps.all, (index,item) =>
@@ -1204,24 +1194,29 @@ class GuideGuide
 
     # Set up the grid string
     if data.count or data.width
-      gridString += "$#{ data.orientation }"
+      gridString += "|$#{ data.orientation }"
       gridString += "*" if data.count != 1
       gridString += data.count - 1 if data.count > 1 and data.gutter
       gridString += data.count if data.count > 1 and !data.gutter
+      gridString += "|"
       gridString += "|$#{ data.orientation }#{ if data.gutter then 'C' else '' }|" if data.count > 1 and data.gutter
 
     if data.firstMargin or data.lastMargin or data.count or data.width
       # Set up the options
       optionsString += "("
       optionsString += data.orientation.charAt(0).toLowerCase()
-      optionsString += data.position.charAt(0).toUpperCase()
       optionsString += data.remainder.charAt(0).toLowerCase()
       optionsString += ")"
+
+    leftBuffer = rightBuffer = ""
+    if data.width
+      leftBuffer = "~" if data.position == "last" or data.position == "center"
+      rightBuffer = "~" if data.position == "first" or data.position == "center"
 
     # Bring it all together
     """
     #{ varString }
-    #{ firstMargString }#{ gridString }#{ lastMargString }#{ optionsString }\n
+    #{ firstMargString }#{ leftBuffer }#{ gridString }#{ rightBuffer }#{ lastMargString }#{ optionsString }\n
     """
 
   stringifyFormData: (data, callback) ->

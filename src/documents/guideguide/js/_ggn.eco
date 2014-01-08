@@ -141,9 +141,6 @@ class GGN
         orientation:
           id: "v"
           value: 'vertical'
-        position:
-          id: "F"
-          value: 'first'
         remainder:
           id: 'l'
           value: 'last'
@@ -183,18 +180,6 @@ class GGN
           obj.orientation =
             id: "v"
             value: "vertical"
-        when "F"
-          obj.position =
-            id: "F"
-            value: "first"
-        when "C"
-          obj.position =
-            id: "C"
-            value: "center"
-        when "L"
-          obj.position =
-            id: "L"
-            value: "last"
         when "f"
           obj.remainder =
             id: "f"
