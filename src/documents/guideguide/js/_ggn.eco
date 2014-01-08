@@ -166,7 +166,7 @@ class GGN
   #
   # Returns an object
   parseOptions: (string) =>
-    optionArray = string.replace(/\s/,'').split ','
+    optionArray = string.toLowerCase().replace(/\s/,'').split ','
     obj = {}
 
     options = optionArray[0].split ''
