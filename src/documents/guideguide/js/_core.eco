@@ -546,21 +546,21 @@ class GuideGuide
   # Returns noting.
   onBlurFormInput: (event) =>
     $input = $(event.currentTarget)
-    if $input.val()
-      int = false
 
-      if $input.attr 'data-integer'
-        val = Math.round parseFloat $input.val()
-        $input.val val if val
-        int = true
+    int = false
 
-      if !@isValid $input.val(), int
-        $input.trigger 'input:invalidate'
-      else
-        @formatField $input
-        $form  = $input.closest '.js-grid-form'
-        @stringifyFormData @getFormData($form), (string) =>
-          @updateCustomField string
+    if $input.attr 'data-integer'
+      val = Math.round parseFloat $input.val()
+      $input.val val if val
+      int = true
+
+    if !@isValid $input.val(), int
+      $input.trigger 'input:invalidate'
+    else
+      @formatField $input
+      $form  = $input.closest '.js-grid-form'
+      @stringifyFormData @getFormData($form), (string) =>
+        @updateCustomField string
 
   # Clear any error reporting text and reset the Custom forms's validation
   #
@@ -1313,6 +1313,7 @@ class GuideGuide
   #
   # Returns a Boolean
   isValid: (string, integerOnly = false) ->
+    return true if string == ""
     units = string.split ','
     units = units.filter (unit) =>
       u = new Unit(unit,integerOnly)
