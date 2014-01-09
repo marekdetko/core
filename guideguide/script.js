@@ -819,7 +819,6 @@
       this.onToggleDropdown = __bind(this.onToggleDropdown, this);
       this.selectTab = __bind(this.selectTab, this);
       this.onTabClick = __bind(this.onTabClick, this);
-      this.updateTheme = __bind(this.updateTheme, this);
       this.refreshSettings = __bind(this.refreshSettings, this);
       this.dismissAlert = __bind(this.dismissAlert, this);
       this.onClickDismissAlert = __bind(this.onClickDismissAlert, this);
@@ -1072,10 +1071,6 @@
         $selected = $dropdown.find("[data-value='" + value + "']");
         return $dropdown.find('.js-dropdown-button').text(_this.messages[$selected.attr('data-localize')]);
       });
-    };
-
-    GuideGuide.prototype.updateTheme = function(theme) {
-      return this.panel.attr('data-theme', theme);
     };
 
     GuideGuide.prototype.onTabClick = function(event) {
@@ -2126,6 +2121,7 @@
     };
 
     GuideGuide.prototype.updateTheme = function(colors) {
+      this.panel.removeClass('dark-theme light-theme').addClass("" + (colors.prefix || 'dark') + "-theme");
       if (!$("#theme").length) {
         $("head").append('<style id="theme">');
       }

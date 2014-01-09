@@ -1,4 +1,3 @@
-@charset "UTF-8";
 * {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -107,7 +106,7 @@ table {
   margin-left: 5px;
 }
 .nav .icon {
-  vertical-align: 1px;
+  vertical-align: -2px;
 }
 
 .header-actions {
@@ -467,158 +466,172 @@ input, textarea {
   resize: none;
 }
 
-@font-face {
-  font-family: 'guideguideicons';
-  src: url("guideguideicons.eot");
-  src: url("guideguideicons.eot?#iefix") format("embedded-opentype"), url("guideguideicons.woff") format("woff"), url("guideguideicons.ttf") format("truetype"), url("guideguideicons.svg#guideguideicons") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
 .icon {
-  font: normal normal 16px guideguideicons;
-  line-height: 1;
   display: inline-block;
-  text-decoration: none;
-  -webkit-font-smoothing: antialiased;
+  height: 16px;
+  width: 16px;
+  background-image: url("sprites.png");
+  background-repeat: no-repeat;
 }
 
-.icon-arrow-up:before {
-  content: '\f017';
+.light-theme .icon-arrow-up {
+  background-position: 0px 0px;
+}
+.light-theme .icon-clear-guides {
+  background-position: -16px 0px;
+}
+.light-theme .icon-count-column {
+  background-position: -32px 0px;
+}
+.light-theme .icon-count-row {
+  background-position: -48px 0px;
+}
+.light-theme .icon-check {
+  background-position: 0px -16px;
+}
+.light-theme .icon-edit {
+  background-position: -16px -16px;
+}
+.light-theme .icon-settings {
+  background-position: -32px -16px;
+}
+.light-theme .icon-visibility {
+  background-position: -48px -16px;
+}
+.light-theme .icon-margin-top {
+  background-position: 0px -32px;
+}
+.light-theme .icon-margin-right {
+  background-position: -16px -32px;
+}
+.light-theme .icon-margin-bottom {
+  background-position: -32px -32px;
+}
+.light-theme .icon-margin-left {
+  background-position: -48px -32px;
+}
+.light-theme .icon-quick-top {
+  background-position: 0px -48px;
+}
+.light-theme .icon-quick-right {
+  background-position: -16px -48px;
+}
+.light-theme .icon-quick-bottom {
+  background-position: -32px -48px;
+}
+.light-theme .icon-quick-left {
+  background-position: -48px -48px;
+}
+.light-theme .icon-width-column {
+  background-position: 0px -64px;
+}
+.light-theme .icon-width-column-gutter {
+  background-position: -16px -64px;
+}
+.light-theme .icon-width-row {
+  background-position: -32px -64px;
+}
+.light-theme .icon-width-row-gutter {
+  background-position: -48px -64px;
+}
+.light-theme .icon-quick-vertical-midpoint {
+  background-position: 0px -80px;
+}
+.light-theme .icon-quick-horizontal-midpoint {
+  background-position: -16px -80px;
+}
+.light-theme .icon-set-add {
+  background-position: -32px -80px;
 }
 
-/*  */
-.icon-check:before {
-  content: '\f018';
+.dark-theme .icon-arrow-up {
+  background-position: -64px 0px;
+}
+.dark-theme .icon-clear-guides {
+  background-position: -80px 0px;
+}
+.dark-theme .icon-count-column {
+  background-position: -96px 0px;
+}
+.dark-theme .icon-count-row {
+  background-position: -112px 0px;
+}
+.dark-theme .icon-check {
+  background-position: -64px -16px;
+}
+.dark-theme .icon-edit {
+  background-position: -80px -16px;
+}
+.dark-theme .icon-settings {
+  background-position: -96px -16px;
+}
+.dark-theme .icon-visibility {
+  background-position: -112px -16px;
+}
+.dark-theme .icon-margin-top {
+  background-position: -64px -32px;
+}
+.dark-theme .icon-margin-right {
+  background-position: -80px -32px;
+}
+.dark-theme .icon-margin-bottom {
+  background-position: -96px -32px;
+}
+.dark-theme .icon-margin-left {
+  background-position: -112px -32px;
+}
+.dark-theme .icon-quick-top {
+  background-position: -64px -48px;
+}
+.dark-theme .icon-quick-right {
+  background-position: -80px -48px;
+}
+.dark-theme .icon-quick-bottom {
+  background-position: -96px -48px;
+}
+.dark-theme .icon-quick-left {
+  background-position: -112px -48px;
+}
+.dark-theme .icon-width-column {
+  background-position: -64px -64px;
+}
+.dark-theme .icon-width-column-gutter {
+  background-position: -80px -64px;
+}
+.dark-theme .icon-width-row {
+  background-position: -96px -64px;
+}
+.dark-theme .icon-width-row-gutter {
+  background-position: -112px -64px;
+}
+.dark-theme .icon-quick-vertical-midpoint {
+  background-position: -64px -80px;
+}
+.dark-theme .icon-quick-horizontal-midpoint {
+  background-position: -80px -80px;
+}
+.dark-theme .icon-set-add {
+  background-position: -96px -80px;
 }
 
-/*  */
-.icon-clear-guides:before {
-  content: '\f00d';
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
+  .icon {
+    background-image: url("sprites@2x.png");
+    background-size: 128px 96px;
+  }
 }
-
-/*  */
-.icon-count-column:before {
-  content: '\f005';
-}
-
-/*  */
-.icon-count-row:before {
-  content: '\f004';
-}
-
-/*  */
-.icon-distribute-margins:before {
-  content: '\f00e';
-}
-
-/*  */
-.icon-edit:before {
-  content: '\f014';
-}
-
-/*  */
-.icon-guideguide:before {
-  content: '\f00f';
-}
-
-/*  */
-.icon-margin-bottom:before {
-  content: '\f001';
-}
-
-/*  */
-.icon-margin-left:before {
-  content: '\f002';
-}
-
-/*  */
-.icon-margin-right:before {
-  content: '\f003';
-}
-
-/*  */
-.icon-margin-top:before {
-  content: '\f000';
-}
-
-/*  */
-.icon-quick-bottom:before {
-  content: '\f010';
-}
-
-/*  */
-.icon-quick-horizontal-midpoint:before {
-  content: '\f00a';
-}
-
-/*  */
-.icon-quick-left:before {
-  content: '\f011';
-}
-
-/*  */
-.icon-quick-right:before {
-  content: '\f012';
-}
-
-/*  */
-.icon-quick-top:before {
-  content: '\f013';
-}
-
-/*  */
-.icon-quick-vertical-midpoint:before {
-  content: '\f00b';
-}
-
-/*  */
-.icon-set-add:before {
-  content: '\f00c';
-}
-
-/*  */
-.icon-settings:before {
-  content: '\f016';
-}
-
-/*  */
-.icon-visibility:before {
-  content: '\f015';
-}
-
-/*  */
-.icon-width-column:before {
-  content: '\f006';
-}
-
-/*  */
-.icon-width-column-gutter:before {
-  content: '\f008';
-}
-
-/*  */
-.icon-width-row:before {
-  content: '\f007';
-}
-
-/*  */
-.icon-width-row-gutter:before {
-  content: '\f009';
-}
-
-/*  */
 .action-bar {
   position: absolute;
   bottom: 0;
   display: table;
   width: 100%;
   height: 30px;
+  line-height: 0;
 }
 .action-bar .button {
   display: table-cell;
   text-align: center;
-  padding: 4px 0;
+  padding: 7px 0;
   vertical-align: top;
 }
 
@@ -642,6 +655,7 @@ input, textarea {
 }
 .set-list-set .icon {
   opacity: 0.4;
+  vertical-align: middle;
 }
 .set-list-set .icon:hover {
   opacity: 1;
@@ -652,6 +666,8 @@ input, textarea {
 }
 .set-list-set .set-action {
   width: 1%;
+  padding: 4px 5px;
+  line-height: 0;
 }
 
 .settings-list {
