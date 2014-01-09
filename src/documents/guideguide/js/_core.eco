@@ -1327,6 +1327,9 @@ class GuideGuide
   #
   # Returns nothing
   updateTheme: (colors) =>
+    @panel
+      .removeClass('dark-theme light-theme')
+      .addClass("#{ colors.prefix || 'dark' }-theme")
     $("head").append('<style id="theme">') if !$("#theme").length
     $("#theme").text """
       #guideguide {
