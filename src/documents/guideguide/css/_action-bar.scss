@@ -6,11 +6,12 @@
   display: table;
   width: 100%;
   height: $actionBarHeight;
+  line-height: 0;
 
   .button {
     display: table-cell;
     text-align: center;
-    padding: 4px 0;
+    padding: 7px 0;
     vertical-align: top;
   }
 }
