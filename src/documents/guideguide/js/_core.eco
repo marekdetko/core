@@ -279,14 +279,6 @@ class GuideGuide
       $selected = $dropdown.find("[data-value='#{ value }']")
       $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]
 
-  # Update the panel's color theme
-  #
-  #   theme - (String) name of the theme to be used
-  #
-  # Returns nothing.
-  updateTheme: (theme) =>
-    @panel.attr 'data-theme', theme
-
   # Behavior for navigating a collection of "pages" via a set of tabs
   #
   # Returns nothing.
