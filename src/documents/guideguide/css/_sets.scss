@@ -20,6 +20,7 @@
 
   .icon {
     opacity: 0.4;
+    vertical-align: middle;
 
     &:hover { opacity: 1; }
   }
@@ -29,5 +30,9 @@
     padding: 3px 5px;
   }
 
-  .set-action { width: 1%; }
+  .set-action {
+    width: 1%;
+    padding: 4px 5px;
+    line-height: 0;
+  }
 }
