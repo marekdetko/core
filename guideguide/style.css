@@ -237,9 +237,6 @@ table {
   margin: 20px;
   overflow: hidden;
 }
-.alert .alert-crop {
-  overflow-x: hidden;
-}
 .alert .alert-title {
   margin-top: 0;
   font-weight: normal;
@@ -250,7 +247,8 @@ table {
 }
 .alert .scroll-outer {
   margin-bottom: 41px;
-  overflow: scroll;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 .alert .scrollbar {
   margin-bottom: 41px;
@@ -676,5 +674,5 @@ input, textarea {
 }
 
 .settings-list-wrap {
-  margin-bottom: 48px;
+  margin-bottom: 10px;
 }

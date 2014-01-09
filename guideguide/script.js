@@ -388,10 +388,6 @@
             id: "v",
             value: 'vertical'
           },
-          position: {
-            id: "F",
-            value: 'first'
-          },
           remainder: {
             id: 'l',
             value: 'last'
@@ -419,7 +415,7 @@
 
     GGN.prototype.parseOptions = function(string) {
       var obj, optionArray, options;
-      optionArray = string.replace(/\s/, '').split(',');
+      optionArray = string.toLowerCase().replace(/\s/, '').split(',');
       obj = {};
       options = optionArray[0].split('');
       $.each(options, function(index, option) {
@@ -433,21 +429,6 @@
             return obj.orientation = {
               id: "v",
               value: "vertical"
-            };
-          case "F":
-            return obj.position = {
-              id: "F",
-              value: "first"
-            };
-          case "C":
-            return obj.position = {
-              id: "C",
-              value: "center"
-            };
-          case "L":
-            return obj.position = {
-              id: "L",
-              value: "last"
             };
           case "f":
             return obj.remainder = {
@@ -1282,6 +1263,7 @@
           guides = _this.consolidateGuides([g, info.existingGuides]);
           _this.bridge.log("Add guides from " + source);
           _this.recordUsage(source, guides.length);
+          _this.bridge.resetGuides();
           return _this.bridge.addGuides(guides);
         });
       });
@@ -1320,24 +1302,22 @@
       var $form, $input, int, val,
         _this = this;
       $input = $(event.currentTarget);
-      if ($input.val()) {
-        int = false;
-        if ($input.attr('data-integer')) {
-          val = Math.round(parseFloat($input.val()));
-          if (val) {
-            $input.val(val);
-          }
-          int = true;
+      int = false;
+      if ($input.attr('data-integer')) {
+        val = Math.round(parseFloat($input.val()));
+        if (val) {
+          $input.val(val);
         }
-        if (!this.isValid($input.val(), int)) {
-          return $input.trigger('input:invalidate');
-        } else {
-          this.formatField($input);
-          $form = $input.closest('.js-grid-form');
-          return this.stringifyFormData(this.getFormData($form), function(string) {
-            return _this.updateCustomField(string);
-          });
-        }
+        int = true;
+      }
+      if (!this.isValid($input.val(), int)) {
+        return $input.trigger('input:invalidate');
+      } else {
+        this.formatField($input);
+        $form = $input.closest('.js-grid-form');
+        return this.stringifyFormData(this.getFormData($form), function(string) {
+          return _this.updateCustomField(string);
+        });
       }
     };
 
@@ -1827,8 +1807,7 @@
         _this = this;
       guides = [];
       $.each(ggn.grids, function(index, grid) {
-        var arbitrarySum, areaWidth, fill, fillCollection, fillIterations, fillWidth, guideOrientation, i, insertMarker, measuredWidth, newGap, offset, positionOffset, remainderOffset, remainderPixels, wholePixels, wildcardArea, wildcardWidth, _i;
-        positionOffset = 0;
+        var arbitrarySum, fill, fillCollection, fillIterations, fillWidth, guideOrientation, i, insertMarker, measuredWidth, newGap, offset, remainderOffset, remainderPixels, wholePixels, wildcardArea, wildcardWidth, _i;
         guideOrientation = grid.options.orientation.value;
         wholePixels = grid.options.calculation && grid.options.calculation.value === 'pixel';
         if (grid.gaps.fill) {
@@ -1892,18 +1871,7 @@
             }
           });
         }
-        insertMarker = offset;
-        if (grid.options.width && grid.options.position.value === 'last') {
-          areaWidth = guideOrientation === 'horizontal' ? info.height : info.width;
-          insertMarker += areaWidth - grid.options.width.value;
-        }
-        if (grid.options.offset) {
-          if (grid.options.position.value === 'first') {
-            insertMarker += grid.options.offset.value;
-          } else if (grid.options.position.value === 'last') {
-            insertMarker -= grid.options.offset.value;
-          }
-        }
+        insertMarker = grid.options.offset ? grid.options.offset.value : offset;
         $.each(grid.gaps.all, function(index, item) {
           if (item.isFill) {
             return grid.gaps.all = grid.gaps.all.slice(0, index).concat(fillCollection, grid.gaps.all.slice(index + 1));
@@ -1978,7 +1946,7 @@
     };
 
     GuideGuide.prototype.stringifyFormGrid = function(data) {
-      var column, firstMargString, gridString, gutter, lastMargString, optionsString, unit, varString;
+      var column, firstMargString, gridString, gutter, lastMargString, leftBuffer, optionsString, rightBuffer, unit, varString;
       data.count = parseInt(data.count);
       firstMargString = '';
       varString = '';
@@ -2015,7 +1983,7 @@
         }
       }
       if (data.count || data.width) {
-        gridString += "$" + data.orientation;
+        gridString += "|$" + data.orientation;
         if (data.count !== 1) {
           gridString += "*";
         }
@@ -2025,6 +1993,7 @@
         if (data.count > 1 && !data.gutter) {
           gridString += data.count;
         }
+        gridString += "|";
         if (data.count > 1 && data.gutter) {
           gridString += "|$" + data.orientation + (data.gutter ? 'C' : '') + "|";
         }
@@ -2032,11 +2001,19 @@
       if (data.firstMargin || data.lastMargin || data.count || data.width) {
         optionsString += "(";
         optionsString += data.orientation.charAt(0).toLowerCase();
-        optionsString += data.position.charAt(0).toUpperCase();
         optionsString += data.remainder.charAt(0).toLowerCase();
         optionsString += ")";
       }
-      return "" + varString + "\n" + firstMargString + gridString + lastMargString + optionsString + "\n";
+      leftBuffer = rightBuffer = "";
+      if (data.width) {
+        if (data.position === "last" || data.position === "center") {
+          leftBuffer = "~";
+        }
+        if (data.position === "first" || data.position === "center") {
+          rightBuffer = "~";
+        }
+      }
+      return "" + varString + "\n" + firstMargString + leftBuffer + gridString + rightBuffer + lastMargString + optionsString + "\n";
     };
 
     GuideGuide.prototype.stringifyFormData = function(data, callback) {
@@ -2135,6 +2112,9 @@
         _this = this;
       if (integerOnly == null) {
         integerOnly = false;
+      }
+      if (string === "") {
+        return true;
       }
       units = string.split(',');
       units = units.filter(function(unit) {
