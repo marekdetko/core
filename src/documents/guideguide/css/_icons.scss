@@ -35,6 +35,20 @@
   .icon-quick-vertical-midpoint { background-position:   0px -80px; }
   .icon-quick-horizontal-midpoint { background-position: -16px -80px; }
   .icon-set-add { background-position: -32px -80px; }
+
+  .nav-item:hover .icon-settings { background-position: -224px -16px; }
+  .header-action:hover .icon-visibility { background-position: -240px -16px; }
+
+  .icon-margin-top:hover { background-position: -192px -32px; }
+  .icon-margin-right:hover { background-position: -208px -32px; }
+  .icon-margin-bottom:hover { background-position: -224px -32px; }
+  .icon-margin-left:hover { background-position: -176px -32px; }
+  .icon-count-column:hover { background-position: -224px 0px; }
+  .icon-count-row:hover { background-position: -176px 0px; }
+  .icon-width-column:hover { background-position:   -192px -64px; }
+  .icon-width-column-gutter:hover { background-position: -208px -64px; }
+  .icon-width-row:hover { background-position: -224px -64px; }
+  .icon-width-row-gutter:hover { background-position: -176px -64px; }
 }
 
 .dark-theme {
@@ -66,14 +80,27 @@
   .icon-quick-vertical-midpoint { background-position:   -64px -80px; }
   .icon-quick-horizontal-midpoint { background-position: -80px -80px; }
   .icon-set-add { background-position: -96px -80px; }
-}
 
+  .nav-item:hover .icon-settings { background-position: -160px -16px; }
+  .header-action:hover .icon-visibility { background-position: -176px -16px; }
+
+  .icon-margin-top:hover { background-position: -128px -32px; }
+  .icon-margin-right:hover { background-position: -144px -32px; }
+  .icon-margin-bottom:hover { background-position: -160px -32px; }
+  .icon-margin-left:hover { background-position: -176px -32px; }
+  .icon-count-column:hover { background-position: -160px 0px; }
+  .icon-count-row:hover { background-position: -176px 0px; }
+  .icon-width-column:hover { background-position:   -128px -64px; }
+  .icon-width-column-gutter:hover { background-position: -144px -64px; }
+  .icon-width-row:hover { background-position: -160px -64px; }
+  .icon-width-row-gutter:hover { background-position: -176px -64px; }
+}
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 only screen and (min--moz-device-pixel-ratio: 1.5),
 only screen and (min-resolution: 240dpi) {
   .icon {
     background-image: url('sprites@2x.png');
-    background-size: 128px 96px;
+    background-size: 256px 96px;
   }
 }
