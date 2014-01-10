@@ -16,6 +16,7 @@ class Messages
       'ui.btnImport': "Import"
       'ui.btnExport': "Export"
       'ui.btnOk': "Ok"
+      'ui.btnDonate': 'Donate'
       'ui.btnCheckForUpdates': "Check for updates"
       'ui.titleHorizontalPosition': "Horizontal position"
       'ui.titleVerticalPosition': "Vertical position"
@@ -30,6 +31,7 @@ class Messages
       'ui.settingVerticalLast': 'Bottom'
       'ui.yes': 'Yes'
       'ui.no': 'No'
+      'ui.niceNo': 'No thanks'
 
       'gap.unrecognized': "Unrecognized gap"
       'gap.noFillWildcards': "Wildcards cannot be fills"
@@ -67,6 +69,9 @@ class Messages
 
       'alertTitle.exportError': "Unable to export"
       'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later."
+
+      'alertTitle.donate': "Would you like to donate?"
+      'alertMessage.donate': "Yowza, you've uses GuideGuide 30 times! Since you seem to get quite a bit of use out of GuideGuide, would you consider making a donation to the development?"
 
       'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area."
 
