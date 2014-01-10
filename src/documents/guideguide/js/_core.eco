@@ -60,6 +60,7 @@ class GuideGuide
     @panel.on 'click', '.js-deny-submit-data', @onDenySubmitData
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
     @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
+    @panel.on 'click', '.js-donate', @onClickDonate
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
     @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
@@ -266,6 +267,10 @@ class GuideGuide
     @panel.find('.js-alert-message').text ''
     @panel.removeClass 'has-alert'
 
+  onClickDonate: =>
+    event.preventDefault()
+    @bridge.openURL "http://guideguide.me/donate"
+
   # Display the correct settings in the Settings tab.
   #
   # Returns nothing.
@@ -381,6 +386,9 @@ class GuideGuide
       @guideguideData.panel.usage[property]++
       @guideguideData.panel.usage.guideActions++ if property isnt 'clear'
       @saveGuideGuideData()
+
+    if @guideguideData.panel.usage.guideActions == 30 and @guideguideData.application.env != 'demo'
+      @alert 'donate', ['primary js-donate', 'js-dismiss-alert'], ['ui.btnDonate', 'ui.niceNo']
 
   # When the user grants data collection permission, update the settings and
   # dismiss the alert.
