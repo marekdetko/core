@@ -278,15 +278,16 @@ table {
 .checkbox {
   font-size: 12px;
   position: relative;
-  width: 50%;
   padding-left: 26px;
   cursor: pointer;
+  display: inline-block;
+  line-height: 19px;
 
   &.checked .icon { display: block; }
 
   .square {
     position: absolute;
-    top: 1px;
+    top: 3px;
     left: 6px;
     display: inline-block;
     height: 12px;
@@ -297,7 +298,7 @@ table {
   .icon {
     display: none;
     position: absolute;
-    top: 0;
+    top: 2px;
     left: 5px;
   }
 }

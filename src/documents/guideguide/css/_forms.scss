@@ -17,6 +17,7 @@ input, textarea {
 .grid-form {
   width: 100%;
   border-collapse: collapse;
+  line-height: 0;
 
   td {
     padding: 0 0 2px 0;
@@ -36,6 +37,10 @@ input, textarea {
   }
 
   .set-name { width: 100%; }
+
+  .input { height: 26px; }
+
+  .checkbox { height: 21px; }
 }
 
 .is-showing-new-set-form {
