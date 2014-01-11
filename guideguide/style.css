@@ -274,16 +274,17 @@ table {
 .checkbox {
   font-size: 12px;
   position: relative;
-  width: 50%;
   padding-left: 26px;
   cursor: pointer;
+  display: inline-block;
+  line-height: 19px;
 }
 .checkbox.checked .icon {
   display: block;
 }
 .checkbox .square {
   position: absolute;
-  top: 1px;
+  top: 3px;
   left: 6px;
   display: inline-block;
   height: 12px;
@@ -293,8 +294,8 @@ table {
 .checkbox .icon {
   display: none;
   position: absolute;
-  top: 0;
-  left: 7px;
+  top: 2px;
+  left: 5px;
 }
 
 input, textarea {
@@ -318,6 +319,7 @@ input, textarea {
 .grid-form {
   width: 100%;
   border-collapse: collapse;
+  line-height: 0;
 }
 .grid-form td {
   padding: 0 0 2px 0;
@@ -341,6 +343,12 @@ input, textarea {
 }
 .grid-form .set-name {
   width: 100%;
+}
+.grid-form .input {
+  height: 26px;
+}
+.grid-form .checkbox {
+  height: 21px;
 }
 
 .is-showing-new-set-form .set-name-padding {
@@ -543,6 +551,42 @@ input, textarea {
 .light-theme .icon-set-add {
   background-position: -32px -80px;
 }
+.light-theme .nav-item:hover .icon-settings {
+  background-position: -224px -16px;
+}
+.light-theme .header-action:hover .icon-visibility {
+  background-position: -240px -16px;
+}
+.light-theme .icon-margin-top:hover {
+  background-position: -192px -32px;
+}
+.light-theme .icon-margin-right:hover {
+  background-position: -208px -32px;
+}
+.light-theme .icon-margin-bottom:hover {
+  background-position: -224px -32px;
+}
+.light-theme .icon-margin-left:hover {
+  background-position: -176px -32px;
+}
+.light-theme .icon-count-column:hover {
+  background-position: -224px 0px;
+}
+.light-theme .icon-count-row:hover {
+  background-position: -176px 0px;
+}
+.light-theme .icon-width-column:hover {
+  background-position: -192px -64px;
+}
+.light-theme .icon-width-column-gutter:hover {
+  background-position: -208px -64px;
+}
+.light-theme .icon-width-row:hover {
+  background-position: -224px -64px;
+}
+.light-theme .icon-width-row-gutter:hover {
+  background-position: -176px -64px;
+}
 
 .dark-theme .icon-arrow-up {
   background-position: -64px 0px;
@@ -613,11 +657,47 @@ input, textarea {
 .dark-theme .icon-set-add {
   background-position: -96px -80px;
 }
+.dark-theme .nav-item:hover .icon-settings {
+  background-position: -160px -16px;
+}
+.dark-theme .header-action:hover .icon-visibility {
+  background-position: -176px -16px;
+}
+.dark-theme .icon-margin-top:hover {
+  background-position: -128px -32px;
+}
+.dark-theme .icon-margin-right:hover {
+  background-position: -144px -32px;
+}
+.dark-theme .icon-margin-bottom:hover {
+  background-position: -160px -32px;
+}
+.dark-theme .icon-margin-left:hover {
+  background-position: -176px -32px;
+}
+.dark-theme .icon-count-column:hover {
+  background-position: -160px 0px;
+}
+.dark-theme .icon-count-row:hover {
+  background-position: -176px 0px;
+}
+.dark-theme .icon-width-column:hover {
+  background-position: -128px -64px;
+}
+.dark-theme .icon-width-column-gutter:hover {
+  background-position: -144px -64px;
+}
+.dark-theme .icon-width-row:hover {
+  background-position: -160px -64px;
+}
+.dark-theme .icon-width-row-gutter:hover {
+  background-position: -176px -64px;
+}
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
   .icon {
     background-image: url("sprites@2x.png");
-    background-size: 128px 96px;
+    background-size: 256px 96px;
   }
 }
 .action-bar {

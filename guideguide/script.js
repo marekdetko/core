@@ -150,6 +150,7 @@
         'ui.btnImport': "Import",
         'ui.btnExport': "Export",
         'ui.btnOk': "Ok",
+        'ui.btnDonate': 'Donate',
         'ui.btnCheckForUpdates': "Check for updates",
         'ui.titleHorizontalPosition': "Horizontal position",
         'ui.titleVerticalPosition': "Vertical position",
@@ -164,6 +165,7 @@
         'ui.settingVerticalLast': 'Bottom',
         'ui.yes': 'Yes',
         'ui.no': 'No',
+        'ui.niceNo': 'No thanks',
         'gap.unrecognized': "Unrecognized gap",
         'gap.noFillWildcards': "Wildcards cannot be fills",
         'ggn.noGrids': "This string does not contain any grids",
@@ -191,6 +193,8 @@
         'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist here: ",
         'alertTitle.exportError': "Unable to export",
         'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later.",
+        'alertTitle.donate': "Would you like to donate?",
+        'alertMessage.donate': "Yowza, you've uses GuideGuide 30 times! Since you seem to get quite a bit of use out of GuideGuide, would you consider making a donation to the development?",
         'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area.",
         'help.remainder': "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels.",
         'help.importDesc': "Import sets by pasting a GitHub Gist url in the text field below.",
@@ -820,6 +824,7 @@
       this.selectTab = __bind(this.selectTab, this);
       this.onTabClick = __bind(this.onTabClick, this);
       this.refreshSettings = __bind(this.refreshSettings, this);
+      this.onClickDonate = __bind(this.onClickDonate, this);
       this.dismissAlert = __bind(this.dismissAlert, this);
       this.onClickDismissAlert = __bind(this.onClickDismissAlert, this);
       this.alert = __bind(this.alert, this);
@@ -880,6 +885,7 @@
       this.panel.on('click', '.js-deny-submit-data', this.onDenySubmitData);
       this.panel.on('click', '.js-check-for-updates', this.onClickCheckForUpdates);
       this.panel.on('click', '.js-dismiss-alert', this.onClickDismissAlert);
+      this.panel.on('click', '.js-donate', this.onClickDonate);
       this.panel.on('click', '.js-has-update-button', this.onClickHasUpdateButton);
       this.panel.on('focus', '.js-input input, .js-input textarea', this.onInputFocus);
       this.panel.on('blur', '.js-input input, .js-input textarea', this.onInputBlur);
@@ -1059,6 +1065,11 @@
       return this.panel.removeClass('has-alert');
     };
 
+    GuideGuide.prototype.onClickDonate = function() {
+      event.preventDefault();
+      return this.bridge.openURL("http://guideguide.me/donate");
+    };
+
     GuideGuide.prototype.refreshSettings = function() {
       var $dropdowns,
         _this = this;
@@ -1159,7 +1170,10 @@
         if (property !== 'clear') {
           this.guideguideData.panel.usage.guideActions++;
         }
-        return this.saveGuideGuideData();
+        this.saveGuideGuideData();
+      }
+      if (this.guideguideData.panel.usage.guideActions === 30 && this.guideguideData.application.env !== 'demo') {
+        return this.alert('donate', ['primary js-donate', 'js-dismiss-alert'], ['ui.btnDonate', 'ui.niceNo']);
       }
     };
 
