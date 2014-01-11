@@ -20,6 +20,11 @@
   font-style: normal;
 }
 
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
 body {
   background-image: url(../img/noisy_grid.png);
   font-family: 'open-sans-light', helvetica, arial, sans-serif;
