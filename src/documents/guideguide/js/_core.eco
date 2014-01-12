@@ -1377,15 +1377,14 @@ class GuideGuide
       }
       #guideguide .button.primary {
         background-color: #{ colors.highlight };
-        color: #fff;
+        color: #eee;
       }
       #guideguide .button.primary:hover {
         background-color: #{ colors.highlightHover };
-        color: #fff;
+        color: #eee;
       }
       #guideguide .button-clear-guides:hover {
         background-color: #{ colors.danger };
-        color: #fff;
       }
       #guideguide .set-list-set {
         background-color: #{ colors.button };
@@ -1398,7 +1397,10 @@ class GuideGuide
       }
       #guideguide .set-list-set.is-selected {
         background-color: #{ colors.highlight };
-        color: #fff;
+        color: #eee;
+      }
+      #guideguide .set-list-set.is-selected a {
+        color: #eee;
       }
       #guideguide .set-list-set.is-selected:hover {
         background-color: #{ colors.highlightHover };
