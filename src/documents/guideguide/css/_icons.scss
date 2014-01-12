@@ -6,10 +6,11 @@
   background-repeat: no-repeat;
 }
 
-.icon-clear-guides { background-position: -80px 0px; }
+.button-clear-guides:hover .icon-clear-guides { background-position: -80px 0px; }
 
 .light-theme {
   .icon-arrow-up { background-position: 0px 0px; }
+  .icon-clear-guides { background-position: -16px 0px; }
   .icon-count-column { background-position: -32px 0px; }
   .icon-count-row { background-position: -48px 0px; }
 
@@ -54,6 +55,7 @@
 
 .dark-theme {
   .icon-arrow-up { background-position: -64px 0px; }
+  .icon-clear-guides { background-position: -80px 0px; }
   .icon-count-column { background-position: -96px 0px; }
   .icon-count-row { background-position: -112px 0px; }
 
