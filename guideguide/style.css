@@ -482,12 +482,15 @@ input, textarea {
   background-repeat: no-repeat;
 }
 
-.icon-clear-guides {
+.button-clear-guides:hover .icon-clear-guides {
   background-position: -80px 0px;
 }
 
 .light-theme .icon-arrow-up {
   background-position: 0px 0px;
+}
+.light-theme .icon-clear-guides {
+  background-position: -16px 0px;
 }
 .light-theme .icon-count-column {
   background-position: -32px 0px;
@@ -591,6 +594,9 @@ input, textarea {
 
 .dark-theme .icon-arrow-up {
   background-position: -64px 0px;
+}
+.dark-theme .icon-clear-guides {
+  background-position: -80px 0px;
 }
 .dark-theme .icon-count-column {
   background-position: -96px 0px;
