@@ -1733,6 +1733,7 @@
         var bounds, guides, prevHorizontal, prevVertical, string, xString, yString;
         xString = '';
         yString = '';
+        string = '';
         prevHorizontal = info.isSelection ? info.offsetY : 0;
         prevVertical = info.isSelection ? info.offsetX : 0;
         guides = info.existingGuides;
@@ -1745,36 +1746,37 @@
           };
           guides = _this.consolidateGuides([guides, info.existingGuides], bounds);
         }
-        guides.sort(function(a, b) {
-          return a.location - b.location;
-        });
-        $.each(guides, function(index, guide) {
-          if (guide.orientation === 'vertical') {
-            xString = "" + xString + (guide.location - prevVertical) + "px | ";
-            prevVertical = guide.location;
+        if (guides) {
+          guides.sort(function(a, b) {
+            return a.location - b.location;
+          });
+          $.each(guides, function(index, guide) {
+            if (guide.orientation === 'vertical') {
+              xString = "" + xString + (guide.location - prevVertical) + "px | ";
+              prevVertical = guide.location;
+            }
+            if (guide.orientation === 'horizontal') {
+              yString = "" + yString + (guide.location - prevHorizontal) + "px | ";
+              return prevHorizontal = guide.location;
+            }
+          });
+          if (xString !== '') {
+            xString = "" + xString + "(v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")";
           }
-          if (guide.orientation === 'horizontal') {
-            yString = "" + yString + (guide.location - prevHorizontal) + "px | ";
-            return prevHorizontal = guide.location;
+          if (yString !== '') {
+            yString = "" + yString + "(h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")";
           }
-        });
-        if (xString !== '') {
-          xString = "" + xString + "(v" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")";
-        }
-        if (yString !== '') {
-          yString = "" + yString + "(h" + (_this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")";
-        }
-        string = '';
-        string += xString;
-        if (xString) {
-          string += '\n';
-        }
-        string += yString;
-        if (yString) {
-          string += '\n';
-        }
-        if (xString || yString) {
-          string += '\n# ' + _this.messages['ggn.stringFromExistingGuides'];
+          string += xString;
+          if (xString) {
+            string += '\n';
+          }
+          string += yString;
+          if (yString) {
+            string += '\n';
+          }
+          if (xString || yString) {
+            string += '\n# ' + _this.messages['ggn.stringFromExistingGuides'];
+          }
         }
         return _this.showCustomSetForm(string);
       });

@@ -1,6 +1,6 @@
 {
   "name": "guideguide",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "main": [
     "guideguide/panel.html"
   ],
