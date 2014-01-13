@@ -954,6 +954,8 @@ class GuideGuide
     @bridge.getDocumentInfo (info) =>
       xString = ''
       yString = ''
+      string  = ''
+
       prevHorizontal = if info.isSelection then info.offsetY else 0
       prevVertical = if info.isSelection then info.offsetX else 0
       guides = info.existingGuides
@@ -966,26 +968,26 @@ class GuideGuide
           right:  info.offsetX + info.width
         guides = @consolidateGuides [guides, info.existingGuides], bounds
 
-      guides.sort (a,b) =>
-        a.location - b.location
+      if guides
+        guides.sort (a,b) =>
+          a.location - b.location
 
-      $.each guides, (index, guide) =>
-        if guide.orientation == 'vertical'
-          xString = "#{ xString }#{ guide.location - prevVertical }px | "
-          prevVertical = guide.location
-        if guide.orientation == 'horizontal'
-          yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
-          prevHorizontal = guide.location
+        $.each guides, (index, guide) =>
+          if guide.orientation == 'vertical'
+            xString = "#{ xString }#{ guide.location - prevVertical }px | "
+            prevVertical = guide.location
+          if guide.orientation == 'horizontal'
+            yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
+            prevHorizontal = guide.location
 
-      xString = "#{ xString }(v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if xString != ''
-      yString = "#{ yString }(h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if yString != ''
+        xString = "#{ xString }(v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if xString != ''
+        yString = "#{ yString }(h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })" if yString != ''
 
-      string = ''
-      string += xString
-      string += '\n' if xString
-      string += yString
-      string += '\n' if yString
-      string += '\n# ' + @messages['ggn.stringFromExistingGuides'] if xString or yString
+        string += xString
+        string += '\n' if xString
+        string += yString
+        string += '\n' if yString
+        string += '\n# ' + @messages['ggn.stringFromExistingGuides'] if xString or yString
 
       @showCustomSetForm string
 
