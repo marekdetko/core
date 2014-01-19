@@ -86,7 +86,6 @@ class GuideGuide
     # Info about this install of GuideGuide
     panelBootstrap =
       id: null
-      newSetId: 3
       launchCount: 0
       askedAboutAnonymousData: false
       usage:
@@ -103,30 +102,38 @@ class GuideGuide
         horizontalMidpoint: 0
         clear: 0
 
+    set1 =
+      name:'Outline'
+      string: """
+      | ~ | (vFl)
+      | ~ | (hFl)
+      """
+
+    set2 =
+      name:'Two column grid'
+      string: """
+      | ~ | ~ | (vFl)
+      """
+
+    set3 =
+      name:'Three column grid'
+      string: """
+      | ~ | ~ | ~ | (vFl)
+      """
+
     # User sets
     setsBootstrap =
       Default:
         name: "Default"
-        sets: [
-            id: 0
-            name:'Outline'
-            string: """
-            | ~ | (vFl)
-            | ~ | (hFl)
-            """
-          ,
-            id: 1
-            name:'Two column grid'
-            string: """
-            | ~ | ~ | (vFl)
-            """
-          ,
-            id: 2
-            name:'Three column grid'
-            string: """
-            | ~ | ~ | ~ | (vFl)
-            """
-        ]
+        sets: {}
+
+    set1.id = @generateSetID set1
+    set2.id = @generateSetID set2
+    set3.id = @generateSetID set3
+
+    setsBootstrap.Default.sets[set1.id] = set1
+    setsBootstrap.Default.sets[set2.id] = set2
+    setsBootstrap.Default.sets[set3.id] = set3
 
     # User settings
     settingsBootstrap =
@@ -583,6 +590,15 @@ class GuideGuide
       $input.val ggn.toString()
       $input.trigger('autosize.resize')
 
+  # Generate a set ID based on a hash of the GGN. This will allow us to detect
+  # duplicates easier.
+  #
+  #   set - set object used as a seed for the ID hash
+  #
+  # returns a String
+  generateSetID: (set) =>
+    CryptoJS.SHA1("#{ set.name }#{ set.string }").toString()
+
   # Select a set in the sets list when it is clicked
   #
   # Returns nothing.
@@ -601,7 +617,7 @@ class GuideGuide
     id = $set.attr 'data-id'
     group = $set.attr 'data-group'
 
-    @guideguideData.sets[group].sets = $.grep @guideguideData.sets[group].sets, (set) -> parseInt(set.id) != parseInt(id)
+    delete @guideguideData.sets[group].sets[id]
 
     @saveGuideGuideData()
     @refreshSets()
@@ -734,12 +750,18 @@ class GuideGuide
   importSets: (sets) =>
     @bridge.log "Sets imported"
     @panel.removeClass 'is-showing-importer'
-    for index, item of sets
-      group = escape(item.name)
-      @guideguideData.sets[group] ||=
-        name: item.name
+    console.log sets
+
+    for key, group of sets
+      @guideguideData.sets[key] ||=
+        name: group.name
         sets: []
-      @guideguideData.sets[group].sets = @guideguideData.sets[group].sets.concat item.sets
+
+      g = @guideguideData.sets[key]
+
+      for key, set of group.sets
+        g.sets[set.id] = set if !g.sets[set.id]?
+
     @saveGuideGuideData()
 
   # Show the set importer
@@ -831,13 +853,13 @@ class GuideGuide
     id    = $set.attr('data-id')
     group = $set.attr('data-group')
 
-    set = $.grep @guideguideData.sets[group].sets, (set) -> parseInt(set.id) == parseInt(id)
+    set = @guideguideData.sets[group].sets[id]
 
     $form = @panel.find('.js-custom-form')
-    $form.find('.js-set-name').val(set[0].name)
-    $form.find('.js-set-id').val(set[0].id)
+    $form.find('.js-set-name').val(set.name)
+    $form.find('.js-set-id').val(set.id)
 
-    @showCustomSetForm(set[0].string)
+    @showCustomSetForm(set.string)
 
   # Save a set from the Custom form.
   #
@@ -851,10 +873,13 @@ class GuideGuide
 
     if executable
       obj =
-        id: $form.find('.js-set-id').val()
+        oldID: $form.find('.js-set-id').val()
+        id: @generateSetID
+          name: name
+          string: string
         group: "Default"
         name: name
-        ggn: string
+        string: string
 
       if !$('#guideguide').find('.js-set-id').val()
         @createNewSet(obj)
@@ -915,25 +940,28 @@ class GuideGuide
     return unless $set.length
     id    = $set.attr 'data-id'
     group = $set.attr 'data-group'
-    data  = $.grep @guideguideData.sets[group].sets, (set) -> parseInt(set.id) == parseInt(id)
-    @addGuidesfromGGN data[0].string, 'set'
+    data  = @guideguideData.sets[group].sets[id]
+    @addGuidesfromGGN data.string, 'set'
 
   createNewSet: (data) =>
     newSet =
-      id: @guideguideData.panel.newSetId
+      id: @generateSetID data
       name: data.name
-      string: data.ggn
+      string: data.string
 
-    @guideguideData.panel.newSetId++
-    @guideguideData.sets["Default"].sets.push newSet
+    @guideguideData.sets["Default"].sets[newSet.id] = newSet
     @saveGuideGuideData()
     @refreshSets()
 
   updateSet: (data) =>
-    set = $.grep @guideguideData.sets[data.group].sets, (set) -> parseInt(set.id) == parseInt(data.id)
+    delete @guideguideData.sets[data.group].sets[data.oldID]
+    newSet =
+      name: data.name
+      string: data.string
 
-    set[0].name = data.name
-    set[0].string = data.ggn
+    newSet.id = @generateSetID newSet
+
+    @guideguideData.sets[data.group].sets[data.id] = newSet
 
     @saveGuideGuideData()
     @refreshSets()
