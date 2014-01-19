@@ -104,26 +104,29 @@ class GuideGuide
         clear: 0
 
     # User sets
-    setsBootstrap = [
-        id: 0
-        name:'Outline'
-        string: """
-        | ~ | (vFl)
-        | ~ | (hFl)
-        """
-      ,
-        id: 1
-        name:'Two column grid'
-        string: """
-        | ~ | ~ | (vFl)
-        """
-      ,
-        id: 2
-        name:'Three column grid'
-        string: """
-        | ~ | ~ | ~ | (vFl)
-        """
-    ]
+    setsBootstrap =
+      Default:
+        name: "Default"
+        sets: [
+            id: 0
+            name:'Outline'
+            string: """
+            | ~ | (vFl)
+            | ~ | (hFl)
+            """
+          ,
+            id: 1
+            name:'Two column grid'
+            string: """
+            | ~ | ~ | (vFl)
+            """
+          ,
+            id: 2
+            name:'Three column grid'
+            string: """
+            | ~ | ~ | ~ | (vFl)
+            """
+        ]
 
     # User settings
     settingsBootstrap =
@@ -596,8 +599,9 @@ class GuideGuide
     event.preventDefault()
     $set = $(event.currentTarget).closest '.js-set'
     id = $set.attr 'data-id'
+    group = $set.attr 'data-group'
 
-    @guideguideData.sets = $.grep @guideguideData.sets, (set) -> parseInt(set.id) != parseInt(id)
+    @guideguideData.sets[group].sets = $.grep @guideguideData.sets[group].sets, (set) -> parseInt(set.id) != parseInt(id)
 
     @saveGuideGuideData()
     @refreshSets()
@@ -730,7 +734,12 @@ class GuideGuide
   importSets: (sets) =>
     @bridge.log "Sets imported"
     @panel.removeClass 'is-showing-importer'
-    @guideguideData.sets = @guideguideData.sets.concat sets
+    for index, item of sets
+      group = escape(item.name)
+      @guideguideData.sets[group] ||=
+        name: item.name
+        sets: []
+      @guideguideData.sets[group].sets = @guideguideData.sets[group].sets.concat item.sets
     @saveGuideGuideData()
 
   # Show the set importer
@@ -818,10 +827,11 @@ class GuideGuide
     event.preventDefault()
     $('#guideguide').find('.js-custom-tab').click()
 
-    $set = $(event.currentTarget).closest('.js-set')
-    id = $set.attr('data-id')
+    $set  = $(event.currentTarget).closest('.js-set')
+    id    = $set.attr('data-id')
+    group = $set.attr('data-group')
 
-    set = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt(id)
+    set = $.grep @guideguideData.sets[group].sets, (set) -> parseInt(set.id) == parseInt(id)
 
     $form = @panel.find('.js-custom-form')
     $form.find('.js-set-name').val(set[0].name)
@@ -842,6 +852,7 @@ class GuideGuide
     if executable
       obj =
         id: $form.find('.js-set-id').val()
+        group: "Default"
         name: name
         ggn: string
 
@@ -902,7 +913,9 @@ class GuideGuide
     event.preventDefault()
     $set = $('.js-set-list').find('.is-selected').first()
     return unless $set.length
-    data = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt($set.attr 'data-id')
+    id    = $set.attr 'data-id'
+    group = $set.attr 'data-group'
+    data  = $.grep @guideguideData.sets[group].sets, (set) -> parseInt(set.id) == parseInt(id)
     @addGuidesfromGGN data[0].string, 'set'
 
   createNewSet: (data) =>
@@ -912,12 +925,12 @@ class GuideGuide
       string: data.ggn
 
     @guideguideData.panel.newSetId++
-    @guideguideData.sets.push newSet
+    @guideguideData.sets["Default"].sets.push newSet
     @saveGuideGuideData()
     @refreshSets()
 
   updateSet: (data) =>
-    set = $.grep @guideguideData.sets, (set) -> parseInt(set.id) == parseInt(data.id)
+    set = $.grep @guideguideData.sets[data.group].sets, (set) -> parseInt(set.id) == parseInt(data.id)
 
     set[0].name = data.name
     set[0].string = data.ggn
@@ -933,9 +946,10 @@ class GuideGuide
     @bridge.log 'Refreshing sets'
     $list = @panel.find('.js-set-list')
     $list.find('.js-set').remove()
-    $.each @guideguideData.sets, (index,set) =>
+    $.each @guideguideData.sets["Default"].sets, (index,set) =>
       item = $('.js-set-item-template').clone(true).removeClass('js-set-item-template')
       item.find('.js-set-item-name').html set.name
+      item.attr 'data-group', "Default"
       item.attr 'data-id', set.id
       $list.append item
 
