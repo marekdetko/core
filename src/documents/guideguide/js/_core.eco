@@ -551,6 +551,9 @@ class GuideGuide
     $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
     $fields.find('.js-grid-form-input').val value
 
+    @stringifyFormData @getFormData($form), (string) =>
+      @updateCustomField string
+
   # When a field is unfocused, validate its contents
   #
   # Returns noting.
