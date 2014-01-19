@@ -698,7 +698,7 @@ input, textarea {
   background-position: -176px -64px;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dppx) {
   .icon {
     background-image: url("sprites@2x.png");
     background-size: 256px 96px;

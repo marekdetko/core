@@ -797,6 +797,7 @@
       this.onClickCheckForUpdates = __bind(this.onClickCheckForUpdates, this);
       this.onDeleteSet = __bind(this.onDeleteSet, this);
       this.onSelectSet = __bind(this.onSelectSet, this);
+      this.generateSetID = __bind(this.generateSetID, this);
       this.onBlurCustomForm = __bind(this.onBlurCustomForm, this);
       this.onFocusCustomForm = __bind(this.onFocusCustomForm, this);
       this.onBlurFormInput = __bind(this.onBlurFormInput, this);
@@ -900,12 +901,11 @@
     };
 
     GuideGuide.prototype.initData = function(data) {
-      var panelBootstrap, setsBootstrap, settingsBootstrap, _base, _base1, _base2;
+      var panelBootstrap, set1, set2, set3, setsBootstrap, settingsBootstrap, _base, _base1, _base2;
       this.bridge.log('Setting up data from application');
       this.guideguideData = data;
       panelBootstrap = {
         id: null,
-        newSetId: 3,
         launchCount: 0,
         askedAboutAnonymousData: false,
         usage: {
@@ -923,21 +923,30 @@
           clear: 0
         }
       };
-      setsBootstrap = [
-        {
-          id: 0,
-          name: 'Outline',
-          string: "| ~ | (vFl)\n| ~ | (hFl)"
-        }, {
-          id: 1,
-          name: 'Two column grid',
-          string: "| ~ | ~ | (vFl)"
-        }, {
-          id: 2,
-          name: 'Three column grid',
-          string: "| ~ | ~ | ~ | (vFl)"
+      set1 = {
+        name: 'Outline',
+        string: "| ~ | (vFl)\n| ~ | (hFl)"
+      };
+      set2 = {
+        name: 'Two column grid',
+        string: "| ~ | ~ | (vFl)"
+      };
+      set3 = {
+        name: 'Three column grid',
+        string: "| ~ | ~ | ~ | (vFl)"
+      };
+      setsBootstrap = {
+        Default: {
+          name: "Default",
+          sets: {}
         }
-      ];
+      };
+      set1.id = this.generateSetID(set1);
+      set2.id = this.generateSetID(set2);
+      set3.id = this.generateSetID(set3);
+      setsBootstrap.Default.sets[set1.id] = set1;
+      setsBootstrap.Default.sets[set2.id] = set2;
+      setsBootstrap.Default.sets[set3.id] = set3;
       settingsBootstrap = {
         horizontalRemainder: 'last',
         verticalRemainder: 'last',
@@ -1295,7 +1304,8 @@
     };
 
     GuideGuide.prototype.onClickDistributeIcon = function(event) {
-      var $field, $fields, $form, $input, type, value;
+      var $field, $fields, $form, $input, type, value,
+        _this = this;
       event.preventDefault();
       $form = $(event.currentTarget).closest('.js-grid-form');
       $input = $(event.currentTarget).closest('.js-grid-form-iconned-input');
@@ -1304,7 +1314,10 @@
       value = $field.val();
       type = $input.attr('data-distribute');
       $fields = this.filteredList($form.find('.js-grid-form-iconned-input'), type);
-      return $fields.find('.js-grid-form-input').val(value);
+      $fields.find('.js-grid-form-input').val(value);
+      return this.stringifyFormData(this.getFormData($form), function(string) {
+        return _this.updateCustomField(string);
+      });
     };
 
     GuideGuide.prototype.onBlurFormInput = function(event) {
@@ -1349,6 +1362,10 @@
       }
     };
 
+    GuideGuide.prototype.generateSetID = function(set) {
+      return CryptoJS.SHA1("" + set.name + set.string).toString();
+    };
+
     GuideGuide.prototype.onSelectSet = function(event) {
       var $set;
       event.preventDefault();
@@ -1358,13 +1375,12 @@
     };
 
     GuideGuide.prototype.onDeleteSet = function(event) {
-      var $set, id;
+      var $set, group, id;
       event.preventDefault();
       $set = $(event.currentTarget).closest('.js-set');
       id = $set.attr('data-id');
-      this.guideguideData.sets = $.grep(this.guideguideData.sets, function(set) {
-        return parseInt(set.id) !== parseInt(id);
-      });
+      group = $set.attr('data-group');
+      delete this.guideguideData.sets[group].sets[id];
       this.saveGuideGuideData();
       return this.refreshSets();
     };
@@ -1495,9 +1511,25 @@
     };
 
     GuideGuide.prototype.importSets = function(sets) {
+      var g, group, key, set, _base, _ref;
       this.bridge.log("Sets imported");
       this.panel.removeClass('is-showing-importer');
-      this.guideguideData.sets = this.guideguideData.sets.concat(sets);
+      console.log(sets);
+      for (key in sets) {
+        group = sets[key];
+        (_base = this.guideguideData.sets)[key] || (_base[key] = {
+          name: group.name,
+          sets: []
+        });
+        g = this.guideguideData.sets[key];
+        _ref = group.sets;
+        for (key in _ref) {
+          set = _ref[key];
+          if (g.sets[set.id] == null) {
+            g.sets[set.id] = set;
+          }
+        }
+      }
       return this.saveGuideGuideData();
     };
 
@@ -1579,18 +1611,17 @@
     };
 
     GuideGuide.prototype.onEditSet = function(event) {
-      var $form, $set, id, set;
+      var $form, $set, group, id, set;
       event.preventDefault();
       $('#guideguide').find('.js-custom-tab').click();
       $set = $(event.currentTarget).closest('.js-set');
       id = $set.attr('data-id');
-      set = $.grep(this.guideguideData.sets, function(set) {
-        return parseInt(set.id) === parseInt(id);
-      });
+      group = $set.attr('data-group');
+      set = this.guideguideData.sets[group].sets[id];
       $form = this.panel.find('.js-custom-form');
-      $form.find('.js-set-name').val(set[0].name);
-      $form.find('.js-set-id').val(set[0].id);
-      return this.showCustomSetForm(set[0].string);
+      $form.find('.js-set-name').val(set.name);
+      $form.find('.js-set-id').val(set.id);
+      return this.showCustomSetForm(set.string);
     };
 
     GuideGuide.prototype.onSaveSetFromCustom = function(event) {
@@ -1600,12 +1631,16 @@
       string = $('.js-custom-input').val().replace(/^\s+|\s+$/g, '');
       name = $form.find('.js-set-name').val();
       executable = $form.find('.js-input.is-invalid').length === 0 && string.length > 0 && name.length > 0;
-      this.bridge.log('foo: ', $form);
       if (executable) {
         obj = {
-          id: $form.find('.js-set-id').val(),
+          oldID: $form.find('.js-set-id').val(),
+          id: this.generateSetID({
+            name: name,
+            string: string
+          }),
+          group: "Default",
           name: name,
-          ggn: string
+          string: string
         };
         if (!$('#guideguide').find('.js-set-id').val()) {
           this.createNewSet(obj);
@@ -1670,38 +1705,39 @@
     };
 
     GuideGuide.prototype.onMakeGridFromSet = function(event) {
-      var $set, data;
+      var $set, data, group, id;
       event.preventDefault();
       $set = $('.js-set-list').find('.is-selected').first();
       if (!$set.length) {
         return;
       }
-      data = $.grep(this.guideguideData.sets, function(set) {
-        return parseInt(set.id) === parseInt($set.attr('data-id'));
-      });
-      return this.addGuidesfromGGN(data[0].string, 'set');
+      id = $set.attr('data-id');
+      group = $set.attr('data-group');
+      data = this.guideguideData.sets[group].sets[id];
+      return this.addGuidesfromGGN(data.string, 'set');
     };
 
     GuideGuide.prototype.createNewSet = function(data) {
       var newSet;
       newSet = {
-        id: this.guideguideData.panel.newSetId,
+        id: this.generateSetID(data),
         name: data.name,
-        string: data.ggn
+        string: data.string
       };
-      this.guideguideData.panel.newSetId++;
-      this.guideguideData.sets.push(newSet);
+      this.guideguideData.sets["Default"].sets[newSet.id] = newSet;
       this.saveGuideGuideData();
       return this.refreshSets();
     };
 
     GuideGuide.prototype.updateSet = function(data) {
-      var set;
-      set = $.grep(this.guideguideData.sets, function(set) {
-        return parseInt(set.id) === parseInt(data.id);
-      });
-      set[0].name = data.name;
-      set[0].string = data.ggn;
+      var newSet;
+      delete this.guideguideData.sets[data.group].sets[data.oldID];
+      newSet = {
+        name: data.name,
+        string: data.string
+      };
+      newSet.id = this.generateSetID(newSet);
+      this.guideguideData.sets[data.group].sets[data.id] = newSet;
       this.saveGuideGuideData();
       return this.refreshSets();
     };
@@ -1712,10 +1748,11 @@
       this.bridge.log('Refreshing sets');
       $list = this.panel.find('.js-set-list');
       $list.find('.js-set').remove();
-      return $.each(this.guideguideData.sets, function(index, set) {
+      return $.each(this.guideguideData.sets["Default"].sets, function(index, set) {
         var item;
         item = $('.js-set-item-template').clone(true).removeClass('js-set-item-template');
         item.find('.js-set-item-name').html(set.name);
+        item.attr('data-group', "Default");
         item.attr('data-id', set.id);
         return $list.append(item);
       });
