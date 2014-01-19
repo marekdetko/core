@@ -838,8 +838,6 @@ class GuideGuide
     string     = $('.js-custom-input').val().replace /^\s+|\s+$/g, ''
     name       = $form.find('.js-set-name').val()
     executable = $form.find('.js-input.is-invalid').length == 0 and string.length > 0 and name.length > 0
-    @bridge.log 'foo: ', $form
-
 
     if executable
       obj =
