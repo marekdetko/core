@@ -32,6 +32,7 @@ class Messages
       'ui.yes': 'Yes'
       'ui.no': 'No'
       'ui.niceNo': 'No thanks'
+      'ui.openInBrowser': "Open in browser"
 
       'gap.unrecognized': "Unrecognized gap"
       'gap.noFillWildcards': "Wildcards cannot be fills"
@@ -65,7 +66,7 @@ class Messages
       'alertMessage.importNotGist': "The input text does not contain a GitHub Gist url."
 
       'alertTitle.exportSuccess': "Sets have been exported"
-      'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist here: "
+      'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist."
 
       'alertTitle.exportError': "Unable to export"
       'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later."

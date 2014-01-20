@@ -830,7 +830,7 @@ class GuideGuide
         @panel.removeClass 'is-loading'
       success: (data) =>
         title = @messages["alertTitle.exportSuccess"]
-        message = "#{ @messages['alertMessage.exportSuccess'] } <a class='js-link' href='#{ data.html_url }'>#{ data.html_url }</a>"
+        message = "#{ @messages['alertMessage.exportSuccess'] } <div><strong><a class='js-link button export-button' href='#{ data.html_url }'>#{ @messages["ui.openInBrowser"] }</a></strong></div>"
 
         @alert [title, message], ['primary js-dismiss-alert'], ['ui.btnOk']
       error: (data) =>
