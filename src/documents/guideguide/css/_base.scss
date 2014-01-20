@@ -219,6 +219,32 @@ table {
   padding: 5px 20px 5px 5px;
 }
 
+.loader {
+  display: none;
+  z-index: 21;
+
+  .loader-spinner {
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  .loader-background { opacity: .7; }
+
+  .is-loading & { display: block; }
+}
+
+.dark-theme .loader-spinner { background-image: url('spinner-dark.gif'); }
+.light-theme .loader-spinner { background-image: url('spinner-light.gif'); }
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (min-resolution: 240dppx) {
+  .dark-theme .loader-spinner { background-image: url('spinner-dark@2x.gif'); }
+  .light-theme .loader-spinner { background-image: url('spinner-light@2x.gif'); }
+  .loader-spinner { background-size: 37px 37px; }
+}
+
 .alert {
   display: none;
   z-index: 21;

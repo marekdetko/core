@@ -731,9 +731,12 @@ class GuideGuide
   #
   # Returns nothing
   importSetsFromGist: (gistID) =>
+    @panel.addClass 'is-loading'
     $.ajax
       url: "https://api.github.com/gists/#{ gistID }"
       type: 'GET'
+      complete: (data) =>
+        @panel.removeClass 'is-loading'
       success: (data) =>
         if data.files["sets.json"] and sets = JSON.parse data.files["sets.json"].content
           @importSets sets
@@ -813,10 +816,14 @@ class GuideGuide
       files:
         "sets.json":
           content: JSON.stringify @guideguideData.sets
+
+    @panel.addClass 'is-loading'
     $.ajax
       url: 'https://api.github.com/gists'
       type: 'POST'
       data: JSON.stringify data
+      complete: (data) =>
+        @panel.removeClass 'is-loading'
       success: (data) =>
         title = @messages["alertTitle.exportSuccess"]
         message = "#{ @messages['alertMessage.exportSuccess'] } <a class='js-link' href='#{ data.html_url }'>#{ data.html_url }</a>"
@@ -1490,6 +1497,9 @@ class GuideGuide
         background-color: #{ colors.buttonSelect };
       }
       #guideguide .importer {
+        background-color: #{ colors.background };
+      }
+      #guideguide .loader-background {
         background-color: #{ colors.background };
       }
       """
