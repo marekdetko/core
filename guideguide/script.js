@@ -166,6 +166,7 @@
         'ui.yes': 'Yes',
         'ui.no': 'No',
         'ui.niceNo': 'No thanks',
+        'ui.openInBrowser': "Open in browser",
         'gap.unrecognized': "Unrecognized gap",
         'gap.noFillWildcards': "Wildcards cannot be fills",
         'ggn.noGrids': "This string does not contain any grids",
@@ -190,7 +191,7 @@
         'alertTitle.importNotGist': "Import Error",
         'alertMessage.importNotGist': "The input text does not contain a GitHub Gist url.",
         'alertTitle.exportSuccess': "Sets have been exported",
-        'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist here: ",
+        'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist.",
         'alertTitle.exportError': "Unable to export",
         'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later.",
         'alertTitle.donate': "Would you like to donate?",
@@ -1601,7 +1602,7 @@
         success: function(data) {
           var message, title;
           title = _this.messages["alertTitle.exportSuccess"];
-          message = "" + _this.messages['alertMessage.exportSuccess'] + " <a class='js-link' href='" + data.html_url + "'>" + data.html_url + "</a>";
+          message = "" + _this.messages['alertMessage.exportSuccess'] + " <div><strong><a class='js-link button export-button' href='" + data.html_url + "'>" + _this.messages["ui.openInBrowser"] + "</a></strong></div>";
           return _this.alert([title, message], ['primary js-dismiss-alert'], ['ui.btnOk']);
         },
         error: function(data) {
