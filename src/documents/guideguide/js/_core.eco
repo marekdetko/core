@@ -630,6 +630,8 @@ class GuideGuide
   # Returns nothing.
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
+    return unless @guideguideData.application.checkForUpdates
+    @panel.addClass 'is-loading'
     @checkForUpdates (data) =>
       @bridge.log data
       if data?
@@ -654,6 +656,8 @@ class GuideGuide
       data:
         version: @guideguideData.application.guideguideVersion || '0.0.0'
         i18n: @guideguideData.application.localization
+      complete: (data) =>
+        @panel.removeClass 'is-loading'
       success: (data) =>
         callback(data)
       error: (error) =>
