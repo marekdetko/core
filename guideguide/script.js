@@ -2066,6 +2066,9 @@
         optionsString += "(";
         optionsString += data.orientation.charAt(0).toLowerCase();
         optionsString += data.remainder.charAt(0).toLowerCase();
+        if (this.guideguideData.settings.calculation === "pixel") {
+          optionsString += "p";
+        }
         optionsString += ")";
       }
       leftBuffer = rightBuffer = "";
