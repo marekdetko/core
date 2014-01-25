@@ -2,6 +2,12 @@
 
 GuideGuide is a guide management plugin designed to easy to embed in multiple applications. GuideGuide Core is a [Bower](http://bower.io/) package of scripts, styles, and markup that controls GuideGuide's UI and API.
 
+**GuideGuide is currently under development and is undocumented. I will not be offering development support until GuideGuide officially ships, at which time I will remove this notice**
+
+**GuideGuide is a project by which I experiment and learn about development practices. The code can be ugly at times. If I'm not following some sort of best practice that you think I should be, I'll happily accept pull requests improving the code/performance, assuming I agree that it is an improvement. For example, the codebase is currently an awkward mix of sync and async. I know it's gross and I hope to refactor it at some point :)**
+
+**GuideGuide is open source to help improve the codebase. Once GuideGuide 3 has shipped, I will do my best to follow best practices for semver support and releases, but I make no promises**.
+
 ## Setup
 
 ### OSX
