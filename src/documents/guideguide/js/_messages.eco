@@ -10,6 +10,7 @@ class Messages
       'ui.custom': "Custom"
       'ui.sets': "Sets"
       'ui.updates': "Updates"
+      'ui.debug': "Debug"
       'ui.btnMakeGrid': "Make grid"
       'up.btnSaveSet': "Save set"
       'ui.btnSaveSettings': "Save settings"
@@ -18,6 +19,7 @@ class Messages
       'ui.btnOk': "Ok"
       'ui.btnDonate': 'Donate'
       'ui.btnCheckForUpdates': "Check for updates"
+      'btnShowLogs': "Show logs"
       'ui.titleHorizontalPosition': "Horizontal position"
       'ui.titleVerticalPosition': "Vertical position"
       'ui.titleHorizontalRemainder': "Horizontal remainder"

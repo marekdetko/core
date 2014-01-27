@@ -59,6 +59,7 @@ class GuideGuide
     @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
     @panel.on 'click', '.js-deny-submit-data', @onDenySubmitData
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
+    @panel.on 'click', '.js-show-logs', @onClickShowLogs
     @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
     @panel.on 'click', '.js-donate', @onClickDonate
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
@@ -624,6 +625,13 @@ class GuideGuide
 
     @saveGuideGuideData()
     @refreshSets()
+
+  # Show the debug logs.
+  #
+  # Returns nothing.
+  onClickShowLogs: =>
+    event.preventDefault()
+    @bridge.showLogs() if @bridge.showLogs
 
   # Handle clicks on the check for updates button
   #
