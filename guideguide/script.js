@@ -144,6 +144,7 @@
         'ui.custom': "Custom",
         'ui.sets': "Sets",
         'ui.updates': "Updates",
+        'ui.debug': "Debug",
         'ui.btnMakeGrid': "Make grid",
         'up.btnSaveSet': "Save set",
         'ui.btnSaveSettings': "Save settings",
@@ -152,6 +153,7 @@
         'ui.btnOk': "Ok",
         'ui.btnDonate': 'Donate',
         'ui.btnCheckForUpdates': "Check for updates",
+        'btnShowLogs': "Show logs",
         'ui.titleHorizontalPosition': "Horizontal position",
         'ui.titleVerticalPosition': "Vertical position",
         'ui.titleHorizontalRemainder': "Horizontal remainder",
@@ -796,6 +798,7 @@
       this.onClickHasUpdateButton = __bind(this.onClickHasUpdateButton, this);
       this.checkForUpdates = __bind(this.checkForUpdates, this);
       this.onClickCheckForUpdates = __bind(this.onClickCheckForUpdates, this);
+      this.onClickShowLogs = __bind(this.onClickShowLogs, this);
       this.onDeleteSet = __bind(this.onDeleteSet, this);
       this.onSelectSet = __bind(this.onSelectSet, this);
       this.generateSetID = __bind(this.generateSetID, this);
@@ -886,6 +889,7 @@
       this.panel.on('click', '.js-confirm-submit-data', this.onConfirmSubmitData);
       this.panel.on('click', '.js-deny-submit-data', this.onDenySubmitData);
       this.panel.on('click', '.js-check-for-updates', this.onClickCheckForUpdates);
+      this.panel.on('click', '.js-show-logs', this.onClickShowLogs);
       this.panel.on('click', '.js-dismiss-alert', this.onClickDismissAlert);
       this.panel.on('click', '.js-donate', this.onClickDonate);
       this.panel.on('click', '.js-has-update-button', this.onClickHasUpdateButton);
@@ -1384,6 +1388,13 @@
       delete this.guideguideData.sets[group].sets[id];
       this.saveGuideGuideData();
       return this.refreshSets();
+    };
+
+    GuideGuide.prototype.onClickShowLogs = function() {
+      event.preventDefault();
+      if (this.bridge.showLogs) {
+        return this.bridge.showLogs();
+      }
     };
 
     GuideGuide.prototype.onClickCheckForUpdates = function(event) {
@@ -2061,6 +2072,9 @@
         if (data.count > 1 && data.gutter) {
           gridString += "|$" + data.orientation + (data.gutter ? 'C' : '') + "|";
         }
+      }
+      if ((!data.count && !data.width) && (data.firstMargin || data.lastMargin)) {
+        gridString += "|~|";
       }
       if (data.firstMargin || data.lastMargin || data.count || data.width) {
         optionsString += "(";
