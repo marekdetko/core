@@ -428,42 +428,50 @@ class GuideGuide
   # Return nothing.
   onClickTopGuide: (event) =>
     event.preventDefault()
-    @addGuidesfromGGN "| ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'top'
+    @addGuidesfromGGN "| ~ (h#{ @getCalculationType() })", 'top'
 
   # Draw a guide at the bottom of the document/selection
   #
   # Return nothing.
   onClickBottomGuide: (event) =>
     event.preventDefault()
-    @addGuidesfromGGN "~ | (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'bottom'
+    @addGuidesfromGGN "~ | (h#{ @getCalculationType() })", 'bottom'
 
   # Draw a guide to the left of the document/selection
   #
   # Return nothing.
   onClickLeftGuide: (event) =>
     event.preventDefault()
-    @addGuidesfromGGN "| ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'left'
+    @addGuidesfromGGN "| ~ (v#{ @getCalculationType() })", 'left'
 
   # Draw a guide to the right of the document/selection
   #
   # Return nothing.
   onClickRightGuide: (event) =>
     event.preventDefault()
-    @addGuidesfromGGN "~ | (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'right'
+    @addGuidesfromGGN "~ | (v#{ @getCalculationType() })", 'right'
 
   # Draw a guide at the horizontal midpoint of the document/selection
   #
   # Return nothing.
   onClickHorizontalMidpoint: (event) =>
+    @bridge.log "Clicked Horizontal Midpoint"
     event.preventDefault()
-    @addGuidesfromGGN "~ | ~ (h#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'horizontalMidpoint'
+    @addGuidesfromGGN "~ | ~ (h#{ @getCalculationType() })", 'horizontalMidpoint'
 
   # Draw a guide at the vertical midpoint of the document/selection
   #
   # Return nothing.
   onClickVerticalMidpoint: (event) =>
+    @bridge.log "Clicked Vertical Midpoint"
     event.preventDefault()
-    @addGuidesfromGGN "~ | ~ (v#{ 'p' if @guideguideData.settings.calculation == 'pixel' })", 'verticalMidpoint'
+    @addGuidesfromGGN "~ | ~ (v#{ @getCalculationType() })", 'verticalMidpoint'
+
+  # Get the option value that corresponds to the calculation type of the app
+  #
+  # Returns a String
+  getCalculationType: =>
+    if @guideguideData.settings.calculation == 'pixel' then 'p' else ''
 
   # Handle clicks on the clear guides button.
   #
