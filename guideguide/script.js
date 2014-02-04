@@ -207,15 +207,23 @@
     };
 
     function Messages(i18n) {
-      var _this = this;
+      this.populate = __bind(this.populate, this);
+      this.populate("en_us");
       if (this.messages[i18n]) {
-        $.each(this.messages['en_us'], function(key, value) {
-          return _this[key] = _this.messages[i18n][key] ? _this.messages[i18n][key] : value;
-        });
+        this.populate(i18n);
       } else {
         parent.window.PanelBridge.log("GuideGuide doesn't recognize the \"" + i18n + "\" localization.");
       }
     }
+
+    Messages.prototype.populate = function(i18n) {
+      var _this = this;
+      if (this.messages[i18n]) {
+        return $.each(this.messages[i18n], function(key, value) {
+          return _this[key] = _this.messages[i18n][key];
+        });
+      }
+    };
 
     return Messages;
 
@@ -813,6 +821,7 @@
       this.resetGuides = __bind(this.resetGuides, this);
       this.clearGuides = __bind(this.clearGuides, this);
       this.onClickClearGuides = __bind(this.onClickClearGuides, this);
+      this.getCalculationType = __bind(this.getCalculationType, this);
       this.onClickVerticalMidpoint = __bind(this.onClickVerticalMidpoint, this);
       this.onClickHorizontalMidpoint = __bind(this.onClickHorizontalMidpoint, this);
       this.onClickRightGuide = __bind(this.onClickRightGuide, this);
@@ -1209,32 +1218,42 @@
 
     GuideGuide.prototype.onClickTopGuide = function(event) {
       event.preventDefault();
-      return this.addGuidesfromGGN("| ~ (h" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'top');
+      return this.addGuidesfromGGN("| ~ (h" + (this.getCalculationType()) + ")", 'top');
     };
 
     GuideGuide.prototype.onClickBottomGuide = function(event) {
       event.preventDefault();
-      return this.addGuidesfromGGN("~ | (h" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'bottom');
+      return this.addGuidesfromGGN("~ | (h" + (this.getCalculationType()) + ")", 'bottom');
     };
 
     GuideGuide.prototype.onClickLeftGuide = function(event) {
       event.preventDefault();
-      return this.addGuidesfromGGN("| ~ (v" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'left');
+      return this.addGuidesfromGGN("| ~ (v" + (this.getCalculationType()) + ")", 'left');
     };
 
     GuideGuide.prototype.onClickRightGuide = function(event) {
       event.preventDefault();
-      return this.addGuidesfromGGN("~ | (v" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'right');
+      return this.addGuidesfromGGN("~ | (v" + (this.getCalculationType()) + ")", 'right');
     };
 
     GuideGuide.prototype.onClickHorizontalMidpoint = function(event) {
+      this.bridge.log("Clicked Horizontal Midpoint");
       event.preventDefault();
-      return this.addGuidesfromGGN("~ | ~ (h" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'horizontalMidpoint');
+      return this.addGuidesfromGGN("~ | ~ (h" + (this.getCalculationType()) + ")", 'horizontalMidpoint');
     };
 
     GuideGuide.prototype.onClickVerticalMidpoint = function(event) {
+      this.bridge.log("Clicked Vertical Midpoint");
       event.preventDefault();
-      return this.addGuidesfromGGN("~ | ~ (v" + (this.guideguideData.settings.calculation === 'pixel' ? 'p' : void 0) + ")", 'verticalMidpoint');
+      return this.addGuidesfromGGN("~ | ~ (v" + (this.getCalculationType()) + ")", 'verticalMidpoint');
+    };
+
+    GuideGuide.prototype.getCalculationType = function() {
+      if (this.guideguideData.settings.calculation === 'pixel') {
+        return 'p';
+      } else {
+        return '';
+      }
     };
 
     GuideGuide.prototype.onClickClearGuides = function(event) {
