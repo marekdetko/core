@@ -658,13 +658,13 @@ class GuideGuide
           @panel.trigger 'guideguide:hasUpdate', data
           $('.js-has-update-button').click()
         else
-          title   = @messages.alerTitleUpToDate()
+          title   = @messages.alertTitleUpToDate()
           message = @messages.alertMessageUpToDate()
-          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOK()]
+          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
       else
         title   = @messages.alertTitleUpdateError()
         message = @messages.alertMessageUpdateError()
-        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOK()]
+        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
   # Check the GuideGuide server to see if there are updates available.
   #
@@ -771,15 +771,15 @@ class GuideGuide
           @selectTab @panel, 'sets'
           title   = @messages.alertTitleImportSuccess()
           message = @messages.alertMessageImportSuccess()
-          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOK()]
+          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
         else
           title   = @messages.alertTitleImportGistNoSets()
           message = @messages.alertMessageImportGistNoSets()
-          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOK()]
+          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
       error: (data) =>
         title   = @messages.alertTitleImportGistError()
         message = @messages.alertMessageImportGistError()
-        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOK()]
+        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
   # Import an array of sets
   #
