@@ -293,7 +293,7 @@ class GuideGuide
       setting   = $dropdown.attr 'data-setting'
       value     = @guideguideData.settings[setting]
       $selected = $dropdown.find("[data-value='#{ value }']")
-      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]
+      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]()
 
   # Behavior for navigating a collection of "pages" via a set of tabs
   #
@@ -367,7 +367,7 @@ class GuideGuide
     value     = true if value is "true"
     value     = false if value is "false"
 
-    $dropdown.find('.js-dropdown-button').text @messages[$item.attr('data-localize')]
+    $dropdown.find('.js-dropdown-button').text @messages[$item.attr('data-localize')]()
     @guideguideData.settings[setting] = value
     @saveGuideGuideData()
 
@@ -831,7 +831,7 @@ class GuideGuide
 
     @bridge.log 'Export sets'
     data =
-      description: @messages["help.gistExport"]
+      description: @messages.helpGistExport()
       public: false
       files:
         "sets.json":
@@ -845,8 +845,8 @@ class GuideGuide
       complete: (data) =>
         @panel.removeClass 'is-loading'
       success: (data) =>
-        title = @messages["alertTitle.exportSuccess"]
-        message = "#{ @messages['alertMessage.exportSuccess'] } <div><strong><a class='js-link button export-button' href='#{ data.html_url }'>#{ @messages["ui.openInBrowser"] }</a></strong></div>"
+        title = @messages.alertTitleExportSuccess()
+        message = "#{ @messages.alertMessageExportSuccess() } <div><strong><a class='js-link button export-button' href='#{ data.html_url }'>#{ @messages.uiOpenInBrowser() }</a></strong></div>"
 
         @alert [title, message], ['primary js-dismiss-alert'], ['ui.btnOk']
       error: (data) =>
@@ -1057,7 +1057,7 @@ class GuideGuide
         string += '\n' if xString
         string += yString
         string += '\n' if yString
-        string += '\n# ' + @messages['ggn.stringFromExistingGuides'] if xString or yString
+        string += '\n# ' + @messages.ggnStringFromExistingGuides() if xString or yString
 
       @showCustomSetForm string
 
