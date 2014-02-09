@@ -23,7 +23,7 @@ class Messages
       'ui.titleHorizontalPosition': "Horizontal position"
       'ui.titleVerticalPosition': "Vertical position"
       'ui.titleHorizontalRemainder': "Horizontal remainder"
-      'ui.titleVerticalPosition': "Vertical position"
+      'ui.titleVerticalRemainder': "Vertical remainder"
       'ui.titleReportAnonymousData': "Report anonymous data"
       'ui.settingHorizontalFirst': 'Left'
       'ui.settingHorizontalCenter': 'Center'
@@ -74,7 +74,7 @@ class Messages
       'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later."
 
       'alertTitle.donate': "Would you like to donate?"
-      'alertMessage.donate': "Yowza, you've uses GuideGuide 30 times! Since you seem to get quite a bit of use out of GuideGuide, would you consider making a donation to the development?"
+      'alertMessage.donate': "Yowza, you've used GuideGuide 30 times! Since you seem to get quite a bit of use out of GuideGuide, would you consider making a donation to the development?"
 
       'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area."
 
