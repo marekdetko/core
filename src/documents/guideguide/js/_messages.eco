@@ -23,7 +23,7 @@ class Messages
       'ui.titleHorizontalPosition': "Horizontal position"
       'ui.titleVerticalPosition': "Vertical position"
       'ui.titleHorizontalRemainder': "Horizontal remainder"
-      'ui.titleVerticalPosition': "Vertical position"
+      'ui.titleVerticalRemainder': "Vertical remainder"
       'ui.titleReportAnonymousData': "Report anonymous data"
       'ui.settingHorizontalFirst': 'Left'
       'ui.settingHorizontalCenter': 'Center'
