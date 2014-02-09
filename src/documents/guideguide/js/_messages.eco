@@ -364,3 +364,62 @@ class Messages
         "Yowza, you've uses GuideGuide 30 times! Since you seem to get quite a
         bit of use out of GuideGuide, would you consider making a donation to
         the development?"
+
+  #
+  # GuideGuide Notation messages
+  # These messages appear in the Custom field
+  #
+
+  gapUnrecognized: =>
+    switch @i18n
+      when ""
+      else
+        "Unrecognized gap"
+
+  gapNoFillWildcards: =>
+    switch @i18n
+      when ""
+      else
+        "Wildcards cannot be fills"
+
+  ggnNoGrids: =>
+    switch @i18n
+      when ""
+      else
+        "This string does not contain any grids"
+
+  ggnFillInVariable: =>
+    switch @i18n
+      when ""
+      else
+        "Variables cannot contain a fill"
+
+  ggnNoWildcardsInVariableFills: =>
+    switch @i18n
+      when ""
+      else
+        "A variable used as a fill can not contain a wildcard"
+
+  ggnUndefinedVariable: =>
+    switch @i18n
+      when ""
+      else
+        "Undefined variable"
+
+  ggnOneFillPerGrid: =>
+    switch @i18n
+      when ""
+      else
+        "A grid can only contain one fill"
+
+  ggnMoreThanOneHundredPercent: =>
+    switch @i18n
+      when ""
+      else
+        "A grid cannot contain more than 100%"
+
+  ggnStringFromExistingGuides: =>
+    switch @i18n
+      when ""
+      else
+        "String generated from existing guides"
