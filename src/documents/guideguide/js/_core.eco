@@ -259,7 +259,7 @@ class GuideGuide
       button = $('.js-button-template').clone().removeClass('js-button-template')
       button.find('a')
       .addClass(buttonClasses[i])
-      .text (if buttonNames[i] then @messages[buttonNames[i]] else @messages.uiOk())
+      .text (if buttonNames[i] then buttonNames[i] else @messages.uiOk())
       @panel.find('.js-alert-actions').append button
 
     @panel.addClass 'has-alert'
