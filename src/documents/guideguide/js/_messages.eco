@@ -2,99 +2,359 @@
 write: false
 ---
 
-# Get an object full of messages in the correct language
+# The Messages class makes it possible to provide GuideGuide in multiple
+# languages. English is used by default if a translation does not exist for the
+# i18n string provided. To add a new language, add a new `when` block for the
+# desired i18n string that returns the translated string. For methods that
+# include dynamic data, be sure to include the dynamic data.
+#
+# Usage:
+#   var messages = new Messages "en_us"
+#   console.log messages.makeGrid()
+#   # Make grid
+#
+# Styleguide
+#   - Use sentence case for titles.
+#
 class Messages
-  messages:
-    'en_us':
-      'ui.grid': "Grid"
-      'ui.custom': "Custom"
-      'ui.sets': "Sets"
-      'ui.updates': "Updates"
-      'ui.debug': "Debug"
-      'ui.btnMakeGrid': "Make grid"
-      'up.btnSaveSet': "Save set"
-      'ui.btnSaveSettings': "Save settings"
-      'ui.btnImport': "Import"
-      'ui.btnExport': "Export"
-      'ui.btnOk': "Ok"
-      'ui.btnDonate': 'Donate'
-      'ui.btnCheckForUpdates': "Check for updates"
-      'btnShowLogs': "Show logs"
-      'ui.titleHorizontalPosition': "Horizontal position"
-      'ui.titleVerticalPosition': "Vertical position"
-      'ui.titleHorizontalRemainder': "Horizontal remainder"
-      'ui.titleVerticalPosition': "Vertical position"
-      'ui.titleReportAnonymousData': "Report anonymous data"
-      'ui.settingHorizontalFirst': 'Left'
-      'ui.settingHorizontalCenter': 'Center'
-      'ui.settingHorizontalLast': 'Right'
-      'ui.settingVerticalFirst': 'Top'
-      'ui.settingVerticalCenter': 'Center'
-      'ui.settingVerticalLast': 'Bottom'
-      'ui.yes': 'Yes'
-      'ui.no': 'No'
-      'ui.niceNo': 'No thanks'
-      'ui.openInBrowser': "Open in browser"
-
-      'gap.unrecognized': "Unrecognized gap"
-      'gap.noFillWildcards': "Wildcards cannot be fills"
-      'ggn.noGrids': "This string does not contain any grids"
-      'ggn.fillInVariable': "Variables cannot contain a fill"
-      'ggn.noWildcardsInVariableFills': "A variable used as a fill can not contain a wildcard"
-      'ggn.undefinedVariable': "Undefined variable"
-      'ggn.oneFillPerGrid': "A grid can only contain one fill"
-      'ggn.moreThanOneHundredPercent': "A grid cannot contain more than 100%"
-      'ggn.stringFromExistingGuides': "String generated from existing guides"
-
-      'alertTitle.welcome': "Welcome to GuideGuide"
-      'alertMessage.welcome': "This is the beginning of something special. To help GuideGuide get more and more awesome, would you allow GuideGuide to submit anonymous usage data?"
-
-      'alertTitle.upToDate': "Up to date"
-      'alertMessage.upToDate': "GuideGuide is currently up to date."
-
-      'alertTitle.updateError': "Error Checking for updates"
-      'alertMessage.updateError': "Unfortunately, GuideGuide is unable to check for updates at this time. Please try again later."
-
-      'alertTitle.importSuccess': "Sets imported"
-      'alertMessage.importSuccess': "Your sets have successfully been imported."
-
-      'alertTitle.importGistError': "Import Error"
-      'alertMessage.importGistError': "Unfortunately, GuideGuide is unable to import sets at this time. Please try again later."
-
-      'alertTitle.importGistNoSets': "Import Error"
-      'alertMessage.importGistNoSets': "GuideGuide was not able to find sets.json in this Gist."
-
-      'alertTitle.importNotGist': "Import Error"
-      'alertMessage.importNotGist': "The input text does not contain a GitHub Gist url."
-
-      'alertTitle.exportSuccess': "Sets have been exported"
-      'alertMessage.exportSuccess': "Your sets have been exported to a secret GitHub Gist."
-
-      'alertTitle.exportError': "Unable to export"
-      'alertMessage.exportError': "Unfortunately, GuideGuide is unable to export sets at this time. Please try again later."
-
-      'alertTitle.donate': "Would you like to donate?"
-      'alertMessage.donate': "Yowza, you've uses GuideGuide 30 times! Since you seem to get quite a bit of use out of GuideGuide, would you consider making a donation to the development?"
-
-      'help.position': "This determines where GuideGuide puts a grid when it is smaller than the available area."
-
-      'help.remainder': "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels."
-
-      'help.importDesc': "Import sets by pasting a GitHub Gist url in the text field below."
-
-      'help.gistExport': 'This is guide set data exported by the GuideGuide plugin. To import them, click the "Import" button in the GuideGuide settings and paste this Gist url, or the contents of `sets.json` into the text field.'
-
-      'help.importExport': 'GuideGuide imports and exports its data via'
+  i18n: "en_us"
 
   constructor: (i18n) ->
-    @populate "en_us"
+    @i18n = i18n if i18n?
 
-    if @messages[i18n]
-      @populate i18n
-    else
-      parent.window.PanelBridge.log "GuideGuide doesn't recognize the \"#{ i18n }\" localization."
+  #
+  # UI Messages
+  # These messages are generally titles and button labels.
+  #
 
-  populate: (i18n) =>
-    if @messages[i18n]
-      $.each @messages[i18n], (key,value) =>
-        @[key] = @messages[i18n][key]
+  uiGrid: =>
+    switch @i18n
+      when ""
+      else
+        "Grid"
+
+  uiCustom: =>
+    switch @i18n
+      when ""
+      else
+        "Custom"
+
+  uiSets: =>
+    switch @i18n
+      when ""
+      else
+        "Sets"
+
+  uiUpdates: =>
+    switch @i18n
+      when ""
+      else
+        "Updates"
+
+  uiDebug: =>
+    switch @i18n
+      when ""
+      else
+        "Debug"
+
+  uiMakeGrid: =>
+    switch @i18n
+      when ""
+      else
+        "Make grid"
+
+  uiSaveSet: =>
+    switch @i18n
+      when ""
+      else
+        "Save set"
+
+  uiSaveSettings: =>
+    switch @i18n
+      when ""
+      else
+        "Save settings"
+
+  ioImport: =>
+    switch @i18n
+      when ""
+      else
+        "Import"
+
+  uiExport: =>
+    switch @i18n
+      when ""
+      else
+        "Export"
+
+  uiOk: =>
+    switch @i18n
+      when ""
+      else
+        "Ok"
+
+  uiDonate: =>
+    switch @i18n
+      when ""
+      else
+        "Donate"
+
+  uiCheckForUpdates: =>
+    switch @i18n
+      when ""
+      else
+        "Check for updates"
+
+  uiShowLogs: =>
+    switch @i18n
+      when ""
+      else
+        "Show logs"
+
+  uiHorizontalPosition: =>
+    switch @i18n
+      when ""
+      else
+        "Horizontal position"
+
+  uiVerticalPosition: =>
+    switch @i18n
+      when ""
+      else
+        "Vertical position"
+
+  uiHorizontalRemainder: =>
+    switch @i18n
+      when ""
+      else
+        "Horizontal remainder"
+
+  uiVerticalRemainder: =>
+    switch @i18n
+      when ""
+      else
+        "Vertical remainder"
+
+  uiReportAnonymousData: =>
+    switch @i18n
+      when ""
+      else
+        "Report anonymous data"
+
+  uiHorizontalFirst: =>
+    switch @i18n
+      when ""
+      else
+        "Left"
+
+  uiHorizontalCenter: =>
+    switch @i18n
+      when ""
+      else
+        "Center"
+
+  uiHorizontalLast: =>
+    switch @i18n
+      when ""
+      else
+        "Right"
+
+  uiVerticalFirst: =>
+    switch @i18n
+      when ""
+      else
+        "Top"
+
+  uiVerticalCenter: =>
+    switch @i18n
+      when ""
+      else
+        "Center"
+
+  uiVerticalLast: =>
+    switch @i18n
+      when ""
+      else
+        "Bottom"
+
+  uiYes: =>
+    switch @i18n
+      when ""
+      else
+        "Yes"
+
+  uiNo: =>
+    switch @i18n
+      when ""
+      else
+        "No"
+
+  uiNiceNo: =>
+    switch @i18n
+      when ""
+      else
+        "No thanks"
+
+  uiOpenInBrowser: =>
+    switch @i18n
+      when ""
+      else
+        "Open in browser"
+
+  #
+  # Help Messages
+  # These are essentially tooltips. They appear in the UI to explain features.
+  #
+
+  helpPosition: =>
+    switch @i18n
+      when ""
+      else
+        "This determines where GuideGuide puts a grid when it is smaller
+        than the available area."
+
+  helpRemainder: =>
+    switch @i18n
+      when ""
+      else
+        "In pixel mode, GuideGuide rounds down decimal pixel widths
+        and uses this setting to determine which columns or rows receive
+        the remainder pixels."
+
+  helpImportDesc: =>
+    switch @i18n
+      when ""
+      else
+        "Import sets by pasting a GitHub Gist url in the text field below."
+
+  helpGistExport: =>
+    switch @i18n
+      when ""
+      else
+        'This is guide set data exported by the GuideGuide plugin. To import
+        them, click the "Import" button in the GuideGuide settings and paste
+        this Gist url, or the contents of `sets.json` into the text field.'
+
+  helpImportExport: =>
+    switch @i18n
+      when ""
+      else
+        "GuideGuide imports and exports its data via"
+
+  #
+  # Alert Messages
+  # These are titles and messages for alert dialogues.
+  #
+
+  alertTitleUpToDate: =>
+    switch @i18n
+      when ""
+      else
+        "Up to date"
+
+  alertMessageUpToDate: =>
+    switch @i18n
+      when ""
+      else
+        "GuideGuide is currently up to date."
+
+  alertTitleUpdateError: =>
+    switch @i18n
+      when ""
+      else
+        "Error Checking for updates"
+
+  alertMessageUpdateError: =>
+    switch @i18n
+      when ""
+      else
+        "Unfortunately, GuideGuide is unable to check for updates at this time.
+        Please try again later."
+
+  alertTitleImportSuccess: =>
+    switch @i18n
+      when ""
+      else
+        "Sets imported"
+
+  alertMessageImportSuccess: =>
+    switch @i18n
+      when ""
+      else
+        "Your sets have successfully been imported."
+
+  alertTitleImportGistError: =>
+    switch @i18n
+      when ""
+      else
+        "Import Error"
+
+  alertMessageImportGistError: =>
+    switch @i18n
+      when ""
+      else
+        "Unfortunately, GuideGuide is unable to import sets at this time.
+        Please try again later."
+
+  alertTitleImportGistNoSets: =>
+    switch @i18n
+      when ""
+      else
+        "Import Error"
+
+  alertMessageImportGistNoSets: =>
+    switch @i18n
+      when ""
+      else
+        "The input text does not contain a GitHub Gist url."
+
+  alertTitleImportNotGist: =>
+    switch @i18n
+      when ""
+      else
+        "Sets have been exported"
+
+  alertMessageImportNotGist: =>
+    switch @i18n
+      when ""
+      else
+        "The input text does not contain a GitHub Gist url."
+
+  alertTitleExportSuccess: =>
+    switch @i18n
+      when ""
+      else
+        "Sets have been exported"
+
+  alertMessageExportSuccess: =>
+    switch @i18n
+      when ""
+      else
+        "Your sets have been exported to a secret GitHub Gist."
+
+  alertTitleExportError: =>
+    switch @i18n
+      when ""
+      else
+        "Unable to export"
+
+  alertMessageExportError: =>
+    switch @i18n
+      when ""
+      else
+        "Unfortunately, GuideGuide is unable to export sets at this time.
+        Please try again later."
+
+  alertTitleDonate: =>
+    switch @i18n
+      when ""
+      else
+        "Would you like to donate?"
+
+  alertMessageDonate: =>
+    switch @i18n
+      when ""
+      else
+        "Yowza, you've uses GuideGuide 30 times! Since you seem to get quite a
+        bit of use out of GuideGuide, would you consider making a donation to
+        the development?"
