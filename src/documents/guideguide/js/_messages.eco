@@ -75,7 +75,7 @@ class Messages
       else
         "Save settings"
 
-  ioImport: =>
+  uiImport: =>
     switch @i18n
       when ""
       else
@@ -92,6 +92,12 @@ class Messages
       when ""
       else
         "Ok"
+
+  uiCancel: =>
+    switch @i18n
+      when ""
+      else
+        "Cancel"
 
   uiDonate: =>
     switch @i18n

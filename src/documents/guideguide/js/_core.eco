@@ -179,7 +179,7 @@ class GuideGuide
   localizeUI: =>
     $elements = $('[data-localize]')
     $elements.each (index, el) =>
-      $(el).text @messages[$(el).attr('data-localize')]
+      $(el).text @messages[$(el).attr('data-localize')]()
 
   # When an input gains focus, outline it's parent and get the most up to date
   # document info.
