@@ -252,6 +252,20 @@ class Messages
   # These are titles and messages for alert dialogues.
   #
 
+  alertTitleWelcome: =>
+    switch @i18n
+      when ""
+      else
+        "Welcome to GuideGuide"
+
+  alertMessageWelcome: =>
+    switch @i18n
+      when ""
+      else
+        "This is the beginning of something special. To help GuideGuide
+        get more and more awesome, would you allow GuideGuide to submit
+        anonymous usage data?"
+
   alertTitleUpToDate: =>
     switch @i18n
       when ""
