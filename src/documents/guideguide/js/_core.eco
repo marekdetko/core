@@ -566,6 +566,14 @@ class GuideGuide
     @stringifyFormData @getFormData($form), (string) =>
       @updateCustomField string
 
+  # When a grid form field is focused, select its contents. This is on a timer
+  # because other factors intermittently clear the selection. If this turns out
+  # to be unreliable, I'll have to look into it more.
+  #
+  # Returns nothing.
+  onFocusFormInput: (event) =>
+    setTimeout (=> $(event.currentTarget).select()), 10
+
   # When a field is unfocused, validate its contents
   #
   # Returns noting.
