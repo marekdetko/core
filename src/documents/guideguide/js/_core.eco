@@ -67,6 +67,8 @@ class GuideGuide
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
+    @panel.on 'focus', '.js-enter-submit', @onFocusEnterSubmitField
+    @panel.on 'blur', '.js-enter-submit', @onBlurEnterSubmitField
 
     @panel.find('textarea').autosize();
 
@@ -541,6 +543,22 @@ class GuideGuide
     $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
 
     $fields.addClass 'distribute-highlight'
+
+  # When a grid form field or the custom field is focused, submit the form if
+  # the enter key is pressed.
+  #
+  # Returns nothing.
+  onFocusEnterSubmitField: (event) =>
+    $field = $(event.currentTarget)
+    $field.on 'keyup.enterSubmit', (event) =>
+      return unless event.which == 13
+      $field.blur()
+      $field.closest('.js-enter-form').find('.js-make-grid').click()
+
+  # When a grid form field or the custom field is blured, remove keypress
+  # listeners
+  onBlurEnterSubmitField: (event) =>
+    $(event.currentTarget).off '.enterSubmit'
 
   # Remove highlight from field icons
   #
