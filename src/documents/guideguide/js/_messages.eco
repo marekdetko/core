@@ -332,7 +332,7 @@ class Messages
     switch @i18n
       when ""
       else
-        "Sets have been exported"
+        "Import Error"
 
   alertMessageImportNotGist: =>
     switch @i18n
