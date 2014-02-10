@@ -282,7 +282,7 @@ class Messages
     switch @i18n
       when ""
       else
-        "Error Checking for updates"
+        "Error checking for updates"
 
   alertMessageUpdateError: =>
     switch @i18n
@@ -320,13 +320,13 @@ class Messages
     switch @i18n
       when ""
       else
-        "Import Error"
+        "Import error"
 
   alertMessageImportGistNoSets: =>
     switch @i18n
       when ""
       else
-        "The input text does not contain a GitHub Gist url."
+        "GuideGuide was not able to find sets.json in this Gist."
 
   alertTitleImportNotGist: =>
     switch @i18n
