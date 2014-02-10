@@ -19,8 +19,15 @@ write: false
 class Messages
   i18n: "en_us"
 
-  constructor: (i18n) ->
-    @i18n = i18n if i18n?
+  # Create a Messages object and set the language to be used.
+  #
+  #   locale - locale code for language of choice
+  #
+  # Currently supported locale:
+  #   - English: en_us
+  #
+  constructor: (locale) ->
+    @i18n = locale if locale?
 
   #
   # UI Messages
