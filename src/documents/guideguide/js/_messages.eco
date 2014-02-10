@@ -375,7 +375,7 @@ class Messages
     switch @i18n
       when ""
       else
-        "Yowza, you've uses GuideGuide 30 times! Since you seem to get quite a
+        "Yowza, you've used GuideGuide 30 times! Since you seem to get quite a
         bit of use out of GuideGuide, would you consider making a donation to
         the development?"
 
