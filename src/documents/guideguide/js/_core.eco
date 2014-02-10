@@ -162,7 +162,9 @@ class GuideGuide
     @messages = new Messages @guideguideData.application.localization
 
     if !@guideguideData.panel.askedAboutAnonymousData and @guideguideData.application.env != 'demo'
-      @alert 'welcome', ['primary js-confirm-submit-data', 'js-deny-submit-data'], ['ui.yes','ui.no']
+      title   = @messages.alertTitleWelcome()
+      message = @messages.alertMessageWelcome()
+      @alert [title, message], ['primary js-confirm-submit-data', 'js-deny-submit-data'], [@messages.uiYes(), @messages.uiNo()]
 
     @refreshSettings()
     @localizeUI()
@@ -179,7 +181,7 @@ class GuideGuide
   localizeUI: =>
     $elements = $('[data-localize]')
     $elements.each (index, el) =>
-      $(el).text @messages[$(el).attr('data-localize')]
+      $(el).text @messages[$(el).attr('data-localize')]()
 
   # When an input gains focus, outline it's parent and get the most up to date
   # document info.
@@ -237,8 +239,7 @@ class GuideGuide
 
   # Show the alert and fill its fields
   #
-  #   data          - If a string, data is an ID of the message to be added to the alert. If
-  #                   an array, the first value is the title to be used, and the second is the message.
+  #   data          - Array. The first value is the title to be used, and the second is the message.
   #   buttonClasses - Array of class strings for buttons. A button will be created for each
   #   buttonIDs     - Array of IDs of button messages
   #
@@ -247,8 +248,8 @@ class GuideGuide
     buttonClasses or= ['primary js-dismiss-alert']
     buttonNames   or= ['ui.btnOk']
 
-    title = if typeof data is 'string' then @messages["alertTitle.#{ data }"] else data[0]
-    message = if typeof data is 'string' then @messages["alertMessage.#{ data }"] else data[1]
+    title = data[0]
+    message = data[1]
 
     @panel.find('.js-alert-title').text title
     @panel.find('.js-alert-message').html message
@@ -258,7 +259,7 @@ class GuideGuide
       button = $('.js-button-template').clone().removeClass('js-button-template')
       button.find('a')
       .addClass(buttonClasses[i])
-      .text (if buttonNames[i] then @messages[buttonNames[i]] else @messages['ui.btnOk'])
+      .text (if buttonNames[i] then buttonNames[i] else @messages.uiOk())
       @panel.find('.js-alert-actions').append button
 
     @panel.addClass 'has-alert'
@@ -293,7 +294,7 @@ class GuideGuide
       setting   = $dropdown.attr 'data-setting'
       value     = @guideguideData.settings[setting]
       $selected = $dropdown.find("[data-value='#{ value }']")
-      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]
+      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]()
 
   # Behavior for navigating a collection of "pages" via a set of tabs
   #
@@ -367,7 +368,7 @@ class GuideGuide
     value     = true if value is "true"
     value     = false if value is "false"
 
-    $dropdown.find('.js-dropdown-button').text @messages[$item.attr('data-localize')]
+    $dropdown.find('.js-dropdown-button').text @messages[$item.attr('data-localize')]()
     @guideguideData.settings[setting] = value
     @saveGuideGuideData()
 
@@ -399,7 +400,9 @@ class GuideGuide
       @saveGuideGuideData()
 
     if @guideguideData.panel.usage.guideActions == 30 and @guideguideData.application.env != 'demo'
-      @alert 'donate', ['primary js-donate', 'js-dismiss-alert'], ['ui.btnDonate', 'ui.niceNo']
+      title   = @messages.alertTitleDonate()
+      message = @messages.alertMessageDonate()
+      @alert [title, message], ['primary js-donate', 'js-dismiss-alert'], [@messages.uiDonate(), @messages.uiNiceNo()]
 
   # When the user grants data collection permission, update the settings and
   # dismiss the alert.
@@ -655,9 +658,13 @@ class GuideGuide
           @panel.trigger 'guideguide:hasUpdate', data
           $('.js-has-update-button').click()
         else
-          @alert 'upToDate', ['primary js-dismiss-alert'], ['ui.btnOk']
+          title   = @messages.alertTitleUpToDate()
+          message = @messages.alertMessageUpToDate()
+          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
       else
-        @alert 'updateError', ['primary js-dismiss-alert'], ['ui.btnOk']
+        title   = @messages.alertTitleUpdateError()
+        message = @messages.alertMessageUpdateError()
+        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
   # Check the GuideGuide server to see if there are updates available.
   #
@@ -684,7 +691,7 @@ class GuideGuide
     event.preventDefault()
     title = $(event.currentTarget).attr 'data-title'
     message = $(event.currentTarget).attr 'data-message'
-    @alert [title, message], ['primary js-dismiss-alert'], ['ui.btnOk']
+    @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
   # When this install of GuideGuide is out of date, alert the user.
   #
@@ -762,11 +769,17 @@ class GuideGuide
           @importSets sets
           @refreshSets()
           @selectTab @panel, 'sets'
-          @alert "importSuccess", ['primary js-dismiss-alert'], ['ui.btnOk']
+          title   = @messages.alertTitleImportSuccess()
+          message = @messages.alertMessageImportSuccess()
+          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
         else
-          @alert "importGistNoSets", ['primary js-dismiss-alert'], ['ui.btnOk']
+          title   = @messages.alertTitleImportGistNoSets()
+          message = @messages.alertMessageImportGistNoSets()
+          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
       error: (data) =>
-        @alert "importGistError", ['primary js-dismiss-alert'], ['ui.btnOk']
+        title   = @messages.alertTitleImportGistError()
+        message = @messages.alertMessageImportGistError()
+        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
   # Import an array of sets
   #
@@ -813,7 +826,9 @@ class GuideGuide
       id = data.substring data.lastIndexOf('/') + 1
       @importSetsFromGist id
     else
-      @alert "importNotGist", ['primary js-dismiss-alert'], ['ui.btnOk']
+      title   = @messages.alertTitleImportNotGist()
+      message = @messages.alertMessageImportNotGist()
+      @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
   # Dismiss the importer
   #
@@ -831,7 +846,7 @@ class GuideGuide
 
     @bridge.log 'Export sets'
     data =
-      description: @messages["help.gistExport"]
+      description: @messages.helpGistExport()
       public: false
       files:
         "sets.json":
@@ -845,12 +860,14 @@ class GuideGuide
       complete: (data) =>
         @panel.removeClass 'is-loading'
       success: (data) =>
-        title = @messages["alertTitle.exportSuccess"]
-        message = "#{ @messages['alertMessage.exportSuccess'] } <div><strong><a class='js-link button export-button' href='#{ data.html_url }'>#{ @messages["ui.openInBrowser"] }</a></strong></div>"
+        title   = @messages.alertTitleExportSuccess()
+        message = "#{ @messages.alertMessageExportSuccess() } <div><strong><a class='js-link button export-button' href='#{ data.html_url }'>#{ @messages.uiOpenInBrowser() }</a></strong></div>"
 
-        @alert [title, message], ['primary js-dismiss-alert'], ['ui.btnOk']
+        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
       error: (data) =>
-        @alert 'exportError', ['primary js-dismiss-alert'], ['ui.btnOk']
+        title   = @messages.alertTitleExportError()
+        message = @messages.alertMessagesExportError()
+        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
   # Open a exported sets url
   #
@@ -1057,7 +1074,7 @@ class GuideGuide
         string += '\n' if xString
         string += yString
         string += '\n' if yString
-        string += '\n# ' + @messages['ggn.stringFromExistingGuides'] if xString or yString
+        string += '\n# ' + @messages.ggnStringFromExistingGuides() if xString or yString
 
       @showCustomSetForm string
 

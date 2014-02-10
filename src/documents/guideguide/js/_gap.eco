@@ -55,7 +55,7 @@ class Gap
       @parseWildcard string
     else
       @multiplier = 1
-      @invalidBecause @messages['gap.unrecognized']
+      @invalidBecause @messages.gapUnrecognized()
 
   # Determine wildcard validity, string and multiplier
   #
@@ -67,7 +67,7 @@ class Gap
     gapBits    = wildcardRegexp.exec string
     @isFill     = gapBits[1] && !gapBits[2] || false
     @multiplier = parseInt(gapBits[2]) || 1
-    @invalidBecause @messages['gap.noFillWildcards'] if @isFill
+    @invalidBecause @messages.gapNoFillWildcards() if @isFill
 
   # Determine variable validity, id, multiplier, if it's a fill, and it's string
   #
@@ -99,7 +99,7 @@ class Gap
       @value = @unit.baseValue
       @value = @unit.value if @isPercent
     else
-      @invalidBecause @messages['gap.unrecognized']
+      @invalidBecause @messages.gapUnrecognized()
 
   # Convert a percent gap to an arbitrary gap. This has to be called
   # externally at the time a grid is generated because we don't know how big

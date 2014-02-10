@@ -101,12 +101,12 @@ class GGN
     fills = 0
     percent = 0
     variablesWithWildcards = {}
-    @error @messages['ggn.noGrids'] if !@grids.length
+    @error @messages.ggnNoGrids() if !@grids.length
 
     # Check variables
     $.each @variables, (key,variable) =>
       $.each variable.all, (index, gap) =>
-        @error @messages['ggn.fillInVariable'] if gap.isFill
+        @error @messages.ggnFillInVariable() if gap.isFill
         @defineGapErrors gap if !gap.isValid and gap != '|'
         variablesWithWildcards[key] = true if gap.isWildcard
         percent += gap.value if gap.isPercent
@@ -116,9 +116,9 @@ class GGN
     # Check grids
     $.each @grids, (key,grid) =>
       $.each grid.gaps.all, (index, gap) =>
-        @error @messages['ggn.noWildcardsInVariableFills'] if gap.isVariable and variablesWithWildcards[gap.id]
-        @error @messages['ggn.undefinedVariable'] if gap.isVariable and !@variables[gap.id]
-        @error @messages['ggn.oneFillPerGrid'] if gap.isFill and fills
+        @error @messages.ggnNoWildcardsInVariableFills() if gap.isVariable and variablesWithWildcards[gap.id]
+        @error @messages.ggnUndefinedVariable() if gap.isVariable and !@variables[gap.id]
+        @error @messages.ggnOneFillPerGrid() if gap.isFill and fills
         @defineGapErrors gap if !gap.isValid && gap != '|'
         percent += gap.value if gap.isPercent
         wildcards++ if gap.isWildcard
@@ -127,7 +127,7 @@ class GGN
       if grid.options.width
         width = new Gap grid.options.width.toString()
         @defineGapErrors width if !width.isValid
-    @error @messages['ggn.moreThanOneHundredPercent'] if percent > 100
+    @error @messages.ggnMoreThanOneHundredPercent() if percent > 100
     @wildcards = wildcards
 
   # Deterime a grid's gaps and options
