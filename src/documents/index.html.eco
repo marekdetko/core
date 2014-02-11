@@ -14,6 +14,7 @@
   <script type="text/javascript" src="/js/panel-bridge.js"></script>
   <script type="text/javascript" src="/js/fauxtoshop.js"></script>
   <script type="text/javascript" src="/js/bridge.js"></script>
+  <script type="text/javascript" src="/guideguide/js/guideguidemessages.js"></script>
   <script type="text/javascript" src="/guideguide/js/guideguidelib.js"></script>
   <script type="text/javascript" src="/js/qunit-1.14.0.js"></script>
   <script type="text/javascript" src="/js/tests.js"></script>
@@ -33,7 +34,7 @@
     <li><a class="control js-dev-option" data-dev-option='checkForUpdates' href>Check for updates: <span class="js-dev-option-value">false</span></a></li>
   </ul>
 
-  <%- @include('fauxtoshop.html') or '{}' %>
+<!--   <%- @include('fauxtoshop.html') or '{}' %> -->
 
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>

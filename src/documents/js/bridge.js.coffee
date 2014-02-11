@@ -14,16 +14,16 @@ class window.Bridge
     data.application = Fauxtoshop.data
 
     if data
-      callback data
+      callback null, data
     else
-      callback null
+      callback "Bridge could not find any data."
 
   # Save panel data
   #
   #  data - data to be saved
   #
   # Returns nothing
-  setData: (data, callback) =>
+  setData: (data) =>
     localStorage.setItem 'guideguide', JSON.stringify data
 
   # Add guides to the document
@@ -120,3 +120,11 @@ class window.Bridge
   # Returns nothing
   openURL: (url) =>
     window.open(url, '_blank')
+
+  # Convert a string to a hash.
+  #
+  #  string - string to be converted to a hash
+  #
+  # Returns a String
+  toHash: (string) =>
+    return CryptoJS.SHA1(string).toString()
