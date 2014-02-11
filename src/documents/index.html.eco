@@ -6,12 +6,15 @@
   <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.custom.min.css">
   <link rel="stylesheet" type="text/css" href="/css/demo.css">
   <link rel="stylesheet" type="text/css" href="/css/fauxtoshop.css">
+  <link rel="stylesheet" type="text/css" href="/css/qunit-1.14.0.css">
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.min.js"></script>
   <script type="text/javascript" src="/js/demo.js"></script>
   <script type="text/javascript" src="/js/panel-bridge.js"></script>
   <script type="text/javascript" src="/js/fauxtoshop.js"></script>
+  <script type="text/javascript" src="/js/qunit-1.14.0.js"></script>
+  <script type="text/javascript" src="/js/tests.js"></script>
 </head>
 <body class="guideguide-dark" data-environment="development">
   <h1 class="page-title">GuideGuide Core Dev</h1>
@@ -29,6 +32,9 @@
   </ul>
 
   <%- @include('fauxtoshop.html') or '{}' %>
+
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
 
 </body>
 </html>

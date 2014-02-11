@@ -29,7 +29,7 @@ body {
   background-image: url(../img/noisy_grid.png);
   font-family: 'open-sans-light', helvetica, arial, sans-serif;
   color: #333;
-  padding: 0 0 0 50px;
+  padding: 0 50px;
   margin: 0;
 }
 
@@ -69,6 +69,7 @@ body {
 
 .fauxtoshop {
   margin-top: 30px;
+  height: 350px;
 
   .panel-shell {
     left: 440px;
