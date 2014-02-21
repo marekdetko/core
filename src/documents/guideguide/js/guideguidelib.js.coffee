@@ -66,11 +66,6 @@ class window.GuideGuideLib
     @data = data
     @saveGuideGuideData()
 
-    @alert
-      title: "Hello World"
-      message: "Hello Again"
-      buttons: [ @button(@messages.uiOk(), 'dismissAlert', true) ]
-
     if !@guideguideData.panel.askedAboutAnonymousData and !@isDemo()
       title   = @messages.alertTitleWelcome()
       message = @messages.alertMessageWelcome()
@@ -82,8 +77,6 @@ class window.GuideGuideLib
         message: message
         buttons: [button1, button2]
 
-
-    # @refreshSettings()
     # @localizeUI()
 
     # if !isDemo()
