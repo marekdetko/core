@@ -65,18 +65,12 @@ class window.GuideGuideLib
     data.panel.launchCount++
     @data = data
     @saveGuideGuideData()
-    @completeInit(callback)
-
-  # Finish the GuideGuide startup process.
-  #
-  # Returns nothing.
-  completeInit: (callback) =>
 
     @alert
       title: "Hello World"
       message: "Hello Again"
       buttons: [ @button(@messages.uiOk(), 'dismissAlert', true) ]
-    # @bridge.log "Running #{ @data.application.name } in #{ @data.application.env } mode"
+
     #
     # @refreshSets()
     #
@@ -94,8 +88,8 @@ class window.GuideGuideLib
     #     if data? and data.hasUpdate
     #       @panel.trigger 'guideguide:hasUpdate', data
 
-
     callback(null)
+
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
