@@ -5,9 +5,15 @@ class window.GuideGuideLib
   data: {}
 
   constructor: (args, callback) ->
+    if !args.bridge?
+      callback("Please specify a panel bridge")
+      return
+
+    args.locale ||= "en_us"
+
     @bridge = args.bridge
-    # @messages = {}
-    # @siteUrl = args.siteUrl
+    @messages = new GuideGuideMessages(args.locale)
+    @siteUrl = args.siteUrl if args.siteUrl?
 
     expected = [
       'getData',
@@ -20,7 +26,8 @@ class window.GuideGuideLib
       'log',
       'error',
       'openURL',
-      'toHash'
+      'toHash',
+      'alert'
     ]
     missing = []
 
@@ -40,8 +47,8 @@ class window.GuideGuideLib
   # When data is received from the application, fill out any missing data, then
   # procede with the callback.
   #
-  #  data     - data from the application provided by the bridge
-  #  callback - method to execute once the data is ready.
+  #  data     - Object: Data from the application provided by the bridge
+  #  callback - Function: Method to execute once the data is ready.
   #
   # Returns nothing.
   initData: (data, callback) =>
@@ -57,6 +64,11 @@ class window.GuideGuideLib
   #
   # Returns nothing.
   completeInit: (callback) =>
+
+    @alert
+      title: "Hello World"
+      message: "Hello Again"
+      buttons: [ @button(@messages.uiOk(), 'dismissAlert', true) ]
     # @bridge.log "Running #{ @data.application.name } in #{ @data.application.env } mode"
     #
     # @refreshSets()
@@ -84,11 +96,34 @@ class window.GuideGuideLib
   saveGuideGuideData: =>
     @bridge.setData @data
 
+  # Alert a message to the user
+  #
+  # Reterns nothing.
+  alert: (args) =>
+    return unless args?
+    args.title   ||= "Title"
+    args.message ||= "Message"
+    args.buttons ||= [ @button(@messages.uiOk(), 'dismissAlert', true) ]
+    @bridge.alert(args)
+
+  # Form a button data object.
+  #
+  #  label        - String: Text to be used for the button label.
+  #  callbackName - String: Callback to be executed when the button is clicked.
+  #  primary      - Boolean: If true, the button will be highlighted.
+  #
+  #
+  # Returns an Object.
+  button: (label, callbackName, primary) =>
+    label: label
+    callback: callbackName
+    primary: primary || false
+
   # Generate a set ID based on a hash of the GGN. This will allow us to detect
   # duplicates easier. Since this is a dependency situation, leave it up to
   # the bridge to provide the utility.
   #
-  #   set - set object used as a seed for the ID hash
+  #   set - Object: Set object used as a seed for the ID hash
   #
   # returns a String
   generateSetID: (set) =>
@@ -98,23 +133,22 @@ class window.GuideGuideLib
   #
   # Returns an Object
   panelBootstrap: =>
-    bootstrap =
-      id: null
-      launchCount: 0
-      askedAboutAnonymousData: false
-      usage:
-        lifetime: 0
-        guideActions: 0
-        grid: 0
-        custom: 0
-        set: 0
-        top: 0
-        bottom: 0
-        left: 0
-        right: 0
-        verticalMidpoint: 0
-        horizontalMidpoint: 0
-        clear: 0
+    id: null
+    launchCount: 0
+    askedAboutAnonymousData: false
+    usage:
+      lifetime: 0
+      guideActions: 0
+      grid: 0
+      custom: 0
+      set: 0
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      verticalMidpoint: 0
+      horizontalMidpoint: 0
+      clear: 0
 
   # Default sets for GuideGuide.
   #
@@ -160,13 +194,12 @@ class window.GuideGuideLib
   #
   # Returns an Object.
   settingsBootstrap: =>
-    bootstrap =
-      horizontalRemainder: 'last'
-      verticalRemainder:   'last'
-      horizontalPosition:  'first'
-      verticalPosition:    'first'
-      calculation:         'pixel'
-      reportAnonymousData: false
+    horizontalRemainder: 'last'
+    verticalRemainder:   'last'
+    horizontalPosition:  'first'
+    verticalPosition:    'first'
+    calculation:         'pixel'
+    reportAnonymousData: false
 
   # Truthy if the environment is set to "demo"
   #

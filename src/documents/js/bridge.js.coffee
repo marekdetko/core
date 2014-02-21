@@ -128,3 +128,6 @@ class window.Bridge
   # Returns a String
   toHash: (string) =>
     return CryptoJS.SHA1(string).toString()
+
+  alert: (args) =>
+    console.log args
