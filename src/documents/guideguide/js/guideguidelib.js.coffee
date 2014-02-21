@@ -71,13 +71,17 @@ class window.GuideGuideLib
       message: "Hello Again"
       buttons: [ @button(@messages.uiOk(), 'dismissAlert', true) ]
 
-    #
-    # @refreshSets()
-    #
-    # if !@guideguideData.panel.askedAboutAnonymousData and !isDemo()
-    #   title   = @messages.alertTitleWelcome()
-    #   message = @messages.alertMessageWelcome()
-    #   @alert [title, message], ['primary js-confirm-submit-data', 'js-deny-submit-data'], [@messages.uiYes(), @messages.uiNo()]
+    if !@guideguideData.panel.askedAboutAnonymousData and !@isDemo()
+      title   = @messages.alertTitleWelcome()
+      message = @messages.alertMessageWelcome()
+      button1 = @button(@messages.uiYes(), 'submitDataConfirmed', true)
+      button2 = @button(@messages.uiNo(), 'dismissAlert')
+
+      @alert
+        title: title
+        message: message
+        buttons: [button1, button2]
+
 
     # @refreshSettings()
     # @localizeUI()
@@ -90,6 +94,11 @@ class window.GuideGuideLib
 
     callback(null)
 
+  # When the user grants data collection permission, update the settings and
+  # dismiss the alert.
+  #
+  # Returns nothing.
+  submitDataConfirmed: () =>
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
