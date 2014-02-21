@@ -67,7 +67,7 @@ class window.GuideGuideLib
     @data = data
     @saveGuideGuideData()
 
-    if !@guideguideData.panel.askedAboutAnonymousData and !@isDemo()
+    if !@data.panel.askedAboutAnonymousData and !@isDemo()
       title   = @messages.alertTitleWelcome()
       message = @messages.alertMessageWelcome()
       button1 = @button(@messages.uiYes(), 'submitDataConfirmed', true)

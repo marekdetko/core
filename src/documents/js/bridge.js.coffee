@@ -11,7 +11,7 @@ class window.Bridge
   # Returns nothing
   getData: (callback) =>
     data = JSON.parse(localStorage.getItem('guideguide')) or new Object()
-    data.application = Fauxtoshop.data
+    data.application = new Fauxtoshop().data
 
     if data
       callback null, data
