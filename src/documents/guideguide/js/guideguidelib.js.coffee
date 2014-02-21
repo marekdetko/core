@@ -35,7 +35,12 @@ class window.GuideGuideLib
       'error',
       'openURL',
       'toHash',
-      'alert'
+      'alert',
+      'dismissAlert',
+      'showLoader',
+      'hideLoader',
+      'onSetsUpdate',
+      'onSettingsUpdate'
     ]
     missing = []
 
@@ -80,11 +85,11 @@ class window.GuideGuideLib
 
     @bridge.localizeUI()
 
-    # if !isDemo()
-    #   @submitData()
-    #   @checkForUpdates (data) =>
-    #     if data? and data.hasUpdate
-    #       @panel.trigger 'guideguide:hasUpdate', data
+    unless @isDemo()
+      @submitData()
+      @checkForUpdates (data) =>
+        if data? and data.hasUpdate
+          @panel.trigger 'guideguide:hasUpdate', data
 
     callback(null)
 
@@ -93,6 +98,62 @@ class window.GuideGuideLib
   #
   # Returns nothing.
   submitDataConfirmed: () =>
+    @data.settings.reportAnonymousData = true
+    @data.panel.askedAboutAnonymousData = true
+    @saveGuideGuideData()
+    @bridge.onSettingsUpdate()
+    @dismissAlert()
+
+  # Submit anonymous usage data to the GuideGuide servers.
+  #
+  # Returns nothing.
+  submitData: () =>
+    return unless @data.settings.reportAnonymousData and @data.application.submitAnonymousData
+    @bridge.log 'Submitting anonymous data'
+
+    data =
+      usage: @data.panel.usage
+
+    if @data.panel.id?
+      data._id          = @data.panel.id
+    else
+      data.version      = @data.application.guideguideVersion
+      data.appID        = @data.application.id
+      data.appName      = @data.application.name
+      data.AppVersion   = @data.application.version
+      data.os           = @data.application.os
+      data.localization = @data.application.localization
+
+    $.ajax
+      type: 'POST'
+      url: "#{ @siteUrl }/install"
+      data: data
+      success: (data) =>
+        @bridge.log 'Anonymous data submitted successfully'
+        if typeof data is 'object' and data._id
+          @data.panel.id = data._id
+          @saveGuideGuideData()
+
+  # Check the GuideGuide server to see if there are updates available.
+  #
+  # Returns nothing.
+  checkForUpdates: (callback) =>
+    return unless @data.application.checkForUpdates
+    @bridge.log 'Checking for updates'
+
+    $.ajax
+      type: 'GET'
+      url: "#{ @siteUrl }/panel/#{ @data.application.id }"
+      data:
+        version: @data.application.guideguideVersion || '0.0.0'
+        i18n: @data.application.localization
+      complete: (data) =>
+        @bridge.hideLoader()
+      success: (data) =>
+        callback(data)
+      error: (error) =>
+        @bridge.log error
+        callback(null)
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
@@ -109,6 +170,12 @@ class window.GuideGuideLib
     args.message ||= "Message"
     args.buttons ||= [ @button(@messages.uiOk(), 'dismissAlert', true) ]
     @bridge.alert(args)
+
+  # Dismiss a GuideGuide alert without taking action
+  #
+  # Returns nothing.
+  dismissAlert: =>
+    @bridge.dismissAlert()
 
   # Form a button data object.
   #

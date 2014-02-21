@@ -99,6 +99,17 @@ class window.Bridge
     $elements.each (index, el) =>
       $(el).text messages[$(el).attr('data-localize')]()
 
+
+  # Do this after GuideGuide updates set data
+  #
+  # Returns nothing
+  onSetsUpdate: () =>
+
+  # Do this after GuideGuide updates settings data
+  #
+  # Returns nothing
+  onSettingsUpdate: () =>
+
   # Log a message
   #
   #  args - an array of messages to print
@@ -137,5 +148,23 @@ class window.Bridge
   toHash: (string) =>
     return CryptoJS.SHA1(string).toString()
 
+  # Show the loader status animation
+  #
+  # Returns nothing.
+  showLoader: =>
+
+  # Hide the loader status animation
+  #
+  # Returns nothing.
+  hideLoader: =>
+
+  # Show a message and buttons to take action
+  #
+  # Returns nothing.
   alert: (args) =>
     console.log args
+
+  # Hide a GuideGuide alert
+  #
+  # Returns nothing.
+  dismissAlert: () =>
