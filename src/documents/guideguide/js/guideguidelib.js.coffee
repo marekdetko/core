@@ -30,6 +30,7 @@ class window.GuideGuideLib
       'resetGuides',
       'getExistingGuides',
       'getDocumentInfo',
+      'localizeUI',
       'log',
       'error',
       'openURL',
@@ -77,7 +78,7 @@ class window.GuideGuideLib
         message: message
         buttons: [button1, button2]
 
-    # @localizeUI()
+    @bridge.localizeUI()
 
     # if !isDemo()
     #   @submitData()

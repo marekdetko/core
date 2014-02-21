@@ -91,6 +91,14 @@ class window.Bridge
       existingGuides: @getExistingGuides()
     callback(info)
 
+  # Update all of the ui with local messages.
+  #
+  # Returns nothing.
+  localizeUI: (messages) =>
+    $elements = $('[data-localize]')
+    $elements.each (index, el) =>
+      $(el).text messages[$(el).attr('data-localize')]()
+
   # Log a message
   #
   #  args - an array of messages to print
