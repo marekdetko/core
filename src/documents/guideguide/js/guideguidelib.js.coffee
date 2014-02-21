@@ -84,6 +84,8 @@ class window.GuideGuideLib
         buttons: [button1, button2]
 
     @bridge.localizeUI()
+    @bridge.onSetsUpdate()
+    @bridge.onSetingsUpdate()
 
     unless @isDemo()
       @submitData()
