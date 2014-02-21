@@ -4,6 +4,13 @@ class window.GuideGuideLib
   bridge: {}
   data: {}
 
+  # Create a new GuideGuide instance
+  #
+  #  args       - Object: Specify options for GuideGuide.
+  #    .bridge  - Object: Contains all the necessary methods for GuideGuide to function in the host application.
+  #    .locale  - String: Locale string that GuideGuide will use to pick its language.
+  #    .siteUrl - String: Url for guideguide.me. Specify this to switch to a dev url.
+  #
   constructor: (args, callback) ->
     if !args.bridge?
       callback("Please specify a panel bridge")
