@@ -74,106 +74,114 @@ class GuideGuide
   #
   # Returns nothing
   init: =>
-    @bridge.getData @initData
+    # @bridge.getData @initData
+
+
+
+
+    # This can be passed into the constructor for GuideGuide.
     @panel.removeClass 'hideUI'
+
+
+
 
   # When data is received from the application, handle it.
   #
   # Returns nothing.
-  initData: (data) =>
-    @bridge.log 'Setting up data from application'
-    @guideguideData = data
+  # initData: (data) =>
+    # @bridge.log 'Setting up data from application'
+    # @guideguideData = data
 
     # Info about this install of GuideGuide
-    panelBootstrap =
-      id: null
-      launchCount: 0
-      askedAboutAnonymousData: false
-      usage:
-        lifetime: 0
-        guideActions: 0
-        grid: 0
-        custom: 0
-        set: 0
-        top: 0
-        bottom: 0
-        left: 0
-        right: 0
-        verticalMidpoint: 0
-        horizontalMidpoint: 0
-        clear: 0
+    # panelBootstrap =
+    #   id: null
+    #   launchCount: 0
+    #   askedAboutAnonymousData: false
+    #   usage:
+    #     lifetime: 0
+    #     guideActions: 0
+    #     grid: 0
+    #     custom: 0
+    #     set: 0
+    #     top: 0
+    #     bottom: 0
+    #     left: 0
+    #     right: 0
+    #     verticalMidpoint: 0
+    #     horizontalMidpoint: 0
+    #     clear: 0
+    #
+    # set1 =
+    #   name:'Outline'
+    #   string: """
+    #   | ~ | (vFl)
+    #   | ~ | (hFl)
+    #   """
+    #
+    # set2 =
+    #   name:'Two column grid'
+    #   string: """
+    #   | ~ | ~ | (vFl)
+    #   """
+    #
+    # set3 =
+    #   name:'Three column grid'
+    #   string: """
+    #   | ~ | ~ | ~ | (vFl)
+    #   """
+    #
+    # # User sets
+    # setsBootstrap =
+    #   Default:
+    #     name: "Default"
+    #     sets: {}
+    #
+    # set1.id = @generateSetID set1
+    # set2.id = @generateSetID set2
+    # set3.id = @generateSetID set3
+    #
+    # setsBootstrap.Default.sets[set1.id] = set1
+    # setsBootstrap.Default.sets[set2.id] = set2
+    # setsBootstrap.Default.sets[set3.id] = set3
+    #
+    # # User settings
+    # settingsBootstrap =
+    #   horizontalRemainder: 'last'
+    #   verticalRemainder:   'last'
+    #   horizontalPosition:  'first'
+    #   verticalPosition:    'first'
+    #   calculation:         'pixel'
+    #   reportAnonymousData: false
 
-    set1 =
-      name:'Outline'
-      string: """
-      | ~ | (vFl)
-      | ~ | (hFl)
-      """
+    # @guideguideData.panel    or= panelBootstrap
+    # @guideguideData.sets     or= setsBootstrap
+    # @guideguideData.settings or= settingsBootstrap
+    # @guideguideData.panel.launchCount++
 
-    set2 =
-      name:'Two column grid'
-      string: """
-      | ~ | ~ | (vFl)
-      """
+    # @saveGuideGuideData()
 
-    set3 =
-      name:'Three column grid'
-      string: """
-      | ~ | ~ | ~ | (vFl)
-      """
+    # @completeSetup()
 
-    # User sets
-    setsBootstrap =
-      Default:
-        name: "Default"
-        sets: {}
+  # completeSetup: =>
+    # @refreshSets()
+    # @bridge.log "Running #{ @guideguideData.application.name } in #{ @guideguideData.application.env } mode"
 
-    set1.id = @generateSetID set1
-    set2.id = @generateSetID set2
-    set3.id = @generateSetID set3
+    # @siteUrl = 'http://localhost:5000' if @guideguideData.application.env is 'development'
+    # @messages = new Messages @guideguideData.application.localization
 
-    setsBootstrap.Default.sets[set1.id] = set1
-    setsBootstrap.Default.sets[set2.id] = set2
-    setsBootstrap.Default.sets[set3.id] = set3
+    # if !@guideguideData.panel.askedAboutAnonymousData and @guideguideData.application.env != 'demo'
+    #   title   = @messages.alertTitleWelcome()
+    #   message = @messages.alertMessageWelcome()
+    #   @alert [title, message], ['primary js-confirm-submit-data', 'js-deny-submit-data'], [@messages.uiYes(), @messages.uiNo()]
 
-    # User settings
-    settingsBootstrap =
-      horizontalRemainder: 'last'
-      verticalRemainder:   'last'
-      horizontalPosition:  'first'
-      verticalPosition:    'first'
-      calculation:         'pixel'
-      reportAnonymousData: false
+    # @refreshSettings()
+    # @localizeUI()
 
-    @guideguideData.panel    or= panelBootstrap
-    @guideguideData.sets     or= setsBootstrap
-    @guideguideData.settings or= settingsBootstrap
-    @guideguideData.panel.launchCount++
-
-    @saveGuideGuideData()
-
-    @completeSetup()
-
-  completeSetup: =>
-    @refreshSets()
-    @bridge.log "Running #{ @guideguideData.application.name } in #{ @guideguideData.application.env } mode"
-
-    @siteUrl = 'http://localhost:5000' if @guideguideData.application.env is 'development'
-    @messages = new Messages @guideguideData.application.localization
-
-    if !@guideguideData.panel.askedAboutAnonymousData and @guideguideData.application.env != 'demo'
-      title   = @messages.alertTitleWelcome()
-      message = @messages.alertMessageWelcome()
-      @alert [title, message], ['primary js-confirm-submit-data', 'js-deny-submit-data'], [@messages.uiYes(), @messages.uiNo()]
-
-    @refreshSettings()
-    @localizeUI()
-
-    if @guideguideData.application.env != 'demo'
-      @submitData()
-      @checkForUpdates (data) =>
-        if data? and data.hasUpdate
-          @panel.trigger 'guideguide:hasUpdate', data
+    # if @guideguideData.application.env != 'demo'
+    #   @submitData()
+    #   @checkForUpdates (data) =>
+    #     if data? and data.hasUpdate
+    #       @panel.trigger 'guideguide:hasUpdate', data
 
   # Update all of the ui with local messages.
   #
@@ -383,8 +391,8 @@ class GuideGuide
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
   # Returns nothing.
-  saveGuideGuideData: =>
-    @bridge.setData @guideguideData
+  # saveGuideGuideData: =>
+  #   @bridge.setData @guideguideData
 
   # Increment a usage counter of a given property.
   #
@@ -408,13 +416,13 @@ class GuideGuide
   # dismiss the alert.
   #
   # Returns nothing.
-  onConfirmSubmitData: (event) =>
-    event.preventDefault()
-    @guideguideData.settings.reportAnonymousData = true
-    @guideguideData.panel.askedAboutAnonymousData = true
-    @saveGuideGuideData()
-    @refreshSettings()
-    @dismissAlert()
+  # onConfirmSubmitData: (event) =>
+  #   event.preventDefault()
+  #   @guideguideData.settings.reportAnonymousData = true
+  #   @guideguideData.panel.askedAboutAnonymousData = true
+  #   @saveGuideGuideData()
+  #   @refreshSettings()
+  #   @dismissAlert()
 
   # When the user denies data collection, dismiss the alert. Data submission
   # is disabled by default, so we don't need to change it.
@@ -611,8 +619,8 @@ class GuideGuide
   #   set - set object used as a seed for the ID hash
   #
   # returns a String
-  generateSetID: (set) =>
-    CryptoJS.SHA1("#{ set.name }#{ set.string }").toString()
+  # generateSetID: (set) =>
+  #   CryptoJS.SHA1("#{ set.name }#{ set.string }").toString()
 
   # Select a set in the sets list when it is clicked
   #
@@ -669,23 +677,23 @@ class GuideGuide
   # Check the GuideGuide server to see if there are updates available.
   #
   # Returns nothing.
-  checkForUpdates: (callback) =>
-    return unless @guideguideData.application.checkForUpdates
-    @bridge.log 'Checking for updates'
-
-    $.ajax
-      type: 'GET'
-      url: "#{ @siteUrl }/panel/#{ @guideguideData.application.id }"
-      data:
-        version: @guideguideData.application.guideguideVersion || '0.0.0'
-        i18n: @guideguideData.application.localization
-      complete: (data) =>
-        @panel.removeClass 'is-loading'
-      success: (data) =>
-        callback(data)
-      error: (error) =>
-        @bridge.log error
-        callback(null)
+  # checkForUpdates: (callback) =>
+  #   return unless @guideguideData.application.checkForUpdates
+  #   @bridge.log 'Checking for updates'
+  #
+  #   $.ajax
+  #     type: 'GET'
+  #     url: "#{ @siteUrl }/panel/#{ @guideguideData.application.id }"
+  #     data:
+  #       version: @guideguideData.application.guideguideVersion || '0.0.0'
+  #       i18n: @guideguideData.application.localization
+  #     complete: (data) =>
+  #       @panel.removeClass 'is-loading'
+  #     success: (data) =>
+  #       callback(data)
+  #     error: (error) =>
+  #       @bridge.log error
+  #       callback(null)
 
   onClickHasUpdateButton: (event) =>
     event.preventDefault()
@@ -707,32 +715,32 @@ class GuideGuide
   #   dev - if true, data is sent to a local update server
   #
   # Returns nothing.
-  submitData: =>
-    return unless @guideguideData.settings.reportAnonymousData and @guideguideData.application.submitAnonymousData
-    @bridge.log 'Submitting anonymous data'
-
-    data =
-      usage: @guideguideData.panel.usage
-
-    if @guideguideData.panel.id?
-      data._id          = @guideguideData.panel.id
-    else
-      data.version      = @guideguideData.application.guideguideVersion
-      data.appID        = @guideguideData.application.id
-      data.appName      = @guideguideData.application.name
-      data.AppVersion   = @guideguideData.application.version
-      data.os           = @guideguideData.application.os
-      data.localization = @guideguideData.application.localization
-
-    $.ajax
-      type: 'POST'
-      url: "#{ @siteUrl }/install"
-      data: data
-      success: (data) =>
-        @bridge.log 'Anonymous data submitted successfully'
-        if typeof data is 'object' and data._id
-          @guideguideData.panel.id = data._id
-          @saveGuideGuideData()
+  # submitData: =>
+  #   return unless @guideguideData.settings.reportAnonymousData and @guideguideData.application.submitAnonymousData
+  #   @bridge.log 'Submitting anonymous data'
+  #
+  #   data =
+  #     usage: @guideguideData.panel.usage
+  #
+  #   if @guideguideData.panel.id?
+  #     data._id          = @guideguideData.panel.id
+  #   else
+  #     data.version      = @guideguideData.application.guideguideVersion
+  #     data.appID        = @guideguideData.application.id
+  #     data.appName      = @guideguideData.application.name
+  #     data.AppVersion   = @guideguideData.application.version
+  #     data.os           = @guideguideData.application.os
+  #     data.localization = @guideguideData.application.localization
+  #
+  #   $.ajax
+  #     type: 'POST'
+  #     url: "#{ @siteUrl }/install"
+  #     data: data
+  #     success: (data) =>
+  #       @bridge.log 'Anonymous data submitted successfully'
+  #       if typeof data is 'object' and data._id
+  #         @guideguideData.panel.id = data._id
+  #         @saveGuideGuideData()
 
   # Get the version of this install of GuideGuide.
   #
