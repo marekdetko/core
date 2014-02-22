@@ -10,5 +10,4 @@ $ ->
     highlightHover: '#608ef6'
     danger: '#c74040'
 
-  console.log 'hello world'
-  ui = new GuideGuideHTMLUI { theme: theme } $("#guideguide")
+  ui = new GuideGuideHTMLUI { theme: theme }, $("#guideguide")
