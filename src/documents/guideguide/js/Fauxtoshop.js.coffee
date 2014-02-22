@@ -6,7 +6,7 @@ class window.Fauxtoshop
   # development and demonstration on guideguide.me
   #
   # Returns itself.
-  constructor: (args, @iframe) ->
+  constructor: (args, callback) ->
     args.submitData ||= false
     args.checkForUpdates ||= false
 
@@ -21,11 +21,7 @@ class window.Fauxtoshop
       submitAnonymousData: args.submitData
       checkForUpdates: args.checkForUpdates
 
-    console.log "Fauxtoshop loaded"
-    return unless !args.devMode?
-    @iframe.attr 'src', '/guideguide/panel.html'
-    @iframe.on 'load', (event) =>
-      # console.log 'this', this.contentWindow.GuideGuideCore
+    callback() if callback
 
   # Add a guide to the document
   #
