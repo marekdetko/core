@@ -23,6 +23,15 @@ class window.Fauxtoshop
 
     callback() if callback
 
+  # Get saved panel data
+  #
+  #  callback - code to execute once data has been retrieved
+  #
+  # Returns nothing
+  getData: =>
+    data =
+      application: @data
+
   # Add a guide to the document
   #
   #   location    - coordinate position for the guide to be added
