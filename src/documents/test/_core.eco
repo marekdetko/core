@@ -1,33 +1,18 @@
 module "Core"
 
+args =
+  bridge: new GuideGuideHTMLBridge()
+  locale: "en_us"
 
-gg = {}
+gg = new GuideGuideCore(args)
 
-asyncTest "Init GuideGuide", ->
+asyncTest "can init", ->
   expect 1
-  args =
-    bridge: new GuideGuideHTMLBridge()
-    locale: "en_us"
 
-  gg = new GuideGuideCore args, (err) ->
+  new GuideGuideCore args, (err) ->
     ok !err, err
     start()
 
-    test "Default locale succeeds", ->
-      expect 2
-      ok messages = new GuideGuideMessages("en_us")
-      equal messages.uiGrid(), "Grid"
-
-    test "Non-english locales succeed", ->
-      expect 2
-      ok messages = new GuideGuideMessages("es_es")
-      equal messages.uiGrid(), "Retícula"
-
-    test "Bad locales fail gracefully", ->
-      expect 2
-      ok messages = new GuideGuideMessages("foo")
-      equal messages.uiGrid(), "Grid"
-
-    test "Can create button object", ->
-      expect 1
-      propEqual gg.button("Ok","foo",true), {label:"Ok", callback: "foo", primary: true}
+test "can create button object", ->
+  expect 1
+  propEqual gg.button("Ok","foo",true), {label:"Ok", callback: "foo", primary: true}

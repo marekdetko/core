@@ -7,4 +7,5 @@ window.Fauxtoshop = new FauxtoshopLib(args)
 
 <%- @include('./_fauxtoshop') %>
 <%- @include('./_html_bridge') %>
+<%- @include('./_messages') %>
 <%- @include('./_core') %>

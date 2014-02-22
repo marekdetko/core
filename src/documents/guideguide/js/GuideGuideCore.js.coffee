@@ -50,16 +50,8 @@ class window.GuideGuideCore
       callback("The bridge is missing the following methods: #{ missing.join(', ') }")
       return
 
-    @initData @bridge.getData(), callback
+    data = @bridge.getData()
 
-  # When data is received from the application, fill out any missing data, then
-  # procede with the callback.
-  #
-  #  data     - Object: Data from the application provided by the bridge
-  #  callback - Function: Method to execute once the data is ready.
-  #
-  # Returns nothing.
-  initData: (data, callback) =>
     data.panel    or= @panelBootstrap
     data.sets     or= @setsBootstrap
     data.settings or= @settingsBootstrap
@@ -88,7 +80,7 @@ class window.GuideGuideCore
         if data? and data.hasUpdate
           @panel.trigger 'guideguide:hasUpdate', data
 
-    callback(null)
+    callback() if callback
 
   # When the user grants data collection permission, update the settings and
   # dismiss the alert.

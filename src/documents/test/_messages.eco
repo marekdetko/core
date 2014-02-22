@@ -1,0 +1,16 @@
+module "Messages"
+
+test "default locale succeeds", ->
+  expect 2
+  ok messages = new GuideGuideMessages("en_us")
+  equal messages.uiGrid(), "Grid"
+
+test "non-english locales succeed", ->
+  expect 2
+  ok messages = new GuideGuideMessages("es_es")
+  equal messages.uiGrid(), "Retícula"
+
+test "bad locales fail gracefully", ->
+  expect 2
+  ok messages = new GuideGuideMessages("foo")
+  equal messages.uiGrid(), "Grid"

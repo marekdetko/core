@@ -1,9 +1,9 @@
 module "Fauxtoshop"
 
-test "Can get OS", ->
+test "can get OS", ->
   expect 1
   ok Fauxtoshop.getOS()
 
-test "Can get data", ->
+test "can get data", ->
   expect 1
   equal $.type(Fauxtoshop.getData()), "object"
