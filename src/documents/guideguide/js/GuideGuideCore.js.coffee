@@ -85,7 +85,7 @@ class window.GuideGuideCore
 
     @bridge.localizeUI()
     @bridge.onSetsUpdate()
-    @bridge.onSetingsUpdate()
+    @bridge.onSettingsUpdate()
 
     unless @isDemo()
       @submitData()
