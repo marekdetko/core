@@ -1,7 +1,9 @@
-devData = JSON.parse(localStorage.getItem('guideguidedev')) or new Object()
+class window.GuideGuideHTMLBridge
 
-class window.Bridge
-
+  # This is the bridge between GuideGuide logic and an HTML API for GuideGuide.
+  # This does not contain GuideGuide or UI logic.
+  #
+  # Returns itself
   constructor: () ->
 
   # Get saved panel data
