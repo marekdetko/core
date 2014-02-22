@@ -2,8 +2,12 @@ class window.GuideGuideHTMLUI
 
   # The GuideGuide HTML user interface. This should only contain UI concerns and
   # not anything related to GuideGuide's logic.
-  constructor: (args, @UI) ->
-    @UI.removeClass 'hideUI'
+  constructor: (args, @panel) ->
+    @panel.on 'guideguide:exitform', @onExitGridForm
+    @panel.on 'guideguide:exitcustom', @onExitCustomForm
+    @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
+
+    @panel.removeClass 'hideUI'
     @updateTheme args.theme
     console.log "HTML UI Loaded"
 
@@ -14,6 +18,65 @@ class window.GuideGuideHTMLUI
     $elements = $('[data-localize]')
     $elements.each (index, el) =>
       $(el).text @messages[$(el).attr('data-localize')]()
+
+  # When exiting the Custom form, clear the new set form.
+  #
+  # Returns nothing
+  onExitGridForm: =>
+    @hideNewSetForm()
+
+  # When exiting the Custom form, clear it.
+  #
+  # Returns nothing
+  onExitCustomForm: =>
+    @hideNewSetForm()
+
+  # Hide the new set form and clear any data if it exists.
+  #
+  # Returns nothing.
+  hideNewSetForm: =>
+    @panel.find('.js-grid-form').find('.js-set-name').val('')
+    @panel.find('.js-grid-form').find('.js-set-id').val('')
+    @panel.removeClass('is-showing-new-set-form')
+
+  # Behavior for navigating a collection of "pages" via a set of tabs
+  #
+  # Returns nothing.
+  onTabClick: (event) =>
+    event.preventDefault()
+
+    exitPage   = @panel.find('.js-tabbed-page-tab.is-selected').attr 'data-page'
+    enterPage  = $(event.currentTarget).attr 'data-page'
+
+    return if enterPage == exitPage
+
+    $('#guideguide').trigger "guideguide:exit#{ exitPage }"
+
+    if filter = enterPage
+      @selectTab @panel, filter
+
+    $('#guideguide').trigger "guideguide:enter#{ enterPage }"
+
+  # Select the tab that has the given tab-filter. If there is none, select the first tab.
+  #
+  # $container - (jQuery object) .js-tabbed-pages element
+  # name       - (String) content of the data-page attribute. this item will be selected
+  #
+  # Returns nothing.
+  selectTab: ($container, name) =>
+    $container.find("[data-page]").removeClass 'is-selected'
+
+    if name
+      filter = -> $(this).attr('data-page') is name
+      tab = $container.find('.js-tabbed-page-tab').filter filter
+      tabBucket = $container.find('.js-tabbed-page').filter filter
+    else
+      tab = $container.find '.js-tabbed-page-tab:first'
+      tabBucket = $container.find '.js-tabbed-page:first'
+
+    # Select tab and bucket
+    tab.addClass 'is-selected'
+    tabBucket.addClass 'is-selected'
 
   # Switch themes and add the theme to a list for later use
   #
@@ -29,7 +92,7 @@ class window.GuideGuideHTMLUI
   #
   # Returns nothing
   updateTheme: (colors) =>
-    @UI
+    @panel
       .removeClass('dark-theme light-theme')
       .addClass("#{ colors.prefix || 'dark' }-theme")
     $("head").append('<style id="theme">') if !$("#theme").length
