@@ -14,8 +14,6 @@ class GuideGuide
     @application = parent.$(window.parent.document) || $(document)
     @bridge = parent.window.PanelBridge
 
-    # Set up general GuideGuide UI events.
-    # @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
     @panel.on 'click', '.js-custom-form .js-make-grid', @onMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-make-grid', @onMakeGridFromSet
     @panel.on 'click', '.js-sets-form .js-set-select', @onSelectSet
@@ -27,8 +25,6 @@ class GuideGuide
     @panel.on 'click', '.js-grid-form .js-save-set', @onSaveSetFromGrid
     @panel.on 'click', '.js-custom-form .js-save-set', @onSaveSetFromCustom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onEditSet
-    # @panel.on 'guideguide:exitform', @onExitGridForm
-    # @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'guideguide:hasUpdate', @onHasUpdate
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
@@ -69,119 +65,6 @@ class GuideGuide
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
 
     @panel.find('textarea').autosize();
-
-  # Start GuideGuide
-  #
-  # Returns nothing
-  # init: =>
-    # @bridge.getData @initData
-
-
-
-
-    # This can be passed into the constructor for GuideGuide.
-    # @panel.removeClass 'hideUI'
-
-
-
-
-  # When data is received from the application, handle it.
-  #
-  # Returns nothing.
-  # initData: (data) =>
-    # @bridge.log 'Setting up data from application'
-    # @guideguideData = data
-
-    # Info about this install of GuideGuide
-    # panelBootstrap =
-    #   id: null
-    #   launchCount: 0
-    #   askedAboutAnonymousData: false
-    #   usage:
-    #     lifetime: 0
-    #     guideActions: 0
-    #     grid: 0
-    #     custom: 0
-    #     set: 0
-    #     top: 0
-    #     bottom: 0
-    #     left: 0
-    #     right: 0
-    #     verticalMidpoint: 0
-    #     horizontalMidpoint: 0
-    #     clear: 0
-    #
-    # set1 =
-    #   name:'Outline'
-    #   string: """
-    #   | ~ | (vFl)
-    #   | ~ | (hFl)
-    #   """
-    #
-    # set2 =
-    #   name:'Two column grid'
-    #   string: """
-    #   | ~ | ~ | (vFl)
-    #   """
-    #
-    # set3 =
-    #   name:'Three column grid'
-    #   string: """
-    #   | ~ | ~ | ~ | (vFl)
-    #   """
-    #
-    # # User sets
-    # setsBootstrap =
-    #   Default:
-    #     name: "Default"
-    #     sets: {}
-    #
-    # set1.id = @generateSetID set1
-    # set2.id = @generateSetID set2
-    # set3.id = @generateSetID set3
-    #
-    # setsBootstrap.Default.sets[set1.id] = set1
-    # setsBootstrap.Default.sets[set2.id] = set2
-    # setsBootstrap.Default.sets[set3.id] = set3
-    #
-    # # User settings
-    # settingsBootstrap =
-    #   horizontalRemainder: 'last'
-    #   verticalRemainder:   'last'
-    #   horizontalPosition:  'first'
-    #   verticalPosition:    'first'
-    #   calculation:         'pixel'
-    #   reportAnonymousData: false
-
-    # @guideguideData.panel    or= panelBootstrap
-    # @guideguideData.sets     or= setsBootstrap
-    # @guideguideData.settings or= settingsBootstrap
-    # @guideguideData.panel.launchCount++
-
-    # @saveGuideGuideData()
-
-    # @completeSetup()
-
-  # completeSetup: =>
-    # @refreshSets()
-    # @bridge.log "Running #{ @guideguideData.application.name } in #{ @guideguideData.application.env } mode"
-
-    # @siteUrl = 'http://localhost:5000' if @guideguideData.application.env is 'development'
-    # @messages = new Messages @guideguideData.application.localization
-
-    # if !@guideguideData.panel.askedAboutAnonymousData and @guideguideData.application.env != 'demo'
-    #   title   = @messages.alertTitleWelcome()
-    #   message = @messages.alertMessageWelcome()
-    #   @alert [title, message], ['primary js-confirm-submit-data', 'js-deny-submit-data'], [@messages.uiYes(), @messages.uiNo()]
-
-    # @refreshSettings()
-    # @localizeUI()
-
-    # if @guideguideData.application.env != 'demo'
-    #   @submitData()
-    #   @checkForUpdates (data) =>
-    #     if data? and data.hasUpdate
-    #       @panel.trigger 'guideguide:hasUpdate', data
 
   # Update all of the ui with local messages.
   #
@@ -304,45 +187,6 @@ class GuideGuide
       $selected = $dropdown.find("[data-value='#{ value }']")
       $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]()
 
-  # # Behavior for navigating a collection of "pages" via a set of tabs
-  # #
-  # # Returns nothing.
-  # onTabClick: (event) =>
-  #   event.preventDefault()
-  #
-  #   exitPage   = @panel.find('.js-tabbed-page-tab.is-selected').attr 'data-page'
-  #   enterPage  = $(event.currentTarget).attr 'data-page'
-  #
-  #   return if enterPage == exitPage
-  #
-  #   $('#guideguide').trigger "guideguide:exit#{ exitPage }"
-  #
-  #   if filter = enterPage
-  #     @selectTab @panel, filter
-  #
-  #   $('#guideguide').trigger "guideguide:enter#{ enterPage }"
-  #
-  # # Select the tab that has the given tab-filter. If there is none, select the first tab.
-  # #
-  # # $container - (jQuery object) .js-tabbed-pages element
-  # # name       - (String) content of the data-page attribute. this item will be selected
-  # #
-  # # Returns nothing.
-  # selectTab: ($container, name) =>
-  #   $container.find("[data-page]").removeClass 'is-selected'
-  #
-  #   if name
-  #     filter = -> $(this).attr('data-page') is name
-  #     tab = $container.find('.js-tabbed-page-tab').filter filter
-  #     tabBucket = $container.find('.js-tabbed-page').filter filter
-  #   else
-  #     tab = $container.find '.js-tabbed-page-tab:first'
-  #     tabBucket = $container.find '.js-tabbed-page:first'
-  #
-  #   # Select tab and bucket
-  #   tab.addClass 'is-selected'
-  #   tabBucket.addClass 'is-selected'
-
   # Toggle dropdown visibilty
   #
   # Returns nothing.
@@ -411,18 +255,6 @@ class GuideGuide
       title   = @messages.alertTitleDonate()
       message = @messages.alertMessageDonate()
       @alert [title, message], ['primary js-donate', 'js-dismiss-alert'], [@messages.uiDonate(), @messages.uiNiceNo()]
-
-  # When the user grants data collection permission, update the settings and
-  # dismiss the alert.
-  #
-  # Returns nothing.
-  # onConfirmSubmitData: (event) =>
-  #   event.preventDefault()
-  #   @guideguideData.settings.reportAnonymousData = true
-  #   @guideguideData.panel.askedAboutAnonymousData = true
-  #   @saveGuideGuideData()
-  #   @refreshSettings()
-  #   @dismissAlert()
 
   # When the user denies data collection, dismiss the alert. Data submission
   # is disabled by default, so we don't need to change it.
@@ -674,27 +506,6 @@ class GuideGuide
         message = @messages.alertMessageUpdateError()
         @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
-  # Check the GuideGuide server to see if there are updates available.
-  #
-  # Returns nothing.
-  # checkForUpdates: (callback) =>
-  #   return unless @guideguideData.application.checkForUpdates
-  #   @bridge.log 'Checking for updates'
-  #
-  #   $.ajax
-  #     type: 'GET'
-  #     url: "#{ @siteUrl }/panel/#{ @guideguideData.application.id }"
-  #     data:
-  #       version: @guideguideData.application.guideguideVersion || '0.0.0'
-  #       i18n: @guideguideData.application.localization
-  #     complete: (data) =>
-  #       @panel.removeClass 'is-loading'
-  #     success: (data) =>
-  #       callback(data)
-  #     error: (error) =>
-  #       @bridge.log error
-  #       callback(null)
-
   onClickHasUpdateButton: (event) =>
     event.preventDefault()
     title = $(event.currentTarget).attr 'data-title'
@@ -709,56 +520,6 @@ class GuideGuide
     button = @panel.find '.js-has-update-button'
     button.attr 'data-title', data.title
     button.attr 'data-message', data.message
-
-  # Submit anonymous usage data to the GuideGuide servers.
-  #
-  #   dev - if true, data is sent to a local update server
-  #
-  # Returns nothing.
-  # submitData: =>
-  #   return unless @guideguideData.settings.reportAnonymousData and @guideguideData.application.submitAnonymousData
-  #   @bridge.log 'Submitting anonymous data'
-  #
-  #   data =
-  #     usage: @guideguideData.panel.usage
-  #
-  #   if @guideguideData.panel.id?
-  #     data._id          = @guideguideData.panel.id
-  #   else
-  #     data.version      = @guideguideData.application.guideguideVersion
-  #     data.appID        = @guideguideData.application.id
-  #     data.appName      = @guideguideData.application.name
-  #     data.AppVersion   = @guideguideData.application.version
-  #     data.os           = @guideguideData.application.os
-  #     data.localization = @guideguideData.application.localization
-  #
-  #   $.ajax
-  #     type: 'POST'
-  #     url: "#{ @siteUrl }/install"
-  #     data: data
-  #     success: (data) =>
-  #       @bridge.log 'Anonymous data submitted successfully'
-  #       if typeof data is 'object' and data._id
-  #         @guideguideData.panel.id = data._id
-  #         @saveGuideGuideData()
-
-  # Get the version of this install of GuideGuide.
-  #
-  # Returns a semantic version string http://semver.org/
-  getVersion: =>
-    '0.0.0'
-
-  # Determine the version of the app in which GuideGuide is running.
-  #
-  # Returns a semantic version string http://semver.org/
-  getAppVersion: =>
-    '0.0.0'
-
-  # Determine the operating system in which GuideGuide is running
-  #
-  # Returns a String.
-  getOS: =>
-    'Unknown OS'
 
   # Import sets from a gist url
   #
@@ -884,18 +645,6 @@ class GuideGuide
     event.preventDefault()
     url = $(event.currentTarget).attr 'href'
     @bridge.openURL url
-
-  # # When exiting the Custom form, clear the new set form.
-  # #
-  # # Returns nothing
-  # onExitGridForm: =>
-  #   @hideNewSetForm()
-  #
-  # # When exiting the Custom form, clear it.
-  # #
-  # # Returns nothing
-  # onExitCustomForm: =>
-  #   @hideNewSetForm()
 
   # Open Custom form with data from the set to be edited
   #
@@ -1112,14 +861,6 @@ class GuideGuide
   onHideNewSetForm: (event) =>
     event.preventDefault()
     @hideNewSetForm()
-
-  # # Hide the new set form and clear any data if it exists.
-  # #
-  # # Returns nothing.
-  # hideNewSetForm: =>
-  #   @panel.find('.js-grid-form').find('.js-set-name').val('')
-  #   @panel.find('.js-grid-form').find('.js-set-id').val('')
-  #   @panel.removeClass('is-showing-new-set-form')
 
   # Turn a GuideGuide object into a collection of guides.
   #
@@ -1421,134 +1162,3 @@ class GuideGuide
       !u.isValid
 
     units.length == 0
-
-  # # Switch themes and add the theme to a list for later use
-  # #
-  # #   colors           - an object of colors
-  # #     background     - background color
-  # #     button         - buttons and inputs
-  # #     buttonHover    - button and input hover
-  # #     buttonSelect   - button and input selected
-  # #     text           - text
-  # #     highlight      - primary button and links
-  # #     highlightHover - primary button and links hover
-  # #     danger         - highlight for negative/warning actions
-  # #
-  # # Returns nothing
-  # updateTheme: (colors) =>
-  #   @panel
-  #     .removeClass('dark-theme light-theme')
-  #     .addClass("#{ colors.prefix || 'dark' }-theme")
-  #   $("head").append('<style id="theme">') if !$("#theme").length
-  #   $("#theme").text """
-  #     #guideguide {
-  #       color: #{ colors.text };
-  #       background-color: #{ colors.background };
-  #     }
-  #     #guideguide a {
-  #       color: #{ colors.text };
-  #     }
-  #     #guideguide a:hover {
-  #       color: #{ colors.highlight };
-  #     }
-  #     #guideguide .nav a.is-selected {
-  #       color: #{ colors.buttonSelect };
-  #     }
-  #     #guideguide .input {
-  #       background-color: #{ colors.button };
-  #     }
-  #     #guideguide .input input, #guideguide .input textarea {
-  #       color: #{ colors.text };
-  #     }
-  #     #guideguide .input.is-focused .input-shell {
-  #       border-color: #{ colors.highlight };
-  #     }
-  #     #guideguide .input.is-invalid .input-shell {
-  #       border-color: #{ colors.danger };
-  #     }
-  #     #guideguide .distribute-highlight .icon {
-  #       color: #{ colors.highlight };
-  #     }
-  #     #guideguide .button {
-  #       background-color: #{ colors.button };
-  #     }
-  #     #guideguide .button:hover {
-  #       background-color: #{ colors.buttonHover };
-  #       color: #{ colors.text };
-  #     }
-  #     #guideguide .button.primary {
-  #       background-color: #{ colors.highlight };
-  #       color: #eee;
-  #     }
-  #     #guideguide .button.primary:hover {
-  #       background-color: #{ colors.highlightHover };
-  #       color: #eee;
-  #     }
-  #     #guideguide .button-clear-guides:hover {
-  #       background-color: #{ colors.danger };
-  #     }
-  #     #guideguide .set-list-set {
-  #       background-color: #{ colors.button };
-  #     }
-  #     #guideguide .set-list-set:hover {
-  #       background-color: #{ colors.buttonHover };
-  #     }
-  #     #guideguide .set-list-set:hover a {
-  #       color: #{ colors.text };
-  #     }
-  #     #guideguide .set-list-set.is-selected {
-  #       background-color: #{ colors.highlight };
-  #       color: #eee;
-  #     }
-  #     #guideguide .set-list-set.is-selected a {
-  #       color: #eee;
-  #     }
-  #     #guideguide .set-list-set.is-selected:hover {
-  #       background-color: #{ colors.highlightHover };
-  #     }
-  #     #guideguide .dropdown.is-active .dropdown-button {
-  #       background-color: #{ colors.highlight };
-  #     }
-  #     #guideguide .dropdown.is-active .dropdown-button:after {
-  #       background-color: #{ colors.highlight };
-  #     }
-  #     #guideguide .dropdown.is-active .dropdown-button:hover, #guideguide .dropdown.is-active .dropdown-button:hover:after {
-  #       background-color: #{ colors.highlightHover };
-  #     }
-  #     #guideguide .dropdown-button {
-  #       background-color: #{ colors.button };
-  #     }
-  #     #guideguide .dropdown-button:before {
-  #       border-color: #{ colors.text } transparent transparent;
-  #     }
-  #     #guideguide .dropdown-button:hover, #guideguide .dropdown-button:hover:after {
-  #       background-color: #{ colors.buttonHover };
-  #     }
-  #     #guideguide .dropdown-button:hover {
-  #       color: #{ colors.text };
-  #     }
-  #     #guideguide .dropdown-button:after {
-  #       background-color: #{ colors.button };
-  #       border-left: 2px solid #{ colors.background };
-  #     }
-  #     #guideguide .dropdown-item {
-  #       background-color: #{ colors.button };
-  #       border-top: 2px solid #{ colors.background };
-  #     }
-  #     #guideguide .dropdown-item:hover {
-  #       color: #{ colors.text };
-  #       background-color: #{ colors.buttonHover };
-  #     }
-  #     #guideguide .alert-body {
-  #       background-color: #{ colors.background };
-  #     }
-  #     #guideguide .scrollbar .handle {
-  #       background-color: #{ colors.buttonSelect };
-  #     }
-  #     #guideguide .importer {
-  #       background-color: #{ colors.background };
-  #     }
-  #     #guideguide .loader-background {
-  #       background-color: #{ colors.background };
-  #     }
-  #     """
