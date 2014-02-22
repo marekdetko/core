@@ -8,11 +8,9 @@ class window.GuideGuideHTMLBridge
 
   # Get saved panel data
   #
-  #  callback - code to execute once data has been retrieved
-  #
-  # Returns nothing
+  # Returns an Object
   getData: =>
-    @app.getData()
+    fauxtoshop.getData()
 
   # Save panel data
   #

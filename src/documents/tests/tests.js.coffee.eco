@@ -1,2 +1,3 @@
 <%- @include('./_fauxtoshop') %>
+<%- @include('./_html_bridge') %>
 <%- @include('./_core') %>

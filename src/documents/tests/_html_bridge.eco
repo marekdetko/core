@@ -1,0 +1,8 @@
+module "HTMLBridge"
+
+testBridge = new GuideGuideHTMLBridge()
+
+
+test "can get data", ->
+  expect 1
+  equal $.type(testBridge.getData()), "object"
