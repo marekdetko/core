@@ -21,8 +21,9 @@
 }
 
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -79,10 +80,9 @@ body {
 
 .tests {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 50%;
-  padding: 0 50px;
-  z-index: 20;
+  height: 100%;
+  padding: 440px 50px 0;
 }
