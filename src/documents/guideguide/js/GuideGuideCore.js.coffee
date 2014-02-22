@@ -28,7 +28,6 @@ class window.GuideGuideCore
       'addGuides',
       'toggleGuides',
       'resetGuides',
-      'getExistingGuides',
       'getDocumentInfo',
       'localizeUI',
       'log',

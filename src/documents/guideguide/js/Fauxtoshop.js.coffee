@@ -61,3 +61,47 @@ class window.FauxtoshopLib
     os = 'UNIX' if navigator.appVersion.indexOf("X11") >= 0
     os = 'Linux' if navigator.appVersion.indexOf("Linux") >= 0
     os
+
+
+  # Get the guides that exist in the document currently
+  #
+  #  callback - code to execute once we have the current guides
+  #
+  # Returns nothing
+  getExistingGuides: =>
+    guides    = []
+    docGuides = $('.js-document').find('.js-guide')
+    $artboard = $('.js-document').find('.js-artboard')
+
+    docGuides.each (index, el) =>
+      $el = $(el)
+      guide = {}
+
+      if $el.hasClass 'horizontal'
+        guide.orientation = 'horizontal'
+        guide.location = $el.position().top - $artboard.position().top
+      if $el.hasClass 'vertical'
+        guide.orientation = 'vertical'
+        guide.location = $el.position().left - $artboard.position().left
+
+      guides.push guide
+    guides
+
+  # Get info about the current state of the active document
+  #
+  #  callback - code to execute once we have detirmined the document info
+  #
+  # Returns nothing
+  getDocumentInfo: =>
+    activeDocument = $('.js-document').find('.js-artboard')
+    artboardPosition = activeDocument.position()
+    $selection = $('.js-document').find('.js-selection')
+    info =
+      hasOpenDocuments: true
+      isSelection: if $selection.length then true else false
+      width: if $selection.length then $selection.width()+1 else activeDocument.width()
+      height: if $selection.length then $selection.height()+1 else activeDocument.height()
+      offsetX: if $selection.length then $selection.position().left - artboardPosition.left else 0
+      offsetY: if $selection.length then $selection.position().top - artboardPosition.top else 0
+      ruler: 'pixels'
+      existingGuides: @getExistingGuides()
