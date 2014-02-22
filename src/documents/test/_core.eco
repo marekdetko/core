@@ -6,7 +6,7 @@ gg = {}
 asyncTest "Init GuideGuide", ->
   expect 1
   args =
-    bridge: new GuideGuideTestsBridge()
+    bridge: new GuideGuideHTMLBridge()
     locale: "en_us"
 
   gg = new GuideGuideCore args, (err) ->

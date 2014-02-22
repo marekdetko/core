@@ -50,11 +50,7 @@ class window.GuideGuideCore
       callback("The bridge is missing the following methods: #{ missing.join(', ') }")
       return
 
-    @bridge.getData (err, data) =>
-      if err
-        callback(err)
-      else
-        @initData data, callback
+    @initData @bridge.getData(), callback
 
   # When data is received from the application, fill out any missing data, then
   # procede with the callback.
