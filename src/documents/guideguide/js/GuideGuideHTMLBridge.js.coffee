@@ -11,14 +11,8 @@ class window.GuideGuideHTMLBridge
   #  callback - code to execute once data has been retrieved
   #
   # Returns nothing
-  getData: (callback) =>
-    data = JSON.parse(localStorage.getItem('guideguide')) or new Object()
-    data.application = new Fauxtoshop().data
-
-    if data
-      callback null, data
-    else
-      callback "Bridge could not find any data."
+  getData: =>
+    @app.getData()
 
   # Save panel data
   #
