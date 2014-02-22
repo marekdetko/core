@@ -1,0 +1,10 @@
+module "Fauxtoshop"
+
+args =
+  submitData: false
+  checkForUpdates: false
+  devMode: true
+testFS = new Fauxtoshop(args)
+
+test "Can get OS", ->
+  ok testFS.getOS
