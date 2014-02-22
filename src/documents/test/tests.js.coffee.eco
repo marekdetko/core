@@ -2,6 +2,7 @@ args =
   submitData: false
   checkForUpdates: false
   devMode: true
+  testMode: true
 
 window.Fauxtoshop = new FauxtoshopLib(args)
 

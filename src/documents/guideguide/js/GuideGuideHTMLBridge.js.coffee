@@ -120,7 +120,7 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing.
   alert: (args) =>
-    console.log args
+    Fauxtoshop.alert(args)
 
   # Hide a GuideGuide alert
   #

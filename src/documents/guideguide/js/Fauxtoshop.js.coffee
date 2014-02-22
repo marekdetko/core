@@ -9,6 +9,7 @@ class window.FauxtoshopLib
   constructor: (args, callback) ->
     args.submitData ||= false
     args.checkForUpdates ||= false
+    args.testMode ||= false
 
     @data =
       id: 'web'
@@ -20,6 +21,7 @@ class window.FauxtoshopLib
       guideguideVersion: '0.0.0'
       submitAnonymousData: args.submitData
       checkForUpdates: args.checkForUpdates
+      testMode: args.testMode
 
     callback() if callback
 
@@ -104,3 +106,10 @@ class window.FauxtoshopLib
       offsetY: if $selection.length then $selection.position().top - artboardPosition.top else 0
       ruler: 'pixels'
       existingGuides: @getExistingGuides()
+
+  # Show a message and buttons to take action
+  #
+  # Returns nothing.
+  alert: (args) =>
+    return if @data.testMode
+    console.log args
