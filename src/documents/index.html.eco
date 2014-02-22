@@ -34,7 +34,7 @@
     <li><a class="control js-dev-option" data-dev-option='checkForUpdates' href>Check for updates: <span class="js-dev-option-value">false</span></a></li>
   </ul>
 
-<!--   <%- @include('fauxtoshop.html') or '{}' %> -->
+  <%- @include('fauxtoshop/fauxtoshop.html') or '{}' %>
 
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>

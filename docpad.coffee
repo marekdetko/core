@@ -4,13 +4,11 @@ docpadConfig =
   renderPasses: 2
 
   documentsPaths: [
-    'documents',
-    'components/fauxtoshop/src/documents/fauxtoshop'
+    'documents'
   ]
 
   filesPaths: [
-    'files',
-    'components/fauxtoshop/src/files/fauxtoshop'
+    'files'
   ]
 
 module.exports = docpadConfig
