@@ -10,7 +10,7 @@ class window.GuideGuideHTMLBridge
   #
   # Returns an Object
   getData: =>
-    fauxtoshop.getData()
+    Fauxtoshop.getData()
 
   # Save panel data
   #

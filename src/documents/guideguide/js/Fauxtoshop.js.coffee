@@ -1,4 +1,4 @@
-class window.Fauxtoshop
+class window.FauxtoshopLib
 
   data: {}
 

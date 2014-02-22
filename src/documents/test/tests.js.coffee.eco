@@ -1,3 +1,10 @@
+args =
+  submitData: false
+  checkForUpdates: false
+  devMode: true
+
+window.Fauxtoshop = new FauxtoshopLib(args)
+
 <%- @include('./_fauxtoshop') %>
 <%- @include('./_html_bridge') %>
 <%- @include('./_core') %>

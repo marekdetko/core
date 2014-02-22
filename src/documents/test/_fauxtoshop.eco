@@ -1,15 +1,9 @@
 module "Fauxtoshop"
 
-args =
-  submitData: false
-  checkForUpdates: false
-  devMode: true
-window.fauxtoshop = new Fauxtoshop(args)
-
 test "Can get OS", ->
   expect 1
-  ok fauxtoshop.getOS()
+  ok Fauxtoshop.getOS()
 
 test "Can get data", ->
   expect 1
-  equal $.type(fauxtoshop.getData()), "object"
+  equal $.type(Fauxtoshop.getData()), "object"

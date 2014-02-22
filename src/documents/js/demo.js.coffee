@@ -181,7 +181,7 @@ $ ->
 
   devData = JSON.parse(localStorage.getItem('guideguidedev')) or new Object()
 
-  new Fauxtoshop devData, ->
+  new FauxtoshopLib devData, ->
     console.log "Fauxtoshop loaded"
     $("#panel").attr 'src', '/guideguide/panel.html'
     $("#panel").on 'load', (event) =>
