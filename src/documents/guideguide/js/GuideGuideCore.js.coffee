@@ -1,4 +1,4 @@
-class window.GuideGuideLib
+class window.GuideGuideCore
   siteUrl: 'http://guideguide.me'
   env:     'production'
   bridge: {}

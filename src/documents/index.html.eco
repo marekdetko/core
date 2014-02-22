@@ -14,8 +14,8 @@
   <script type="text/javascript" src="/js/panel-bridge.js"></script>
   <script type="text/javascript" src="/js/fauxtoshop.js"></script>
   <script type="text/javascript" src="/js/bridge.js"></script>
-  <script type="text/javascript" src="/guideguide/js/guideguidemessages.js"></script>
-  <script type="text/javascript" src="/guideguide/js/guideguidelib.js"></script>
+  <script type="text/javascript" src="/guideguide/js/GuideGuideMessages.js"></script>
+  <script type="text/javascript" src="/guideguide/js/GuideGuideCore.js"></script>
   <script type="text/javascript" src="/js/qunit-1.14.0.js"></script>
   <script type="text/javascript" src="/js/tests.js"></script>
 </head>

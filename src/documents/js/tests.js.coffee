@@ -6,7 +6,7 @@ asyncTest "Init GuideGuide", ->
     bridge: new Bridge()
     locale: "en_us"
 
-  gg = new GuideGuideLib args, (err) ->
+  gg = new GuideGuideCore args, (err) ->
     ok !err, err
     start()
 
