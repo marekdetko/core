@@ -2,6 +2,26 @@ module "HTMLBridge"
 
 testBridge = new GuideGuideHTMLBridge()
 
+test "has necessary methods", ->
+  expect 17
+  ok testBridge.getData
+  ok testBridge.setData
+  ok testBridge.addGuides
+  ok testBridge.toggleGuides
+  ok testBridge.resetGuides
+  ok testBridge.getDocumentInfo
+  ok testBridge.localizeUI
+  ok testBridge.log
+  ok testBridge.error
+  ok testBridge.openURL
+  ok testBridge.toHash
+  ok testBridge.alert
+  ok testBridge.dismissAlert
+  ok testBridge.showLoader
+  ok testBridge.hideLoader
+  ok testBridge.onSetsUpdate
+  ok testBridge.onSettingsUpdate
+
 test "can get data", ->
   expect 1
   equal $.type(testBridge.getData()), "object"

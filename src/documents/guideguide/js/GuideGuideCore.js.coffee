@@ -22,34 +22,6 @@ class window.GuideGuideCore
     @messages = new GuideGuideMessages(args.locale)
     @siteUrl = args.siteUrl if args.siteUrl?
 
-    expected = [
-      'getData',
-      'setData',
-      'addGuides',
-      'toggleGuides',
-      'resetGuides',
-      'getDocumentInfo',
-      'localizeUI',
-      'log',
-      'error',
-      'openURL',
-      'toHash',
-      'alert',
-      'dismissAlert',
-      'showLoader',
-      'hideLoader',
-      'onSetsUpdate',
-      'onSettingsUpdate'
-    ]
-    missing = []
-
-    for index, method of expected
-      missing.push(method) if !@bridge[method]?
-
-    if missing.length > 0
-      callback("The bridge is missing the following methods: #{ missing.join(', ') }")
-      return
-
     data = @bridge.getData()
 
     data.panel    or= @panelBootstrap

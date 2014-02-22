@@ -62,7 +62,6 @@ class window.FauxtoshopLib
     os = 'Linux' if navigator.appVersion.indexOf("Linux") >= 0
     os
 
-
   # Get the guides that exist in the document currently
   #
   #  callback - code to execute once we have the current guides
