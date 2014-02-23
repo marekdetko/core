@@ -135,7 +135,8 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing.
   alert: (args) =>
-    Fauxtoshop.alert(args)
+    return args if @testMode
+    @ui.alert(args)
 
   # Hide a GuideGuide alert
   #

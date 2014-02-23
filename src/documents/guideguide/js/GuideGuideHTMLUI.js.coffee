@@ -98,6 +98,28 @@ class window.GuideGuideHTMLUI
     button.attr 'data-title', data.title
     button.attr 'data-message', data.message
 
+  # Show the alert and fill its fields
+  #
+  #   title    - Array. The first value is the title to be used, and the second is the message.
+  #   message  - Array of class strings for buttons. A button will be created for each
+  #   buttons  - Array of IDs of button messages
+  #
+  # Returns nothing.
+  alert: (args) =>
+    @panel.find('.js-alert-title').text args.title
+    @panel.find('.js-alert-message').html args.message
+    @panel.find('.js-alert-actions').html ''
+
+    $.each args.buttons, (i, value) =>
+      button = $('.js-button-template').clone().removeClass('js-button-template')
+      button.find('a')
+        .text(if args.buttons[i].label then args.buttons[i].label else '')
+        .addClass(if args.buttons[i].primary then 'primary' else '')
+        .attr('data-callback', args.buttons[i].callback)
+      @panel.find('.js-alert-actions').append button
+
+    @panel.addClass 'has-alert'
+
   # Switch themes and add the theme to a list for later use
   #
   #   colors           - an object of colors

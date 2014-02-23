@@ -108,13 +108,6 @@ class window.FauxtoshopLib
       ruler: 'pixels'
       existingGuides: @getExistingGuides()
 
-  # Show a message and buttons to take action
-  #
-  # Returns nothing.
-  alert: (args) =>
-    return if @data.testMode
-    console.log args
-
   # Turn guide visibility on and off
   #
   # Returns nothing

@@ -25,6 +25,17 @@ test "has necessary methods", ->
 test "can log", ->
   equal testBridge.log("foo"), "foo"
 
+test "can alert", ->
+  alert =
+    title: "Test alert"
+    message: "This is a test alert"
+    buttons: [
+      callback: "testCallback"
+      label: "Test button"
+      primary: false
+    ]
+  equal $.type(testBridge.alert(alert)), "object"
+
 test "can get data", ->
   equal $.type(testBridge.getData()), "object"
 
