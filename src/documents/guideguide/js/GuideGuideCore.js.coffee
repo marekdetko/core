@@ -33,7 +33,7 @@ class window.GuideGuideCore
       title   = @messages.alertTitleWelcome()
       message = @messages.alertMessageWelcome()
       button1 = @button(@messages.uiYes(), 'submitDataConfirmed', true)
-      button2 = @button(@messages.uiNo(), 'dismissAlert')
+      button2 = @button(@messages.uiNo())
 
       @alert
         title: title

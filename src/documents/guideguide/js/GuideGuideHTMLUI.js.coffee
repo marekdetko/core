@@ -98,6 +98,8 @@ class window.GuideGuideHTMLUI
     @panel.find('.js-alert-title').text ''
     @panel.find('.js-alert-message').text ''
     @panel.removeClass 'has-alert'
+    callback = $(event.currentTarget).attr('data-callback')
+    GuideGuide[callback]()
 
   # When this install of GuideGuide is out of date, alert the user.
   #
@@ -121,11 +123,12 @@ class window.GuideGuideHTMLUI
     @panel.find('.js-alert-actions').html ''
 
     $.each args.buttons, (i, value) =>
+      data = args.buttons[i]
       button = $('.js-button-template').clone().removeClass('js-button-template')
       button.find('a')
-        .text(if args.buttons[i].label then args.buttons[i].label else '')
-        .addClass(if args.buttons[i].primary then 'primary' else '')
-        .attr('data-callback', args.buttons[i].callback)
+        .text(if data.label then data.label else '')
+        .addClass(if data.primary then 'primary' else '')
+        .attr('data-callback', if data.callback then data.callback else '')
       @panel.find('.js-alert-actions').append button
 
     @panel.addClass 'has-alert'
