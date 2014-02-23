@@ -8,8 +8,8 @@
   <link rel="stylesheet" type="text/css" href="/fauxtoshop/css/fauxtoshop.css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script type="text/javascript" src="/fauxtoshop/js/jquery-ui-1.10.3.custom.min.js"></script>
+  <script type="text/javascript" src="/guideguide/js/FauxtoshopLib.js"></script>
   <script type="text/javascript" src="/js/demo.js"></script>
-  <script type="text/javascript" src="/guideguide/js/Fauxtoshop.js"></script>
 </head>
 <body class="guideguide-dark" data-environment="development">
   <h1 class="page-title">GuideGuide Core Dev</h1>

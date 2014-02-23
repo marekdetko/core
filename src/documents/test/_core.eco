@@ -2,7 +2,6 @@ module "Core"
 
 args =
   bridge: new GuideGuideHTMLBridge()
-  locale: "en_us"
 
 gg = new GuideGuideCore(args)
 

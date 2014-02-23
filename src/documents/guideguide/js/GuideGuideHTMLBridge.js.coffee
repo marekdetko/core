@@ -55,7 +55,7 @@ class window.GuideGuideHTMLBridge
   localizeUI: (messages) =>
     $elements = $('[data-localize]')
     $elements.each (index, el) =>
-      $(el).text messages[$(el).attr('data-localize')]()
+      $(el).text Messages[$(el).attr('data-localize')]()
 
 
   # Do this after GuideGuide updates set data

@@ -12,24 +12,21 @@ class window.GuideGuideCore
   #    .siteUrl - String: Url for guideguide.me. Specify this to switch to a dev url.
   #
   constructor: (args, callback) ->
-    if !args.bridge?
-      callback("Please specify a panel bridge")
-      return
-
+    return if !args.bridge?
     args.locale ||= "en_us"
 
     @bridge = args.bridge
-    @messages = new GuideGuideMessages(args.locale)
-    @siteUrl = args.siteUrl if args.siteUrl?
 
     data = @bridge.getData()
-
     data.panel    or= @panelBootstrap
     data.sets     or= @setsBootstrap
     data.settings or= @settingsBootstrap
     data.panel.launchCount++
     @data = data
     @saveGuideGuideData()
+
+    @messages = new GuideGuideMessages(data.application.localization)
+    @siteUrl = args.siteUrl if args.siteUrl?
 
     if !@data.panel.askedAboutAnonymousData and !@isDemo()
       title   = @messages.alertTitleWelcome()

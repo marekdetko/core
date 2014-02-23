@@ -1,4 +1,4 @@
-$ ->
+window.initGuideGuide = ->
   theme =
     prefix: 'dark'
     background: '#535353'
@@ -10,4 +10,11 @@ $ ->
     highlightHover: '#608ef6'
     danger: '#c74040'
 
-  ui = new GuideGuideHTMLUI { theme: theme }, $("#guideguide")
+  window.UI = new GuideGuideHTMLUI { theme: theme }, $("#guideguide")
+  window.Messages = new GuideGuideMessages Fauxtoshop.data.localization
+
+  args =
+    bridge: new GuideGuideHTMLBridge()
+
+  window.GuideGuide = new GuideGuideCore args, ->
+    console.log "GuideGuide Ready"

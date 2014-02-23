@@ -7,6 +7,7 @@ class window.FauxtoshopLib
   #
   # Returns itself.
   constructor: (args, callback) ->
+    args ||= {}
     args.submitData ||= false
     args.checkForUpdates ||= false
     args.testMode ||= false
@@ -23,7 +24,7 @@ class window.FauxtoshopLib
       checkForUpdates: args.checkForUpdates
       testMode: args.testMode
 
-    callback() if callback
+    callback @ if callback
 
   # Get saved panel data
   #
