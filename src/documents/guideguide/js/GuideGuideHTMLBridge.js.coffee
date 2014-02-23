@@ -1,5 +1,5 @@
 class window.GuideGuideHTMLBridge
-  testMode: true
+  testMode: false
 
   # This is the bridge between GuideGuide logic and an HTML API for GuideGuide.
   # This does not contain GuideGuide or UI logic.
@@ -7,7 +7,7 @@ class window.GuideGuideHTMLBridge
   # Returns itself
   constructor: (args) ->
     args ||= {}
-    testMode = args.testMode if args.testMode
+    @testMode = args.testMode if args.testMode
 
   # Get saved panel data
   #
