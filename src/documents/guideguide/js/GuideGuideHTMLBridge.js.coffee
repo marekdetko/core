@@ -79,6 +79,7 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing
   log: (args...) =>
+    return args.toString() if @testMode
     if console.log.apply
       console.log.apply(console, args)
     else

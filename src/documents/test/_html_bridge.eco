@@ -22,6 +22,10 @@ test "has necessary methods", ->
   ok testBridge.onSetsUpdate
   ok testBridge.onSettingsUpdate
 
+test "can log", ->
+  expect 1
+  equal testBridge.log("foo"), "foo"
+
 test "can get data", ->
   expect 1
   equal $.type(testBridge.getData()), "object"

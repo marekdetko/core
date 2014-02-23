@@ -12,6 +12,10 @@ asyncTest "can init", ->
     ok !err, err
     start()
 
+test "can log", ->
+  expect 1
+  equal gg.log("foo"), "foo"
+
 test "can create button object", ->
   expect 1
   propEqual gg.button("Ok","foo",true), {label:"Ok", callback: "foo", primary: true}
