@@ -2,26 +2,6 @@ module "HTMLBridge"
 
 testBridge = new GuideGuideHTMLBridge({testMode: true})
 
-test "has necessary methods", ->
-  expect 17
-  ok testBridge.getData
-  ok testBridge.setData
-  ok testBridge.addGuides
-  ok testBridge.toggleGuides
-  ok testBridge.resetGuides
-  ok testBridge.getDocumentInfo
-  ok testBridge.localizeUI
-  ok testBridge.log
-  ok testBridge.error
-  ok testBridge.openURL
-  ok testBridge.toHash
-  ok testBridge.alert
-  ok testBridge.dismissAlert
-  ok testBridge.showLoader
-  ok testBridge.hideLoader
-  ok testBridge.refreshSets
-  ok testBridge.onSettingsUpdate
-
 test "can log", ->
   equal testBridge.log("foo"), "foo"
 
