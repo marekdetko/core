@@ -1,6 +1,16 @@
 class window.FauxtoshopLib
-
-  data: {}
+  testMode: false
+  data:
+    application:
+      id: 'web'
+      name: 'GuideGuide web'
+      version: '0.0.0'
+      os: "Unknown"
+      localization: 'en_us'
+      env: 'dev'
+      guideguideVersion: '0.0.0'
+      submitAnonymousData: false
+      checkForUpdates: false
 
   # Fauxtoshop is an simulated Photoshop environmennt. It is used for
   # development and demonstration on guideguide.me
@@ -8,21 +18,10 @@ class window.FauxtoshopLib
   # Returns itself.
   constructor: (args, callback) ->
     args ||= {}
-    args.submitData ||= false
-    args.checkForUpdates ||= false
-    args.testMode ||= false
-
-    @data =
-      id: 'web'
-      name: 'GuideGuide web'
-      version: '0.0.0'
-      os: @getOS()
-      localization: 'en_us'
-      env: 'dev'
-      guideguideVersion: '0.0.0'
-      submitAnonymousData: args.submitData
-      checkForUpdates: args.checkForUpdates
-      testMode: args.testMode
+    @testMode = args.testMode if args.testMode
+    @data.application.os = @getOS()
+    @data.application.submitAnonymousData = args.submitData || false
+    @data.application.checkForUpdates = args.checkForUpdates || false
 
     callback @ if callback
 
@@ -32,8 +31,18 @@ class window.FauxtoshopLib
   #
   # Returns nothing
   getData: =>
-    data =
-      application: @data
+    return @data if @testMode
+    data = JSON.parse localStorage.getItem 'guideguide' || @data
+    data ||= @data
+
+  # Save panel data
+  #
+  #  data - data to be saved
+  #
+  # Returns nothing
+  setData: (data) =>
+    return data if @testMode
+    localStorage.setItem 'guideguide', JSON.stringify data
 
   # Add a guide to the document
   #
@@ -112,5 +121,5 @@ class window.FauxtoshopLib
   #
   # Returns nothing
   toggleGuides: =>
-    return true if @data.testMode
+    return true if @testMode
     $(".js-document").toggleClass 'is-showing-guides'

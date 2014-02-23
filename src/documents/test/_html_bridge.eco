@@ -39,6 +39,9 @@ test "can alert", ->
 test "can get data", ->
   equal $.type(testBridge.getData()), "object"
 
+test "can set data", ->
+  equal $.type(testBridge.setData({foo: "bar"})), "object"
+
 test "can get document info", ->
   equal $.type(testBridge.getDocumentInfo()), "object"
 

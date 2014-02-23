@@ -22,7 +22,7 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing
   setData: (data) =>
-    localStorage.setItem 'guideguide', JSON.stringify data
+    Fauxtoshop.setData data
 
   # Add guides to the document
   #

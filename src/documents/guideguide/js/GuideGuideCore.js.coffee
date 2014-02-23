@@ -19,12 +19,12 @@ class window.GuideGuideCore
     @bridge   = args.bridge
     @messages = args.messages
 
-    data = @bridge.getData()
-    data.panel    or= @panelBootstrap
-    data.sets     or= @setsBootstrap
-    data.settings or= @settingsBootstrap
-    data.panel.launchCount++
-    @data = data
+    @data = @bridge.getData()
+
+    @data.panel    or= @panelBootstrap()
+    @data.sets     or= @setsBootstrap()
+    @data.settings or= @settingsBootstrap()
+    @data.panel.launchCount++
     @saveGuideGuideData()
 
     @siteUrl = args.siteUrl if args.siteUrl?
@@ -182,7 +182,7 @@ class window.GuideGuideCore
   # Default sets for GuideGuide.
   #
   # Returns an Object.
-  setBootstrap: =>
+  setsBootstrap: =>
     bootstrap =
       Default:
         name: "Default"

@@ -6,5 +6,8 @@ test "can get OS", ->
 test "can get data", ->
   equal $.type(Fauxtoshop.getData()), "object"
 
+test "can set data", ->
+  equal $.type(Fauxtoshop.setData({foo: "bar"})), "object"
+
 test "can toggle guides", ->
   equal Fauxtoshop.toggleGuides(), true
