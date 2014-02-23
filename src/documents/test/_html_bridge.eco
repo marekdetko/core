@@ -23,21 +23,16 @@ test "has necessary methods", ->
   ok testBridge.onSettingsUpdate
 
 test "can log", ->
-  expect 1
   equal testBridge.log("foo"), "foo"
 
 test "can get data", ->
-  expect 1
   equal $.type(testBridge.getData()), "object"
 
 test "can get document info", ->
-  expect 1
   equal $.type(testBridge.getDocumentInfo()), "object"
 
 test "can open url", ->
-  expect 1
   equal testBridge.openURL("http://foo.com"), "http://foo.com"
 
 test "can toggle guides", ->
-  expect 1
   equal testBridge.toggleGuides(), true

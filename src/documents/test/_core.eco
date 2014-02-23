@@ -6,24 +6,18 @@ args =
 gg = new GuideGuideCore(args)
 
 asyncTest "can init", ->
-  expect 1
-
   new GuideGuideCore args, (err) ->
     ok !err, err
     start()
 
 test "can log", ->
-  expect 1
   equal gg.log("foo"), "foo"
 
 test "can create button object", ->
-  expect 1
   propEqual gg.button("Ok","foo",true), {label:"Ok", callback: "foo", primary: true}
 
 test "can open url", ->
-  expect 1
   equal gg.openURL("http://foo.com"), "http://foo.com"
 
 test "can toggle guides", ->
-  expect 1
   equal gg.toggleGuides(), true
