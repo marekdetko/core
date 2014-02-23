@@ -36,7 +36,9 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing
   toggleGuides: =>
-    $(".js-document").toggleClass 'is-showing-guides'
+    return true if @testMode
+    Fauxtoshop.toggleGuides()
+
 
   # Clear guides
   #

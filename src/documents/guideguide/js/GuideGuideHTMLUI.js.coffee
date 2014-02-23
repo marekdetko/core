@@ -6,6 +6,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'guideguide:exitform', @onExitGridForm
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
+    @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
 
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
@@ -77,6 +78,14 @@ class window.GuideGuideHTMLUI
     # Select tab and bucket
     tab.addClass 'is-selected'
     tabBucket.addClass 'is-selected'
+
+  # Toggle guide visibility.
+  #
+  # Returns nothing.
+  onToggleGuides: (event) =>
+    event.preventDefault()
+    GuideGuide.log "Toggle guides"
+    GuideGuide.toggleGuides()
 
   # Switch themes and add the theme to a list for later use
   #

@@ -114,3 +114,10 @@ class window.FauxtoshopLib
   alert: (args) =>
     return if @data.testMode
     console.log args
+
+  # Turn guide visibility on and off
+  #
+  # Returns nothing
+  toggleGuides: =>
+    return true if @data.testMode
+    $(".js-document").toggleClass 'is-showing-guides'

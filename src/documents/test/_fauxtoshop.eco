@@ -7,3 +7,7 @@ test "can get OS", ->
 test "can get data", ->
   expect 1
   equal $.type(Fauxtoshop.getData()), "object"
+
+test "can toggle guides", ->
+  expect 1
+  equal Fauxtoshop.toggleGuides(), true

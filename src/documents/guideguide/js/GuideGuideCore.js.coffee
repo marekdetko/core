@@ -243,3 +243,17 @@ class window.GuideGuideCore
   # Returns nothing
   openURL: (url) =>
     @bridge.openURL url
+
+  # Toggle guide visibility.
+  #
+  # Returns nothing.
+  toggleGuides: =>
+    @bridge.toggleGuides()
+
+  # Log a message
+  #
+  #  args - an array of messages to print
+  #
+  # Returns nothing
+  log: (args...) =>
+    @bridge.log args

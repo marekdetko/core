@@ -19,3 +19,7 @@ test "can create button object", ->
 test "can open url", ->
   expect 1
   equal gg.openURL("http://foo.com"), "http://foo.com"
+
+test "can toggle guides", ->
+  expect 1
+  equal gg.toggleGuides(), true

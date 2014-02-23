@@ -42,7 +42,6 @@ class GuideGuide
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
     @panel.on 'click', '.js-grid-form .js-make-grid', @onMakeGridFromForm
     @panel.on 'focus', '.js-set-name', @onFocusSetName
-    @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
     @panel.on 'click', '.js-dropdown', @onToggleDropdown
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
     @panel.on 'click', '.js-help-target', @onClickHelpTarget
@@ -223,20 +222,6 @@ class GuideGuide
     $dropdown.find('.js-dropdown-button').text @messages[$item.attr('data-localize')]()
     @guideguideData.settings[setting] = value
     @saveGuideGuideData()
-
-  # Toggle guide visibility.
-  #
-  # Returns nothing.
-  onToggleGuides: (event) =>
-    event.preventDefault()
-    @bridge.log "Toggle guides"
-    @bridge.toggleGuides()
-
-  # Save GuideGuide's data, including usage data, user preferences, and sets
-  #
-  # Returns nothing.
-  # saveGuideGuideData: =>
-  #   @bridge.setData @guideguideData
 
   # Increment a usage counter of a given property.
   #

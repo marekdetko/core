@@ -33,3 +33,7 @@ test "can get document info", ->
 test "can open url", ->
   expect 1
   equal testBridge.openURL("http://foo.com"), "http://foo.com"
+
+test "can toggle guides", ->
+  expect 1
+  equal testBridge.toggleGuides(), true
