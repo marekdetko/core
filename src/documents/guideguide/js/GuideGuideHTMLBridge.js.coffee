@@ -1,10 +1,13 @@
 class window.GuideGuideHTMLBridge
+  testMode: true
 
   # This is the bridge between GuideGuide logic and an HTML API for GuideGuide.
   # This does not contain GuideGuide or UI logic.
   #
   # Returns itself
-  constructor: () ->
+  constructor: (args) ->
+    args ||= {}
+    testMode = args.testMode if args.testMode
 
   # Get saved panel data
   #
@@ -96,7 +99,8 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing
   openURL: (url) =>
-    window.open(url, '_blank')
+    window.open(url, '_blank') if !@testMode
+    url
 
   # Convert a string to a hash.
   #

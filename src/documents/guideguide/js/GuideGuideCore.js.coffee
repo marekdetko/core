@@ -235,3 +235,11 @@ class window.GuideGuideCore
   # Returns a Boolean
   isDemo: =>
     @data.application.env == 'demo'
+
+  # Open a url in the default browser
+  #
+  #  url - String: URL to open
+  #
+  # Returns nothing
+  openURL: (url) =>
+    @bridge.openURL url

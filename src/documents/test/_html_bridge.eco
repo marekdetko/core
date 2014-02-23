@@ -1,6 +1,6 @@
 module "HTMLBridge"
 
-testBridge = new GuideGuideHTMLBridge()
+testBridge = new GuideGuideHTMLBridge({testMode: true})
 
 test "has necessary methods", ->
   expect 17
@@ -29,3 +29,7 @@ test "can get data", ->
 test "can get document info", ->
   expect 1
   equal $.type(testBridge.getDocumentInfo()), "object"
+
+test "can open url", ->
+  expect 1
+  equal testBridge.openURL("http://foo.com"), "http://foo.com"
