@@ -19,7 +19,7 @@ test "has necessary methods", ->
   ok testBridge.dismissAlert
   ok testBridge.showLoader
   ok testBridge.hideLoader
-  ok testBridge.onSetsUpdate
+  ok testBridge.refreshSets
   ok testBridge.onSettingsUpdate
 
 test "can log", ->
@@ -53,3 +53,15 @@ test "can toggle guides", ->
 
 test "can show update indicator", ->
   equal $.type(testBridge.showUpdateIndicator({hasUpdate: false})), "object"
+
+test "can refresh sets", ->
+  sets =
+    Default:
+      name: "Default"
+      sets:
+        "469eb8921edf75ed3360d5838f9585c0d7a82109":
+          name: "Outline"
+          string: "| ~ | (vFl)\n| ~ | (hFl)"
+          id: "469eb8921edf75ed3360d5838f9585c0d7a82109"
+
+  equal $.type(testBridge.refreshSets(sets), "object"

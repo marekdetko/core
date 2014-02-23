@@ -111,6 +111,16 @@ class window.GuideGuideHTMLUI
     button.attr 'data-title', data.title
     button.attr 'data-message', data.message
 
+  refreshSets: (sets) =>
+    $list = @panel.find('.js-set-list')
+    $list.find('.js-set').remove()
+    $.each sets, (index,set) =>
+      item = $('.js-set-item-template').clone(true).removeClass('js-set-item-template')
+      item.find('.js-set-item-name').html set.name
+      item.attr 'data-group', "Default"
+      item.attr 'data-id', set.id
+      $list.append item
+
   # Show the alert and fill its fields
   #
   #   title    - Array. The first value is the title to be used, and the second is the message.

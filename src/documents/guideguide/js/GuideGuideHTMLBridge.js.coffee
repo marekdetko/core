@@ -67,7 +67,9 @@ class window.GuideGuideHTMLBridge
   # Do this after GuideGuide updates set data
   #
   # Returns nothing
-  onSetsUpdate: () =>
+  refreshSets: (sets) =>
+    return sets if @testMode
+    @ui.refreshSets sets
 
   # Do this after GuideGuide updates settings data
   #

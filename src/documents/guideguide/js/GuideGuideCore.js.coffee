@@ -41,7 +41,7 @@ class window.GuideGuideCore
         buttons: [button1, button2]
 
     @bridge.localizeUI()
-    @bridge.onSetsUpdate()
+    @bridge.refreshSets(@data.sets["Default"].sets)
     @bridge.onSettingsUpdate()
 
     unless @isDemo()
@@ -183,11 +183,6 @@ class window.GuideGuideCore
   #
   # Returns an Object.
   setsBootstrap: =>
-    bootstrap =
-      Default:
-        name: "Default"
-        sets: {}
-
     set1 =
       name:'Outline'
       string: """
@@ -217,7 +212,7 @@ class window.GuideGuideCore
     setsBootstrap.Default.sets[set2.id] = set2
     setsBootstrap.Default.sets[set3.id] = set3
 
-    bootstrap
+    setsBootstrap
 
   # Default settings for GuideGuide
   #
