@@ -44,4 +44,4 @@ test "can refresh sets", ->
           string: "| ~ | (vFl)\n| ~ | (hFl)"
           id: "469eb8921edf75ed3360d5838f9585c0d7a82109"
 
-  equal $.type(testBridge.refreshSets(sets), "object"
+  equal $.type(testBridge.refreshSets(sets)), "object"
