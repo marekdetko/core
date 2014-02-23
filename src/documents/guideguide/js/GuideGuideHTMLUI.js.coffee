@@ -7,6 +7,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'guideguide:exitform', @onExitGridForm
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
+    @panel.on 'click', '.js-alert-body .js-button', @onAlertButtonClick
     @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
 
     @panel.removeClass 'hideUI'
@@ -88,6 +89,15 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     GuideGuide.log "Toggle guides"
     GuideGuide.toggleGuides()
+
+  # When an alert button is clicked, dismiss the alert and execute the callback
+  #
+  # Returns nothing.
+  onAlertButtonClick: (event) =>
+    event.preventDefault()
+    @panel.find('.js-alert-title').text ''
+    @panel.find('.js-alert-message').text ''
+    @panel.removeClass 'has-alert'
 
   # When this install of GuideGuide is out of date, alert the user.
   #

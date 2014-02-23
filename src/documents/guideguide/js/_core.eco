@@ -117,48 +117,6 @@ class GuideGuide
       @updateCustomField string
 
 
-  # Show the alert and fill its fields
-  #
-  #   data          - Array. The first value is the title to be used, and the second is the message.
-  #   buttonClasses - Array of class strings for buttons. A button will be created for each
-  #   buttonIDs     - Array of IDs of button messages
-  #
-  # Returns nothing.
-  alert: (data, buttonClasses, buttonNames) =>
-    buttonClasses or= ['primary js-dismiss-alert']
-    buttonNames   or= ['ui.btnOk']
-
-    title = data[0]
-    message = data[1]
-
-    @panel.find('.js-alert-title').text title
-    @panel.find('.js-alert-message').html message
-    @panel.find('.js-alert-actions').html ''
-
-    $.each buttonClasses, (i, value) =>
-      button = $('.js-button-template').clone().removeClass('js-button-template')
-      button.find('a')
-      .addClass(buttonClasses[i])
-      .text (if buttonNames[i] then buttonNames[i] else @messages.uiOk())
-      @panel.find('.js-alert-actions').append button
-
-    @panel.addClass 'has-alert'
-
-  # Handle click on .js-dismiss-alert
-  #
-  # Returns nothing
-  onClickDismissAlert: (event) =>
-    event.preventDefault()
-    @dismissAlert()
-
-  # Dismiss the alert window and reset its text
-  #
-  # Returns nothing.
-  dismissAlert: =>
-    @panel.find('.js-alert-title').text ''
-    @panel.find('.js-alert-message').text ''
-    @panel.removeClass 'has-alert'
-
   onClickDonate: =>
     event.preventDefault()
     @bridge.openURL "http://guideguide.me/donate"
