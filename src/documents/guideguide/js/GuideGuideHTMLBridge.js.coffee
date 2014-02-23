@@ -99,8 +99,9 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing
   openURL: (url) =>
-    window.open(url, '_blank') if !@testMode
-    url
+    return url if @testMode
+    window.open(url, '_blank')
+
 
   # Convert a string to a hash.
   #
