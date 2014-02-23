@@ -8,6 +8,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
     @panel.on 'click', '.js-alert-body .js-button', @onAlertButtonClick
+    @panel.on 'click', '.js-link', @onClickLink
     @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
 
     @panel.removeClass 'hideUI'
@@ -132,6 +133,14 @@ class window.GuideGuideHTMLUI
       @panel.find('.js-alert-actions').append button
 
     @panel.addClass 'has-alert'
+
+  # Open a exported sets url
+  #
+  # Returns nothing
+  onClickLink: (event) =>
+    event.preventDefault()
+    url = $(event.currentTarget).attr 'href'
+    @GuideGuide.openURL url
 
   # Switch themes and add the theme to a list for later use
   #

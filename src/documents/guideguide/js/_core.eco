@@ -50,8 +50,6 @@ class GuideGuide
     @panel.on 'click', '.js-import', @onClickImportSets
     @panel.on 'click', '.js-cancel-import', @onClickCancelImport
     @panel.on 'click', '.js-export-sets', @onClickExportSets
-    @panel.on 'click', '.js-link', @onClickLink
-    @panel.on 'click', '.js-confirm-submit-data', @onConfirmSubmitData
     @panel.on 'click', '.js-deny-submit-data', @onDenySubmitData
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
     @panel.on 'click', '.js-show-logs', @onClickShowLogs
@@ -561,14 +559,6 @@ class GuideGuide
         title   = @messages.alertTitleExportError()
         message = @messages.alertMessagesExportError()
         @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-
-  # Open a exported sets url
-  #
-  # Returns nothing
-  onClickLink: (event) =>
-    event.preventDefault()
-    url = $(event.currentTarget).attr 'href'
-    @bridge.openURL url
 
   # Open Custom form with data from the set to be edited
   #
