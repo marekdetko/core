@@ -2,12 +2,14 @@ module "Core"
 
 args =
   bridge: new GuideGuideHTMLBridge({testMode: true})
+  messages: new GuideGuideMessages "en_us"
 
 gg = new GuideGuideCore(args)
 
 asyncTest "can init", ->
-  new GuideGuideCore args, (err) ->
-    ok !err, err
+  new GuideGuideCore args, (args) ->
+    ok args.bridge, "no bridge given"
+    ok args.bridge, "no messages object given"
     start()
 
 test "can log", ->

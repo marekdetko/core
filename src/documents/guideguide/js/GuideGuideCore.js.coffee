@@ -6,16 +6,18 @@ class window.GuideGuideCore
 
   # Create a new GuideGuide instance
   #
-  #  args       - Object: Specify options for GuideGuide.
-  #    .bridge  - Object: Contains all the necessary methods for GuideGuide to function in the host application.
-  #    .locale  - String: Locale string that GuideGuide will use to pick its language.
-  #    .siteUrl - String: Url for guideguide.me. Specify this to switch to a dev url.
+  #  args        - Object: Specify options for GuideGuide.
+  #    .bridge   - Object: Contains all the necessary methods for GuideGuide to function in the host application.
+  #    .messages - Object: Contains all the necessary messages for GuideGuide.
+  #    .locale   - String: Locale string that GuideGuide will use to pick its language.
+  #    .siteUrl  - String: Url for guideguide.me. Specify this to switch to a dev url.
   #
   constructor: (args, callback) ->
     return if !args.bridge?
     args.locale ||= "en_us"
 
-    @bridge = args.bridge
+    @bridge   = args.bridge
+    @messages = args.messages
 
     data = @bridge.getData()
     data.panel    or= @panelBootstrap
@@ -25,7 +27,6 @@ class window.GuideGuideCore
     @data = data
     @saveGuideGuideData()
 
-    @messages = new GuideGuideMessages(data.application.localization)
     @siteUrl = args.siteUrl if args.siteUrl?
 
     if !@data.panel.askedAboutAnonymousData and !@isDemo()
@@ -49,7 +50,7 @@ class window.GuideGuideCore
         if data? and data.hasUpdate
           @panel.trigger 'guideguide:hasUpdate', data
 
-    callback() if callback
+    callback(args) if callback
 
   # When the user grants data collection permission, update the settings and
   # dismiss the alert.
