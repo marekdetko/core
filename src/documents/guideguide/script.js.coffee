@@ -14,8 +14,9 @@ window.initGuideGuide = ->
   window.Messages = new GuideGuideMessages Fauxtoshop.data.localization
 
   args =
-    bridge: new GuideGuideHTMLBridge()
+    bridge: new GuideGuideHTMLBridge({ui: UI})
     messages: Messages
+    ui: UI
 
   window.GuideGuide = new GuideGuideCore args, ->
     console.log "GuideGuide Ready"

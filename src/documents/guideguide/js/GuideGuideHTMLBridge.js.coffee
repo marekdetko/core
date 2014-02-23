@@ -8,6 +8,7 @@ class window.GuideGuideHTMLBridge
   constructor: (args) ->
     args ||= {}
     @testMode = args.testMode if args.testMode
+    @ui = args.ui if args.ui
 
   # Get saved panel data
   #
@@ -105,6 +106,12 @@ class window.GuideGuideHTMLBridge
     return url if @testMode
     window.open(url, '_blank')
 
+  # When this install of GuideGuide is out of date, alert the user.
+  #
+  # Returns nothing.
+  showUpdateIndicator: (data) =>
+    return data if @testMode
+    @ui.showUpdateIndicator data
 
   # Convert a string to a hash.
   #

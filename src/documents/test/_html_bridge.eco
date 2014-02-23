@@ -36,3 +36,6 @@ test "can open url", ->
 
 test "can toggle guides", ->
   equal testBridge.toggleGuides(), true
+
+test "can show update indicator", ->
+  equal $.type(testBridge.showUpdateIndicator({hasUpdate: false})), "object"

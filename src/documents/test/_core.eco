@@ -23,3 +23,8 @@ test "can open url", ->
 
 test "can toggle guides", ->
   equal gg.toggleGuides(), true
+
+asyncTest "can check for updates", ->
+  gg.checkForUpdates (data) =>
+    equal $.type(data), "object"
+    start()

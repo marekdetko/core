@@ -46,9 +46,11 @@ class window.GuideGuideCore
 
     unless @isDemo()
       @submitData()
-      @checkForUpdates (data) =>
-        if data? and data.hasUpdate
-          @panel.trigger 'guideguide:hasUpdate', data
+      if @data.application.checkForUpdates
+        @checkForUpdates (data) =>
+          @bridge.hideLoader()
+          if data? and data.hasUpdate
+            @bridge.showUpdateIndicator(data)
 
     callback(args) if callback
 
@@ -97,7 +99,6 @@ class window.GuideGuideCore
   #
   # Returns nothing.
   checkForUpdates: (callback) =>
-    return unless @data.application.checkForUpdates
     @bridge.log 'Checking for updates'
 
     $.ajax
@@ -106,13 +107,11 @@ class window.GuideGuideCore
       data:
         version: @data.application.guideguideVersion || '0.0.0'
         i18n: @data.application.localization
-      complete: (data) =>
-        @bridge.hideLoader()
       success: (data) =>
         callback(data)
       error: (error) =>
         @bridge.log error
-        callback(null)
+        callback({ hasUpdate: false })
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #

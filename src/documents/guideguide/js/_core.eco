@@ -63,16 +63,6 @@ class GuideGuide
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
 
-    @panel.find('textarea').autosize();
-
-  # Update all of the ui with local messages.
-  #
-  # Returns nothing.
-  localizeUI: =>
-    $elements = $('[data-localize]')
-    $elements.each (index, el) =>
-      $(el).text @messages[$(el).attr('data-localize')]()
-
   # When an input gains focus, outline it's parent and get the most up to date
   # document info.
   #
@@ -496,15 +486,6 @@ class GuideGuide
     title = $(event.currentTarget).attr 'data-title'
     message = $(event.currentTarget).attr 'data-message'
     @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-
-  # When this install of GuideGuide is out of date, alert the user.
-  #
-  # Returns nothing.
-  onHasUpdate: (event, data) =>
-    @panel.addClass 'has-update'
-    button = @panel.find '.js-has-update-button'
-    button.attr 'data-title', data.title
-    button.attr 'data-message', data.message
 
   # Import sets from a gist url
   #

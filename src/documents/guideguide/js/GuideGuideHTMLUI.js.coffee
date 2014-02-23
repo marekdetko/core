@@ -3,6 +3,7 @@ class window.GuideGuideHTMLUI
   # The GuideGuide HTML user interface. This should only contain UI concerns and
   # not anything related to GuideGuide's logic.
   constructor: (args, @panel) ->
+    return if !@panel
     @panel.on 'guideguide:exitform', @onExitGridForm
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
@@ -10,6 +11,7 @@ class window.GuideGuideHTMLUI
 
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
+    @panel.find('textarea').autosize();
     console.log "HTML UI Loaded"
 
   # Update all of the ui with local messages.
@@ -86,6 +88,15 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     GuideGuide.log "Toggle guides"
     GuideGuide.toggleGuides()
+
+  # When this install of GuideGuide is out of date, alert the user.
+  #
+  # Returns nothing.
+  showUpdateIndicator: (data) =>
+    @panel.addClass 'has-update'
+    button = @panel.find '.js-has-update-button'
+    button.attr 'data-title', data.title
+    button.attr 'data-message', data.message
 
   # Switch themes and add the theme to a list for later use
   #
