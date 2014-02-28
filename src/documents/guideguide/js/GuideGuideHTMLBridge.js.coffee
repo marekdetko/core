@@ -53,6 +53,7 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing
   resetGuides: =>
+    return 0 if @testMode
     $('.js-document').find('.js-guide').remove()
 
   # Get info about the current state of the active document

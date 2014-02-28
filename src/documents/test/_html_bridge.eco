@@ -34,6 +34,9 @@ test "can toggle guides", ->
 test "can show update indicator", ->
   equal $.type(testBridge.showUpdateIndicator({hasUpdate: false})), "object"
 
+test "can reset guides", ->
+  strictEqual testBridge.resetGuides(), 0
+
 test "can add guide", ->
   guide =
     location: 10
