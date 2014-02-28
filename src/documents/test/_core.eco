@@ -48,6 +48,9 @@ test "can donate", ->
 test "can save data", ->
   equal gg.saveData().application.name, "GuideGuide web"
 
+test "can get document info", ->
+  propEqual gg.getDocumentInfo(), { hasOpenDocuments: false }
+
 test "can record usage", ->
   usage = gg.recordUsage("top", 10)
   equal usage.top, 1

@@ -188,6 +188,12 @@ class window.GuideGuideCore
   generateSetID: (set) =>
     @bridge.toHash("#{ set.name }#{ set.string }")
 
+  # Get info about the current state of the active document.
+  #
+  # Returns an Object.
+  getDocumentInfo: =>
+    @bridge.getDocumentInfo()
+
   # Default info about GuideGuide.
   #
   # Returns an Object

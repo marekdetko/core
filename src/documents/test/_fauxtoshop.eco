@@ -12,6 +12,9 @@ test "can set data", ->
 test "can toggle guides", ->
   equal Fauxtoshop.toggleGuides(), true
 
+test "can get document info", ->
+  propEqual Fauxtoshop.getDocumentInfo(), { hasOpenDocuments: false }
+
 test "can add guide", ->
   guide =
     location: 10

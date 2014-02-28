@@ -105,6 +105,7 @@ class window.FauxtoshopLib
   #
   # Returns nothing
   getDocumentInfo: =>
+    return { hasOpenDocuments: false } if @testMode
     activeDocument = $('.js-document').find('.js-artboard')
     artboardPosition = activeDocument.position()
     $selection = $('.js-document').find('.js-selection')

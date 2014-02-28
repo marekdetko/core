@@ -56,11 +56,9 @@ class window.GuideGuideHTMLBridge
     return 0 if @testMode
     $('.js-document').find('.js-guide').remove()
 
-  # Get info about the current state of the active document
+  # Get info about the current state of the active document.
   #
-  #  callback - code to execute once we have detirmined the document info
-  #
-  # Returns nothing
+  # Returns an Object.
   getDocumentInfo: =>
     Fauxtoshop.getDocumentInfo()
 
