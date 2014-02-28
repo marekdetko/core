@@ -45,7 +45,6 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing
   toggleGuides: =>
-    return true if @testMode
     Fauxtoshop.toggleGuides()
 
 
