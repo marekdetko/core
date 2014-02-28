@@ -163,24 +163,6 @@ class GuideGuide
     @guideguideData.settings[setting] = value
     @saveGuideGuideData()
 
-  # Increment a usage counter of a given property.
-  #
-  #   property - usage property to increment
-  #   count    - number of guides being added
-  #
-  # Returns nothing.
-  recordUsage: (property, count) =>
-    @guideguideData.panel.usage.lifetime += count
-    if @guideguideData.panel.usage[property]?
-      @guideguideData.panel.usage[property]++
-      @guideguideData.panel.usage.guideActions++ if property isnt 'clear'
-      @saveGuideGuideData()
-
-    if @guideguideData.panel.usage.guideActions == 30 and @guideguideData.application.env != 'demo'
-      title   = @messages.alertTitleDonate()
-      message = @messages.alertMessageDonate()
-      @alert [title, message], ['primary js-donate', 'js-dismiss-alert'], [@messages.uiDonate(), @messages.uiNiceNo()]
-
   # When the user denies data collection, dismiss the alert. Data submission
   # is disabled by default, so we don't need to change it.
   #
