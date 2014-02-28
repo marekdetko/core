@@ -119,6 +119,30 @@ class window.GuideGuideCore
   saveData: =>
     @bridge.setData @data
 
+  # Increment a usage counter of a given property.
+  #
+  #   property - usage property to increment
+  #   count    - number of guides being added
+  #
+  # Returns nothing.
+  recordUsage: (property, count = 1) =>
+    @data.panel.usage.lifetime += count
+    if @data.panel.usage[property]?
+      @data.panel.usage[property]++
+      @data.panel.usage.guideActions++ if property isnt 'clear'
+      @saveData()
+
+    if @data.panel.usage.guideActions == 30 and @data.application.env != 'demo'
+      button1 = @button(@messages.uiDonate(), 'donate', true)
+      button2 = @button(@messages.uiNiceNo())
+
+      @alert
+        title: @messages.alertTitleDonate()
+        message: @messages.alertMessageDonate()
+        buttons: [button1, button2]
+
+    @data.panel.usage
+
   # Alert a message to the user
   #
   # Reterns nothing.

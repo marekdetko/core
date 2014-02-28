@@ -48,6 +48,12 @@ test "can donate", ->
 test "can save data", ->
   equal gg.saveData().application.name, "GuideGuide web"
 
+test "can record usage", ->
+  usage = gg.recordUsage("top", 10)
+  equal usage.top, 1
+  equal usage.lifetime, 10
+  equal usage.guideActions, 1
+
 asyncTest "can check for updates", ->
   gg.checkForUpdates (data) =>
     equal $.type(data), "object"
