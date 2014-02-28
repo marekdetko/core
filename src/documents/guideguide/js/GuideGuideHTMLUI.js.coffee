@@ -150,7 +150,7 @@ class window.GuideGuideHTMLUI
   onClickLink: (event) =>
     event.preventDefault()
     url = $(event.currentTarget).attr 'href'
-    @GuideGuide.openURL url
+    GuideGuide.openURL url
 
   # Switch themes and add the theme to a list for later use
   #
