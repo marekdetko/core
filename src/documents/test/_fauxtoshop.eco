@@ -11,3 +11,9 @@ test "can set data", ->
 
 test "can toggle guides", ->
   equal Fauxtoshop.toggleGuides(), true
+
+test "can add guide", ->
+  guide =
+    location: 10
+    orientation: "horizontal"
+  equal Fauxtoshop.addGuide(guide), guide

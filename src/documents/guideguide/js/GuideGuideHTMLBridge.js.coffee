@@ -24,6 +24,14 @@ class window.GuideGuideHTMLBridge
   setData: (data) =>
     Fauxtoshop.setData data
 
+  # Add a guide to the document
+  #
+  #  guide - guide to be added
+  #
+  # Returns false
+  addGuide: (guide) =>
+    Fauxtoshop.addGuide guide
+
   # Add guides to the document
   #
   #  guides - array of guides to add

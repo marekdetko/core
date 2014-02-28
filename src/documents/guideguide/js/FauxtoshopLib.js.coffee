@@ -46,22 +46,23 @@ class window.FauxtoshopLib
 
   # Add a guide to the document
   #
-  #   location    - coordinate position for the guide to be added
-  #   orientation - determines horizontal or vertical orientation of the guide
+  #  guide - guide to be added
   #
   # Returns false
-  addGuide: (location, orientation) =>
+  addGuide: (g) =>
+    return g if @testMode
     artboardPosition = $('.js-document').find('.js-artboard').position()
     guide = $('.js-templates').find('.js-guide')
     .clone().attr('class','')
-    .addClass 'guide js-guide ' + orientation
+    .addClass 'guide js-guide ' + g.orientation
 
-    if orientation == 'horizontal'
-      guide.css 'top', ( location + artboardPosition.top ) + 'px'
+    if g.orientation == 'horizontal'
+      guide.css 'top', ( g.location + artboardPosition.top ) + 'px'
     else
-      guide.css 'left', ( location + artboardPosition.left ) + 'px'
+      guide.css 'left', ( g.location + artboardPosition.left ) + 'px'
 
     $('.js-document').append guide
+    g
 
   # Determine the operating system in which GuideGuide is running
   #
