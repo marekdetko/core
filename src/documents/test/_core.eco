@@ -45,6 +45,9 @@ test "can add right quick guide", ->
 test "can donate", ->
   equal gg.donate(), "http://guideguide.me/donate"
 
+test "can save data", ->
+  equal gg.saveData().application.name, "GuideGuide web"
+
 asyncTest "can check for updates", ->
   gg.checkForUpdates (data) =>
     equal $.type(data), "object"
