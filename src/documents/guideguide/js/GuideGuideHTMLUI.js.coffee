@@ -10,6 +10,12 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-alert-body .js-button', @onAlertButtonClick
     @panel.on 'click', '.js-link', @onClickLink
     @panel.on 'click', '.js-toggle-guide-visibility', @onToggleGuides
+    @panel.on 'click', '.js-action-bar .js-top', @onClickTopGuide
+    @panel.on 'click', '.js-action-bar .js-bottom', @onClickBottomGuide
+    @panel.on 'click', '.js-action-bar .js-left', @onClickLeftGuide
+    @panel.on 'click', '.js-action-bar .js-right', @onClickRightGuide
+    @panel.on 'click', '.js-action-bar .js-horizontal-midpoint', @onClickHorizontalMidpoint
+    @panel.on 'click', '.js-action-bar .js-vertical-midpoint', @onClickVerticalMidpoint
 
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
@@ -151,6 +157,48 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     url = $(event.currentTarget).attr 'href'
     GuideGuide.openURL url
+
+  # Draw a guide at the top of the document/selection
+  #
+  # Return nothing.
+  onClickTopGuide: (event) =>
+    event.preventDefault()
+    GuideGuide.quickGuide "top"
+
+  # Draw a guide at the bottom of the document/selection
+  #
+  # Return nothing.
+  onClickBottomGuide: (event) =>
+    event.preventDefault()
+    GuideGuide.quickGuide "bottom"
+
+  # Draw a guide to the left of the document/selection
+  #
+  # Return nothing.
+  onClickLeftGuide: (event) =>
+    event.preventDefault()
+    GuideGuide.quickGuide "left"
+
+  # Draw a guide to the right of the document/selection
+  #
+  # Return nothing.
+  onClickRightGuide: (event) =>
+    event.preventDefault()
+    GuideGuide.quickGuide "right"
+
+  # Draw a guide at the horizontal midpoint of the document/selection
+  #
+  # Return nothing.
+  onClickHorizontalMidpoint: (event) =>
+    event.preventDefault()
+    GuideGuide.quickGuide "horizontalMidpoint"
+
+  # Draw a guide at the vertical midpoint of the document/selection
+  #
+  # Return nothing.
+  onClickVerticalMidpoint: (event) =>
+    event.preventDefault()
+    GuideGuide.quickGuide "verticalMidpoint"
 
   # Switch themes and add the theme to a list for later use
   #

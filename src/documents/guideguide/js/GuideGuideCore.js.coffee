@@ -225,7 +225,37 @@ class window.GuideGuideCore
     calculation:         'pixel'
     reportAnonymousData: false
 
+  # Create a single guide in the location specified
+  #
+  # Returns the resulting GuideGuide Notation string
+  quickGuide: (type) =>
+    return unless type in ["top", "bottom", "horizontalMidpoint", "left", "right", "verticalMidpoint"]
 
+    orientation = before = after = ggn = ""
+
+    switch type
+      when "top", "bottom", "horizontalMidpoint"
+        orientation = "h"
+      when "left", "right", "verticalMidpoint"
+        orientation = "v"
+
+    switch type
+      when "right", "bottom", "horizontalMidpoint", "verticalMidpoint"
+        before = "~"
+
+    switch type
+      when "top", "left", "horizontalMidpoint", "verticalMidpoint"
+        after = "~"
+
+    ggn = "#{ before }|#{ after }(#{ orientation }#{ @calculationType() })"
+
+    return ggn
+
+  # Get the option value that corresponds to the calculation type of the app
+  #
+  # Returns a String
+  calculationType: =>
+    if @data.settings.calculation == 'pixel' then 'p' else ''
 
   # Truthy if the environment is set to "demo"
   #

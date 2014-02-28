@@ -24,6 +24,24 @@ test "can open url", ->
 test "can toggle guides", ->
   equal gg.toggleGuides(), true
 
+test "can add top quick guide", ->
+  equal gg.quickGuide("top"), "|~(hp)"
+
+test "can add horizontal midpoint quick guide", ->
+  equal gg.quickGuide("horizontalMidpoint"), "~|~(hp)"
+
+test "can add bottom quick guide", ->
+  equal gg.quickGuide("bottom"), "~|(hp)"
+
+test "can add left quick guide", ->
+  equal gg.quickGuide("left"), "|~(vp)"
+
+test "can add vertical midpoint quick guide", ->
+  equal gg.quickGuide("verticalMidpoint"), "~|~(vp)"
+
+test "can add right quick guide", ->
+  equal gg.quickGuide("right"), "~|(vp)"
+
 asyncTest "can check for updates", ->
   gg.checkForUpdates (data) =>
     equal $.type(data), "object"
