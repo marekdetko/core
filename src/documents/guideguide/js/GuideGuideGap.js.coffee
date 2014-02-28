@@ -1,7 +1,7 @@
-class window.GuideGuideGap
-  variableRegexp = /^\$([^\*]+)?(\*(\d+)?)?$/i
-  arbitraryRegexp   = /^(([-0-9\.]+)?[a-z%]+)(\*(\d+)?)?$/i
-  wildcardRegexp = /^~(\*(\d*))?$/i
+class window.Gap
+  variableRegexp: /^\$([^\*]+)?(\*(\d+)?)?$/i
+  arbitraryRegexp: /^(([-0-9\.]+)?[a-z%]+)(\*(\d+)?)?$/i
+  wildcardRegexp: /^~(\*(\d*))?$/i
 
   # boolean - truthy if this is valid and can be parsed
   isValid: true
@@ -38,7 +38,7 @@ class window.GuideGuideGap
     @errors = {}
     @original = string = string.replace /\s/g, ''
 
-    @messages = parent.window.GuideGuide.messages
+    @messages = Messages
 
     if @variableRegexp.test string
       @parseVariable string

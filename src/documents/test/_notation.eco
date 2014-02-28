@@ -1,16 +1,16 @@
 module "GuideGuide Notation"
 
-ggn = new GuideGuideNotation()
-
-test "can parse", ->
-  equal $.type(ggn.parse("")), "array"
-
-test "can stringify", ->
-  equal $.type(ggn.stringify({})), "string"
-
-test "can validate", ->
-  equal ggn.validate(true), true
-  equal ggn.validate(false), false
-
-test "can parse", ->
-  equal $.type(ggn.clean("")), "string"
+# ggn = new GuideGuideNotation()
+#
+# test "can parse", ->
+#   equal $.type(ggn.parse("")), "array"
+#
+# test "can stringify", ->
+#   equal $.type(ggn.stringify({})), "string"
+#
+# test "can validate", ->
+#   equal ggn.validate(true), true
+#   equal ggn.validate(false), false
+#
+# test "can parse", ->
+#   equal $.type(ggn.clean("")), "string"

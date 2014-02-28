@@ -1,6 +1,6 @@
 # A unit of measurement formed of a number/type pair
 
-class Unit
+class window.Unit
 
   # number - entered value
   value: null

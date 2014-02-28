@@ -225,6 +225,8 @@ class window.GuideGuideCore
     calculation:         'pixel'
     reportAnonymousData: false
 
+
+
   # Truthy if the environment is set to "demo"
   #
   # Returns a Boolean
