@@ -25,7 +25,7 @@ class window.GuideGuideCore
     @data.sets     or= @setsBootstrap()
     @data.settings or= @settingsBootstrap()
     @data.panel.launchCount++
-    @saveGuideGuideData()
+    @saveData()
 
     @siteUrl = args.siteUrl if args.siteUrl?
 
@@ -61,7 +61,7 @@ class window.GuideGuideCore
   submitDataConfirmed: () =>
     @data.settings.reportAnonymousData = true
     @data.panel.askedAboutAnonymousData = true
-    @saveGuideGuideData()
+    @saveData()
     @bridge.onSettingsUpdate()
     @dismissAlert()
 
@@ -93,7 +93,7 @@ class window.GuideGuideCore
         @bridge.log 'Anonymous data submitted successfully'
         if typeof data is 'object' and data._id
           @data.panel.id = data._id
-          @saveGuideGuideData()
+          @saveData()
 
   # Check the GuideGuide server to see if there are updates available.
   #
@@ -116,7 +116,7 @@ class window.GuideGuideCore
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
   # Returns nothing.
-  saveGuideGuideData: =>
+  saveData: =>
     @bridge.setData @data
 
   # Alert a message to the user
