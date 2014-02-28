@@ -115,6 +115,7 @@ class window.GuideGuideHTMLBridge
   openURL: (url) =>
     return url if @testMode
     window.open(url, '_blank')
+    url
 
   # When this install of GuideGuide is out of date, alert the user.
   #

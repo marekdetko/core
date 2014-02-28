@@ -42,6 +42,9 @@ test "can add vertical midpoint quick guide", ->
 test "can add right quick guide", ->
   equal gg.quickGuide("right"), "~|(vp)"
 
+test "can donate", ->
+  equal gg.donate(), "http://guideguide.me/donate"
+
 asyncTest "can check for updates", ->
   gg.checkForUpdates (data) =>
     equal $.type(data), "object"

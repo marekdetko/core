@@ -135,6 +135,12 @@ class window.GuideGuideCore
   dismissAlert: =>
     @bridge.dismissAlert()
 
+  # Open the donate url in a browser.
+  #
+  # Returns the donate url
+  donate: =>
+    @bridge.openURL "http://guideguide.me/donate"
+
   # Form a button data object.
   #
   #  label        - String: Text to be used for the button label.
