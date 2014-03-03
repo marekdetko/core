@@ -272,15 +272,17 @@ class window.GuideGuideCore
     list = {}
     guides = $.map $.merge($.merge([], first), second), (e,i) ->
       key = "#{ e.location }.#{ e.orientation }"
+      guide = e
       return null if list[key]
       list[key] = true
 
       if args.bounds
-        val = if args.invert then null else e
-        return val if e.orientation == "horizontal" and args.bounds.bottom >= e.location >= args.bounds.top
-        return val if e.orientation == "vertical" and args.bounds.right >= e.location >= args.bounds.left
+        guide = if args.invert then null else e
+        return guide if e.orientation == "horizontal" and args.bounds.bottom >= e.location >= args.bounds.top
+        return guide if e.orientation == "vertical" and args.bounds.right >= e.location >= args.bounds.left
         return if args.invert then e else null
-      e
+
+      guide
     guides
   # Create a single guide in the location specified
   #
