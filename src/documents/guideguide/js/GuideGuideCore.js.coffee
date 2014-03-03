@@ -261,6 +261,27 @@ class window.GuideGuideCore
     calculation:         'pixel'
     reportAnonymousData: false
 
+  # Create a collection of unique guides from multiple guide arrrays
+  #
+  #   first  - (Array) First array
+  #   second - (Array) Second array
+  #   args   - (Object) Options
+  #
+  # Returns an array of guides
+  consolidate: (first, second, args = {}) =>
+    list = {}
+    guides = $.map $.merge($.merge([], first), second), (e,i) ->
+      key = "#{ e.location }.#{ e.orientation }"
+      return null if list[key]
+      list[key] = true
+
+      if args.bounds
+        val = if args.invert then null else e
+        return val if e.orientation == "horizontal" and args.bounds.bottom >= e.location >= args.bounds.top
+        return val if e.orientation == "vertical" and args.bounds.right >= e.location >= args.bounds.left
+        return if args.invert then e else null
+      e
+    guides
   # Create a single guide in the location specified
   #
   # Returns the resulting GuideGuide Notation string

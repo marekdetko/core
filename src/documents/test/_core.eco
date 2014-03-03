@@ -51,6 +51,39 @@ test "can save data", ->
 test "can get document info", ->
   propEqual gg.getDocumentInfo(), { hasOpenDocuments: false }
 
+in1 = [
+  { location: 1, orientation: "horizontal" },
+  { location: 3, orientation: "horizontal" }
+]
+in2 = [
+  { location: 3, orientation: "horizontal" },
+  { location: 5, orientation: "horizontal" }
+]
+bounds =
+  top: 2
+  bottom: 4
+  left: 2
+  right: 4
+
+test "can consolidate guides", ->
+  out = [
+    { location: 1, orientation: "horizontal" },
+    { location: 3, orientation: "horizontal" },
+    { location: 5, orientation: "horizontal" }
+  ]
+  propEqual gg.consolidate(in1, in2), out
+
+test "can consolidate guides with bounds", ->
+  out = [ { location: 3, orientation: "horizontal" } ]
+  propEqual gg.consolidate(in1, in2, { bounds: bounds }), out
+
+test "can consolidate guides with bounds inverted", ->
+  out = [
+    { location: 1, orientation: "horizontal" },
+    { location: 5, orientation: "horizontal" }
+  ]
+  propEqual gg.consolidate(in1, in2, { bounds: bounds, invert: true }), out
+
 test "can record usage", ->
   usage = gg.recordUsage("top", 10)
   equal usage.top, 1
