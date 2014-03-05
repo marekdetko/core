@@ -48,6 +48,15 @@ test "can donate", ->
 test "can save data", ->
   equal gg.saveData().application.name, "GuideGuide web"
 
+test "can get guides from GuideGuide Notation", ->
+  info =
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+  guides = gg.getGuidesFromGGN new GGN("|10px|(hp)"), info
+  propEqual guides, [{ location: 0, orientation: "horizontal"}, { location: 10, orientation: "horizontal"}]
+
 test "can get document info", ->
   propEqual gg.getDocumentInfo(), { hasOpenDocuments: false }
 
