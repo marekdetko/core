@@ -343,3 +343,18 @@ class window.GuideGuideCore
   # Returns nothing
   log: (args...) =>
     @bridge.log args
+
+  # Calculate the sum of an array of values
+  #
+  #   array - array to be added together
+  #   key   - optional key value to be used if array contains objects
+  #
+  # Returns a Number
+  sum: (array, key = null) ->
+    total = 0
+    $.each array, (index,value) =>
+      if key
+        total += array[index][key] if array[index][key]
+      else
+        total += array[index]
+    total

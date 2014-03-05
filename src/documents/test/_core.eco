@@ -90,6 +90,12 @@ test "can record usage", ->
   equal usage.lifetime, 10
   equal usage.guideActions, 1
 
+test "can get sum", ->
+  equal gg.sum([1,2]), 3
+
+test "can get sum with key", ->
+  equal gg.sum([{ foo: 1, bar: 5 }, { foo: 2, bar: 5 }], "foo"), 3
+
 asyncTest "can check for updates", ->
   gg.checkForUpdates (data) =>
     equal $.type(data), "object"
