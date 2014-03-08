@@ -73,6 +73,10 @@ class window.FauxtoshopLib
     $('.js-document').append guide
     g
 
+  resetGuides: =>
+    return [] if @testMode
+    $('.js-document').find('.js-guide').remove()
+
   # Determine the operating system in which GuideGuide is running
   #
   # Returns a String

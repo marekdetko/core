@@ -45,7 +45,7 @@ test "can show update indicator", ->
   equal $.type(testBridge.showUpdateIndicator({hasUpdate: false})), "object"
 
 test "can reset guides", ->
-  strictEqual testBridge.resetGuides(), 0
+  propEqual testBridge.resetGuides(), []
 
 test "can add guide", ->
   guide =

@@ -42,8 +42,7 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing
   resetGuides: =>
-    return 0 if @testMode
-    $('.js-document').find('.js-guide').remove()
+    Fauxtoshop.resetGuides()
 
   # Get info about the current state of the active document.
   #
