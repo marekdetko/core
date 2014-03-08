@@ -16,6 +16,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-action-bar .js-right', @onClickRightGuide
     @panel.on 'click', '.js-action-bar .js-horizontal-midpoint', @onClickHorizontalMidpoint
     @panel.on 'click', '.js-action-bar .js-vertical-midpoint', @onClickVerticalMidpoint
+    @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
 
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
@@ -199,6 +200,13 @@ class window.GuideGuideHTMLUI
   onClickVerticalMidpoint: (event) =>
     event.preventDefault()
     GuideGuide.quickGuide "verticalMidpoint"
+
+  # Handle clicks on the clear guides button.
+  #
+  # Returns nothing.
+  onClickClearGuides: (event) =>
+    event.preventDefault()
+    GuideGuide.clearGuides()
 
   # Switch themes and add the theme to a list for later use
   #

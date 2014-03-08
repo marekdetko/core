@@ -404,7 +404,6 @@ class window.GuideGuideCore
       @bridge.addGuide(guide)
     guides
 
-
   # Create a single guide in the location specified
   #
   # Returns the resulting GuideGuide Notation string
@@ -430,6 +429,29 @@ class window.GuideGuideCore
     ggn = "#{ before }|#{ after }(#{ orientation }#{ @calculationType() })"
     @addGuidesfromGGN ggn
     return ggn
+
+  # Remove all or a portion of the guides.
+  #
+  # Returns an Array of remaining guides
+  clearGuides: =>
+    guides = []
+    info = @bridge.getDocumentInfo()
+    return guides unless info.hasOpenDocuments
+
+    @bridge.resetGuides()
+
+    if info.isSelection
+      bounds =
+        top:    info.offsetY
+        left:   info.offsetX
+        bottom: info.offsetY + info.height
+        right:  info.offsetX + info.width
+      guides = @consolidate({}, info.existingGuides, { bounds: bounds, invert: true })
+      @addGuides guides
+
+    @recordUsage "clear"
+    guides
+
 
   # Get the option value that corresponds to the calculation type of the app
   #

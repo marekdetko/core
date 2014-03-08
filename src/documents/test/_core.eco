@@ -42,6 +42,38 @@ test "can add vertical midpoint quick guide", ->
 test "can add right quick guide", ->
   equal gg.quickGuide("right"), "~|(vp)"
 
+test "can clear all guides", ->
+  guides = [
+    { location: 1, orientation: "horizontal" },
+    { location: 3, orientation: "horizontal" },
+    { location: 5, orientation: "horizontal" }
+  ]
+  propEqual gg.clearGuides(), []
+
+test "can clear some guides", ->
+  guides = [
+    { location: 1, orientation: "horizontal" },
+    { location: 3, orientation: "horizontal" },
+    { location: 5, orientation: "horizontal" }
+  ]
+  out = [
+    { location: 1, orientation: "horizontal" },
+    { location: 5, orientation: "horizontal" }
+  ]
+  originalInfo = Fauxtoshop.testInfo
+  Fauxtoshop.testInfo =
+    hasOpenDocuments: true
+    isSelection: true
+    width: 2
+    height: 2
+    offsetX: 2
+    offsetY: 2
+    ruler: 'pixels'
+    existingGuides: guides
+
+  propEqual gg.clearGuides(), out
+  Fauxtoshop.testInfo = originalInfo
+
 test "can donate", ->
   equal gg.donate(), "http://guideguide.me/donate"
 
