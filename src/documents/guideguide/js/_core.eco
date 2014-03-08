@@ -28,13 +28,6 @@ class GuideGuide
     @panel.on 'guideguide:hasUpdate', @onHasUpdate
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
-    @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
-    # @panel.on 'click', '.js-action-bar .js-top', @onClickTopGuide
-    # @panel.on 'click', '.js-action-bar .js-bottom', @onClickBottomGuide
-    # @panel.on 'click', '.js-action-bar .js-left', @onClickLeftGuide
-    # @panel.on 'click', '.js-action-bar .js-right', @onClickRightGuide
-    # @panel.on 'click', '.js-action-bar .js-horizontal-midpoint', @onClickHorizontalMidpoint
-    # @panel.on 'click', '.js-action-bar .js-vertical-midpoint', @onClickVerticalMidpoint
     @panel.on 'mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOverDistributeIcon
     @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
     @panel.on 'click', '.js-grid-form [data-distribute] .js-iconned-input-button', @onClickDistributeIcon
@@ -172,99 +165,6 @@ class GuideGuide
     @guideguideData.panel.askedAboutAnonymousData = true
     @saveGuideGuideData()
     @dismissAlert()
-
-  # Draw a guide at the top of the document/selection
-  #
-  # Return nothing.
-  onClickTopGuide: (event) =>
-    event.preventDefault()
-    @addGuidesfromGGN "| ~ (h#{ @getCalculationType() })", 'top'
-
-  # Draw a guide at the bottom of the document/selection
-  #
-  # Return nothing.
-  onClickBottomGuide: (event) =>
-    event.preventDefault()
-    @addGuidesfromGGN "~ | (h#{ @getCalculationType() })", 'bottom'
-
-  # Draw a guide to the left of the document/selection
-  #
-  # Return nothing.
-  onClickLeftGuide: (event) =>
-    event.preventDefault()
-    @addGuidesfromGGN "| ~ (v#{ @getCalculationType() })", 'left'
-
-  # Draw a guide to the right of the document/selection
-  #
-  # Return nothing.
-  onClickRightGuide: (event) =>
-    event.preventDefault()
-    @addGuidesfromGGN "~ | (v#{ @getCalculationType() })", 'right'
-
-  # Draw a guide at the horizontal midpoint of the document/selection
-  #
-  # Return nothing.
-  onClickHorizontalMidpoint: (event) =>
-    @bridge.log "Clicked Horizontal Midpoint"
-    event.preventDefault()
-    @addGuidesfromGGN "~ | ~ (h#{ @getCalculationType() })", 'horizontalMidpoint'
-
-  # Draw a guide at the vertical midpoint of the document/selection
-  #
-  # Return nothing.
-  onClickVerticalMidpoint: (event) =>
-    @bridge.log "Clicked Vertical Midpoint"
-    event.preventDefault()
-    @addGuidesfromGGN "~ | ~ (v#{ @getCalculationType() })", 'verticalMidpoint'
-
-  # Get the option value that corresponds to the calculation type of the app
-  #
-  # Returns a String
-  getCalculationType: =>
-    if @guideguideData.settings.calculation == 'pixel' then 'p' else ''
-
-  # Handle clicks on the clear guides button.
-  #
-  # Returns nothing.
-  onClickClearGuides: (event) =>
-    event.preventDefault()
-    @bridge.getDocumentInfo (info) =>
-      return unless info.hasOpenDocuments
-
-      @clearGuides()
-      @recordUsage 'clear'
-
-  # Removes guides from the document based on document or selection
-  #
-  #   guides - collection of all existing guides before clearing
-  #
-  # Returns nothing.
-  clearGuides: =>
-    @bridge.log "Clear guides"
-    @bridge.getDocumentInfo (info) =>
-      if info.isSelection
-        bounds =
-          top:    info.offsetY
-          left:   info.offsetX
-          bottom: info.offsetY + info.height
-          right:  info.offsetX + info.width
-        @bridge.resetGuides()
-        @bridge.addGuides @consolidateGuides [info.existingGuides], bounds, true
-      else
-        @bridge.resetGuides()
-
-  addGuidesfromGGN: (ggn, source) =>
-    @bridge.getDocumentInfo (info) =>
-      return unless info and info.hasOpenDocuments
-      guides = []
-
-      @getGuidesFromGGN new GGN(ggn), info, (g) =>
-        guides = @consolidateGuides([g, info.existingGuides])
-
-        @bridge.log "Add guides from #{ source }"
-        @recordUsage source, guides.length
-        @bridge.resetGuides()
-        @bridge.addGuides guides
 
   # Updates the text in the custom field and resizes it
   #
@@ -745,49 +645,6 @@ class GuideGuide
     event.preventDefault()
     @hideNewSetForm()
 
-
-  # Create a collection of unique guides from multiple guide arrrays
-  #
-  #   guideArrays - (Array) collection of guide arrays
-  #   bounds      - (Object) boundaries within which guides must fall to be included
-  #   invert      - (Boolean) If true, include only guides outside the bounds
-  #
-  # Returns an array of guides
-  consolidateGuides: (guideArrays, bounds = null, invert = false) =>
-    uniqueGuides =
-      horizontal: {}
-      vertical: {}
-
-    guides = []
-
-    for array in guideArrays
-      guides = guides.concat array
-
-    if bounds
-      guides = $.grep guides, (el) =>
-        unique = !uniqueGuides[el.orientation][el.location]
-        if unique
-          uniqueGuides[el.orientation][el.location] = true
-          if el.orientation == 'vertical'
-            if invert
-              return el.location < bounds.left or el.location > bounds.right
-            else
-              return el.location >= bounds.left and el.location <= bounds.right
-          if el.orientation == 'horizontal'
-            if invert
-              return el.location < bounds.top or el.location > bounds.bottom
-            else
-              return el.location >= bounds.top and el.location <= bounds.bottom
-        else
-          return false
-    else
-      guides = $.grep guides, (el) =>
-        unique = !uniqueGuides[el.orientation][el.location]
-        uniqueGuides[el.orientation][el.location] = true
-        unique
-    guides
-
-
   # Convert a section of the grid from (rows or columns) to a string
   #
   #  data   - data from the form
@@ -908,26 +765,6 @@ class GuideGuide
   filteredList: ($list,type) ->
     filter  = -> $(this).attr('data-distribute') is type
     $fields = $list.filter filter
-
-  # Collect data from the grid form.
-  #
-  #   $form - jQuery object of the form to be used
-  #
-  # Returns an Object
-  getFormData: ($form) ->
-    obj =
-      name: $('.js-grid-form .js-set-name').val()
-
-    $fields = $form.find '.js-grid-form-input'
-    $fields.each (index, element) ->
-      key = $(element).attr 'data-type'
-      obj[key] = $(element).val()
-
-    $checkboxes = $form.find '.js-checkbox'
-    $checkboxes.each (index, element) ->
-      key = $(element).attr 'data-type'
-      obj[key] = true if $(element).hasClass 'checked'
-    obj
 
   # Determine whether the value in the form is valid
   #
