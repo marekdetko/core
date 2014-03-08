@@ -13,7 +13,17 @@ test "can toggle guides", ->
   equal Fauxtoshop.toggleGuides(), true
 
 test "can get document info", ->
-  propEqual Fauxtoshop.getDocumentInfo(), { hasOpenDocuments: false }
+  testInfo =
+    hasOpenDocuments: true
+    isSelection: false
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+    ruler: 'pixels'
+    existingGuides: []
+
+  propEqual Fauxtoshop.getDocumentInfo(), testInfo
 
 test "can add guide", ->
   guide =

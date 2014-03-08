@@ -23,7 +23,17 @@ test "can set data", ->
   equal $.type(testBridge.setData({foo: "bar"})), "object"
 
 test "can get document info", ->
-  propEqual testBridge.getDocumentInfo(), { hasOpenDocuments: false }
+  testInfo =
+    hasOpenDocuments: true
+    isSelection: false
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+    ruler: 'pixels'
+    existingGuides: []
+
+  propEqual testBridge.getDocumentInfo(), testInfo
 
 test "can open url", ->
   equal testBridge.openURL("http://foo.com"), "http://foo.com"

@@ -11,6 +11,15 @@ class window.FauxtoshopLib
       guideguideVersion: '0.0.0'
       submitAnonymousData: false
       checkForUpdates: false
+  testInfo:
+    hasOpenDocuments: true
+    isSelection: false
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+    ruler: 'pixels'
+    existingGuides: []
 
   # Fauxtoshop is an simulated Photoshop environmennt. It is used for
   # development and demonstration on guideguide.me
@@ -105,7 +114,7 @@ class window.FauxtoshopLib
   #
   # Returns nothing
   getDocumentInfo: =>
-    return { hasOpenDocuments: false } if @testMode
+    return @testInfo if @testMode
     activeDocument = $('.js-document').find('.js-artboard')
     artboardPosition = activeDocument.position()
     $selection = $('.js-document').find('.js-selection')

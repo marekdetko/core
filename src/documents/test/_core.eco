@@ -58,7 +58,17 @@ test "can get guides from GuideGuide Notation", ->
   propEqual guides, [{ location: 0, orientation: "horizontal"}, { location: 10, orientation: "horizontal"}]
 
 test "can get document info", ->
-  propEqual gg.getDocumentInfo(), { hasOpenDocuments: false }
+  testInfo =
+    hasOpenDocuments: true
+    isSelection: false
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+    ruler: 'pixels'
+    existingGuides: []
+
+  propEqual gg.getDocumentInfo(), testInfo
 
 in1 = [
   { location: 1, orientation: "horizontal" },
