@@ -288,6 +288,10 @@ class window.GGN
       error.id = @error error.message
 
 
+# TODO: Refactor everything and include getGuidesFromGGN() in here.
+# GuideGuide Notation should be like JSON for guides, converting strings
+# to objects and vice versa.
+
 class window.GuideGuideNotationRefactor
 
   constructor: (args = {}) ->
