@@ -248,17 +248,10 @@ class GuideGuide
           left:   info.offsetX
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
-        @resetGuides()
+        @bridge.resetGuides()
         @bridge.addGuides @consolidateGuides [info.existingGuides], bounds, true
       else
-        @resetGuides()
-
-  # Removes all guides from the document
-  #
-  # Returns nothing.
-  resetGuides: =>
-    @bridge.log 'Resetting guides'
-    @bridge.resetGuides()
+        @bridge.resetGuides()
 
   addGuidesfromGGN: (ggn, source) =>
     @bridge.getDocumentInfo (info) =>
