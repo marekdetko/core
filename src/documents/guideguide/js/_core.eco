@@ -29,12 +29,12 @@ class GuideGuide
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
     @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
-    @panel.on 'click', '.js-action-bar .js-top', @onClickTopGuide
-    @panel.on 'click', '.js-action-bar .js-bottom', @onClickBottomGuide
-    @panel.on 'click', '.js-action-bar .js-left', @onClickLeftGuide
-    @panel.on 'click', '.js-action-bar .js-right', @onClickRightGuide
-    @panel.on 'click', '.js-action-bar .js-horizontal-midpoint', @onClickHorizontalMidpoint
-    @panel.on 'click', '.js-action-bar .js-vertical-midpoint', @onClickVerticalMidpoint
+    # @panel.on 'click', '.js-action-bar .js-top', @onClickTopGuide
+    # @panel.on 'click', '.js-action-bar .js-bottom', @onClickBottomGuide
+    # @panel.on 'click', '.js-action-bar .js-left', @onClickLeftGuide
+    # @panel.on 'click', '.js-action-bar .js-right', @onClickRightGuide
+    # @panel.on 'click', '.js-action-bar .js-horizontal-midpoint', @onClickHorizontalMidpoint
+    # @panel.on 'click', '.js-action-bar .js-vertical-midpoint', @onClickVerticalMidpoint
     @panel.on 'mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOverDistributeIcon
     @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
     @panel.on 'click', '.js-grid-form [data-distribute] .js-iconned-input-button', @onClickDistributeIcon
