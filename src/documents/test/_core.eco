@@ -165,7 +165,7 @@ test "gets empty string from no input", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "\n\n"
+  expected = ""
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from count only", ->
@@ -180,19 +180,19 @@ test "can create string from count only", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "$v=|~|\n|$v*3|(vlp)\n"
+  expected = "$v=|~|\n|$v*3|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
   data.firstMargin = "10px"
-  expected = "$v=|~|\n|10px||$v*3|(vlp)\n"
+  expected = "$v=|~|\n|10px||$v*3|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
   data.lastMargin = "10px"
-  expected = "$v=|~|\n|10px||$v*3||10px|(vlp)\n"
+  expected = "$v=|~|\n|10px||$v*3||10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
   data.firstMargin = ""
-  expected = "$v=|~|\n|$v*3||10px|(vlp)\n"
+  expected = "$v=|~|\n|$v*3||10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from width only", ->
@@ -207,19 +207,19 @@ test "can create string from width only", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "$v=|10px|\n|$v*|~(vlp)\n"
+  expected = "$v=|10px|\n|$v*|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
   data.firstMargin = "10px"
-  expected = "$v=|10px|\n|10px||$v*|~(vlp)\n"
+  expected = "$v=|10px|\n|10px||$v*|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
   data.lastMargin = "10px"
-  expected = "$v=|10px|\n|10px||$v*|~|10px|(vlp)\n"
+  expected = "$v=|10px|\n|10px||$v*|~|10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
   data.firstMargin = ""
-  expected = "$v=|10px|\n|$v*|~|10px|(vlp)\n"
+  expected = "$v=|10px|\n|$v*|~|10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
   console.log gg.stringifyGridPlane(data)
 
@@ -235,7 +235,7 @@ test "gets empty string from gutter only", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "\n\n"
+  expected = ""
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from count and width", ->
@@ -250,7 +250,7 @@ test "can create string from count and width", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "$v=|10px|\n|$v*3|~(vlp)\n"
+  expected = "$v=|10px|\n|$v*3|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from count and gutter", ->
@@ -265,7 +265,7 @@ test "can create string from count and gutter", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "$v=|~|10px|\n$vC=|~|\n|$v*2||$vC|(vlp)\n"
+  expected = "$v=|~|10px|\n$vC=|~|\n|$v*2||$vC|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from width and gutter", ->
@@ -280,7 +280,7 @@ test "can create string from width and gutter", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "$v=|10px|10px|\n|$v*|~(vlp)\n"
+  expected = "$v=|10px|10px|\n|$v*|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from count, width, and gutter", ->
@@ -295,7 +295,7 @@ test "can create string from count, width, and gutter", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "$v=|10px|10px|\n$vC=|10px|\n|$v*2||$vC|~(vlp)\n"
+  expected = "$v=|10px|10px|\n$vC=|10px|\n|$v*2||$vC|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from first margin only", ->
@@ -310,7 +310,7 @@ test "can create string from first margin only", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "\n|10px||~|(vlp)\n"
+  expected = "|10px||~|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from last margin only", ->
@@ -325,7 +325,7 @@ test "can create string from last margin only", ->
     orientation:    'v'
     position:       'first'
     remainder:      'last'
-  expected = "\n|~||10px|(vlp)\n"
+  expected = "|~||10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can get sum", ->

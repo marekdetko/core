@@ -309,7 +309,7 @@ class window.GuideGuideCore
         unit   = new Unit data.width if data.width
         column = if data.width then "#{ unit.value/2 }#{ unit.type }|#{ unit.value/2 }#{ unit.type }" else "~|~"
 
-      varString += "$#{ data.orientation }=|#{ column }|"
+      varString += "$#{ data.orientation }=|#{ column }|\n"
 
       if data.gutter and data.count != 1
         gutter = if data.gutter then data.gutter else '~'
@@ -317,8 +317,8 @@ class window.GuideGuideCore
           unit   = new Unit data.gutter if data.gutter
           gutter = if data.gutter then "#{ unit.value/2 }#{ unit.type }|#{ unit.value/2 }#{ unit.type }" else "~|~"
 
-        varString  = "$#{ data.orientation }=|#{ column }|#{ gutter }|"
-        varString += "\n$#{ data.orientation }C=|#{ column }|" if data.count
+        varString  = "$#{ data.orientation }=|#{ column }|#{ gutter }|\n"
+        varString += "$#{ data.orientation }C=|#{ column }|\n" if data.count
 
     # Set up the grid string
     if data.count or data.width
@@ -346,10 +346,7 @@ class window.GuideGuideCore
       rightBuffer = "~" if data.position == "first" or data.position == "center"
 
     # Bring it all together
-    """
-    #{ varString }
-    #{ firstMargString }#{ leftBuffer }#{ gridString }#{ rightBuffer }#{ lastMargString }#{ optionsString }\n
-    """
+    "#{ varString }#{ firstMargString }#{ leftBuffer }#{ gridString }#{ rightBuffer }#{ lastMargString }#{ optionsString }"
 
   # Turn a GuideGuide object into a collection of guides.
   #
