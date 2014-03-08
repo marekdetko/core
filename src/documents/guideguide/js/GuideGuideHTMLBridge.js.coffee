@@ -32,21 +32,11 @@ class window.GuideGuideHTMLBridge
   addGuide: (guide) =>
     Fauxtoshop.addGuide guide
 
-  # Add guides to the document
-  #
-  #  guides - array of guides to add
-  #
-  # Returns nothing
-  addGuides: (guides) =>
-    $.each guides, (index, guide) =>
-      Fauxtoshop.addGuide guide.location, guide.orientation
-
   # Turn guide visibility on and off
   #
   # Returns nothing
   toggleGuides: =>
     Fauxtoshop.toggleGuides()
-
 
   # Clear guides
   #
@@ -68,7 +58,6 @@ class window.GuideGuideHTMLBridge
     $elements = $('[data-localize]')
     $elements.each (index, el) =>
       $(el).text Messages[$(el).attr('data-localize')]()
-
 
   # Do this after GuideGuide updates set data
   #
