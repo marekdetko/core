@@ -375,6 +375,16 @@ class window.GuideGuideCore
 
     guides
 
+  # Add an array of guides to the document.
+  #
+  #  guides - Array: Guides to add.
+  #
+  # Returns the original guide array.
+  addGuides: (guides) =>
+    for i, guide of guides
+      @bridge.addGuide(guide)
+    guides
+
   # Create a single guide in the location specified
   #
   # Returns the resulting GuideGuide Notation string

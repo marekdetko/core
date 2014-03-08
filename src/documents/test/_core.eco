@@ -103,6 +103,10 @@ test "can consolidate guides with bounds inverted", ->
   ]
   propEqual gg.consolidate(in1, in2, { bounds: bounds, invert: true }), out
 
+test "can add guides", ->
+  guides = [{location: 0, orientation: "vertical"}, {location: 10, orientation: "vertical"}]
+  equal gg.addGuides(guides), guides
+
 test "can record usage", ->
   usage1 = $.extend {}, gg.recordUsage("top", 10)
   usage2 = gg.recordUsage("top", 10)
