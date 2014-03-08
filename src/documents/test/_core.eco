@@ -9,7 +9,7 @@ gg = new GuideGuideCore(args)
 asyncTest "can init", ->
   new GuideGuideCore args, (args) ->
     ok args.bridge, "no bridge given"
-    ok args.bridge, "no messages object given"
+    ok args.messages, "no messages object given"
     start()
 
 test "can log", ->
