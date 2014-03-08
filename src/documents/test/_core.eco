@@ -104,10 +104,11 @@ test "can consolidate guides with bounds inverted", ->
   propEqual gg.consolidate(in1, in2, { bounds: bounds, invert: true }), out
 
 test "can record usage", ->
-  usage = gg.recordUsage("top", 10)
-  equal usage.top, 1
-  equal usage.lifetime, 10
-  equal usage.guideActions, 1
+  usage1 = $.extend {}, gg.recordUsage("top", 10)
+  usage2 = gg.recordUsage("top", 10)
+  equal usage2.top, usage1.top+1
+  equal usage2.lifetime, usage1.lifetime + 10
+  equal usage2.guideActions, usage1.guideActions + 1
 
 test "can get sum", ->
   equal gg.sum([1,2]), 3
