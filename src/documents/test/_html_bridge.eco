@@ -53,6 +53,22 @@ test "can add guide", ->
     orientation: "horizontal"
   equal testBridge.addGuide(guide), guide
 
+test "can get form data", ->
+  data =
+    name: ""
+    marginLeft: ""
+    marginTop: ""
+    marginRight: ""
+    marginBottom: ""
+    countColumn: ""
+    countRow: ""
+    widthColumn: ""
+    widthRow: ""
+    gutterColumn: ""
+    gutterRow: ""
+
+  propEqual testBridge.getFormData(), data
+
 test "can refresh sets", ->
   sets =
     Default:

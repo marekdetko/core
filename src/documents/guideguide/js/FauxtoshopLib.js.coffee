@@ -20,6 +20,18 @@ class window.FauxtoshopLib
     offsetY: 0
     ruler: 'pixels'
     existingGuides: []
+  testForm:
+    name: ""
+    marginLeft: ""
+    marginTop: ""
+    marginRight: ""
+    marginBottom: ""
+    countColumn: ""
+    countRow: ""
+    widthColumn: ""
+    widthRow: ""
+    gutterColumn: ""
+    gutterRow: ""
 
   # Fauxtoshop is an simulated Photoshop environmennt. It is used for
   # development and demonstration on guideguide.me

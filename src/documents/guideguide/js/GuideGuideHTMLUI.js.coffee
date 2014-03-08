@@ -151,6 +151,27 @@ class window.GuideGuideHTMLUI
 
     @panel.addClass 'has-alert'
 
+  # Collect data from the grid form.
+  #
+  #   $form - jQuery object of the form to be used
+  #
+  # Returns an Object
+  getFormData: =>
+    $form = $('.js-grid-form')
+    obj =
+      name: $('.js-grid-form .js-set-name').val()
+
+    $fields = $form.find '.js-grid-form-input'
+    $fields.each (index, element) ->
+      key = $(element).attr 'data-type'
+      obj[key] = $(element).val()
+
+    $checkboxes = $form.find '.js-checkbox'
+    $checkboxes.each (index, element) ->
+      key = $(element).attr 'data-type'
+      obj[key] = true if $(element).hasClass 'checked'
+    obj
+
   # Open a exported sets url
   #
   # Returns nothing

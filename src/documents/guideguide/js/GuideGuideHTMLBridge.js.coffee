@@ -50,6 +50,13 @@ class window.GuideGuideHTMLBridge
   getDocumentInfo: =>
     Fauxtoshop.getDocumentInfo()
 
+  # Get the contents of the grid form
+  #
+  # Returns an Object.
+  getFormData: =>
+    return Fauxtoshop.testForm if @testMode
+    @ui.getFormData()
+
   # Update all of the ui with local messages.
   #
   # Returns nothing.
