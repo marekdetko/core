@@ -375,6 +375,26 @@ class window.GuideGuideCore
 
     guides
 
+  # Add guides to the stage from GuideGuide Notation.
+  #
+  #   ggn    - String: GuideGuide Notation
+  #   source - String: Action executed to add guides, used for recording usage.
+  #
+  # Returns the array of guides generated from the GuideGuide Notation.
+  addGuidesfromGGN: (ggn, source) =>
+    info = @bridge.getDocumentInfo()
+
+    return unless info and info.hasOpenDocuments
+    guides = []
+
+    guides = @getGuidesFromGGN new GGN(ggn), info
+    guides = @consolidate(guides, info.existingGuides)
+
+    @recordUsage source, guides.length
+    # TODO: @bridge.resetGuides()
+    @addGuides guides
+    guides
+
   # Add an array of guides to the document.
   #
   #  guides - Array: Guides to add.

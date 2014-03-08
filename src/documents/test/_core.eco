@@ -107,6 +107,13 @@ test "can add guides", ->
   guides = [{location: 0, orientation: "vertical"}, {location: 10, orientation: "vertical"}]
   equal gg.addGuides(guides), guides
 
+test "can add guides from GuideGuide Notation", ->
+  out = [
+    { location: 0, orientation: "horizontal" },
+    { location: 10, orientation: "horizontal" }
+  ]
+  propEqual gg.addGuidesfromGGN('|10px|(ph)','grid'), out
+
 test "can record usage", ->
   usage1 = $.extend {}, gg.recordUsage("top", 10)
   usage2 = gg.recordUsage("top", 10)
