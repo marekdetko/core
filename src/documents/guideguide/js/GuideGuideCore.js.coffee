@@ -51,7 +51,6 @@ class window.GuideGuideCore
           @bridge.hideLoader()
           if data? and data.hasUpdate
             @bridge.showUpdateIndicator(data)
-
     callback(args) if callback
 
   # When the user grants data collection permission, update the settings and
@@ -405,6 +404,7 @@ class window.GuideGuideCore
       @bridge.addGuide(guide)
     guides
 
+
   # Create a single guide in the location specified
   #
   # Returns the resulting GuideGuide Notation string
@@ -428,7 +428,7 @@ class window.GuideGuideCore
         after = "~"
 
     ggn = "#{ before }|#{ after }(#{ orientation }#{ @calculationType() })"
-
+    @addGuidesfromGGN ggn
     return ggn
 
   # Get the option value that corresponds to the calculation type of the app
