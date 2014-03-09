@@ -154,32 +154,12 @@ test "can record usage", ->
   equal usage2.guideActions, usage1.guideActions + 1
 
 test "gets empty string from no input", ->
-  data =
-    count:          ""
-    width:          ""
-    gutter:         ""
-    firstMargin:    ""
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
   expected = ""
-  equal gg.stringifyGridPlane(data), expected
+  equal gg.stringifyGridPlane(), expected
 
 test "can create string from count only", ->
   data =
-    count:          "3"
-    width:          ""
-    gutter:         ""
-    firstMargin:    ""
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    count: "3"
   expected = "$v=|~|\n|$v*3|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
@@ -197,16 +177,7 @@ test "can create string from count only", ->
 
 test "can create string from width only", ->
   data =
-    count:          ""
-    width:          "10px"
-    gutter:         ""
-    firstMargin:    ""
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    width: "10px"
   expected = "$v=|10px|\n|$v*|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
@@ -224,16 +195,7 @@ test "can create string from width only", ->
 
 test "gets empty string from gutter only", ->
   data =
-    count:          ""
-    width:          ""
-    gutter:         "10px"
-    firstMargin:    ""
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    gutter: "10px"
   expected = ""
   equal gg.stringifyGridPlane(data), expected
 
@@ -251,16 +213,8 @@ test "gets empty string from gutter only", ->
 
 test "can create string from count and width", ->
   data =
-    count:          "3"
-    width:          "10px"
-    gutter:         ""
-    firstMargin:    ""
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    count: "3"
+    width: "10px"
   expected = "$v=|10px|\n|$v*3|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
@@ -278,16 +232,9 @@ test "can create string from count and width", ->
 
 test "can create string from count and gutter", ->
   data =
-    count:          "3"
-    width:          ""
-    gutter:         "10px"
-    firstMargin:    ""
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    count:  "3"
+    width:  ""
+    gutter: "10px"
   expected = "$v=|~|10px|\n$vC=|~|\n|$v*2|$vC|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
@@ -305,16 +252,8 @@ test "can create string from count and gutter", ->
 
 test "can create string from width and gutter", ->
   data =
-    count:          ""
-    width:          "10px"
-    gutter:         "10px"
-    firstMargin:    ""
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    width:  "10px"
+    gutter: "10px"
   expected = "$v=|10px|10px|\n|$v*|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
@@ -332,16 +271,9 @@ test "can create string from width and gutter", ->
 
 test "can create string from count, width, and gutter", ->
   data =
-    count:          "3"
-    width:          "10px"
-    gutter:         "10px"
-    firstMargin:    ""
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    count:  "3"
+    width:  "10px"
+    gutter: "10px"
   expected = "$v=|10px|10px|\n$vC=|10px|\n|$v*2|$vC|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
@@ -359,46 +291,20 @@ test "can create string from count, width, and gutter", ->
 
 test "can create string from first margin only", ->
   data =
-    count:          ""
-    width:          ""
-    gutter:         ""
-    firstMargin:    "10px"
-    lastMargin:     ""
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    firstMargin: "10px"
   expected = "|10px|~|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from last margin only", ->
   data =
-    count:          ""
-    width:          ""
-    gutter:         ""
-    firstMargin:    ""
-    lastMargin:     "10px"
-    columnMidpoint: false
-    gutterMidpoint: false
-    orientation:    'v'
-    position:       'first'
-    remainder:      'last'
+    lastMargin: "10px"
   expected = "|~|10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create GuideGuide Notation from grid form", ->
   data =
-    countColumn:  "3"
-    widthColumn:  ""
-    gutterColumn: ""
-    marginLeft:   ""
-    marginRight:  ""
-    countRow:     "3"
-    widthRow:     ""
-    gutterRow:    ""
-    marginTop:    ""
-    marginBottom: ""
+    countColumn: "3"
+    countRow:    "3"
   expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
   equal gg.stringifyFormData(data), expected
 

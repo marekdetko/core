@@ -325,12 +325,22 @@ class window.GuideGuideCore
   #
   # Returns a string
   stringifyGridPlane: (data) =>
-    data.count      = parseInt data.count
-    firstMargString = ''
-    varString       = ''
-    gridString      = ''
-    lastMargString  = ''
-    optionsString   = ''
+    data ||= {}
+    data.count            = parseInt data.count
+    data.width          ||= ''
+    data.gutter         ||= ''
+    data.firstMargin    ||= ''
+    data.lastMargin     ||= ''
+    data.columnMidpoint ||= false
+    data.gutterMidpoint ||= false
+    data.orientation    ||= 'v'
+    data.position       ||= 'first'
+    data.remainder      ||= 'last'
+    firstMargString       = ''
+    varString             = ''
+    gridString            = ''
+    lastMargString        = ''
+    optionsString         = ''
 
     # Set up the margins, if they exist
     firstMargString = '|' + data.firstMargin.replace(/\s/g,'').split(',').join('|') + '|' if data.firstMargin
