@@ -284,6 +284,9 @@ class window.GuideGuideCore
       guide
     guides
 
+  # TODO: Move this to GuideGuideNotation.coffee
+  # TODO: Remove redundant pipes
+  # TODO: Send back an empty string if empty data is provided
   # Convert grid data to a GuideGuide Notation string.
   # This is a simple grid, with margins, equal columns and gutters.
   #
@@ -348,6 +351,7 @@ class window.GuideGuideCore
     # Bring it all together
     "#{ varString }#{ firstMargString }#{ leftBuffer }#{ gridString }#{ rightBuffer }#{ lastMargString }#{ optionsString }".replace(/\|+/g, "|")
 
+  # TODO: Move this to GuideGuideNotation.coffee
   # Turn a GuideGuide object into a collection of guides.
   #
   #   ggn  - GuideGuide Object to pull guides from
