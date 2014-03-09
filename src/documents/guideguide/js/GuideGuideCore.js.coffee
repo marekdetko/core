@@ -346,7 +346,7 @@ class window.GuideGuideCore
       rightBuffer = "~" if data.position == "first" or data.position == "center"
 
     # Bring it all together
-    "#{ varString }#{ firstMargString }#{ leftBuffer }#{ gridString }#{ rightBuffer }#{ lastMargString }#{ optionsString }"
+    "#{ varString }#{ firstMargString }#{ leftBuffer }#{ gridString }#{ rightBuffer }#{ lastMargString }#{ optionsString }".replace(/\|+/g, "|")
 
   # Turn a GuideGuide object into a collection of guides.
   #
