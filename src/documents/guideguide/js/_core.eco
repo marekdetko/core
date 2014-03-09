@@ -26,8 +26,6 @@ class GuideGuide
     @panel.on 'guideguide:hasUpdate', @onHasUpdate
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
-    @panel.on 'mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOverDistributeIcon
-    @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
     @panel.on 'click', '.js-grid-form [data-distribute] .js-iconned-input-button', @onClickDistributeIcon
     @panel.on 'focus', '.js-grid-form .js-grid-form-input', @onFocusFormInput
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
@@ -46,14 +44,7 @@ class GuideGuide
     @panel.on 'click', '.js-show-logs', @onClickShowLogs
     @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
-    @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
-
-  # Outline an invalid input with red.
-  #
-  # Returns nothing.
-  onInputInvalidate: (event) =>
-    $(event.currentTarget).addClass 'is-invalid'
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.
@@ -151,22 +142,6 @@ class GuideGuide
   # Returns nothing
   updateCustomField: (text) =>
     @panel.find('.js-custom-input').val(text).trigger('autosize.resize')
-
-  # Highlight all field icons of similar type
-  #
-  # Returns nothing.
-  onMouseOverDistributeIcon: (event) =>
-    $form   = $(event.currentTarget).closest '.js-grid-form'
-    type    = $(event.currentTarget).closest('[data-distribute]').attr 'data-distribute'
-    $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
-
-    $fields.addClass 'distribute-highlight'
-
-  # Remove highlight from field icons
-  #
-  # Returns nothing.
-  onMouseOutDistributeIcon: (event) =>
-    @panel.find('.distribute-highlight').removeClass('distribute-highlight')
 
   # When one of the input icons is clicked, change all fields of the same type
   # to that value
@@ -635,16 +610,6 @@ class GuideGuide
     $field.val $.map $field.val().split(','), (unit) ->
       new Unit(unit,int).toString()
     .join(', ')
-
-  # Sort a list of form fields and return ones that match a filter
-  #
-  #    $list - list of objects to be filtered
-  #    type  - type of form field to return
-  #
-  # Returns an Array of jquery objects
-  filteredList: ($list,type) ->
-    filter  = -> $(this).attr('data-distribute') is type
-    $fields = $list.filter filter
 
   # Determine whether the value in the form is valid
   #
