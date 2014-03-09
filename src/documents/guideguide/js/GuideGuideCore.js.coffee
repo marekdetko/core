@@ -3,6 +3,8 @@ class window.GuideGuideCore
   env:     'production'
   bridge: {}
   data: {}
+  activeDocumentInfo:
+    ruler: 'px'
 
   # Create a new GuideGuide instance
   #
@@ -191,7 +193,7 @@ class window.GuideGuideCore
   #
   # Returns an Object.
   getDocumentInfo: =>
-    @bridge.getDocumentInfo()
+    @activeDocumentInfo = @bridge.getDocumentInfo()
 
   # Default info about GuideGuide.
   #

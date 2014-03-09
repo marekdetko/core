@@ -17,6 +17,8 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-action-bar .js-horizontal-midpoint', @onClickHorizontalMidpoint
     @panel.on 'click', '.js-action-bar .js-vertical-midpoint', @onClickVerticalMidpoint
     @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
+    @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
+    @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
 
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
@@ -30,6 +32,20 @@ class window.GuideGuideHTMLUI
     $elements = $('[data-localize]')
     $elements.each (index, el) =>
       $(el).text @messages[$(el).attr('data-localize')]()
+
+  # When an input gains focus, outline it's parent and get the most up to date
+  # document info.
+  #
+  # Returns nothing.
+  onInputFocus: (event) =>
+    $(event.currentTarget).closest('.js-input').addClass 'is-focused'
+    $(event.currentTarget).closest('.js-input').removeClass 'is-invalid'
+
+  # When an input blurs remove its outline.
+  #
+  # Returns nothing.
+  onInputBlur: (event) =>
+    $(event.currentTarget).closest('.js-input').removeClass 'is-focused'
 
   # When exiting the Custom form, clear the new set form.
   #
