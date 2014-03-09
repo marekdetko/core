@@ -330,7 +330,6 @@ test "can create string from width and gutter", ->
   expected = "$v=|10px|10px|\n|$v*|~|10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
-
 test "can create string from count, width, and gutter", ->
   data =
     count:          "3"
@@ -387,6 +386,22 @@ test "can create string from last margin only", ->
     remainder:      'last'
   expected = "|~|10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
+
+test "can create GuideGuide Notation from grid form", ->
+  data =
+    countColumn:  "3"
+    widthColumn:  ""
+    gutterColumn: ""
+    marginLeft:   ""
+    marginRight:  ""
+    countRow:     "3"
+    widthRow:     ""
+    gutterRow:    ""
+    marginTop:    ""
+    marginBottom: ""
+  expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+  equal gg.stringifyFormData(data), expected
+
 
 test "can get sum", ->
   equal gg.sum([1,2]), 3

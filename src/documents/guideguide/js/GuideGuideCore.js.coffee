@@ -284,6 +284,37 @@ class window.GuideGuideCore
       guide
     guides
 
+  # Create a GuideGuide Notation string from the contents for the grid form
+  #
+  #  data - Object: Form data
+  #
+  # Returns a GuideGuide Notation string
+  stringifyFormData: (data) =>
+    string1 = @stringifyGridPlane
+      count:          data.countColumn
+      width:          data.widthColumn
+      gutter:         data.gutterColumn
+      firstMargin:    data.marginLeft
+      lastMargin:     data.marginRight
+      columnMidpoint: data.midpointColumn || false
+      gutterMidpoint: data.midpointColumnGutter || false
+      orientation:    'v'
+      position:       @data.settings.verticalPosition
+      remainder:      @data.settings.verticalRemainder
+    string2 = @stringifyGridPlane
+      count:          data.countRow
+      width:          data.widthRow
+      gutter:         data.gutterRow
+      firstMargin:    data.marginTop
+      lastMargin:     data.marginBottom
+      columnMidpoint: data.midpointRow || false
+      gutterMidpoint: data.midpointRowGutter || false
+      orientation:    'h'
+      position:       @data.settings.horizontalPosition
+      remainder:      @data.settings.horizontalRemainder
+
+    "#{ string1 }#{ if string1 and string2 then '\n' else '' }#{ string2 }"
+
   # TODO: Move this to GuideGuideNotation.coffee
   # TODO: Remove redundant pipes
   # TODO: Send back an empty string if empty data is provided
