@@ -19,6 +19,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
     @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
+    @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
 
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
@@ -46,6 +47,12 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onInputBlur: (event) =>
     $(event.currentTarget).closest('.js-input').removeClass 'is-focused'
+
+  # Outline an invalid input with red.
+  #
+  # Returns nothing.
+  onInputInvalidate: (event) =>
+    $(event.currentTarget).addClass 'is-invalid'
 
   # When exiting the Custom form, clear the new set form.
   #
