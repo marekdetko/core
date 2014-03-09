@@ -20,6 +20,8 @@ class window.GuideGuideHTMLUI
     @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
+    @panel.on 'mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOverDistributeIcon
+    @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
 
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
@@ -53,6 +55,21 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onInputInvalidate: (event) =>
     $(event.currentTarget).addClass 'is-invalid'
+
+  # Highlight all field icons of similar type
+  #
+  # Returns nothing.
+  onMouseOverDistributeIcon: (event) =>
+    $form   = $(event.currentTarget).closest '.js-grid-form'
+    type    = $(event.currentTarget).closest('[data-distribute]').attr 'data-distribute'
+    $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
+    $fields.addClass 'distribute-highlight'
+
+  # Remove highlight from field icons
+  #
+  # Returns nothing.
+  onMouseOutDistributeIcon: (event) =>
+    @panel.find('.distribute-highlight').removeClass('distribute-highlight')
 
   # When exiting the Custom form, clear the new set form.
   #
@@ -251,6 +268,16 @@ class window.GuideGuideHTMLUI
   onClickClearGuides: (event) =>
     event.preventDefault()
     GuideGuide.clearGuides()
+
+  # Sort a list of form fields and return ones that match a filter
+  #
+  #    $list - list of objects to be filtered
+  #    type  - type of form field to return
+  #
+  # Returns an Array of jquery objects
+  filteredList: ($list,type) ->
+    filter  = -> $(this).attr('data-distribute') is type
+    $fields = $list.filter filter
 
   # Switch themes and add the theme to a list for later use
   #
