@@ -90,6 +90,10 @@ test "can extend data", ->
 test "can refresh settings", ->
   equal gg.refreshSettings().calculation, "pixel"
 
+test "can show and hide loader", ->
+  equal gg.showLoader(), true
+  equal gg.hideLoader(), true
+
 test "can get guides from GuideGuide Notation", ->
   info =
     width: 100

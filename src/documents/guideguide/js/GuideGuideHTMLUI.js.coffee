@@ -204,6 +204,18 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     @panel.removeClass 'is-showing-importer'
 
+  # Show the indeterminate loader.
+  #
+  # Returns nothing
+  showLoader: =>
+    @panel.addClass 'is-loading'
+
+  # Hide the indeterminate loader.
+  #
+  # Returns nothing
+  hideLoader: =>
+    @panel.removeClass 'is-loading'
+
   # Toggle guide visibility.
   #
   # Returns nothing.

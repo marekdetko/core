@@ -130,11 +130,15 @@ class window.GuideGuideHTMLBridge
   #
   # Returns nothing.
   showLoader: =>
+    return true if @testMode
+    @ui.showLoader()
 
   # Hide the loader status animation
   #
   # Returns nothing.
   hideLoader: =>
+    return true if @testMode
+    @ui.hideLoader()
 
   # Show a message and buttons to take action
   #

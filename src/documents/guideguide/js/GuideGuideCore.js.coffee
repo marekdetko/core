@@ -153,6 +153,16 @@ class window.GuideGuideCore
 
     @data.panel.usage
 
+  # Show the indeterminate loader.
+  #
+  # Returns nothing
+  showLoader: => @bridge.showLoader()
+
+  # Hide the indeterminate loader.
+  #
+  # Returns nothing
+  hideLoader: => @bridge.hideLoader()
+
   # Alert a message to the user
   #
   # Reterns nothing.
