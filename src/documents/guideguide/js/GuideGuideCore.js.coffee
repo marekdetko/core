@@ -153,6 +153,34 @@ class window.GuideGuideCore
 
     @data.panel.usage
 
+  # Export GuideGuide's sets to an external source.
+  #
+  # Returns nothing.
+  exportSets: =>
+    return if @isDemo()
+
+    data =
+      description: @messages.helpGistExport()
+      public: false
+      files:
+        "sets.json":
+          content: JSON.stringify @data.sets
+    @showLoader()
+    $.ajax
+      url: 'https://api.github.com/gists'
+      type: 'POST'
+      data: JSON.stringify data
+      complete: (data) =>
+        @hideLoader()
+      success: (data) =>
+        @alert
+          title: @messages.alertTitleExportSuccess()
+          message: @messages.alertMessageExportSuccess(data.html_url)
+      error: (data) =>
+        @alert
+          title: @messages.alertTitleExportError()
+          message: @messages.alertMessageExportError()
+
   # Show the indeterminate loader.
   #
   # Returns nothing

@@ -410,12 +410,13 @@ class window.GuideGuideMessages
       else
         "Sets have been exported"
 
-  alertMessageExportSuccess: =>
+  alertMessageExportSuccess: (url) =>
+    button = "<div><strong><a class='js-link button export-button' href='#{ url }'>#{ @uiOpenInBrowser() }</a></strong></div>"
     switch @i18n
       when "es_es"
-        "Tus sets han sido exportados a un GitHub Gist secreto."
+        "Tus sets han sido exportados a un GitHub Gist secreto. #{ button }"
       else
-        "Your sets have been exported to a secret GitHub Gist."
+        "Your sets have been exported to a secret GitHub Gist. #{ button }"
 
   alertTitleExportError: =>
     switch @i18n

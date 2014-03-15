@@ -26,6 +26,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
     @panel.on 'click', '.js-import-sets', @onShowImporter
     @panel.on 'click', '.js-cancel-import', @onClickCancelImport
+    @panel.on 'click', '.js-export-sets', @onClickExportSets
 
     @messages = args.messages
 
@@ -203,6 +204,10 @@ class window.GuideGuideHTMLUI
   onClickCancelImport: (event) =>
     event.preventDefault()
     @panel.removeClass 'is-showing-importer'
+
+  onClickExportSets: (event) =>
+    event.preventDefault()
+    GuideGuide.exportSets()
 
   # Show the indeterminate loader.
   #
