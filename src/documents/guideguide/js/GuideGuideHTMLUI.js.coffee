@@ -22,6 +22,8 @@ class window.GuideGuideHTMLUI
     @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
     @panel.on 'mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOverDistributeIcon
     @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
+    @panel.on 'click', '.js-dropdown', @onToggleDropdown
+    @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
 
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
@@ -129,6 +131,45 @@ class window.GuideGuideHTMLUI
     # Select tab and bucket
     tab.addClass 'is-selected'
     tabBucket.addClass 'is-selected'
+
+  # Toggle dropdown visibilty
+  #
+  # Returns nothing.
+  onToggleDropdown: (event) =>
+    event.preventDefault()
+
+    if $(event.target).hasClass 'js-dropdown-backdrop'
+      $('.js-dropdown').removeClass('is-active')
+    else
+      $dropdown = $(event.currentTarget)
+      $dropdown.toggleClass 'is-active'
+      $list = $dropdown.find('.js-dropdown-list')
+      visibleBottom = $('.js-settings-list').scrollTop() + $('.js-settings-list').outerHeight()
+      listBottom = $dropdown.position().top + $list.position().top + $list.outerHeight() + 3
+
+      if listBottom > visibleBottom
+        offset = listBottom - visibleBottom
+        $('.js-settings-list').scrollTop $('.js-settings-list').scrollTop() + offset
+
+    @panel.toggleClass 'has-dropdown'
+
+  # Update settings and dropdown button when a dropdown item is clicked.
+  #
+  # Returns nothing.
+  onClickDropdownItem: (event) =>
+    event.preventDefault()
+    $item     = $ event.currentTarget
+    $dropdown = $item.closest '.js-dropdown'
+    setting   = $dropdown.attr 'data-setting'
+    value     = $item.attr 'data-value'
+    value     = true if value is "true"
+    value     = false if value is "false"
+
+    $dropdown.find('.js-dropdown-button').text $item.text()
+    data =
+      settings: {}
+    data.settings[setting] = value
+    GuideGuide.saveData data
 
   # Toggle guide visibility.
   #
