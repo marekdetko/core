@@ -43,7 +43,7 @@ class window.GuideGuideCore
         buttons: [button1, button2]
 
     @bridge.localizeUI()
-    @bridge.refreshSets(@data.sets["Default"].sets)
+    @refreshSets()
     @refreshSettings()
 
     unless @isDemo()
@@ -71,6 +71,12 @@ class window.GuideGuideCore
   # Returns an Object
   refreshSettings: () =>
     @bridge.refreshSettings @data.settings
+
+  # Update the sets list in the ui.
+  #
+  # Returns an Array.
+  refreshSets: =>
+    @bridge.refreshSets(@data.sets["Default"].sets)
 
   # Submit anonymous usage data to the GuideGuide servers.
   #

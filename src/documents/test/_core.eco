@@ -90,6 +90,23 @@ test "can extend data", ->
 test "can refresh settings", ->
   equal gg.refreshSettings().calculation, "pixel"
 
+test "can refresh sets", ->
+  sets =
+    "469eb8921edf75ed3360d5838f9585c0d7a82109":
+      id: "469eb8921edf75ed3360d5838f9585c0d7a82109"
+      name: "Outline"
+      string: "| ~ | (vFl)\n| ~ | (hFl)"
+    "84676cd434499994ef5176c93d970e83079cbc6c":
+      id: "84676cd434499994ef5176c93d970e83079cbc6c"
+      name: "Two column grid"
+      string: "| ~ | ~ | (vFl)"
+    "d521212626e4f9f144821a52dcdaf3e1f6c8cffd":
+      id: "d521212626e4f9f144821a52dcdaf3e1f6c8cffd"
+      name: "Three column grid"
+      string: "| ~ | ~ | ~ | (vFl)"
+
+  propEqual gg.refreshSets(), sets
+
 test "can show and hide loader", ->
   equal gg.showLoader(), true
   equal gg.hideLoader(), true
