@@ -88,7 +88,7 @@ test "can extend data", ->
   equal gg.saveData(data).settings.horizontalPosition, "last"
 
 test "can refresh settings", ->
-  equal gg.refreshSettings().horizontalPosition, "first"
+  equal gg.refreshSettings().calculation, "pixel"
 
 test "can get guides from GuideGuide Notation", ->
   info =
