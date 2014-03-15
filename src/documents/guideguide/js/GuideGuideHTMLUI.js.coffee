@@ -38,6 +38,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-checkbox', @onClickCheckbox
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
     @panel.on 'click', '.js-grid-form [data-distribute] .js-iconned-input-button', @onClickDistributeIcon
+    @panel.on 'click', '.js-sets-form .js-set-select', @onSelectSet
 
     @messages = args.messages
 
@@ -374,6 +375,15 @@ class window.GuideGuideHTMLUI
     id = $set.attr 'data-id'
     group = $set.attr 'data-group'
     GuideGuide.deleteSet(group, id)
+
+  # Select a set in the sets list when it is clicked
+  #
+  # Returns nothing.
+  onSelectSet: (event) =>
+    event.preventDefault()
+    $set = $(event.currentTarget)
+    $set.closest('.js-sets-form').find('.is-selected').removeClass('is-selected')
+    $set.closest('.js-set').addClass('is-selected')
 
   # Remove any sets in the markup and update the list with a new set items for
   # each set in the list.
