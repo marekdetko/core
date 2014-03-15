@@ -114,6 +114,13 @@ test "can delete set", ->
     id: "d521212626e4f9f144821a52dcdaf3e1f6c8cffd"
   propEqual gg.deleteSet("Default", set.id), set
 
+test "can update the custom form", ->
+  data =
+    countColumn: "3"
+    countRow:    "3"
+  expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+  equal gg.stringifyFormData(data), expected
+
 test "can show and hide loader", ->
   equal gg.showLoader(), true
   equal gg.hideLoader(), true

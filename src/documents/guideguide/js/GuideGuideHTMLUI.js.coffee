@@ -35,6 +35,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-sets-form .js-delete-set', @onClickDeleteSet
     @panel.on 'click', '.js-grid-form .js-new-set', @onClickShowGridNewSetForm
     @panel.on 'click', '.js-cancel-set', @onClickHideNewSetForm
+    @panel.on 'click', '.js-checkbox', @onClickCheckbox
 
     @messages = args.messages
 
@@ -143,6 +144,23 @@ class window.GuideGuideHTMLUI
     # Select tab and bucket
     tab.addClass 'is-selected'
     tabBucket.addClass 'is-selected'
+
+  # Toggle checkboxes
+  #
+  # Returns nothing
+  onClickCheckbox: (event) =>
+    event.preventDefault()
+    $checkbox = $(event.currentTarget)
+    $checkbox.toggleClass 'checked'
+
+    $form  = $checkbox.closest '.js-grid-form'
+    GuideGuide.formChanged @getFormData()
+
+  # Updates the text in the custom field and resizes it
+  #
+  # Returns nothing
+  updateCustomField: (text) =>
+    @panel.find('.js-custom-input').val(text).trigger('autosize.resize')
 
   # Toggle dropdown visibilty
   #

@@ -406,6 +406,15 @@ class window.GuideGuideCore
       guide
     guides
 
+
+  # When the form changes, update the contents of the Custom form to reflect it.
+  #
+  #  data - Object: Form data.
+  #
+  # Returns a String.
+  formChanged: (data) =>
+    @bridge.updateCustomField @stringifyFormData data
+
   # Create a GuideGuide Notation string from the contents for the grid form
   #
   #  data - Object: Form data

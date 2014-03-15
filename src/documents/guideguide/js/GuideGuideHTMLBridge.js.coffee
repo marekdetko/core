@@ -87,12 +87,21 @@ class window.GuideGuideHTMLBridge
 
   # Select a specific tab.
   #
-  # name - (String) data-page string of the tab to be selected
+  # name - String: data-page string of the tab to be selected
   #
   # Returns nothing.
   selectTab: (tab) =>
     return tab if @testMode
     @ui.selectTab tab
+
+  # Update the contents of the custom field.
+  #
+  #  string - String: text to add to the custom field.
+  #
+  # Returns nothing
+  updateCustomField: (string) =>
+    return string if @testMode
+    @ui.updateCustomField string
 
   # Log a message
   #
