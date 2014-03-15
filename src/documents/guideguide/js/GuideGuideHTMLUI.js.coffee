@@ -33,6 +33,8 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
     @panel.on 'click', '.js-sets-form .js-delete-set', @onClickDeleteSet
+    @panel.on 'click', '.js-grid-form .js-new-set', @onClickShowGridNewSetForm
+    @panel.on 'click', '.js-cancel-set', @onClickHideNewSetForm
 
     @messages = args.messages
 
@@ -318,6 +320,23 @@ class window.GuideGuideHTMLUI
       item.attr 'data-group', "Default"
       item.attr 'data-id', set.id
       $list.append item
+
+  # On the Custom page, display and focus new set name field, swap in save set
+  # and cancel set buttons, hide make grid and new set buttons.
+  #
+  # Returns nothing.
+  onClickShowGridNewSetForm: (event) =>
+    event.preventDefault()
+    @panel.addClass('is-showing-new-set-form')
+    @panel.find('.js-grid-form').find('.js-set-name').focus()
+
+  # On both forms, Hide new set name, swap out save set and cancel set buttons, show make
+  # grid and new set buttons
+  #
+  # Returns nothing.
+  onClickHideNewSetForm: (event) =>
+    event.preventDefault()
+    @hideNewSetForm()
 
   # Show the alert and fill its fields
   #
