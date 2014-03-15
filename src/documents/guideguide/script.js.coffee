@@ -10,13 +10,12 @@ window.initGuideGuide = ->
     highlightHover: '#608ef6'
     danger: '#c74040'
 
-  window.UI = new GuideGuideHTMLUI { theme: theme }, $("#guideguide")
   window.Messages = new GuideGuideMessages Fauxtoshop.data.localization
+  window.UI = new GuideGuideHTMLUI { theme: theme, messages: Messages }, $("#guideguide")
 
   args =
-    bridge: new GuideGuideHTMLBridge({ui: UI})
+    bridge: new GuideGuideHTMLBridge({ui: UI, messages: Messages})
     messages: Messages
-    ui: UI
 
   window.GuideGuide = new GuideGuideCore args, ->
     console.log "GuideGuide Ready"
