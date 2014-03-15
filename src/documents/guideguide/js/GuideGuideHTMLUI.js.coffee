@@ -24,6 +24,8 @@ class window.GuideGuideHTMLUI
     @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
     @panel.on 'click', '.js-dropdown', @onToggleDropdown
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
+    @panel.on 'click', '.js-import-sets', @onShowImporter
+    @panel.on 'click', '.js-cancel-import', @onClickCancelImport
 
     @messages = args.messages
 
@@ -185,6 +187,22 @@ class window.GuideGuideHTMLUI
       value     = settings[setting]
       $selected = $dropdown.find("[data-value='#{ value }']")
       $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]()
+
+  # Show the set importer
+  #
+  # Returns nothing.
+  onShowImporter: (event) =>
+    event.preventDefault()
+    return if GuideGuide.isDemo()
+    @panel.addClass 'is-showing-importer'
+    @panel.find('.js-import-input').val ''
+
+  # Dismiss the importer
+  #
+  # Returns nothing
+  onClickCancelImport: (event) =>
+    event.preventDefault()
+    @panel.removeClass 'is-showing-importer'
 
   # Toggle guide visibility.
   #
