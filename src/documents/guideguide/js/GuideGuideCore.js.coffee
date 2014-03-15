@@ -176,6 +176,19 @@ class window.GuideGuideCore
 
     @data.panel.usage
 
+  # Delete a set and update the set list.
+  #
+  #  group - String: Group in which the to-delete set exits
+  #  set   - String: Set to delete
+  #
+  # Returns nothing.
+  deleteSet: (group, id) =>
+    set = @data.sets[group].sets[id]
+    delete @data.sets[group].sets[id]
+    @saveData()
+    @refreshSets()
+    set
+
   # Export GuideGuide's sets to an external source.
   #
   # Returns nothing.

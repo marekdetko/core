@@ -32,6 +32,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-help-target', @onClickHelpTarget
     @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
     @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
+    @panel.on 'click', '.js-sets-form .js-delete-set', @onClickDeleteSet
 
     @messages = args.messages
 
@@ -294,6 +295,20 @@ class window.GuideGuideHTMLUI
       title: $(event.currentTarget).attr 'data-title'
       message: $(event.currentTarget).attr 'data-message'
 
+  # Delete a set and update the set list.
+  #
+  # Returns nothing.
+  onClickDeleteSet: (event) =>
+    event.preventDefault()
+    $set = $(event.currentTarget).closest '.js-set'
+    id = $set.attr 'data-id'
+    group = $set.attr 'data-group'
+    GuideGuide.deleteSet(group, id)
+
+  # Remove any sets in the markup and update the list with a new set items for
+  # each set in the list.
+  #
+  # Returns nothing.
   refreshSets: (sets) =>
     $list = @panel.find('.js-set-list')
     $list.find('.js-set').remove()

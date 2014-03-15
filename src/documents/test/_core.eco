@@ -107,6 +107,13 @@ test "can refresh sets", ->
 
   propEqual gg.refreshSets(), sets
 
+test "can delete set", ->
+  set =
+    name: "Three column grid"
+    string: "| ~ | ~ | ~ | (vFl)"
+    id: "d521212626e4f9f144821a52dcdaf3e1f6c8cffd"
+  propEqual gg.deleteSet("Default", set.id), set
+
 test "can show and hide loader", ->
   equal gg.showLoader(), true
   equal gg.hideLoader(), true
