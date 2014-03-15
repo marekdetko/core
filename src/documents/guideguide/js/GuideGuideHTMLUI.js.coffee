@@ -36,6 +36,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-grid-form .js-new-set', @onClickShowGridNewSetForm
     @panel.on 'click', '.js-cancel-set', @onClickHideNewSetForm
     @panel.on 'click', '.js-checkbox', @onClickCheckbox
+    @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
 
     @messages = args.messages
 
@@ -161,6 +162,37 @@ class window.GuideGuideHTMLUI
   # Returns nothing
   updateCustomField: (text) =>
     @panel.find('.js-custom-input').val(text).trigger('autosize.resize')
+
+  # When a field is unfocused, validate its contents
+  #
+  # Returns noting.
+  onBlurFormInput: (event) =>
+    $input = $(event.currentTarget)
+
+    int = false
+
+    if $input.attr 'data-integer'
+      val = Math.round parseFloat $input.val()
+      $input.val val if val
+      int = true
+
+    if !GuideGuide.validateInput $input.val(), int
+      $input.trigger 'input:invalidate'
+    else
+      @formatField $input
+      $form  = $input.closest '.js-grid-form'
+      GuideGuide.formChanged @getFormData()
+
+  # Reformat a unit string to match conventions
+  #
+  #   $field - input to format
+  #
+  # Returns a String
+  formatField: ($field) ->
+    int = if $field.attr 'data-integer' then true else false
+    $field.val $.map $field.val().split(','), (unit) ->
+      new Unit(unit,int).toString()
+    .join(', ')
 
   # Toggle dropdown visibilty
   #

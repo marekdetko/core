@@ -404,7 +404,6 @@ class window.GuideGuideCore
       guide
     guides
 
-
   # When the form changes, update the contents of the Custom form to reflect it.
   #
   #  data - Object: Form data.
@@ -412,6 +411,21 @@ class window.GuideGuideCore
   # Returns a String.
   formChanged: (data) =>
     @bridge.updateCustomField @stringifyFormData data
+
+  # Determine whether the value in the form is valid
+  #
+  #   value       - String: string to be validated
+  #   integerOnly - Boolean: if true, only integers are valid
+  #
+  # Returns a Boolean
+  validateInput: (value, integerOnly = false) =>
+    return true if value == ""
+    units = value.split ','
+    units = units.filter (unit) =>
+      u = new Unit(unit,integerOnly)
+      !u.isValid
+
+    units.length == 0
 
   # Create a GuideGuide Notation string from the contents for the grid form
   #

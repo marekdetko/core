@@ -121,6 +121,9 @@ test "can update the custom form", ->
   expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
   equal gg.stringifyFormData(data), expected
 
+test "can validate unit", ->
+  equal gg.validateInput("10px"), true
+
 test "can show and hide loader", ->
   equal gg.showLoader(), true
   equal gg.hideLoader(), true
