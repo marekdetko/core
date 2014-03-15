@@ -37,6 +37,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-cancel-set', @onClickHideNewSetForm
     @panel.on 'click', '.js-checkbox', @onClickCheckbox
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
+    @panel.on 'click', '.js-grid-form [data-distribute] .js-iconned-input-button', @onClickDistributeIcon
 
     @messages = args.messages
 
@@ -182,6 +183,23 @@ class window.GuideGuideHTMLUI
       @formatField $input
       $form  = $input.closest '.js-grid-form'
       GuideGuide.formChanged @getFormData()
+
+  # When one of the input icons is clicked, change all fields of the same type
+  # to that value
+  #
+  # Returns nothing.
+  onClickDistributeIcon: (event) =>
+    event.preventDefault()
+    $form  = $(event.currentTarget).closest '.js-grid-form'
+    $input = $(event.currentTarget).closest '.js-grid-form-iconned-input'
+    $field = $input.find('.js-grid-form-input')
+    return if $input.hasClass 'is-invalid'
+    @formatField $field
+    value   = $field.val()
+    type    = $input.attr 'data-distribute'
+    $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
+    $fields.find('.js-grid-form-input').val value
+    GuideGuide.formChanged @getFormData()
 
   # Reformat a unit string to match conventions
   #
