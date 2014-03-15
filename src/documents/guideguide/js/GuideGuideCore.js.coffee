@@ -116,8 +116,11 @@ class window.GuideGuideCore
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
+  #  data - optional data to add specifically. used to update settings externally.
+  #
   # Returns nothing.
-  saveData: =>
+  saveData: (data) =>
+    @data = $.extend true, @data, data if data
     @bridge.setData @data
 
   # Increment a usage counter of a given property.

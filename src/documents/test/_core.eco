@@ -80,6 +80,13 @@ test "can donate", ->
 test "can save data", ->
   equal gg.saveData().application.name, "GuideGuide web"
 
+test "can extend data", ->
+  data =
+    settings:
+      horizontalPosition: "last"
+
+  equal gg.saveData(data).settings.horizontalPosition, "last"
+
 test "can get guides from GuideGuide Notation", ->
   info =
     width: 100
