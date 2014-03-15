@@ -27,6 +27,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-import-sets', @onShowImporter
     @panel.on 'click', '.js-cancel-import', @onClickCancelImport
     @panel.on 'click', '.js-export-sets', @onClickExportSets
+    @panel.on 'click', '.js-import', @onClickImportSets
 
     @messages = args.messages
 
@@ -112,26 +113,25 @@ class window.GuideGuideHTMLUI
     $('#guideguide').trigger "guideguide:exit#{ exitPage }"
 
     if filter = enterPage
-      @selectTab @panel, filter
+      @selectTab filter
 
     $('#guideguide').trigger "guideguide:enter#{ enterPage }"
 
   # Select the tab that has the given tab-filter. If there is none, select the first tab.
   #
-  # $container - (jQuery object) .js-tabbed-pages element
-  # name       - (String) content of the data-page attribute. this item will be selected
+  # name - (String) content of the data-page attribute. this item will be selected
   #
   # Returns nothing.
-  selectTab: ($container, name) =>
-    $container.find("[data-page]").removeClass 'is-selected'
+  selectTab: (name) =>
+    @panel.find("[data-page]").removeClass 'is-selected'
 
     if name
       filter = -> $(this).attr('data-page') is name
-      tab = $container.find('.js-tabbed-page-tab').filter filter
-      tabBucket = $container.find('.js-tabbed-page').filter filter
+      tab = @panel.find('.js-tabbed-page-tab').filter filter
+      tabBucket = @panel.find('.js-tabbed-page').filter filter
     else
       tab = $container.find '.js-tabbed-page-tab:first'
-      tabBucket = $container.find '.js-tabbed-page:first'
+      tabBucket = @panel.find '.js-tabbed-page:first'
 
     # Select tab and bucket
     tab.addClass 'is-selected'
@@ -198,6 +198,12 @@ class window.GuideGuideHTMLUI
     @panel.addClass 'is-showing-importer'
     @panel.find('.js-import-input').val ''
 
+  # Hide the set importer
+  #
+  # Returns nothing.
+  hideImporter: =>
+    @panel.removeClass 'is-showing-importer'
+
   # Dismiss the importer
   #
   # Returns nothing
@@ -208,6 +214,19 @@ class window.GuideGuideHTMLUI
   onClickExportSets: (event) =>
     event.preventDefault()
     GuideGuide.exportSets()
+
+  onClickImportSets: (event) =>
+    event.preventDefault()
+    return if GuideGuide.isDemo()
+
+    data = $(".js-import-input").val()
+
+    # Is it a gist?
+    if data.indexOf("gist.github.com") > 0
+      id = data.substring data.lastIndexOf('/') + 1
+      GuideGuide.importSets id
+    else
+      GuideGuide.importSets null
 
   # Show the indeterminate loader.
   #

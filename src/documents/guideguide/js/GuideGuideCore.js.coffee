@@ -68,7 +68,7 @@ class window.GuideGuideCore
 
   # Update the dropdowns in the settings ui.
   #
-  # Returns an Object
+  # Returns an Object.
   refreshSettings: () =>
     @bridge.refreshSettings @data.settings
 
@@ -186,6 +186,43 @@ class window.GuideGuideCore
         @alert
           title: @messages.alertTitleExportError()
           message: @messages.alertMessageExportError()
+
+  importSets: (id) =>
+    return @alert({ title: @messages.alertTitleImportNotGist(), message: @messages.alertMessageImportNotGist() }) if !id?
+    @showLoader()
+    $.ajax
+      url: "https://api.github.com/gists/#{ id }"
+      type: 'GET'
+      complete: (data) =>
+        @hideLoader()
+      success: (data) =>
+        if data.files["sets.json"] and sets = JSON.parse data.files["sets.json"].content
+          @bridge.hideImporter()
+          # TODO: Make this an extend
+          for key, group of sets
+            @data.sets[key] ||=
+              name: group.name
+              sets: []
+
+            g = @data.sets[key]
+
+            for key, set of group.sets
+              g.sets[set.id] = set if !g.sets[set.id]?
+
+          @saveData()
+          @refreshSets()
+          @bridge.selectTab 'sets'
+          @alert
+            title: @messages.alertTitleImportSuccess()
+            message: @messages.alertMessageImportSuccess()
+        else
+          @alert
+            title: @messages.alertTitleImportGistNoSets()
+            message: @messages.alertMessageImportGistNoSets()
+      error: (data) =>
+        @alert
+          title: @messages.alertTitleImportGistError()
+          message: @messages.alertMessageImportGistError()
 
   # Show the indeterminate loader.
   #

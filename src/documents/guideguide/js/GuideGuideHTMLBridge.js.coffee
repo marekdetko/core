@@ -78,6 +78,22 @@ class window.GuideGuideHTMLBridge
     return data if @testMode
     @ui.refreshSettings data
 
+  # Hide the set importer
+  #
+  # Returns nothing.
+  hideImporter: =>
+    return true if @testMode
+    @ui.hideImporter()
+
+  # Select a specific tab.
+  #
+  # name - (String) data-page string of the tab to be selected
+  #
+  # Returns nothing.
+  selectTab: (tab) =>
+    return tab if @testMode
+    @ui.selectTab tab
+
   # Log a message
   #
   #  args - an array of messages to print
