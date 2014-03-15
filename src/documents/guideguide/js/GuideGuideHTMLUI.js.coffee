@@ -28,6 +28,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-cancel-import', @onClickCancelImport
     @panel.on 'click', '.js-export-sets', @onClickExportSets
     @panel.on 'click', '.js-import', @onClickImportSets
+    @panel.on 'click', '.js-input-shell', @onClickInputBackground
 
     @messages = args.messages
 
@@ -378,6 +379,18 @@ class window.GuideGuideHTMLUI
   onClickClearGuides: (event) =>
     event.preventDefault()
     GuideGuide.clearGuides()
+
+  # When the input shell is clicked rather than the input inside, focus the
+  # input.
+  #
+  # Returns nothing.
+  onClickInputBackground: (event) =>
+    return unless $(event.target).hasClass "js-input-shell"
+    $inputs = $(event.currentTarget).find('input')
+    $textAreas = $(event.currentTarget).find('textarea')
+
+    $inputs.focus() if $inputs.length
+    $textAreas.focus() if $textAreas.length
 
   # Sort a list of form fields and return ones that match a filter
   #
