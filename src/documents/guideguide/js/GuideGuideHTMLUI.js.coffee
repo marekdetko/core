@@ -29,6 +29,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-export-sets', @onClickExportSets
     @panel.on 'click', '.js-import', @onClickImportSets
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
+    @panel.on 'click', '.js-help-target', @onClickHelpTarget
 
     @messages = args.messages
 
@@ -391,6 +392,13 @@ class window.GuideGuideHTMLUI
 
     $inputs.focus() if $inputs.length
     $textAreas.focus() if $textAreas.length
+
+  # Hide and reveal help text.
+  #
+  # Returns nothing
+  onClickHelpTarget: (event) =>
+    event.preventDefault()
+    $(event.currentTarget).closest('.js-help').toggleClass "is-helping"
 
   # Sort a list of form fields and return ones that match a filter
   #
