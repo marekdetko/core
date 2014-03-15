@@ -44,6 +44,9 @@ test "can toggle guides", ->
 test "can show update indicator", ->
   equal $.type(testBridge.showUpdateIndicator({hasUpdate: false})), "object"
 
+test "can show update info", ->
+  equal testBridge.showUpdateInfo(), true
+
 test "can reset guides", ->
   propEqual testBridge.resetGuides(), []
 

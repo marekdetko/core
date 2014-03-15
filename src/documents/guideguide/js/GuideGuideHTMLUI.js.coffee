@@ -30,6 +30,8 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-import', @onClickImportSets
     @panel.on 'click', '.js-input-shell', @onClickInputBackground
     @panel.on 'click', '.js-help-target', @onClickHelpTarget
+    @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
+    @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
 
     @messages = args.messages
 
@@ -269,6 +271,28 @@ class window.GuideGuideHTMLUI
     button = @panel.find '.js-has-update-button'
     button.attr 'data-title', data.title
     button.attr 'data-message', data.message
+
+  # Handle clicks on the check for updates button
+  #
+  # Returns nothing.
+  onClickCheckForUpdates: (event) =>
+    event.preventDefault()
+    GuideGuide.manualCheckForUpdates()
+
+  # Show update details. Triggered from Core.
+  #
+  # Returns nothing.
+  showUpdateInfo: =>
+    $('.js-has-update-button').click()
+
+  # Show update details. Triggerd from the UI.
+  #
+  # Returns nothing.
+  onClickHasUpdateButton: (event) =>
+    event.preventDefault()
+    GuideGuide.alert
+      title: $(event.currentTarget).attr 'data-title'
+      message: $(event.currentTarget).attr 'data-message'
 
   refreshSets: (sets) =>
     $list = @panel.find('.js-set-list')

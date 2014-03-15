@@ -129,10 +129,17 @@ class window.GuideGuideHTMLBridge
 
   # When this install of GuideGuide is out of date, alert the user.
   #
-  # Returns nothing.
+  # Returns an Object.
   showUpdateIndicator: (data) =>
     return data if @testMode
     @ui.showUpdateIndicator data
+
+  # Show update details.
+  #
+  # Returns Boolean
+  showUpdateInfo: =>
+    return true if @testMode
+    @ui.showUpdateInfo()
 
   # Convert a string to a hash.
   #

@@ -108,12 +108,29 @@ class window.GuideGuideCore
           @data.panel.id = data._id
           @saveData()
 
+  # Check for updates when specifically requested
+  manualCheckForUpdates: =>
+    @hideLoader()
+    @checkForUpdates (data) =>
+      @bridge.log data
+      if data?
+        if data.hasUpdate
+          @bridge.showUpdateIndicator(data)
+          @bridge.showUpdateInfo()
+        else
+          @alert
+            title: @messages.alertTitleUpToDate()
+            message: @messages.alertMessageUpToDate()
+      else
+        @alert
+          title: @messages.alertTitleUpdateError()
+          message: @messages.alertMessageUpdateError()
+
   # Check the GuideGuide server to see if there are updates available.
   #
   # Returns nothing.
   checkForUpdates: (callback) =>
     @bridge.log 'Checking for updates'
-
     $.ajax
       type: 'GET'
       url: "#{ @siteUrl }/panel/#{ @data.application.id }"
