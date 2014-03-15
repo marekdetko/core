@@ -3,184 +3,21 @@ write: false
 ---
 
 class GuideGuide
-  siteUrl: 'http://guideguide.me'
-  env:     'production'
-
   constructor: (@panel) ->
-    # Set the application element. This is used because in certain cases
-    # GuideGuide is in an iframe.
-    @application = parent.$(window.parent.document) || $(document)
-    @bridge = parent.window.PanelBridge
-
     @panel.on 'click', '.js-custom-form .js-make-grid', @onMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-make-grid', @onMakeGridFromSet
-    @panel.on 'click', '.js-sets-form .js-set-select', @onSelectSet
-    @panel.on 'click', '.js-sets-form .js-delete-set', @onDeleteSet
-    @panel.on 'click', '.js-grid-form .js-new-set', @onShowGridNewSetForm
     @panel.on 'click', '.js-custom-form .js-new-set', @onShowCustomNewSetForm
     @panel.on 'click', '.js-sets-form .js-new-set', @onShowSetsNewSetForm
-    @panel.on 'click', '.js-cancel-set', @onHideNewSetForm
     @panel.on 'click', '.js-grid-form .js-save-set', @onSaveSetFromGrid
     @panel.on 'click', '.js-custom-form .js-save-set', @onSaveSetFromCustom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onEditSet
     @panel.on 'guideguide:hasUpdate', @onHasUpdate
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
-    @panel.on 'click', '.js-grid-form [data-distribute] .js-iconned-input-button', @onClickDistributeIcon
     @panel.on 'focus', '.js-grid-form .js-grid-form-input', @onFocusFormInput
-    @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
     @panel.on 'click', '.js-grid-form .js-make-grid', @onMakeGridFromForm
     @panel.on 'focus', '.js-set-name', @onFocusSetName
-    @panel.on 'click', '.js-dropdown', @onToggleDropdown
-    @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
-    @panel.on 'click', '.js-help-target', @onClickHelpTarget
-    @panel.on 'click', '.js-checkbox', @onClickCheckbox
-    @panel.on 'click', '.js-import-sets', @onShowImporter
-    @panel.on 'click', '.js-import', @onClickImportSets
-    @panel.on 'click', '.js-cancel-import', @onClickCancelImport
-    @panel.on 'click', '.js-export-sets', @onClickExportSets
-    @panel.on 'click', '.js-deny-submit-data', @onDenySubmitData
-    @panel.on 'click', '.js-check-for-updates', @onClickCheckForUpdates
     @panel.on 'click', '.js-show-logs', @onClickShowLogs
-    @panel.on 'click', '.js-dismiss-alert', @onClickDismissAlert
-    @panel.on 'click', '.js-has-update-button', @onClickHasUpdateButton
-    @panel.on 'click', '.js-input-shell', @onClickInputBackground
-
-  # When the input shell is clicked rather than the input inside, focus the
-  # input.
-  #
-  # Returns nothing.
-  onClickInputBackground: (event) =>
-    return unless $(event.target).hasClass "js-input-shell"
-    $inputs = $(event.currentTarget).find('input')
-    $textAreas = $(event.currentTarget).find('textarea')
-
-    $inputs.focus() if $inputs.length
-    $textAreas.focus() if $textAreas.length
-
-  # Hide and reveal help text.
-  #
-  # Returns nothing
-  onClickHelpTarget: (event) =>
-    event.preventDefault()
-    $(event.currentTarget).closest('.js-help').toggleClass "is-helping"
-
-  # Toggle checkboxes
-  #
-  # Returns nothing
-  onClickCheckbox: (event) =>
-    event.preventDefault()
-    $checkbox = $(event.currentTarget)
-    $checkbox.toggleClass 'checked'
-
-    $form  = $checkbox.closest '.js-grid-form'
-    @stringifyFormData @getFormData($form), (string) =>
-      @updateCustomField string
-
-  # Display the correct settings in the Settings tab.
-  #
-  # Returns nothing.
-  refreshSettings: =>
-    $dropdowns = $('.js-dropdown')
-
-    $dropdowns.each (index, el) =>
-      $dropdown = $ el
-      setting   = $dropdown.attr 'data-setting'
-      value     = @guideguideData.settings[setting]
-      $selected = $dropdown.find("[data-value='#{ value }']")
-      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]()
-
-  # Toggle dropdown visibilty
-  #
-  # Returns nothing.
-  onToggleDropdown: (event) =>
-    event.preventDefault()
-
-    if $(event.target).hasClass 'js-dropdown-backdrop'
-      $('.js-dropdown').removeClass('is-active')
-    else
-      $dropdown = $(event.currentTarget)
-      $dropdown.toggleClass 'is-active'
-      $list = $dropdown.find('.js-dropdown-list')
-      visibleBottom = $('.js-settings-list').scrollTop() + $('.js-settings-list').outerHeight()
-      listBottom = $dropdown.position().top + $list.position().top + $list.outerHeight() + 3
-
-      if listBottom > visibleBottom
-        offset = listBottom - visibleBottom
-        $('.js-settings-list').scrollTop $('.js-settings-list').scrollTop() + offset
-
-    @panel.toggleClass 'has-dropdown'
-
-  # Update settings and dropdown button when a dropdown item is clicked.
-  #
-  # Returns nothing.
-  onClickDropdownItem: (event) =>
-    event.preventDefault()
-    $item     = $ event.currentTarget
-    $dropdown = $item.closest '.js-dropdown'
-    setting   = $dropdown.attr 'data-setting'
-    value     = $item.attr 'data-value'
-    value     = true if value is "true"
-    value     = false if value is "false"
-
-    $dropdown.find('.js-dropdown-button').text @messages[$item.attr('data-localize')]()
-    @guideguideData.settings[setting] = value
-    @saveGuideGuideData()
-
-  # When the user denies data collection, dismiss the alert. Data submission
-  # is disabled by default, so we don't need to change it.
-  #
-  # Returns nothing.
-  onDenySubmitData: (event) =>
-    event.preventDefault()
-    @guideguideData.panel.askedAboutAnonymousData = true
-    @saveGuideGuideData()
-    @dismissAlert()
-
-  # Updates the text in the custom field and resizes it
-  #
-  # Returns nothing
-  updateCustomField: (text) =>
-    @panel.find('.js-custom-input').val(text).trigger('autosize.resize')
-
-  # When one of the input icons is clicked, change all fields of the same type
-  # to that value
-  #
-  # Returns nothing.
-  onClickDistributeIcon: (event) =>
-    event.preventDefault()
-    $form  = $(event.currentTarget).closest '.js-grid-form'
-    $input = $(event.currentTarget).closest '.js-grid-form-iconned-input'
-    $field = $input.find('.js-grid-form-input')
-    @formatField $field
-    value   = $field.val()
-    type    = $input.attr 'data-distribute'
-    $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
-    $fields.find('.js-grid-form-input').val value
-
-    @stringifyFormData @getFormData($form), (string) =>
-      @updateCustomField string
-
-  # When a field is unfocused, validate its contents
-  #
-  # Returns noting.
-  onBlurFormInput: (event) =>
-    $input = $(event.currentTarget)
-
-    int = false
-
-    if $input.attr 'data-integer'
-      val = Math.round parseFloat $input.val()
-      $input.val val if val
-      int = true
-
-    if !@isValid $input.val(), int
-      $input.trigger 'input:invalidate'
-    else
-      @formatField $input
-      $form  = $input.closest '.js-grid-form'
-      @stringifyFormData @getFormData($form), (string) =>
-        @updateCustomField string
 
   # Clear any error reporting text and reset the Custom forms's validation
   #
@@ -200,189 +37,12 @@ class GuideGuide
       $input.val ggn.toString()
       $input.trigger('autosize.resize')
 
-  # Generate a set ID based on a hash of the GGN. This will allow us to detect
-  # duplicates easier.
-  #
-  #   set - set object used as a seed for the ID hash
-  #
-  # returns a String
-  # generateSetID: (set) =>
-  #   CryptoJS.SHA1("#{ set.name }#{ set.string }").toString()
-
-  # Select a set in the sets list when it is clicked
-  #
-  # Returns nothing.
-  onSelectSet: (event) =>
-    event.preventDefault()
-    $set = $(event.currentTarget)
-    $set.closest('.js-sets-form').find('.is-selected').removeClass('is-selected')
-    $set.closest('.js-set').addClass('is-selected')
-
-  # Delete a set and update the set list.
-  #
-  # Returns nothing.
-  onDeleteSet: (event) =>
-    event.preventDefault()
-    $set = $(event.currentTarget).closest '.js-set'
-    id = $set.attr 'data-id'
-    group = $set.attr 'data-group'
-
-    delete @guideguideData.sets[group].sets[id]
-
-    @saveGuideGuideData()
-    @refreshSets()
-
   # Show the debug logs.
   #
   # Returns nothing.
   onClickShowLogs: =>
     event.preventDefault()
     @bridge.showLogs() if @bridge.showLogs
-
-  # Handle clicks on the check for updates button
-  #
-  # Returns nothing.
-  onClickCheckForUpdates: (event) =>
-    event.preventDefault()
-    return unless @guideguideData.application.checkForUpdates
-    @panel.addClass 'is-loading'
-    @checkForUpdates (data) =>
-      @bridge.log data
-      if data?
-        if data.hasUpdate
-          @panel.trigger 'guideguide:hasUpdate', data
-          $('.js-has-update-button').click()
-        else
-          title   = @messages.alertTitleUpToDate()
-          message = @messages.alertMessageUpToDate()
-          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-      else
-        title   = @messages.alertTitleUpdateError()
-        message = @messages.alertMessageUpdateError()
-        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-
-  onClickHasUpdateButton: (event) =>
-    event.preventDefault()
-    title = $(event.currentTarget).attr 'data-title'
-    message = $(event.currentTarget).attr 'data-message'
-    @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-
-  # Import sets from a gist url
-  #
-  #   gistID - id of the GitHub gist to import
-  #
-  # Returns nothing
-  importSetsFromGist: (gistID) =>
-    @panel.addClass 'is-loading'
-    $.ajax
-      url: "https://api.github.com/gists/#{ gistID }"
-      type: 'GET'
-      complete: (data) =>
-        @panel.removeClass 'is-loading'
-      success: (data) =>
-        if data.files["sets.json"] and sets = JSON.parse data.files["sets.json"].content
-          @importSets sets
-          @refreshSets()
-          @selectTab @panel, 'sets'
-          title   = @messages.alertTitleImportSuccess()
-          message = @messages.alertMessageImportSuccess()
-          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-        else
-          title   = @messages.alertTitleImportGistNoSets()
-          message = @messages.alertMessageImportGistNoSets()
-          @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-      error: (data) =>
-        title   = @messages.alertTitleImportGistError()
-        message = @messages.alertMessageImportGistError()
-        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-
-  # Import an array of sets
-  #
-  #   sets - array of sets to import
-  #
-  # Returns nothing
-  importSets: (sets) =>
-    @bridge.log "Sets imported"
-    @panel.removeClass 'is-showing-importer'
-    console.log sets
-
-    for key, group of sets
-      @guideguideData.sets[key] ||=
-        name: group.name
-        sets: []
-
-      g = @guideguideData.sets[key]
-
-      for key, set of group.sets
-        g.sets[set.id] = set if !g.sets[set.id]?
-
-    @saveGuideGuideData()
-
-  # Show the set importer
-  #
-  # Returns nothing.
-  onShowImporter: (event) =>
-    event.preventDefault()
-    return if @guideguideData.application.env == 'demo'
-    @panel.addClass 'is-showing-importer'
-    @panel.find('.js-import-input').val ''
-
-  # Add sets to GuideGuide from an external source.
-  #
-  # Returns nothing.
-  onClickImportSets: (event) =>
-    event.preventDefault()
-    return if @guideguideData.application.env == 'demo'
-
-    data = $(".js-import-input").val()
-
-    # Is it a gist?
-    if data.indexOf("gist.github.com") > 0
-      id = data.substring data.lastIndexOf('/') + 1
-      @importSetsFromGist id
-    else
-      title   = @messages.alertTitleImportNotGist()
-      message = @messages.alertMessageImportNotGist()
-      @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-
-  # Dismiss the importer
-  #
-  # Returns nothing
-  onClickCancelImport: (event) =>
-    event.preventDefault()
-    @panel.removeClass 'is-showing-importer'
-
-  # Export GuideGuide's sets to an external source.
-  #
-  # Returns nothing.
-  onClickExportSets: (event) =>
-    event.preventDefault()
-    return if @guideguideData.application.env == 'demo'
-
-    @bridge.log 'Export sets'
-    data =
-      description: @messages.helpGistExport()
-      public: false
-      files:
-        "sets.json":
-          content: JSON.stringify @guideguideData.sets
-
-    @panel.addClass 'is-loading'
-    $.ajax
-      url: 'https://api.github.com/gists'
-      type: 'POST'
-      data: JSON.stringify data
-      complete: (data) =>
-        @panel.removeClass 'is-loading'
-      success: (data) =>
-        title   = @messages.alertTitleExportSuccess()
-        message = "#{ @messages.alertMessageExportSuccess() } <div><strong><a class='js-link button export-button' href='#{ data.html_url }'>#{ @messages.uiOpenInBrowser() }</a></strong></div>"
-
-        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
-      error: (data) =>
-        title   = @messages.alertTitleExportError()
-        message = @messages.alertMessagesExportError()
-        @alert [title, message], ['primary js-dismiss-alert'], [@messages.uiOk()]
 
   # Open Custom form with data from the set to be edited
   #
@@ -508,21 +168,6 @@ class GuideGuide
     @saveGuideGuideData()
     @refreshSets()
 
-  # Remove any sets in the markup and update the list with a new set items for
-  # each set in the list.
-  #
-  # Returns nothing.
-  refreshSets: =>
-    @bridge.log 'Refreshing sets'
-    $list = @panel.find('.js-set-list')
-    $list.find('.js-set').remove()
-    $.each @guideguideData.sets["Default"].sets, (index,set) =>
-      item = $('.js-set-item-template').clone(true).removeClass('js-set-item-template')
-      item.find('.js-set-item-name').html set.name
-      item.attr 'data-group', "Default"
-      item.attr 'data-id', set.id
-      $list.append item
-
   # Handle clicks on the new set button
   #
   # Returns nothing
@@ -582,45 +227,3 @@ class GuideGuide
     @panel.addClass('is-showing-new-set-form')
     @updateCustomField prefill if prefill
     @panel.find('.js-custom-form').find('.js-set-name').focus()
-
-  # On the Custom page, display and focus new set name field, swap in save set
-  # and cancel set buttons, hide make grid and new set buttons.
-  #
-  # Returns nothing.
-  onShowGridNewSetForm: (event) =>
-    event.preventDefault()
-    @panel.addClass('is-showing-new-set-form')
-    @panel.find('.js-grid-form').find('.js-set-name').focus()
-
-  # On both forms, Hide new set name, swap out save set and cancel set buttons, show make
-  # grid and new set buttons
-  #
-  # Returns nothing.
-  onHideNewSetForm: (event) =>
-    event.preventDefault()
-    @hideNewSetForm()
-
-  # Reformat a unit string to match conventions
-  #
-  #   $field - input to format
-  #
-  # Returns a String
-  formatField: ($field) ->
-    int = if $field.attr 'data-integer' then true else false
-    $field.val $.map $field.val().split(','), (unit) ->
-      new Unit(unit,int).toString()
-    .join(', ')
-
-  # Determine whether the value in the form is valid
-  #
-  #   string - string to be validated
-  #
-  # Returns a Boolean
-  isValid: (string, integerOnly = false) ->
-    return true if string == ""
-    units = string.split ','
-    units = units.filter (unit) =>
-      u = new Unit(unit,integerOnly)
-      !u.isValid
-
-    units.length == 0
