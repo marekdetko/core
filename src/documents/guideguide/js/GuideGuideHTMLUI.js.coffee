@@ -25,6 +25,8 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-dropdown', @onToggleDropdown
     @panel.on 'click', '.js-dropdown .js-dropdown-item', @onClickDropdownItem
 
+    @messages = args.messages
+
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
     @panel.find('textarea').autosize();
@@ -170,6 +172,19 @@ class window.GuideGuideHTMLUI
       settings: {}
     data.settings[setting] = value
     GuideGuide.saveData data
+
+  # Display the correct settings in the Settings tab.
+  #
+  # Returns nothing.
+  refreshSettings: (settings) =>
+    $dropdowns = $('.js-dropdown')
+
+    $dropdowns.each (index, el) =>
+      $dropdown = $ el
+      setting   = $dropdown.attr 'data-setting'
+      value     = settings[setting]
+      $selected = $dropdown.find("[data-value='#{ value }']")
+      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]()
 
   # Toggle guide visibility.
   #

@@ -60,10 +60,9 @@ class window.GuideGuideHTMLBridge
   # Update all of the ui with local messages.
   #
   # Returns nothing.
-  localizeUI: (messages) =>
-    $elements = $('[data-localize]')
-    $elements.each (index, el) =>
-      $(el).text Messages[$(el).attr('data-localize')]()
+  localizeUI: () =>
+    return if @testMode
+    @ui.localizeUI()
 
   # Do this after GuideGuide updates set data
   #
@@ -75,7 +74,9 @@ class window.GuideGuideHTMLBridge
   # Do this after GuideGuide updates settings data
   #
   # Returns nothing
-  onSettingsUpdate: () =>
+  refreshSettings: (data) =>
+    return data if @testMode
+    @ui.refreshSettings data
 
   # Log a message
   #

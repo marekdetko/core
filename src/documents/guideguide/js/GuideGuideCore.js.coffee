@@ -44,7 +44,7 @@ class window.GuideGuideCore
 
     @bridge.localizeUI()
     @bridge.refreshSets(@data.sets["Default"].sets)
-    @bridge.onSettingsUpdate()
+    @refreshSettings()
 
     unless @isDemo()
       @submitData()
@@ -63,8 +63,14 @@ class window.GuideGuideCore
     @data.settings.reportAnonymousData = true
     @data.panel.askedAboutAnonymousData = true
     @saveData()
-    @bridge.onSettingsUpdate()
+    @refreshSettings()
     @dismissAlert()
+
+  # Update the dropdowns in the settings ui.
+  #
+  # Returns an Object
+  refreshSettings: () =>
+    @bridge.refreshSettings @data.settings
 
   # Submit anonymous usage data to the GuideGuide servers.
   #
