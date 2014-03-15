@@ -19,6 +19,9 @@ class window.Unit
 
   resolution: 72
 
+  # string - the current ruler unit of the application
+  rulerUnit: "px"
+
   # Create a unit object
   #
   #   string - string to be parsed into a Unit
@@ -75,7 +78,7 @@ class window.Unit
       when 'percent', 'pct', '%'
         '%'
       when ''
-        @parseUnit parent.window.GuideGuide.activeDocumentInfo.ruler
+        @parseUnit @rulerUnit
       else
         null
 
