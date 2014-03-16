@@ -42,6 +42,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
     @panel.on 'click', '.js-grid-form .js-save-set', @onClickSaveSetFromGrid
     @panel.on 'click', '.js-grid-form .js-make-grid', @onClickMakeGridFromForm
+    @panel.on 'click', '.js-custom-form .js-new-set', @onClickShowCustomNewSetForm
 
     @messages = args.messages
 
@@ -438,6 +439,23 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     @panel.addClass('is-showing-new-set-form')
     @panel.find('.js-grid-form').find('.js-set-name').focus()
+
+  # Handle clicks on the new set button
+  #
+  # Returns nothing
+  onClickShowCustomNewSetForm: (event) =>
+    event.preventDefault()
+    @showCustomSetForm()
+
+  # On the Grid page, display and focus new set name field, swap in save set
+  # and cancel set buttons, hide make grid and new set buttons.
+  #
+  # Returns nothing.
+  showCustomSetForm: (prefill = '') =>
+    @panel.find('.js-custom-tab').click() if @panel.find('.js-sets-tab.is-selected').length
+    @panel.addClass('is-showing-new-set-form')
+    @updateCustomField prefill if prefill
+    @panel.find('.js-custom-form').find('.js-set-name').focus()
 
   # On both forms, Hide new set name, swap out save set and cancel set buttons, show make
   # grid and new set buttons
