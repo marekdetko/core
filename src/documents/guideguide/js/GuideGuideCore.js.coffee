@@ -714,6 +714,13 @@ class window.GuideGuideCore
     @addGuidesfromGGN ggn
     return ggn
 
+  # TODO: confirm this is valid via a GuideGuide Notation validate method
+  # Add guides to the document based on the form
+  #
+  # Returns an Array of guides
+  makeGridFromForm: (data) =>
+    @addGuidesfromGGN @stringifyFormData(data), 'grid'
+
   # Remove all or a portion of the guides.
   #
   # Returns an Array of remaining guides

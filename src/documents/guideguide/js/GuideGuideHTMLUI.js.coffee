@@ -41,6 +41,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
     @panel.on 'click', '.js-grid-form .js-save-set', @onClickSaveSetFromGrid
+    @panel.on 'click', '.js-grid-form .js-make-grid', @onClickMakeGridFromForm
 
     @messages = args.messages
 
@@ -546,6 +547,14 @@ class window.GuideGuideHTMLUI
   onClickClearGuides: (event) =>
     event.preventDefault()
     GuideGuide.clearGuides()
+
+  # Create a grid from the Grid form
+  #
+  # Returns Nothing.
+  onClickMakeGridFromForm: (event) =>
+    event.preventDefault()
+    return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
+    GuideGuide.makeGridFromForm @getFormData()
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.
