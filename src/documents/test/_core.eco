@@ -229,6 +229,13 @@ test "can add guides from set", ->
   ]
   propEqual gg.makeGridFromSet('469eb8921edf75ed3360d5838f9585c0d7a82109', "Default"), out
 
+test "can add guides from custom form", ->
+  out = [
+    { location: 0, orientation: "horizontal" },
+    { location: 10, orientation: "horizontal" }
+  ]
+  propEqual gg.makeGridFromCustom('|10px|(ph)','custom'), out
+
 test "can record usage", ->
   usage1 = $.extend {}, gg.recordUsage("top", 10)
   usage2 = gg.recordUsage("top", 10)

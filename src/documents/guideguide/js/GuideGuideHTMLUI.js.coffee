@@ -45,6 +45,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-custom-form .js-new-set', @onClickShowCustomNewSetForm
     @panel.on 'click', '.js-custom-form .js-save-set', @onClickSaveSetFromCustom
     @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
+    @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
 
     @messages = args.messages
 
@@ -590,6 +591,17 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
     GuideGuide.makeGridFromForm @getFormData()
+
+  # Create a grid from the Custom form
+  #
+  # Returns nothing.
+  onClickMakeGridFromCusom: (event) =>
+    event.preventDefault()
+    $form  = @panel.find('.js-custom-form')
+    string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
+    return unless $form.find('.js-input.is-invalid').length == 0 and string
+    GuideGuide.makeGridFromCustom string
+
 
   # Create a grid from a set
   #

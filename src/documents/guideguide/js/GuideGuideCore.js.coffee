@@ -730,6 +730,12 @@ class window.GuideGuideCore
     set = @getSets { set: set, group: group }
     @addGuidesfromGGN set.string, 'set'
 
+  # Create a grid from the Custom form
+  #
+  # Returns an Array of guides
+  makeGridFromCustom: (string) =>
+    @addGuidesfromGGN string, 'custom'
+
   # Remove all or a portion of the guides.
   #
   # Returns an Array of remaining guides
