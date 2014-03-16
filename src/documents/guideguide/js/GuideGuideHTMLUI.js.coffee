@@ -19,7 +19,6 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
     @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
-    @panel.on 'input:invalidate', '.js-input', @onInputInvalidate
     @panel.on 'mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOverDistributeIcon
     @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
     @panel.on 'click', '.js-dropdown', @onToggleDropdown
@@ -74,8 +73,7 @@ class window.GuideGuideHTMLUI
   # Outline an invalid input with red.
   #
   # Returns nothing.
-  onInputInvalidate: (event) =>
-    $(event.currentTarget).addClass 'is-invalid'
+  markInvalid: ($input) => $input.addClass 'is-invalid'
 
   # TODO: Add this to a `clean` menthod in GuideGuide Notation
   # Clear any error reporting text and reset the Custom forms's validation
@@ -92,7 +90,7 @@ class window.GuideGuideHTMLUI
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
       ggn = new GGN $input.val()
-      $input.trigger 'input:invalidate' if !ggn.isValid
+      @markInvalid $input.closest('.js-input') if !ggn.isValid
       $input.val ggn.toString()
       $input.trigger('autosize.resize')
 
@@ -200,7 +198,7 @@ class window.GuideGuideHTMLUI
       int = true
 
     if !GuideGuide.validateInput $input.val(), int
-      $input.trigger 'input:invalidate'
+      @markInvalid $input
     else
       @formatField $input
       $form  = $input.closest '.js-grid-form'
