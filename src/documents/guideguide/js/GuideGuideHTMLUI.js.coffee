@@ -406,7 +406,7 @@ class window.GuideGuideHTMLUI
     data = @getFormData()
     @markInvalid @panel.find('.js-grid-form .js-set-name').closest('.js-input') if data.name.length == 0
     return if @panel.find('.js-grid-form .js-input').filter('.is-invalid').length > 0
-    GuideGuide.saveSetFromGrid @getFormData()
+    GuideGuide.saveSet @getFormData()
 
   # Select a set in the sets list when it is clicked
   #
@@ -497,16 +497,17 @@ class window.GuideGuideHTMLUI
     $form = $('.js-grid-form')
     obj =
       name: $('.js-grid-form .js-set-name').val()
+      contents: {}
 
     $fields = $form.find '.js-grid-form-input'
     $fields.each (index, element) ->
       key = $(element).attr 'data-type'
-      obj[key] = $(element).val()
+      obj.contents[key] = $(element).val()
 
     $checkboxes = $form.find '.js-checkbox'
     $checkboxes.each (index, element) ->
       key = $(element).attr 'data-type'
-      obj[key] = true if $(element).hasClass 'checked'
+      obj.contents[key] = true if $(element).hasClass 'checked'
     obj
 
   # Open a exported sets url

@@ -187,30 +187,22 @@ class window.GuideGuideCore
     @refreshSets()
     set
 
-  # Save a set from the data in the grid
-  #
-  #  data - Object: Form data
-  #
-  # Returns nothing.
-  saveSetFromGrid: (data) =>
-    args =
-      name: data.name
-      string: @stringifyFormData data
-    set = @addSet(args)
-    @bridge.selectTab('sets')
-    set
-
-  # Create a new set object, add it to the list, and save
+  # Create a new set object, add it to the list, and save.
+  # If the data includes an id, delete the set with that id (update).
   #
   # Returns
-  addSet: (data) =>
+  saveSet: (data) =>
+    delete @data.sets["Default"].sets[data.id] if data.id?
+    data.contents = @stringifyFormData(data.contents) if typeof data.contents == "object"
     set =
-      id: @generateSetID data
       name: data.name
-      string: data.string
+      string: data.contents
+    set.id = @generateSetID set
+
     @data.sets["Default"].sets[set.id] = set
     @saveData()
     @refreshSets()
+    @bridge.selectTab('sets')
     set
 
   # Export GuideGuide's sets to an external source.
@@ -436,7 +428,7 @@ class window.GuideGuideCore
   #
   # Returns a String.
   formChanged: (data) =>
-    @bridge.updateCustomField @stringifyFormData data
+    @bridge.updateCustomField @stringifyFormData data.contents
 
   # Determine whether the value in the form is valid
   #
@@ -719,7 +711,7 @@ class window.GuideGuideCore
   #
   # Returns an Array of guides
   makeGridFromForm: (data) =>
-    @addGuidesfromGGN @stringifyFormData(data), 'grid'
+    @addGuidesfromGGN @stringifyFormData(data.contents), 'grid'
 
   # Remove all or a portion of the guides.
   #
