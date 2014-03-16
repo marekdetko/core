@@ -50,11 +50,12 @@ test "can show update info", ->
 test "can reset guides", ->
   propEqual testBridge.resetGuides(), []
 
-test "can add guide", ->
-  guide =
+test "can add guides", ->
+  guides = [
     location: 10
     orientation: "horizontal"
-  equal testBridge.addGuide(guide), guide
+  ]
+  equal testBridge.addGuides(guides), guides
 
 test "can get form data", ->
   data =

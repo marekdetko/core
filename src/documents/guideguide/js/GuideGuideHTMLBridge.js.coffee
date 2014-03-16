@@ -26,11 +26,11 @@ class window.GuideGuideHTMLBridge
 
   # Add a guide to the document
   #
-  #  guide - guide to be added
+  #  guides - array of guide objects
   #
   # Returns false
-  addGuide: (guide) =>
-    Fauxtoshop.addGuide guide
+  addGuides: (guides) =>
+    Fauxtoshop.addGuides guides
 
   # Turn guide visibility on and off
   #

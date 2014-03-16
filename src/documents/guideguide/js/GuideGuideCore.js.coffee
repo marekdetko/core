@@ -729,8 +729,7 @@ class window.GuideGuideCore
   #
   # Returns the original guide array.
   addGuides: (guides) =>
-    for i, guide of guides
-      @bridge.addGuide(guide)
+    @bridge.addGuides(guides)
     guides
 
   # Create a single guide in the location specified

@@ -70,20 +70,20 @@ class window.FauxtoshopLib
   #  guide - guide to be added
   #
   # Returns false
-  addGuide: (g) =>
-    return g if @testMode
+  addGuides: (guides) =>
+    return guides if @testMode
     artboardPosition = $('.js-document').find('.js-artboard').position()
-    guide = $('.js-templates').find('.js-guide')
-    .clone().attr('class','')
-    .addClass 'guide js-guide ' + g.orientation
+    for i, g of guides
+      guide = $('.js-templates').find('.js-guide')
+      .clone().attr('class','')
+      .addClass 'guide js-guide ' + g.orientation
 
-    if g.orientation == 'horizontal'
-      guide.css 'top', ( g.location + artboardPosition.top ) + 'px'
-    else
-      guide.css 'left', ( g.location + artboardPosition.left ) + 'px'
+      if g.orientation == 'horizontal'
+        guide.css 'top', ( g.location + artboardPosition.top ) + 'px'
+      else
+        guide.css 'left', ( g.location + artboardPosition.left ) + 'px'
 
-    $('.js-document').append guide
-    g
+      $('.js-document').append guide
 
   resetGuides: =>
     return [] if @testMode
