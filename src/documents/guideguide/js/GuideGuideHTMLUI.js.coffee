@@ -39,6 +39,8 @@ class window.GuideGuideHTMLUI
     @panel.on 'blur', '.js-grid-form .js-grid-form-input', @onBlurFormInput
     @panel.on 'click', '.js-grid-form [data-distribute] .js-iconned-input-button', @onClickDistributeIcon
     @panel.on 'click', '.js-sets-form .js-set-select', @onSelectSet
+    @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
+    @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
 
     @messages = args.messages
 
@@ -74,6 +76,25 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onInputInvalidate: (event) =>
     $(event.currentTarget).addClass 'is-invalid'
+
+  # TODO: Add this to a `clean` menthod in GuideGuide Notation
+  # Clear any error reporting text and reset the Custom forms's validation
+  #
+  # Returns nothing.
+  onFocusCustomForm: (event) =>
+    $input = $(event.currentTarget)
+    $input.val $input.val().replace(/[\{\}]|\[.*?\]|^#.*?$/gm, '').replace(/\s+$/g,'')
+
+  # Validate the contents of the Custom form
+  #
+  # Returns nothing.
+  onBlurCustomForm: (event) =>
+    $input = $(event.currentTarget)
+    if string = $input.val().replace /^\s+|\s+$/g, ''
+      ggn = new GGN $input.val()
+      $input.trigger 'input:invalidate' if !ggn.isValid
+      $input.val ggn.toString()
+      $input.trigger('autosize.resize')
 
   # Highlight all field icons of similar type
   #
