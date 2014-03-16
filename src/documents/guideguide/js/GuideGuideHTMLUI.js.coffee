@@ -40,6 +40,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-sets-form .js-set-select', @onSelectSet
     @panel.on 'focus', '.js-custom-form .js-custom-input', @onFocusCustomForm
     @panel.on 'blur', '.js-custom-form .js-custom-input', @onBlurCustomForm
+    @panel.on 'click', '.js-grid-form .js-save-set', @onClickSaveSetFromGrid
 
     @messages = args.messages
 
@@ -394,6 +395,16 @@ class window.GuideGuideHTMLUI
     id = $set.attr 'data-id'
     group = $set.attr 'data-group'
     GuideGuide.deleteSet(group, id)
+
+  # Fire save set event and pass it the contents of the grid form
+  #
+  # Returns nothing.
+  onClickSaveSetFromGrid: (event) =>
+    event.preventDefault()
+    data = @getFormData()
+    @markInvalid @panel.find('.js-grid-form .js-set-name').closest('.js-input') if data.name.length == 0
+    return if @panel.find('.js-grid-form .js-input').filter('.is-invalid').length > 0
+    GuideGuide.saveSetFromGrid @getFormData()
 
   # Select a set in the sets list when it is clicked
   #

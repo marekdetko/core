@@ -114,6 +114,14 @@ test "can delete set", ->
     id: "d521212626e4f9f144821a52dcdaf3e1f6c8cffd"
   propEqual gg.deleteSet("Default", set.id), set
 
+test "can create set from grid", ->
+  data =
+    name: "Test"
+    countColumn: "3"
+    countRow:    "3"
+  expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+  equal gg.saveSetFromGrid(data).string, expected
+
 test "can update the custom form", ->
   data =
     countColumn: "3"

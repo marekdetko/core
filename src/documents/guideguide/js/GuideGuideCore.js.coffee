@@ -187,6 +187,32 @@ class window.GuideGuideCore
     @refreshSets()
     set
 
+  # Save a set from the data in the grid
+  #
+  #  data - Object: Form data
+  #
+  # Returns nothing.
+  saveSetFromGrid: (data) =>
+    args =
+      name: data.name
+      string: @stringifyFormData data
+    set = @addSet(args)
+    @bridge.selectTab('sets')
+    set
+
+  # Create a new set object, add it to the list, and save
+  #
+  # Returns
+  addSet: (data) =>
+    set =
+      id: @generateSetID data
+      name: data.name
+      string: data.string
+    @data.sets["Default"].sets[set.id] = set
+    @saveData()
+    @refreshSets()
+    set
+
   # Export GuideGuide's sets to an external source.
   #
   # Returns nothing.
