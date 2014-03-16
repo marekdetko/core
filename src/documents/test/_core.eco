@@ -415,3 +415,8 @@ asyncTest "can check for updates", ->
   gg.checkForUpdates (data) =>
     equal $.type(data), "object"
     start()
+
+asyncTest "can get ggn from existing", ->
+  gg.getGGNFromExistingGuides (string) =>
+    equal string, ""
+    start()

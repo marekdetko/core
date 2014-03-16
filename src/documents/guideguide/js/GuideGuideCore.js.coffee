@@ -680,6 +680,47 @@ class window.GuideGuideCore
     @addGuides guides
     guides
 
+  getGGNFromExistingGuides: (callback) =>
+    info    = @bridge.getDocumentInfo()
+    xString = ''
+    yString = ''
+    string  = ''
+
+    prevHorizontal = if info.isSelection then info.offsetY else 0
+    prevVertical = if info.isSelection then info.offsetX else 0
+    guides = info.existingGuides
+
+    if info.isSelection
+      bounds =
+        top:    info.offsetY
+        left:   info.offsetX
+        bottom: info.offsetY + info.height
+        right:  info.offsetX + info.width
+      guides = @consolidate({}, info.existingGuides, { bounds: bounds })
+
+    if guides
+      guides.sort (a,b) =>
+        a.location - b.location
+
+      $.each guides, (index, guide) =>
+        if guide.orientation == 'vertical'
+          xString = "#{ xString }#{ guide.location - prevVertical }px | "
+          prevVertical = guide.location
+        if guide.orientation == 'horizontal'
+          yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
+          prevHorizontal = guide.location
+
+      xString = "#{ xString }(v#{ 'p' if @data.settings.calculation == 'pixel' })" if xString != ''
+      yString = "#{ yString }(h#{ 'p' if @data.settings.calculation == 'pixel' })" if yString != ''
+
+      string += xString
+      string += '\n' if xString
+      string += yString
+      string += '\n' if yString
+      string += '\n# ' + @messages.ggnStringFromExistingGuides() if xString or yString
+
+    callback string
+
   # Add an array of guides to the document.
   #
   #  guides - Array: Guides to add.

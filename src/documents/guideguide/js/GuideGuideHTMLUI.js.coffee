@@ -43,6 +43,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-grid-form .js-save-set', @onClickSaveSetFromGrid
     @panel.on 'click', '.js-grid-form .js-make-grid', @onClickMakeGridFromForm
     @panel.on 'click', '.js-custom-form .js-new-set', @onClickShowCustomNewSetForm
+    @panel.on 'click', '.js-sets-form .js-new-set', @onClickShowSetsNewSetForm
     @panel.on 'click', '.js-custom-form .js-save-set', @onClickSaveSetFromCustom
     @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
     @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
@@ -478,6 +479,12 @@ class window.GuideGuideHTMLUI
   onClickShowCustomNewSetForm: (event) =>
     event.preventDefault()
     @showCustomSetForm()
+
+  onClickShowSetsNewSetForm: (event) =>
+    event.preventDefault()
+    GuideGuide.getGGNFromExistingGuides (string) =>
+      console.log string
+      @showCustomSetForm string
 
   # On the Grid page, display and focus new set name field, swap in save set
   # and cancel set buttons, hide make grid and new set buttons.
