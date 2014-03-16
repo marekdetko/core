@@ -256,7 +256,7 @@ test "gets empty string from gutter only", ->
   equal gg.stringifyGridPlane(data), expected
 
   data.firstMargin = "10px"
-  expected = "|10px|~|(vlp)"
+  expected = "|10px|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
   data.lastMargin = "10px"
@@ -264,7 +264,7 @@ test "gets empty string from gutter only", ->
   equal gg.stringifyGridPlane(data), expected
 
   data.firstMargin = ""
-  expected = "|~|10px|(vlp)"
+  expected = "~|10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from count and width", ->
@@ -348,13 +348,20 @@ test "can create string from count, width, and gutter", ->
 test "can create string from first margin only", ->
   data =
     firstMargin: "10px"
-  expected = "|10px|~|(vlp)"
+  expected = "|10px|~(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create string from last margin only", ->
   data =
     lastMargin: "10px"
-  expected = "|~|10px|(vlp)"
+  expected = "~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from both margins", ->
+  data =
+    lastMargin: "10px"
+    firstMargin: "10px"
+  expected = "|10px|~|10px|(vlp)"
   equal gg.stringifyGridPlane(data), expected
 
 test "can create GuideGuide Notation from grid form", ->

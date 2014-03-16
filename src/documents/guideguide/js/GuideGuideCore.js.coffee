@@ -542,8 +542,14 @@ class window.GuideGuideCore
       gridString += "|"
       gridString += "|$#{ data.orientation }#{ if data.gutter then 'C' else '' }|" if data.count > 1 and data.gutter
 
+    if (!data.count and !data.width) and data.firstMargin
+      gridString += "|"
+
     if (!data.count and !data.width) and (data.firstMargin or data.lastMargin)
-      gridString += "|~|"
+      gridString += "~"
+
+    if (!data.count and !data.width) and data.lastMargin
+      gridString += "|"
 
     if data.firstMargin or data.lastMargin or data.count or data.width
       # Set up the options
