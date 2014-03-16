@@ -74,7 +74,7 @@ class window.GuideGuideCore
   #
   # Returns an Array.
   refreshSets: =>
-    @bridge.refreshSets(@data.sets["Default"].sets)
+    @bridge.refreshSets @getSets()
 
   # Submit anonymous usage data to the GuideGuide servers.
   #
@@ -174,18 +174,28 @@ class window.GuideGuideCore
 
     @data.panel.usage
 
+  # Get a set or group of sets. If a group is specified without a set, a group
+  # will be returned.
+  #
+  #   args.group - String: group id
+  #   args.set   - String: set id
+  #
+  # Returns an Object if a set or an Array of objects if a group
+  getSets: (args) =>
+    group = @data.sets[ args?.group || "Default" ]
+    return group.sets if !args?.set
+    return group[args.set]
+
   # Delete a set and update the set list.
   #
   #  group - String: Group in which the to-delete set exits
   #  set   - String: Set to delete
   #
   # Returns nothing.
-  deleteSet: (group, id) =>
-    set = @data.sets[group].sets[id]
-    delete @data.sets[group].sets[id]
+  deleteSet: (group, set) =>
+    delete @data.sets[group].sets[set]
     @saveData()
     @refreshSets()
-    set
 
   # Create a new set object, add it to the list, and save.
   # If the data includes an id, delete the set with that id (update).

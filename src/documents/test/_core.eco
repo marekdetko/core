@@ -6,6 +6,20 @@ args =
 
 gg = new GuideGuideCore(args)
 
+defaultSets =
+  "469eb8921edf75ed3360d5838f9585c0d7a82109":
+    id: "469eb8921edf75ed3360d5838f9585c0d7a82109"
+    name: "Outline"
+    string: "| ~ | (vFl)\n| ~ | (hFl)"
+  "84676cd434499994ef5176c93d970e83079cbc6c":
+    id: "84676cd434499994ef5176c93d970e83079cbc6c"
+    name: "Two column grid"
+    string: "| ~ | ~ | (vFl)"
+  "d521212626e4f9f144821a52dcdaf3e1f6c8cffd":
+    id: "d521212626e4f9f144821a52dcdaf3e1f6c8cffd"
+    name: "Three column grid"
+    string: "| ~ | ~ | ~ | (vFl)"
+
 asyncTest "can init", ->
   new GuideGuideCore args, (args) ->
     ok args.bridge, "no bridge given"
@@ -91,21 +105,7 @@ test "can refresh settings", ->
   equal gg.refreshSettings().calculation, "pixel"
 
 test "can refresh sets", ->
-  sets =
-    "469eb8921edf75ed3360d5838f9585c0d7a82109":
-      id: "469eb8921edf75ed3360d5838f9585c0d7a82109"
-      name: "Outline"
-      string: "| ~ | (vFl)\n| ~ | (hFl)"
-    "84676cd434499994ef5176c93d970e83079cbc6c":
-      id: "84676cd434499994ef5176c93d970e83079cbc6c"
-      name: "Two column grid"
-      string: "| ~ | ~ | (vFl)"
-    "d521212626e4f9f144821a52dcdaf3e1f6c8cffd":
-      id: "d521212626e4f9f144821a52dcdaf3e1f6c8cffd"
-      name: "Three column grid"
-      string: "| ~ | ~ | ~ | (vFl)"
-
-  propEqual gg.refreshSets(), sets
+  propEqual gg.refreshSets(), defaultSets
 
 test "can add and delete set", ->
   set1 =
@@ -126,9 +126,9 @@ test "can add and delete set", ->
     id: "1e685da9c317a356315d265c8866c92d9b5bd3ee"
 
   equal gg.saveSet(set1).string, expected
-  propEqual gg.deleteSet("Default", deleteSet.id), deleteSet
+  propEqual gg.deleteSet("Default", deleteSet.id), defaultSets
   equal gg.saveSet(set2).string, expected
-  propEqual gg.deleteSet("Default", deleteSet.id), deleteSet
+  propEqual gg.deleteSet("Default", deleteSet.id), defaultSets
 
 test "can update the custom form", ->
   data =
@@ -388,7 +388,6 @@ test "can create GuideGuide Notation from grid form", ->
     countRow:    "3"
   expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
   equal gg.stringifyFormData(data), expected
-
 
 test "can get sum", ->
   equal gg.sum([1,2]), 3
