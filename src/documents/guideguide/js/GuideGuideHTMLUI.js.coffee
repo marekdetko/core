@@ -46,6 +46,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-custom-form .js-save-set', @onClickSaveSetFromCustom
     @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
     @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
+    @panel.on 'click', '.js-sets-form .js-edit-set', @onClickEditSet
 
     @messages = args.messages
 
@@ -425,6 +426,20 @@ class window.GuideGuideHTMLUI
       contents: string
     GuideGuide.saveSet set
 
+  # Open Custom form with data from the set to be edited
+  #
+  # Returns nothing.
+  onClickEditSet: (event) =>
+    event.preventDefault()
+    $set  = $(event.currentTarget).closest('.js-set')
+    id    = $set.attr('data-id')
+    group = $set.attr('data-group')
+    set   = GuideGuide.getSets { set: id, group: group }
+    $form = @panel.find('.js-custom-form')
+    $form.find('.js-set-name').val(set.name)
+    $form.find('.js-set-id').val(set.id)
+    @showCustomSetForm(set.string)
+
   # Select a set in the sets list when it is clicked
   #
   # Returns nothing.
@@ -601,7 +616,6 @@ class window.GuideGuideHTMLUI
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
     return unless $form.find('.js-input.is-invalid').length == 0 and string
     GuideGuide.makeGridFromCustom string
-
 
   # Create a grid from a set
   #
