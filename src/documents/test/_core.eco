@@ -168,7 +168,7 @@ test "can get document info", ->
 
 in1 = [
   { location: 1, orientation: "horizontal" },
-  { location: 3, orientation: "horizontal" }
+  { location: 5, orientation: "horizontal" }
 ]
 in2 = [
   { location: 3, orientation: "horizontal" },
@@ -182,9 +182,7 @@ bounds =
 
 test "can consolidate guides", ->
   out = [
-    { location: 1, orientation: "horizontal" },
-    { location: 3, orientation: "horizontal" },
-    { location: 5, orientation: "horizontal" }
+    { location: 3, orientation: "horizontal" }
   ]
   propEqual gg.consolidate(in1, in2), out
 
@@ -193,11 +191,8 @@ test "can consolidate guides with bounds", ->
   propEqual gg.consolidate(in1, in2, { bounds: bounds }), out
 
 test "can consolidate guides with bounds inverted", ->
-  out = [
-    { location: 1, orientation: "horizontal" },
-    { location: 5, orientation: "horizontal" }
-  ]
-  propEqual gg.consolidate(in1, in2, { bounds: bounds, invert: true }), out
+  out = [ { location: 5, orientation: "horizontal" } ]
+  propEqual gg.consolidate([], in2, { bounds: bounds, invert: true }), out
 
 test "can add guides", ->
   guides = [{location: 0, orientation: "vertical"}, {location: 10, orientation: "vertical"}]

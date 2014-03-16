@@ -408,29 +408,31 @@ class window.GuideGuideCore
     calculation:         'pixel'
     reportAnonymousData: false
 
-  # Create a collection of unique guides from multiple guide arrrays
+  # Create a collection of unique unique guides that do not already exist.
   #
-  #   first  - (Array) First array
-  #   second - (Array) Second array
-  #   args   - (Object) Options
+  #   existing  - (Array) First array
+  #   added     - (Array) Second array
+  #   args      - (Object) Options
   #
   # Returns an array of guides
-  consolidate: (first, second, args = {}) =>
-    list = {}
-    guides = $.map $.merge($.merge([], first), second), (e,i) ->
-      key = "#{ e.location }.#{ e.orientation }"
-      guide = e
-      return null if list[key]
-      list[key] = true
+  consolidate: (existing, added, args = {}) =>
+    list   = {}
+    result = []
+    for i, e of existing
+      list["#{ e.location }.#{ e.orientation }"] = true
 
-      if args.bounds
-        guide = if args.invert then null else e
-        return guide if e.orientation == "horizontal" and args.bounds.bottom >= e.location >= args.bounds.top
-        return guide if e.orientation == "vertical" and args.bounds.right >= e.location >= args.bounds.left
-        return if args.invert then e else null
+    for i, e of added
+      include = !list["#{ e.location }.#{ e.orientation }"]?
+      list["#{ e.location }.#{ e.orientation }"] = true
+      if args.bounds and include
+        inBounds = false
+        inBounds = true  if e.orientation == "horizontal" and args.bounds.bottom >= e.location >= args.bounds.top
+        inBounds = true  if e.orientation == "vertical" and args.bounds.right >= e.location >= args.bounds.left
+        include  = false if (inBounds and args.invert) or (!inBounds and !args.invert)
 
-      guide
-    guides
+      result.push e if include
+
+    result
 
   # When the form changes, update the contents of the Custom form to reflect it.
   #
@@ -673,7 +675,7 @@ class window.GuideGuideCore
     guides = []
 
     guides = @getGuidesFromGGN new GGN(ggn), info
-    guides = @consolidate(guides, info.existingGuides)
+    guides = @consolidate(info.existingGuides, guides)
 
     @recordUsage source, guides.length
     # TODO: @bridge.resetGuides()
@@ -696,7 +698,7 @@ class window.GuideGuideCore
         left:   info.offsetX
         bottom: info.offsetY + info.height
         right:  info.offsetX + info.width
-      guides = @consolidate({}, info.existingGuides, { bounds: bounds })
+      guides = @consolidate([], info.existingGuides, { bounds: bounds })
 
     if guides
       guides.sort (a,b) =>
@@ -793,7 +795,7 @@ class window.GuideGuideCore
         left:   info.offsetX
         bottom: info.offsetY + info.height
         right:  info.offsetX + info.width
-      guides = @consolidate({}, info.existingGuides, { bounds: bounds, invert: true })
+      guides = @consolidate([], info.existingGuides, { bounds: bounds, invert: true })
       @addGuides guides
 
     @recordUsage "clear"
