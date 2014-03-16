@@ -192,7 +192,7 @@ class window.GuideGuideCore
   #
   # Returns
   saveSet: (data) =>
-    delete @data.sets["Default"].sets[data.id] if data.id?
+    delete @data.sets["Default"].sets[data.id] if data.id? and data.id.length > 0
     data.contents = @stringifyFormData(data.contents) if typeof data.contents == "object"
     set =
       name: data.name

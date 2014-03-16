@@ -108,18 +108,26 @@ test "can refresh sets", ->
   propEqual gg.refreshSets(), sets
 
 test "can add and delete set", ->
-  set =
+  set1 =
     name: "Test"
     contents:
       countColumn: "3"
       countRow:    "3"
+
+  set2 =
+    name: "Test"
+    contents: "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+
   expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
-  equal gg.saveSet(set).string, expected
 
   deleteSet =
     name: "Test"
     string: "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
     id: "1e685da9c317a356315d265c8866c92d9b5bd3ee"
+
+  equal gg.saveSet(set1).string, expected
+  propEqual gg.deleteSet("Default", deleteSet.id), deleteSet
+  equal gg.saveSet(set2).string, expected
   propEqual gg.deleteSet("Default", deleteSet.id), deleteSet
 
 test "can update the custom form", ->
