@@ -220,6 +220,15 @@ test "can add guides from grid form", ->
       marginTop: "10px"
   propEqual gg.makeGridFromForm(data), out
 
+test "can add guides from set", ->
+  out = [
+    { location: 0, orientation: "vertical" },
+    { location: 100, orientation: "vertical" },
+    { location: 0, orientation: "horizontal" },
+    { location: 100, orientation: "horizontal" }
+  ]
+  propEqual gg.makeGridFromSet('469eb8921edf75ed3360d5838f9585c0d7a82109', "Default"), out
+
 test "can record usage", ->
   usage1 = $.extend {}, gg.recordUsage("top", 10)
   usage2 = gg.recordUsage("top", 10)

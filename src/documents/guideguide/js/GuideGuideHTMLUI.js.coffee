@@ -44,6 +44,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-grid-form .js-make-grid', @onClickMakeGridFromForm
     @panel.on 'click', '.js-custom-form .js-new-set', @onClickShowCustomNewSetForm
     @panel.on 'click', '.js-custom-form .js-save-set', @onClickSaveSetFromCustom
+    @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
 
     @messages = args.messages
 
@@ -589,6 +590,17 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
     GuideGuide.makeGridFromForm @getFormData()
+
+  # Create a grid from a set
+  #
+  # Returns nothing.
+  onClickMakeGridFromSet: (event) =>
+    event.preventDefault()
+    $set = $('.js-set-list').find('.is-selected').first()
+    return unless $set.length
+    id    = $set.attr 'data-id'
+    group = $set.attr 'data-group'
+    GuideGuide.makeGridFromSet(id, group)
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.

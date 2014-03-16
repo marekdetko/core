@@ -184,7 +184,7 @@ class window.GuideGuideCore
   getSets: (args) =>
     group = @data.sets[ args?.group || "Default" ]
     return group.sets if !args?.set
-    return group[args.set]
+    return group.sets[args.set]
 
   # Delete a set and update the set list.
   #
@@ -722,6 +722,13 @@ class window.GuideGuideCore
   # Returns an Array of guides
   makeGridFromForm: (data) =>
     @addGuidesfromGGN @stringifyFormData(data.contents), 'grid'
+
+  # Add guides to the document from a set
+  #
+  # Returns an Array of guides
+  makeGridFromSet: (set, group) =>
+    set = @getSets { set: set, group: group }
+    @addGuidesfromGGN set.string, 'set'
 
   # Remove all or a portion of the guides.
   #
