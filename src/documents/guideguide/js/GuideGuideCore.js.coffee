@@ -51,7 +51,7 @@ class window.GuideGuideCore
           @bridge.hideLoader()
           if data? and data.hasUpdate
             @bridge.showUpdateIndicator(data)
-    callback(args) if callback
+    callback(@) if callback
 
   # When the user grants data collection permission, update the settings and
   # dismiss the alert.
@@ -849,3 +849,19 @@ class window.GuideGuideCore
       else
         total += array[index]
     total
+
+  # Switch themes and add the theme to a list for later use
+  #
+  #   colors           - an object of colors
+  #     background     - background color
+  #     button         - buttons and inputs
+  #     buttonHover    - button and input hover
+  #     buttonSelect   - button and input selected
+  #     text           - text
+  #     highlight      - primary button and links
+  #     highlightHover - primary button and links hover
+  #     danger         - highlight for negative/warning actions
+  #
+  # Returns nothing
+  updateTheme: (colors) =>
+    @bridge.updateTheme colors

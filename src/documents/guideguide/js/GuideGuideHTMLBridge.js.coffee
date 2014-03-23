@@ -179,6 +179,14 @@ class window.GuideGuideHTMLBridge
     return args if @testMode
     @ui.alert(args)
 
+  # Switch themes and add the theme to a list for later use
+  #
+  #   colors - an object of colors
+  #
+  # Returns nothing
+  updateTheme: (colors) =>
+    @ui.updateTheme colors
+
   # Hide a GuideGuide alert
   #
   # Returns nothing.
