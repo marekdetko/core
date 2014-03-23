@@ -1,0 +1,93 @@
+module "HTMLBridge"
+
+testBridge = new GuideGuideHTMLBridge({testMode: true})
+
+test "can log", ->
+  equal testBridge.log("foo"), "foo"
+
+test "can alert", ->
+  alert =
+    title: "Test alert"
+    message: "This is a test alert"
+    buttons: [
+      callback: "testCallback"
+      label: "Test button"
+      primary: false
+    ]
+  equal $.type(testBridge.alert(alert)), "object"
+
+test "can get data", ->
+  equal $.type(testBridge.getData()), "object"
+
+test "can set data", ->
+  equal $.type(testBridge.setData({foo: "bar"})), "object"
+
+test "can get document info", ->
+  testInfo =
+    hasOpenDocuments: true
+    isSelection: false
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+    ruler: 'pixels'
+    existingGuides: []
+
+  propEqual testBridge.getDocumentInfo(), testInfo
+
+test "can open url", ->
+  equal testBridge.openURL("http://foo.com"), "http://foo.com"
+
+test "can toggle guides", ->
+  equal testBridge.toggleGuides(), true
+
+test "can show update indicator", ->
+  equal $.type(testBridge.showUpdateIndicator({hasUpdate: false})), "object"
+
+test "can show update info", ->
+  equal testBridge.showUpdateInfo(), true
+
+test "can reset guides", ->
+  propEqual testBridge.resetGuides(), []
+
+test "can add guides", ->
+  guides = [
+    location: 10
+    orientation: "horizontal"
+  ]
+  equal testBridge.addGuides(guides), guides
+
+test "can get form data", ->
+  data =
+    name: ""
+    marginLeft: ""
+    marginTop: ""
+    marginRight: ""
+    marginBottom: ""
+    countColumn: ""
+    countRow: ""
+    widthColumn: ""
+    widthRow: ""
+    gutterColumn: ""
+    gutterRow: ""
+
+  propEqual testBridge.getFormData(), data
+
+test "can update the custom form", ->
+  data =
+    countColumn: "3"
+    countRow:    "3"
+  expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+  equal gg.stringifyFormData(data), expected
+
+test "can refresh sets", ->
+  sets =
+    Default:
+      name: "Default"
+      sets:
+        "469eb8921edf75ed3360d5838f9585c0d7a82109":
+          name: "Outline"
+          string: "| ~ | (vFl)\n| ~ | (hFl)"
+          id: "469eb8921edf75ed3360d5838f9585c0d7a82109"
+
+  equal $.type(testBridge.refreshSets(sets)), "object"

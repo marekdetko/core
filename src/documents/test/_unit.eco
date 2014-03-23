@@ -1,0 +1,29 @@
+module "Unit"
+
+# unit = new GuideGuideUnitRefactor()
+#
+# test "from", ->
+#   propEqual unit.from("10px"), { string: "10px", value: 10, type: "px" }
+#   propEqual unit.from("10in"), { string: "10in", value: 10, type: "in" }
+#   propEqual unit.from("10%"), { string: "10%", value: 10, type: "%" }
+#   propEqual unit.from("10"), { string: "10", value: 10, type: null }
+#   propEqual unit.from(""), { string: "", value: null, type: null }
+#   propEqual unit.from(), { string: "", value: null, type: null }
+#
+# test "baseValueOf", ->
+#   equal unit.baseValueOf("10px"), 10
+#   equal unit.baseValueOf("10in"), 720
+#   equal unit.baseValueOf("10%"), 0
+#   equal unit.baseValueOf("10"), 0
+#   equal unit.baseValueOf(""), 0
+#   equal unit.baseValueOf(), 0
+#
+# test "different resolution", ->
+#   unit = new GuideGuideUnitRefactor({resolution: 300})
+#
+#   equal unit.baseValueOf("10px"), 10
+#   equal unit.baseValueOf("10in"), 3000
+#   equal unit.baseValueOf("10%"), 0
+#   equal unit.baseValueOf("10"), 0
+#   equal unit.baseValueOf(""), 0
+#   equal unit.baseValueOf(), 0

@@ -1,0 +1,417 @@
+module "Core"
+
+args =
+  bridge: new GuideGuideHTMLBridge({testMode: true})
+  messages: new GuideGuideMessages "en_us"
+
+gg = new GuideGuideCore(args)
+
+defaultSets =
+  "469eb8921edf75ed3360d5838f9585c0d7a82109":
+    id: "469eb8921edf75ed3360d5838f9585c0d7a82109"
+    name: "Outline"
+    string: "| ~ | (vFl)\n| ~ | (hFl)"
+  "84676cd434499994ef5176c93d970e83079cbc6c":
+    id: "84676cd434499994ef5176c93d970e83079cbc6c"
+    name: "Two column grid"
+    string: "| ~ | ~ | (vFl)"
+  "d521212626e4f9f144821a52dcdaf3e1f6c8cffd":
+    id: "d521212626e4f9f144821a52dcdaf3e1f6c8cffd"
+    name: "Three column grid"
+    string: "| ~ | ~ | ~ | (vFl)"
+
+asyncTest "can init", ->
+  new GuideGuideCore args, (args) ->
+    ok args.bridge, "no bridge given"
+    ok args.messages, "no messages object given"
+    start()
+
+test "can log", ->
+  equal gg.log("foo"), "foo"
+
+test "can create button object", ->
+  propEqual gg.button("Ok","foo",true), {label:"Ok", callback: "foo", primary: true}
+
+test "can open url", ->
+  equal gg.openURL("http://foo.com"), "http://foo.com"
+
+test "can toggle guides", ->
+  equal gg.toggleGuides(), true
+
+test "can add top quick guide", ->
+  equal gg.quickGuide("top"), "|~(hp)"
+
+test "can add horizontal midpoint quick guide", ->
+  equal gg.quickGuide("horizontalMidpoint"), "~|~(hp)"
+
+test "can add bottom quick guide", ->
+  equal gg.quickGuide("bottom"), "~|(hp)"
+
+test "can add left quick guide", ->
+  equal gg.quickGuide("left"), "|~(vp)"
+
+test "can add vertical midpoint quick guide", ->
+  equal gg.quickGuide("verticalMidpoint"), "~|~(vp)"
+
+test "can add right quick guide", ->
+  equal gg.quickGuide("right"), "~|(vp)"
+
+test "can clear all guides", ->
+  guides = [
+    { location: 1, orientation: "horizontal" },
+    { location: 3, orientation: "horizontal" },
+    { location: 5, orientation: "horizontal" }
+  ]
+  propEqual gg.clearGuides(), []
+
+test "can clear some guides", ->
+  guides = [
+    { location: 1, orientation: "horizontal" },
+    { location: 3, orientation: "horizontal" },
+    { location: 5, orientation: "horizontal" }
+  ]
+  out = [
+    { location: 1, orientation: "horizontal" },
+    { location: 5, orientation: "horizontal" }
+  ]
+  originalInfo = Fauxtoshop.testInfo
+  Fauxtoshop.testInfo =
+    hasOpenDocuments: true
+    isSelection: true
+    width: 2
+    height: 2
+    offsetX: 2
+    offsetY: 2
+    ruler: 'pixels'
+    existingGuides: guides
+
+  propEqual gg.clearGuides(), out
+  Fauxtoshop.testInfo = originalInfo
+
+test "can donate", ->
+  equal gg.donate(), "http://guideguide.me/donate"
+
+test "can save data", ->
+  equal gg.saveData().application.name, "GuideGuide web"
+
+test "can extend data", ->
+  data =
+    settings:
+      horizontalPosition: "last"
+
+  equal gg.saveData(data).settings.horizontalPosition, "last"
+
+test "can refresh settings", ->
+  equal gg.refreshSettings().calculation, "pixel"
+
+test "can refresh sets", ->
+  propEqual gg.refreshSets(), defaultSets
+
+test "can add and delete set", ->
+  set1 =
+    name: "Test"
+    contents:
+      countColumn: "3"
+      countRow:    "3"
+
+  set2 =
+    name: "Test"
+    contents: "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+
+  expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+
+  deleteSet =
+    name: "Test"
+    string: "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+    id: "1e685da9c317a356315d265c8866c92d9b5bd3ee"
+
+  equal gg.saveSet(set1).string, expected
+  propEqual gg.deleteSet("Default", deleteSet.id), defaultSets
+  equal gg.saveSet(set2).string, expected
+  propEqual gg.deleteSet("Default", deleteSet.id), defaultSets
+
+test "can update the custom form", ->
+  data =
+    countColumn: "3"
+    countRow:    "3"
+  expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+  equal gg.stringifyFormData(data), expected
+
+test "can validate unit", ->
+  equal gg.validateInput("10px"), true
+
+test "can show and hide loader", ->
+  equal gg.showLoader(), true
+  equal gg.hideLoader(), true
+
+test "can get guides from GuideGuide Notation", ->
+  info =
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+  guides = gg.getGuidesFromGGN new GGN("|10px|(hp)"), info
+  propEqual guides, [{ location: 0, orientation: "horizontal"}, { location: 10, orientation: "horizontal"}]
+
+test "can get document info", ->
+  testInfo =
+    hasOpenDocuments: true
+    isSelection: false
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+    ruler: 'pixels'
+    existingGuides: []
+
+  propEqual gg.getDocumentInfo(), testInfo
+
+in1 = [
+  { location: 1, orientation: "horizontal" },
+  { location: 5, orientation: "horizontal" }
+]
+in2 = [
+  { location: 3, orientation: "horizontal" },
+  { location: 5, orientation: "horizontal" }
+]
+bounds =
+  top: 2
+  bottom: 4
+  left: 2
+  right: 4
+
+test "can consolidate guides", ->
+  out = [
+    { location: 3, orientation: "horizontal" }
+  ]
+  propEqual gg.consolidate(in1, in2), out
+
+test "can consolidate guides with bounds", ->
+  out = [ { location: 3, orientation: "horizontal" } ]
+  propEqual gg.consolidate(in1, in2, { bounds: bounds }), out
+
+test "can consolidate guides with bounds inverted", ->
+  out = [ { location: 5, orientation: "horizontal" } ]
+  propEqual gg.consolidate([], in2, { bounds: bounds, invert: true }), out
+
+test "can add guides", ->
+  guides = [{location: 0, orientation: "vertical"}, {location: 10, orientation: "vertical"}]
+  equal gg.addGuides(guides), guides
+
+test "can add guides from GuideGuide Notation", ->
+  out = [
+    { location: 0, orientation: "horizontal" },
+    { location: 10, orientation: "horizontal" }
+  ]
+  propEqual gg.addGuidesfromGGN('|10px|(ph)','grid'), out
+
+test "can add guides from grid form", ->
+  out = [
+    { location: 0, orientation: "horizontal" },
+    { location: 10, orientation: "horizontal" }
+  ]
+  data =
+    contents:
+      marginTop: "10px"
+  propEqual gg.makeGridFromForm(data), out
+
+test "can add guides from set", ->
+  out = [
+    { location: 0, orientation: "vertical" },
+    { location: 100, orientation: "vertical" },
+    { location: 0, orientation: "horizontal" },
+    { location: 100, orientation: "horizontal" }
+  ]
+  propEqual gg.makeGridFromSet('469eb8921edf75ed3360d5838f9585c0d7a82109', "Default"), out
+
+test "can add guides from custom form", ->
+  out = [
+    { location: 0, orientation: "horizontal" },
+    { location: 10, orientation: "horizontal" }
+  ]
+  propEqual gg.makeGridFromCustom('|10px|(ph)','custom'), out
+
+test "can record usage", ->
+  usage1 = $.extend {}, gg.recordUsage("top", 10)
+  usage2 = gg.recordUsage("top", 10)
+  equal usage2.top, usage1.top+1
+  equal usage2.lifetime, usage1.lifetime + 10
+  equal usage2.guideActions, usage1.guideActions + 1
+
+test "gets empty string from no input", ->
+  expected = ""
+  equal gg.stringifyGridPlane(), expected
+
+test "can create string from count only", ->
+  data =
+    count: "3"
+  expected = "$v=|~|\n|$v*3|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = "10px"
+  expected = "$v=|~|\n|10px|$v*3|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.lastMargin = "10px"
+  expected = "$v=|~|\n|10px|$v*3|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = ""
+  expected = "$v=|~|\n|$v*3|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from width only", ->
+  data =
+    width: "10px"
+  expected = "$v=|10px|\n|$v*|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = "10px"
+  expected = "$v=|10px|\n|10px|$v*|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.lastMargin = "10px"
+  expected = "$v=|10px|\n|10px|$v*|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = ""
+  expected = "$v=|10px|\n|$v*|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "gets empty string from gutter only", ->
+  data =
+    gutter: "10px"
+  expected = ""
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = "10px"
+  expected = "|10px|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.lastMargin = "10px"
+  expected = "|10px|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = ""
+  expected = "~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from count and width", ->
+  data =
+    count: "3"
+    width: "10px"
+  expected = "$v=|10px|\n|$v*3|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = "10px"
+  expected = "$v=|10px|\n|10px|$v*3|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.lastMargin = "10px"
+  expected = "$v=|10px|\n|10px|$v*3|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = ""
+  expected = "$v=|10px|\n|$v*3|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from count and gutter", ->
+  data =
+    count:  "3"
+    width:  ""
+    gutter: "10px"
+  expected = "$v=|~|10px|\n$vC=|~|\n|$v*2|$vC|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = "10px"
+  expected = "$v=|~|10px|\n$vC=|~|\n|10px|$v*2|$vC|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.lastMargin = "10px"
+  expected = "$v=|~|10px|\n$vC=|~|\n|10px|$v*2|$vC|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = ""
+  expected = "$v=|~|10px|\n$vC=|~|\n|$v*2|$vC|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from width and gutter", ->
+  data =
+    width:  "10px"
+    gutter: "10px"
+  expected = "$v=|10px|10px|\n|$v*|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = "10px"
+  expected = "$v=|10px|10px|\n|10px|$v*|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.lastMargin = "10px"
+  expected = "$v=|10px|10px|\n|10px|$v*|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = ""
+  expected = "$v=|10px|10px|\n|$v*|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from count, width, and gutter", ->
+  data =
+    count:  "3"
+    width:  "10px"
+    gutter: "10px"
+  expected = "$v=|10px|10px|\n$vC=|10px|\n|$v*2|$vC|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = "10px"
+  expected = "$v=|10px|10px|\n$vC=|10px|\n|10px|$v*2|$vC|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.lastMargin = "10px"
+  expected = "$v=|10px|10px|\n$vC=|10px|\n|10px|$v*2|$vC|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+  data.firstMargin = ""
+  expected = "$v=|10px|10px|\n$vC=|10px|\n|$v*2|$vC|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from first margin only", ->
+  data =
+    firstMargin: "10px"
+  expected = "|10px|~(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from last margin only", ->
+  data =
+    lastMargin: "10px"
+  expected = "~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create string from both margins", ->
+  data =
+    lastMargin: "10px"
+    firstMargin: "10px"
+  expected = "|10px|~|10px|(vlp)"
+  equal gg.stringifyGridPlane(data), expected
+
+test "can create GuideGuide Notation from grid form", ->
+  data =
+    countColumn: "3"
+    countRow:    "3"
+  expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
+  equal gg.stringifyFormData(data), expected
+
+test "can get sum", ->
+  equal gg.sum([1,2]), 3
+
+test "can get sum with key", ->
+  equal gg.sum([{ foo: 1, bar: 5 }, { foo: 2, bar: 5 }], "foo"), 3
+
+asyncTest "can check for updates", ->
+  gg.checkForUpdates (data) =>
+    equal $.type(data), "object"
+    start()
+
+asyncTest "can get ggn from existing", ->
+  gg.getGGNFromExistingGuides (string) =>
+    equal string, ""
+    start()

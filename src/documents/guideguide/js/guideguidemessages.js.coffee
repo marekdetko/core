@@ -1,7 +1,3 @@
----
-write: false
----
-
 # The Messages class makes it possible to provide GuideGuide in multiple
 # languages. English is used by default if a translation does not exist for the
 # i18n string provided. To add a new language, add a new `when` block for the
@@ -16,8 +12,7 @@ write: false
 # Styleguide
 #   - Use sentence case for titles.
 #
-class Messages
-  i18n: "en_us"
+class window.GuideGuideMessages
 
   # Create a Messages object and set the language to be used.
   #
@@ -25,6 +20,7 @@ class Messages
   #
   # Currently supported locale:
   #   - English: en_us
+  #   - Spanish: es_es (credit: https://github.com/bomberstudios)
   #
   constructor: (locale) ->
     @i18n = locale if locale?
@@ -414,12 +410,13 @@ class Messages
       else
         "Sets have been exported"
 
-  alertMessageExportSuccess: =>
+  alertMessageExportSuccess: (url) =>
+    button = "<div><strong><a class='js-link button export-button' href='#{ url }'>#{ @uiOpenInBrowser() }</a></strong></div>"
     switch @i18n
       when "es_es"
-        "Tus sets han sido exportados a un GitHub Gist secreto."
+        "Tus sets han sido exportados a un GitHub Gist secreto. #{ button }"
       else
-        "Your sets have been exported to a secret GitHub Gist."
+        "Your sets have been exported to a secret GitHub Gist. #{ button }"
 
   alertTitleExportError: =>
     switch @i18n

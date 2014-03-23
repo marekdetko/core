@@ -1,0 +1,33 @@
+module "Fauxtoshop"
+
+test "can get OS", ->
+  ok Fauxtoshop.getOS()
+
+test "can get data", ->
+  equal $.type(Fauxtoshop.getData()), "object"
+
+test "can set data", ->
+  equal $.type(Fauxtoshop.setData({foo: "bar"})), "object"
+
+test "can toggle guides", ->
+  equal Fauxtoshop.toggleGuides(), true
+
+test "can get document info", ->
+  testInfo =
+    hasOpenDocuments: true
+    isSelection: false
+    width: 100
+    height: 100
+    offsetX: 0
+    offsetY: 0
+    ruler: 'pixels'
+    existingGuides: []
+
+  propEqual Fauxtoshop.getDocumentInfo(), testInfo
+
+test "can add guides", ->
+  guides = [
+    location: 10
+    orientation: "horizontal"
+  ]
+  equal Fauxtoshop.addGuides(guides), guides

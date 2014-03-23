@@ -41,16 +41,26 @@
   .nav-item:hover .icon-settings { background-position: -224px -16px; }
   .header-action:hover .icon-visibility { background-position: -240px -16px; }
 
-  .icon-margin-top:hover { background-position: -192px -32px; }
-  .icon-margin-right:hover { background-position: -208px -32px; }
-  .icon-margin-bottom:hover { background-position: -224px -32px; }
-  .icon-margin-left:hover { background-position: -176px -32px; }
-  .icon-count-column:hover { background-position: -224px 0px; }
-  .icon-count-row:hover { background-position: -176px 0px; }
-  .icon-width-column:hover { background-position:   -192px -64px; }
-  .icon-width-column-gutter:hover { background-position: -208px -64px; }
-  .icon-width-row:hover { background-position: -224px -64px; }
-  .icon-width-row-gutter:hover { background-position: -176px -64px; }
+  .icon-margin-top:hover,
+  .distribute-highlight .icon-margin-top { background-position: -192px -32px; }
+  .icon-margin-right:hover,
+  .distribute-highlight .icon-margin-right { background-position: -208px -32px; }
+  .icon-margin-bottom:hover,
+  .distribute-highlight .icon-margin-bottom { background-position: -224px -32px; }
+  .icon-margin-left:hover,
+  .distribute-highlight .icon-margin-left { background-position: -176px -32px; }
+  .icon-count-column:hover,
+  .distribute-highlight .icon-count-column { background-position: -224px 0px; }
+  .icon-count-row:hover,
+  .distribute-highlight .icon-count-row { background-position: -176px 0px; }
+  .icon-width-column:hover,
+  .distribute-highlight .icon-width-column { background-position:   -192px -64px; }
+  .icon-width-column-gutter:hover,
+  .distribute-highlight .icon-width-column-gutter { background-position: -208px -64px; }
+  .icon-width-row:hover,
+  .distribute-highlight .icon-width-row { background-position: -224px -64px; }
+  .icon-width-row-gutter:hover,
+  .distribute-highlight .icon-width-row-gutter { background-position: -176px -64px; }
 }
 
 .dark-theme {
@@ -86,16 +96,26 @@
   .nav-item:hover .icon-settings { background-position: -160px -16px; }
   .header-action:hover .icon-visibility { background-position: -176px -16px; }
 
-  .icon-margin-top:hover { background-position: -128px -32px; }
-  .icon-margin-right:hover { background-position: -144px -32px; }
-  .icon-margin-bottom:hover { background-position: -160px -32px; }
-  .icon-margin-left:hover { background-position: -176px -32px; }
-  .icon-count-column:hover { background-position: -160px 0px; }
-  .icon-count-row:hover { background-position: -176px 0px; }
-  .icon-width-column:hover { background-position:   -128px -64px; }
-  .icon-width-column-gutter:hover { background-position: -144px -64px; }
-  .icon-width-row:hover { background-position: -160px -64px; }
-  .icon-width-row-gutter:hover { background-position: -176px -64px; }
+  .icon-margin-top:hover,
+  .distribute-highlight .icon-margin-top { background-position: -128px -32px; }
+  .icon-margin-right:hover,
+  .distribute-highlight .icon-margin-right { background-position: -144px -32px; }
+  .icon-margin-bottom:hover,
+  .distribute-highlight .icon-margin-bottom { background-position: -160px -32px; }
+  .icon-margin-left:hover,
+  .distribute-highlight .icon-margin-left { background-position: -176px -32px; }
+  .icon-count-column:hover,
+  .distribute-highlight .icon-count-column { background-position: -160px 0px; }
+  .icon-count-row:hover,
+  .distribute-highlight .icon-count-row { background-position: -176px 0px; }
+  .icon-width-column:hover,
+  .distribute-highlight .icon-width-column { background-position:   -128px -64px; }
+  .icon-width-column-gutter:hover,
+  .distribute-highlight .icon-width-column-gutter { background-position: -144px -64px; }
+  .icon-width-row:hover,
+  .distribute-highlight .icon-width-row { background-position: -160px -64px; }
+  .icon-width-row-gutter:hover,
+  .distribute-highlight .icon-width-row-gutter { background-position: -176px -64px; }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),

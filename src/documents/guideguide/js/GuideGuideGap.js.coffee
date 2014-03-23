@@ -1,14 +1,7 @@
----
-write: false
----
-
-variableRegexp = /^\$([^\*]+)?(\*(\d+)?)?$/i
-arbitraryRegexp   = /^(([-0-9\.]+)?[a-z%]+)(\*(\d+)?)?$/i
-wildcardRegexp = /^~(\*(\d*))?$/i
-
-# A unit object that defines a guide position with special properties
-
-class Gap
+class window.Gap
+  variableRegexp: /^\$([^\*]+)?(\*(\d+)?)?$/i
+  arbitraryRegexp: /^(([-0-9\.]+)?[a-z%]+)(\*(\d+)?)?$/i
+  wildcardRegexp: /^~(\*(\d*))?$/i
 
   # boolean - truthy if this is valid and can be parsed
   isValid: true
@@ -45,13 +38,13 @@ class Gap
     @errors = {}
     @original = string = string.replace /\s/g, ''
 
-    @messages = parent.window.GuideGuide.messages
+    @messages = Messages
 
-    if variableRegexp.test string
+    if @variableRegexp.test string
       @parseVariable string
-    else if arbitraryRegexp.test string
+    else if @arbitraryRegexp.test string
       @parseArbitrary string
-    else if wildcardRegexp.test string
+    else if @wildcardRegexp.test string
       @parseWildcard string
     else
       @multiplier = 1
@@ -64,7 +57,7 @@ class Gap
   # Returns nothing
   parseWildcard: (string) ->
     @isWildcard = true
-    gapBits    = wildcardRegexp.exec string
+    gapBits    = @wildcardRegexp.exec string
     @isFill     = gapBits[1] && !gapBits[2] || false
     @multiplier = parseInt(gapBits[2]) || 1
     @invalidBecause @messages.gapNoFillWildcards() if @isFill
@@ -76,7 +69,7 @@ class Gap
   # Returns nothing
   parseVariable: (string) ->
     @isVariable = true
-    gapBits    = variableRegexp.exec string
+    gapBits    = @variableRegexp.exec string
     @id         = if gapBits[1] then gapBits[1] else "_"
     @multiplier = parseInt(gapBits[3]) || 1
     @isFill     = gapBits[2] && !gapBits[3] || false
@@ -88,7 +81,7 @@ class Gap
   # Returns nothing
   parseArbitrary: (string) =>
     @isArbitrary = true
-    gapBits    = arbitraryRegexp.exec string
+    gapBits    = @arbitraryRegexp.exec string
     @unit       = new Unit(gapBits[1])
     @multiplier = parseInt(gapBits[4]) || 1
     @isFill     = gapBits[3] && !gapBits[4] || false

@@ -1,12 +1,4 @@
----
-write: false
----
-
-# GuideGuide String Notation
-# Parse convert gap strings to guide arrays.
-# https://github.com/cameronmcefee/guideguide-string-notation/blob/master/spec.md
-
-class GGN
+class window.GGN
 
   # Original ggn string
   ggn: ''
@@ -34,7 +26,7 @@ class GGN
     @variables = {}
     @grids     = []
     @ggn       = string.replace /\s*$|^\s*/gm, ''
-    @messages  = parent.window.GuideGuide.messages
+    @messages  = Messages
     @parse @ggn
 
   # Turn a ggn string into a collection of grids
@@ -294,3 +286,40 @@ class GGN
   defineGapErrors: (gap) =>
     $.each gap.errors, (key,error) =>
       error.id = @error error.message
+
+
+# TODO: Refactor everything and include getGuidesFromGGN() in here.
+# GuideGuide Notation should be like JSON for guides, converting strings
+# to objects and vice versa.
+
+class window.GuideGuideNotationRefactor
+
+  constructor: (args = {}) ->
+
+  # Turn a GuideGuide notation string into a GuideGuide notation object.
+  #
+  #   string - GuideGuide notation string to be parsed.
+  #
+  # Returns an array of grid Objects.
+  parse: (string = "") =>
+    []
+
+  # Convert a GuideGuide notation object to a GuideGuide string.
+  #
+  #   obj - GuideGuide notation object to convert to a string.
+  #
+  # Returns a string.
+  stringify: (obj = {}) =>
+    ""
+
+  # Check the data for invalid gaps and validate according to the spec.
+  #
+  # Returns truthy if the string is valid GuideGuide notation.
+  validate: (ggn = "") =>
+    ggn
+
+  # Clean up a GuideGuide notation string to be nicely formatted.
+  #
+  # Returns a String.
+  clean: (string = "") =>
+    ""
