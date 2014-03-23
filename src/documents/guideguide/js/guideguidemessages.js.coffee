@@ -163,13 +163,6 @@ class window.GuideGuideMessages
       else
         "Vertical remainder"
 
-  uiReportAnonymousData: =>
-    switch @i18n
-      when "es_es"
-        "Enviar datos anónimos"
-      else
-        "Report anonymous data"
-
   uiHorizontalFirst: =>
     switch @i18n
       when "es_es"
@@ -303,17 +296,6 @@ class window.GuideGuideMessages
         "Bienvenido a GuideGuide"
       else
         "Welcome to GuideGuide"
-
-  alertMessageWelcome: =>
-    switch @i18n
-      when "es_es"
-        "Este es el comienzo de algo especial. Para ayudar a que GuideGuide
-        sea aún más increíble, ¿permitirías que GuideGuide envíe datos anónimos
-        sobre su uso?"
-      else
-        "This is the beginning of something special. To help GuideGuide
-        get more and more awesome, would you allow GuideGuide to submit
-        anonymous usage data?"
 
   alertTitleUpToDate: =>
     switch @i18n

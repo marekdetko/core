@@ -29,40 +29,17 @@ class window.GuideGuideCore
 
     @siteUrl = args.siteUrl if args.siteUrl?
 
-    if !@data.panel.askedAboutAnonymousData and !@isDemo()
-      title   = @messages.alertTitleWelcome()
-      message = @messages.alertMessageWelcome()
-      button1 = @button(@messages.uiYes(), 'submitDataConfirmed', true)
-      button2 = @button(@messages.uiNo())
-
-      @alert
-        title: title
-        message: message
-        buttons: [button1, button2]
-
     @bridge.localizeUI()
     @refreshSets()
     @refreshSettings()
 
     unless @isDemo()
-      @submitData()
       if @data.application.checkForUpdates
         @checkForUpdates (data) =>
           @bridge.hideLoader()
           if data? and data.hasUpdate
             @bridge.showUpdateIndicator(data)
     callback(@) if callback
-
-  # When the user grants data collection permission, update the settings and
-  # dismiss the alert.
-  #
-  # Returns nothing.
-  submitDataConfirmed: () =>
-    @data.settings.reportAnonymousData = true
-    @data.panel.askedAboutAnonymousData = true
-    @saveData()
-    @refreshSettings()
-    @dismissAlert()
 
   # Update the dropdowns in the settings ui.
   #
@@ -75,36 +52,6 @@ class window.GuideGuideCore
   # Returns an Array.
   refreshSets: =>
     @bridge.refreshSets @getSets()
-
-  # Submit anonymous usage data to the GuideGuide servers.
-  #
-  # Returns nothing.
-  submitData: () =>
-    return unless @data.settings.reportAnonymousData and @data.application.submitAnonymousData
-    @bridge.log 'Submitting anonymous data'
-
-    data =
-      usage: @data.panel.usage
-
-    if @data.panel.id?
-      data._id          = @data.panel.id
-    else
-      data.version      = @data.application.guideguideVersion
-      data.appID        = @data.application.id
-      data.appName      = @data.application.name
-      data.AppVersion   = @data.application.version
-      data.os           = @data.application.os
-      data.localization = @data.application.localization
-
-    $.ajax
-      type: 'POST'
-      url: "#{ @siteUrl }/install"
-      data: data
-      success: (data) =>
-        @bridge.log 'Anonymous data submitted successfully'
-        if typeof data is 'object' and data._id
-          @data.panel.id = data._id
-          @saveData()
 
   # Check for updates when specifically requested
   manualCheckForUpdates: =>
@@ -347,7 +294,6 @@ class window.GuideGuideCore
   panelBootstrap: =>
     id: null
     launchCount: 0
-    askedAboutAnonymousData: false
     usage:
       lifetime: 0
       guideActions: 0
@@ -406,7 +352,6 @@ class window.GuideGuideCore
     horizontalPosition:  'first'
     verticalPosition:    'first'
     calculation:         'pixel'
-    reportAnonymousData: false
 
   # Create a collection of unique unique guides that do not already exist.
   #
