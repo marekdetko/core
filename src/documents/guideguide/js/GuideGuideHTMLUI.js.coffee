@@ -54,7 +54,6 @@ class window.GuideGuideHTMLUI
     @panel.removeClass 'hideUI'
     @updateTheme args.theme
     @panel.find('textarea').autosize();
-    console.log "HTML UI Loaded"
 
   # Update all of the ui with local messages.
   #
@@ -483,7 +482,7 @@ class window.GuideGuideHTMLUI
   onClickShowSetsNewSetForm: (event) =>
     event.preventDefault()
     GuideGuide.getGGNFromExistingGuides (string) =>
-      console.log string
+      GuideGuide.log string
       @showCustomSetForm string
 
   # On the Grid page, display and focus new set name field, swap in save set

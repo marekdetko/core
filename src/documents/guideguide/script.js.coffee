@@ -17,5 +17,5 @@ window.initGuideGuide = ->
     bridge: new GuideGuideHTMLBridge({ui: UI, messages: Messages})
     messages: Messages
 
-  window.GuideGuide = new GuideGuideCore args, ->
-    console.log "GuideGuide Ready"
+  window.GuideGuide = new GuideGuideCore args, (gg) ->
+    gg.log "GuideGuide Ready"
