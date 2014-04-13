@@ -34,10 +34,12 @@ You need to have [Git](http://git-scm.com/download), [Ruby](http://www.rubyinsta
 and [Node](http://nodejs.org/) installed on your system.
 
 1. Install SASS compiler
+
   ```
   gem install sass
   ```
 2. Install dependencies
+
   ```
   npm install
   ```
