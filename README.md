@@ -30,7 +30,19 @@ GuideGuide is a guide management plugin designed to easy to embed in multiple ap
 
 ### Windows
 
-Not documented at this time. Feel free to submit a pull request
+You need to have [Git](http://git-scm.com/download), [Ruby](http://www.rubyinstaller.org/),
+and [Node](http://nodejs.org/) installed on your system.
+
+1. Install SASS compiler
+
+  ```
+  gem install sass
+  ```
+2. Install dependencies
+
+  ```
+  npm install
+  ```
 
 ## Usage
 
