@@ -34,11 +34,11 @@ class window.Gap
   #   string - string to be parsed into a Unit
   #
   # Returns an object
-  constructor: (string) ->
+  constructor: (string, messages) ->
     @errors = {}
     @original = string = string.replace /\s/g, ''
 
-    @messages = Messages
+    @messages = messages
 
     if @variableRegexp.test string
       @parseVariable string

@@ -7,12 +7,12 @@
     "npm": "1.2"
   },
   "dependencies": {
-    "docpad": "~6.54.10",
-    "docpad-plugin-coffeescript": "~2.2.3",
-    "docpad-plugin-sass": "~2.6.1",
-    "docpad-plugin-partials": "~2.8.1",
     "datauri": "~0.3.1",
-    "docpad-plugin-eco": "~2.0.2"
+    "docpad": "~6.64.0",
+    "docpad-plugin-coffeescript": "~2.4.0",
+    "docpad-plugin-eco": "~2.0.3",
+    "docpad-plugin-partials": "~2.8.1",
+    "docpad-plugin-sass": "~2.7.1"
   },
   "main": "node_modules/docpad/bin/docpad-server",
   "scripts": {

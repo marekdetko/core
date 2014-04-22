@@ -1,5 +1,6 @@
 class window.GuideGuideHTMLBridge
   testMode: false
+  locale: "en_us"
 
   # This is the bridge between GuideGuide logic and an HTML API for GuideGuide.
   # This does not contain GuideGuide or UI logic.
@@ -9,6 +10,12 @@ class window.GuideGuideHTMLBridge
     args ||= {}
     @testMode = args.testMode if args.testMode
     @ui = args.ui if args.ui
+
+  # Init the UI
+  #
+  # Returns nothing
+  init: (core) =>
+    @ui.init core
 
   # Get saved panel data
   #

@@ -185,5 +185,7 @@ $ ->
 
     $("#panel").attr 'src', '/guideguide/panel.html'
     $("#panel").on 'load', (event) =>
-      event.target.contentWindow.Fauxtoshop = fauxtoshop
-      event.target.contentWindow.initGuideGuide()
+      window.Fauxtoshop = fauxtoshop
+      frame = event.target.contentWindow
+      bridge = new GuideGuideHTMLBridge { ui: new frame.GuideGuideHTMLUI() }
+      frame.initGuideGuide bridge

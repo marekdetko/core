@@ -6,9 +6,15 @@
   <link rel="stylesheet" type="text/css" href="/css/demo.css">
   <link rel="stylesheet" type="text/css" href="/fauxtoshop/css/jquery-ui-1.10.3.custom.min.css">
   <link rel="stylesheet" type="text/css" href="/fauxtoshop/css/fauxtoshop.css">
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="/guideguide/js/plugins/jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="/guideguide/js/plugins/jquery.ba-throttle-debounce.min.js"></script>
+  <script type="text/javascript" src="/guideguide/js/plugins/jquery-ui-1.10.3.custom.min.js"></script>
+  <script type="text/javascript" src="/guideguide/js/plugins/jquery.autosize.min.js"></script>
+  <script type="text/javascript" src="/guideguide/js/plugins/sha1.js"></script>
+  <script type="text/javascript" src="/guideguide/js/plugins/scrollable.js"></script>
   <script type="text/javascript" src="/fauxtoshop/js/jquery-ui-1.10.3.custom.min.js"></script>
-  <script type="text/javascript" src="/guideguide/js/FauxtoshopLib.js"></script>
+  <script type="text/javascript" src="/fauxtoshop/js/GuideGuideHTMLBridge.js"></script>
+  <script type="text/javascript" src="/fauxtoshop/js/FauxtoshopLib.js"></script>
   <script type="text/javascript" src="/js/demo.js"></script>
 </head>
 <body class="guideguide-dark" data-environment="development">

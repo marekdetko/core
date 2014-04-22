@@ -8,16 +8,13 @@ class window.GuideGuideCore
   #
   #  args        - Object: Specify options for GuideGuide.
   #    .bridge   - Object: Contains all the necessary methods for GuideGuide to function in the host application.
-  #    .messages - Object: Contains all the necessary messages for GuideGuide.
-  #    .locale   - String: Locale string that GuideGuide will use to pick its language.
   #    .siteUrl  - String: Url for guideguide.me. Specify this to switch to a dev url.
   #
   constructor: (args, callback) ->
-    return if !args.bridge?
-    args.locale ||= "en_us"
-
     @bridge   = args.bridge
-    @messages = args.messages
+    @messages = new GuideGuideMessages @bridge.locale
+
+    @bridge.init @
 
     @data = @bridge.getData()
 
@@ -619,7 +616,7 @@ class window.GuideGuideCore
     return unless info and info.hasOpenDocuments
     guides = []
 
-    guides = @getGuidesFromGGN new GGN(ggn), info
+    guides = @getGuidesFromGGN new GGN(ggn, @messages), info
     guides = @consolidate(info.existingGuides, guides)
 
     @recordUsage source, guides.length

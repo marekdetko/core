@@ -1,9 +1,10 @@
 class window.GuideGuideHTMLUI
+  core: {}
 
   # The GuideGuide HTML user interface. This should only contain UI concerns and
   # not anything related to GuideGuide's logic.
-  constructor: (args, @panel) ->
-    return if !@panel
+  constructor: ->
+    @panel = $('#guideguide')
     @panel.on 'guideguide:exitform', @onExitGridForm
     @panel.on 'guideguide:exitcustom', @onExitCustomForm
     @panel.on 'click', '.js-tabbed-page-tab', @onTabClick
@@ -49,11 +50,12 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onClickEditSet
 
-    @messages = args.messages
+  init: (core) =>
+    @core = core
+    @messages = @core.messages
 
-    @panel.removeClass 'hideUI'
-    @updateTheme args.theme
-    @panel.find('textarea').autosize();
+    @panel.removeClass('hideUI')
+    @panel.find('textarea').autosize()
 
   # Update all of the ui with local messages.
   #
@@ -183,7 +185,7 @@ class window.GuideGuideHTMLUI
     $checkbox.toggleClass 'checked'
 
     $form  = $checkbox.closest '.js-grid-form'
-    GuideGuide.formChanged @getFormData()
+    @core.formChanged @getFormData()
 
   # Updates the text in the custom field and resizes it
   #
@@ -204,12 +206,12 @@ class window.GuideGuideHTMLUI
       $input.val val if val
       int = true
 
-    if !GuideGuide.validateInput $input.val(), int
+    if !@core.validateInput $input.val(), int
       @markInvalid $input
     else
       @formatField $input
       $form  = $input.closest '.js-grid-form'
-      GuideGuide.formChanged @getFormData()
+      @core.formChanged @getFormData()
 
   # When one of the input icons is clicked, change all fields of the same type
   # to that value
@@ -226,7 +228,7 @@ class window.GuideGuideHTMLUI
     type    = $input.attr 'data-distribute'
     $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
     $fields.find('.js-grid-form-input').val value
-    GuideGuide.formChanged @getFormData()
+    @core.formChanged @getFormData()
 
   # Reformat a unit string to match conventions
   #
@@ -276,7 +278,7 @@ class window.GuideGuideHTMLUI
     data =
       settings: {}
     data.settings[setting] = value
-    GuideGuide.saveData data
+    @core.saveData data
 
   # Display the correct settings in the Settings tab.
   #
@@ -296,7 +298,7 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onShowImporter: (event) =>
     event.preventDefault()
-    return if GuideGuide.isDemo()
+    return if @core.isDemo()
     @panel.addClass 'is-showing-importer'
     @panel.find('.js-import-input').val ''
 
@@ -315,20 +317,20 @@ class window.GuideGuideHTMLUI
 
   onClickExportSets: (event) =>
     event.preventDefault()
-    GuideGuide.exportSets()
+    @core.exportSets()
 
   onClickImportSets: (event) =>
     event.preventDefault()
-    return if GuideGuide.isDemo()
+    return if @core.isDemo()
 
     data = $(".js-import-input").val()
 
     # Is it a gist?
     if data.indexOf("gist.github.com") > 0
       id = data.substring data.lastIndexOf('/') + 1
-      GuideGuide.importSets id
+      @core.importSets id
     else
-      GuideGuide.importSets null
+      @core.importSets null
 
   # Show the indeterminate loader.
   #
@@ -347,8 +349,8 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onToggleGuides: (event) =>
     event.preventDefault()
-    GuideGuide.log "Toggle guides"
-    GuideGuide.toggleGuides()
+    @core.log "Toggle guides"
+    @core.toggleGuides()
 
   # When an alert button is clicked, dismiss the alert and execute the callback
   #
@@ -375,7 +377,7 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onClickCheckForUpdates: (event) =>
     event.preventDefault()
-    GuideGuide.manualCheckForUpdates()
+    @core.manualCheckForUpdates()
 
   # Show update details. Triggered from Core.
   #
@@ -388,7 +390,7 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onClickHasUpdateButton: (event) =>
     event.preventDefault()
-    GuideGuide.alert
+    @core.alert
       title: $(event.currentTarget).attr 'data-title'
       message: $(event.currentTarget).attr 'data-message'
 
@@ -400,7 +402,7 @@ class window.GuideGuideHTMLUI
     $set = $(event.currentTarget).closest '.js-set'
     id = $set.attr 'data-id'
     group = $set.attr 'data-group'
-    GuideGuide.deleteSet(group, id)
+    @core.deleteSet(group, id)
 
   # Fire save set event and pass it the contents of the grid form
   #
@@ -410,7 +412,7 @@ class window.GuideGuideHTMLUI
     data = @getFormData()
     @markInvalid @panel.find('.js-grid-form .js-set-name').closest('.js-input') if data.name.length == 0
     return if @panel.find('.js-grid-form .js-input').filter('.is-invalid').length > 0
-    GuideGuide.saveSet @getFormData()
+    @core.saveSet @getFormData()
 
   onClickSaveSetFromCustom: (event) =>
     event.preventDefault()
@@ -424,7 +426,7 @@ class window.GuideGuideHTMLUI
       id: $('#guideguide').find('.js-set-id').val()
       name: name
       contents: string
-    GuideGuide.saveSet set
+    @core.saveSet set
 
   # Open Custom form with data from the set to be edited
   #
@@ -434,7 +436,7 @@ class window.GuideGuideHTMLUI
     $set  = $(event.currentTarget).closest('.js-set')
     id    = $set.attr('data-id')
     group = $set.attr('data-group')
-    set   = GuideGuide.getSets { set: id, group: group }
+    set   = @core.getSets { set: id, group: group }
     $form = @panel.find('.js-custom-form')
     $form.find('.js-set-name').val(set.name)
     $form.find('.js-set-id').val(set.id)
@@ -481,8 +483,8 @@ class window.GuideGuideHTMLUI
 
   onClickShowSetsNewSetForm: (event) =>
     event.preventDefault()
-    GuideGuide.getGGNFromExistingGuides (string) =>
-      GuideGuide.log string
+    @core.getGGNFromExistingGuides (string) =>
+      @core.log string
       @showCustomSetForm string
 
   # On the Grid page, display and focus new set name field, swap in save set
@@ -554,56 +556,56 @@ class window.GuideGuideHTMLUI
   onClickLink: (event) =>
     event.preventDefault()
     url = $(event.currentTarget).attr 'href'
-    GuideGuide.openURL url
+    @core.openURL url
 
   # Draw a guide at the top of the document/selection
   #
   # Return nothing.
   onClickTopGuide: (event) =>
     event.preventDefault()
-    GuideGuide.quickGuide "top"
+    @core.quickGuide "top"
 
   # Draw a guide at the bottom of the document/selection
   #
   # Return nothing.
   onClickBottomGuide: (event) =>
     event.preventDefault()
-    GuideGuide.quickGuide "bottom"
+    @core.quickGuide "bottom"
 
   # Draw a guide to the left of the document/selection
   #
   # Return nothing.
   onClickLeftGuide: (event) =>
     event.preventDefault()
-    GuideGuide.quickGuide "left"
+    @core.quickGuide "left"
 
   # Draw a guide to the right of the document/selection
   #
   # Return nothing.
   onClickRightGuide: (event) =>
     event.preventDefault()
-    GuideGuide.quickGuide "right"
+    @core.quickGuide "right"
 
   # Draw a guide at the horizontal midpoint of the document/selection
   #
   # Return nothing.
   onClickHorizontalMidpoint: (event) =>
     event.preventDefault()
-    GuideGuide.quickGuide "horizontalMidpoint"
+    @core.quickGuide "horizontalMidpoint"
 
   # Draw a guide at the vertical midpoint of the document/selection
   #
   # Return nothing.
   onClickVerticalMidpoint: (event) =>
     event.preventDefault()
-    GuideGuide.quickGuide "verticalMidpoint"
+    @core.quickGuide "verticalMidpoint"
 
   # Handle clicks on the clear guides button.
   #
   # Returns nothing.
   onClickClearGuides: (event) =>
     event.preventDefault()
-    GuideGuide.clearGuides()
+    @core.clearGuides()
 
   # Create a grid from the Grid form
   #
@@ -611,7 +613,7 @@ class window.GuideGuideHTMLUI
   onClickMakeGridFromForm: (event) =>
     event.preventDefault()
     return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
-    GuideGuide.makeGridFromForm @getFormData()
+    @core.makeGridFromForm @getFormData()
 
   # Create a grid from the Custom form
   #
@@ -621,7 +623,7 @@ class window.GuideGuideHTMLUI
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
     return unless $form.find('.js-input.is-invalid').length == 0 and string
-    GuideGuide.makeGridFromCustom string
+    @core.makeGridFromCustom string
 
   # Create a grid from a set
   #
@@ -632,7 +634,7 @@ class window.GuideGuideHTMLUI
     return unless $set.length
     id    = $set.attr 'data-id'
     group = $set.attr 'data-group'
-    GuideGuide.makeGridFromSet(id, group)
+    @core.makeGridFromSet(id, group)
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.

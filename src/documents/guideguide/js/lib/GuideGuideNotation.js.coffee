@@ -21,12 +21,12 @@ class window.GGN
   # Total number of wildcards in this grid
   wildcards: 0
 
-  constructor: (string) ->
+  constructor: (string, messages) ->
     @errors    = {}
     @variables = {}
     @grids     = []
     @ggn       = string.replace /\s*$|^\s*/gm, ''
-    @messages  = Messages
+    @messages  = messages
     @parse @ggn
 
   # Turn a ggn string into a collection of grids
@@ -117,7 +117,7 @@ class window.GGN
         fills++ if gap.isFill
 
       if grid.options.width
-        width = new Gap grid.options.width.toString()
+        width = new Gap grid.options.width.toString(), @messages
         @defineGapErrors width if !width.isValid
     @error @messages.ggnMoreThanOneHundredPercent() if percent > 100
     @wildcards = wildcards
@@ -222,7 +222,7 @@ class window.GGN
     gapStrings = string.split /\s/
 
     $.each gapStrings, (index,value) =>
-      gap = new Gap value
+      gap = new Gap value, @messages
 
       if value == '|'
         gaps.forString.push '|'
