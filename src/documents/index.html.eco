@@ -10,6 +10,7 @@
   <script type="text/javascript" src="/guideguide/js/plugins/jquery.ba-throttle-debounce.min.js"></script>
   <script type="text/javascript" src="/guideguide/js/plugins/jquery-ui-1.10.3.custom.min.js"></script>
   <script type="text/javascript" src="/guideguide/js/plugins/jquery.autosize.min.js"></script>
+  <script type="text/javascript" src="/guideguide/js/plugins/sha1.js"></script>
   <script type="text/javascript" src="/guideguide/js/plugins/scrollable.js"></script>
   <script type="text/javascript" src="/fauxtoshop/js/jquery-ui-1.10.3.custom.min.js"></script>
   <script type="text/javascript" src="/fauxtoshop/js/GuideGuideHTMLBridge.js"></script>
