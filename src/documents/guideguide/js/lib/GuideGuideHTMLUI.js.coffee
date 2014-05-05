@@ -237,9 +237,9 @@ class window.GuideGuideHTMLUI
   # Returns a String
   formatField: ($field) ->
     int = if $field.attr 'data-integer' then true else false
-    $field.val $.map $field.val().split(','), (unit) ->
+    gaps = $.map $field.val().split(','), (unit) ->
       new Unit(unit,int).toString()
-    .join(', ')
+    $field.val gaps.join(', ')
 
   # Toggle dropdown visibilty
   #
