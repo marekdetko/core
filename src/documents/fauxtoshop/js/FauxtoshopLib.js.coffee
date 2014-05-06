@@ -129,8 +129,7 @@ class window.FauxtoshopLib
   #  callback - code to execute once we have detirmined the document info
   #
   # Returns nothing
-  getDocumentInfo: =>
-    return @testInfo if @testMode
+  getDocumentInfo: (callback) =>
     activeDocument = $('.js-document').find('.js-artboard')
     artboardPosition = activeDocument.position()
     $selection = $('.js-document').find('.js-selection')
@@ -143,6 +142,7 @@ class window.FauxtoshopLib
       offsetY: if $selection.length then $selection.position().top - artboardPosition.top else 0
       ruler: 'pixels'
       existingGuides: @getExistingGuides()
+    callback info
 
   # Turn guide visibility on and off
   #

@@ -54,8 +54,9 @@ class window.GuideGuideHTMLBridge
   # Get info about the current state of the active document.
   #
   # Returns an Object.
-  getDocumentInfo: =>
-    Fauxtoshop.getDocumentInfo()
+  getDocumentInfo: (callback) =>
+    Fauxtoshop.getDocumentInfo (info) ->
+      callback info
 
   # Get the contents of the grid form
   #

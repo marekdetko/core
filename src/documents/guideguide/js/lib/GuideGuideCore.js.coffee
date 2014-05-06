@@ -282,8 +282,9 @@ class window.GuideGuideCore
   # Get info about the current state of the active document.
   #
   # Returns an Object.
-  getDocumentInfo: =>
-    @bridge.getDocumentInfo()
+  getDocumentInfo: (callback) =>
+    @bridge.getDocumentInfo (info) =>
+      callback info
 
   # Default info about GuideGuide.
   #
@@ -611,59 +612,58 @@ class window.GuideGuideCore
   #
   # Returns the array of guides generated from the GuideGuide Notation.
   addGuidesfromGGN: (ggn, source) =>
-    info = @bridge.getDocumentInfo()
+    @bridge.getDocumentInfo (info) =>
 
-    return unless info and info.hasOpenDocuments
-    guides = []
+      return unless info and info.hasOpenDocuments
+      guides = []
 
-    guides = @getGuidesFromGGN new GGN(ggn, @messages), info
-    guides = @consolidate(info.existingGuides, guides)
+      guides = @getGuidesFromGGN new GGN(ggn, @messages), info
+      guides = @consolidate(info.existingGuides, guides)
 
-    @recordUsage source, guides.length
-    # TODO: @bridge.resetGuides()
-    @addGuides guides
-    guides
+      @recordUsage source, guides.length
+      # TODO: @bridge.resetGuides()
+      @addGuides guides
 
   getGGNFromExistingGuides: (callback) =>
-    info    = @bridge.getDocumentInfo()
-    xString = ''
-    yString = ''
-    string  = ''
+    @bridge.getDocumentInfo (info) =>
+      xString = ''
+      yString = ''
+      string  = ''
 
-    prevHorizontal = if info.isSelection then info.offsetY else 0
-    prevVertical = if info.isSelection then info.offsetX else 0
-    guides = info.existingGuides
+      prevHorizontal = if info.isSelection then info.offsetY else 0
+      prevVertical = if info.isSelection then info.offsetX else 0
+      guides = info.existingGuides
 
-    if info.isSelection
-      bounds =
-        top:    info.offsetY
-        left:   info.offsetX
-        bottom: info.offsetY + info.height
-        right:  info.offsetX + info.width
-      guides = @consolidate([], info.existingGuides, { bounds: bounds })
+      if info.isSelection
+        bounds =
+          top:    info.offsetY
+          left:   info.offsetX
+          bottom: info.offsetY + info.height
+          right:  info.offsetX + info.width
+        guides = @consolidate([], info.existingGuides, { bounds: bounds })
 
-    if guides
-      guides.sort (a,b) =>
-        a.location - b.location
+      if guides
+        guides.sort (a,b) =>
+          a.location - b.location
 
-      $.each guides, (index, guide) =>
-        if guide.orientation == 'vertical'
-          xString = "#{ xString }#{ guide.location - prevVertical }px | "
-          prevVertical = guide.location
-        if guide.orientation == 'horizontal'
-          yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
-          prevHorizontal = guide.location
+        $.each guides, (index, guide) =>
+          if guide.orientation == 'vertical'
+            xString = "#{ xString }#{ guide.location - prevVertical }px | "
+            prevVertical = guide.location
+          if guide.orientation == 'horizontal'
+            yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
+            prevHorizontal = guide.location
 
-      xString = "#{ xString }(v#{ 'p' if @data.settings.calculation == 'pixel' })" if xString != ''
-      yString = "#{ yString }(h#{ 'p' if @data.settings.calculation == 'pixel' })" if yString != ''
+        xString = "#{ xString }(v#{ 'p' if @data.settings.calculation == 'pixel' })" if xString != ''
+        yString = "#{ yString }(h#{ 'p' if @data.settings.calculation == 'pixel' })" if yString != ''
 
-      string += xString
-      string += '\n' if xString
-      string += yString
-      string += '\n' if yString
-      string += '\n# ' + @messages.ggnStringFromExistingGuides() if xString or yString
+        string += xString
+        string += '\n' if xString
+        string += yString
+        string += '\n' if yString
+        string += '\n# ' + @messages.ggnStringFromExistingGuides() if xString or yString
 
-    callback string
+      callback string
 
   # Add an array of guides to the document.
   #
@@ -697,6 +697,7 @@ class window.GuideGuideCore
         after = "~"
 
     ggn = "#{ before }|#{ after }(#{ orientation }#{ @calculationType() })"
+
     @addGuidesfromGGN ggn
     return ggn
 
@@ -725,22 +726,19 @@ class window.GuideGuideCore
   # Returns an Array of remaining guides
   clearGuides: =>
     guides = []
-    info = @bridge.getDocumentInfo()
-    return guides unless info.hasOpenDocuments
+    @bridge.getDocumentInfo (info) =>
+      @bridge.resetGuides()
 
-    @bridge.resetGuides()
+      if info.isSelection
+        bounds =
+          top:    info.offsetY
+          left:   info.offsetX
+          bottom: info.offsetY + info.height
+          right:  info.offsetX + info.width
+        guides = @consolidate([], info.existingGuides, { bounds: bounds, invert: true })
+        @addGuides guides
 
-    if info.isSelection
-      bounds =
-        top:    info.offsetY
-        left:   info.offsetX
-        bottom: info.offsetY + info.height
-        right:  info.offsetX + info.width
-      guides = @consolidate([], info.existingGuides, { bounds: bounds, invert: true })
-      @addGuides guides
-
-    @recordUsage "clear"
-    guides
+      @recordUsage "clear"
 
 
   # Get the option value that corresponds to the calculation type of the app
