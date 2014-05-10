@@ -74,7 +74,8 @@ class window.Gap
     @multiplier = parseInt(gapBits[3]) || 1
     @isFill     = gapBits[2] && !gapBits[3] || false
 
-  # Determine normal gap validity, type, unit, multiplier, if it's a fill, and it's string
+  # Determine normal gap validity, type, unit, multiplier, if it's a fill,
+  # and it's string
   #
   #   string - gap string to parse
   #
