@@ -55,7 +55,7 @@ class window.Gap
   #   string - gap string to parse
   #
   # Returns nothing
-  parseWildcard: (string) ->
+  parseWildcard: (string) =>
     @isWildcard = true
     gapBits    = @wildcardRegexp.exec string
     @isFill     = gapBits[1] && !gapBits[2] || false
@@ -153,9 +153,9 @@ class window.Gap
   #
   # Returns a gap
   clone: () ->
-    gap = new Gap @original
+    gap = new Gap @original, @messages
     gap.multiplier = 1
-    gap = new Gap gap.toString(false)
+    gap = new Gap gap.toString(false), @messages
     gap.errors = @errors
     gap
 

@@ -98,7 +98,7 @@ class window.GuideGuideHTMLUI
   onBlurCustomForm: (event) =>
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
-      ggn = new GGN $input.val()
+      ggn = new GGN $input.val(), @messages
       @markInvalid $input.closest('.js-input') if !ggn.isValid
       $input.val ggn.toString()
       $input.trigger('autosize.resize')
