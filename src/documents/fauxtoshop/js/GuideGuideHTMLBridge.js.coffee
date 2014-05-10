@@ -48,8 +48,9 @@ class window.GuideGuideHTMLBridge
   # Clear guides
   #
   # Returns nothing
-  resetGuides: =>
+  resetGuides: (guides) =>
     Fauxtoshop.resetGuides()
+    @addGuides(guides) if guides.length > 0
 
   # Get info about the current state of the active document.
   #

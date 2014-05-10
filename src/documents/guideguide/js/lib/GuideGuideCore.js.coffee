@@ -727,8 +727,6 @@ class window.GuideGuideCore
   clearGuides: =>
     guides = []
     @bridge.getDocumentInfo (info) =>
-      @bridge.resetGuides()
-
       if info.isSelection
         bounds =
           top:    info.offsetY
@@ -736,7 +734,9 @@ class window.GuideGuideCore
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
         guides = @consolidate([], info.existingGuides, { bounds: bounds, invert: true })
-        @addGuides guides
+        console.log guides
+
+      @bridge.resetGuides(guides)
 
       @recordUsage "clear"
 
