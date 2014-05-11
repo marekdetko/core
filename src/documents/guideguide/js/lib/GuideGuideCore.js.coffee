@@ -1,5 +1,5 @@
 class window.GuideGuideCore
-  siteUrl: 'http://guideguide.me'
+  siteUrl: 'http://guideguide.me/update/'
   env:     'production'
   bridge: {}
   data: {}
@@ -73,17 +73,33 @@ class window.GuideGuideCore
   # Returns nothing.
   checkForUpdates: (callback) =>
     @bridge.log 'Checking for updates'
+
+    result =
+      hasUpdate: false
+
     $.ajax
       type: 'GET'
-      url: "#{ @siteUrl }/panel/#{ @data.application.id }"
-      data:
-        version: @data.application.guideguideVersion || '0.0.0'
-        i18n: @data.application.localization
+      url: "#{ @siteUrl }#{ @data.application.id }"
       success: (data) =>
-        callback(data)
+        hasUpdate = false
+
+        ours = @data.application.guideguideVersion.replace(/-/g,'.').split('.')
+        theirs = data.version.replace(/-/g,'.').split('.')
+
+        theirs.push(0) while theirs.length < ours.length
+        ours.push(0) while theirs.length > ours.length
+
+        for num, i in theirs
+          if parseInt(num) > parseInt(ours[i])
+            result.hasUpdate = true
+            result.url = data.url
+            result.title = @messages.alertTitleUpdate()
+            result.message = @messages.alertMessageUpdate()
+
+        callback(result)
       error: (error) =>
         @bridge.log error
-        callback({ hasUpdate: false })
+        callback(result)
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
