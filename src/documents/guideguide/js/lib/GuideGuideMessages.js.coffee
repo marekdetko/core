@@ -327,6 +327,12 @@ class window.GuideGuideMessages
         "Unfortunately, GuideGuide is unable to check for updates at this time.
         Please try again later."
 
+  alertTitleUpdate: =>
+    "Updates available"
+
+  alertMessageUpdate: =>
+    "Update GuideGuide to get the latest version."
+
   alertTitleImportSuccess: =>
     switch @i18n
       when "es_es"
