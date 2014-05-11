@@ -526,7 +526,7 @@ class window.GuideGuideCore
 
     $.each ggn.grids, (index,grid) =>
       guideOrientation = grid.options.orientation.value
-      wholePixels      = grid.options.calculation? == 'pixel'
+      wholePixels      = grid.options.calculation?.value == 'pixel'
       fill             = grid.gaps.fill if grid.gaps.fill
       measuredWidth    = if guideOrientation == 'horizontal' then info.height else info.width
       measuredWidth    = grid.options.width.value if grid.options.width
