@@ -5,7 +5,6 @@ class window.FauxtoshopLib
       id: 'web'
       name: 'GuideGuide web'
       version: '0.0.0'
-      os: "Unknown"
       localization: 'en_us'
       env: 'dev'
       guideguideVersion: '0.0.0'
@@ -40,7 +39,6 @@ class window.FauxtoshopLib
   constructor: (args, callback) ->
     args ||= {}
     @testMode = args.testMode if args.testMode
-    @data.application.os = @getOS()
     @data.application.submitAnonymousData = args.submitData || false
     @data.application.checkForUpdates = args.checkForUpdates || false
 
@@ -88,17 +86,6 @@ class window.FauxtoshopLib
   resetGuides: =>
     return [] if @testMode
     $('.js-document').find('.js-guide').remove()
-
-  # Determine the operating system in which GuideGuide is running
-  #
-  # Returns a String
-  getOS: =>
-    os = 'Unknown'
-    os = 'MacOS' if navigator.appVersion.indexOf("Mac") >= 0
-    os = 'Win' if navigator.appVersion.indexOf("Windows") >= 0
-    os = 'UNIX' if navigator.appVersion.indexOf("X11") >= 0
-    os = 'Linux' if navigator.appVersion.indexOf("Linux") >= 0
-    os
 
   # Get the guides that exist in the document currently
   #
