@@ -4,10 +4,9 @@ class window.FauxtoshopLib
     application:
       id: 'web'
       name: 'GuideGuide web'
-      version: '0.0.0'
       localization: 'en_us'
       env: 'dev'
-      guideguideVersion: '0.0.0'
+      guideguideVersion: '0.0.0.0'
       checkForUpdates: false
   testInfo:
     hasOpenDocuments: true
