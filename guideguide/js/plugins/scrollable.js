@@ -63,8 +63,7 @@
   };
 
   onMouseLeave = function(event) {
-    var $container, $contentOuter,
-      _this = this;
+    var $container, $contentOuter;
     $container = $(this).closest('.js-scrollable');
     $contentOuter = $container.find('.js-scroll-outer');
     $(document).off('.scrollable');
@@ -72,9 +71,11 @@
     $contentOuter.off('.scrollable');
     $container = $(this).closest('.js-scrollable');
     if ($container.hasClass('scrollbar-is-visible')) {
-      return scrollTimer = setTimeout(function() {
-        return $container.removeClass('scrollbar-is-visible');
-      }, 1000);
+      return scrollTimer = setTimeout((function(_this) {
+        return function() {
+          return $container.removeClass('scrollbar-is-visible');
+        };
+      })(this), 1000);
     }
   };
 

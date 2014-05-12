@@ -236,20 +236,20 @@ table {
 }
 
 .dark-theme .loader-spinner {
-  background-image: url("../img/spinner-dark.gif");
+  background-image: url("spinner-dark.gif");
 }
 
 .light-theme .loader-spinner {
-  background-image: url("../img/spinner-light.gif");
+  background-image: url("spinner-light.gif");
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dppx) {
   .dark-theme .loader-spinner {
-    background-image: url("../img/spinner-dark@2x.gif");
+    background-image: url("spinner-dark@2x.gif");
   }
 
   .light-theme .loader-spinner {
-    background-image: url("../img/spinner-light@2x.gif");
+    background-image: url("spinner-light@2x.gif");
   }
 
   .loader-spinner {
@@ -604,34 +604,44 @@ input, textarea {
 .light-theme .header-action:hover .icon-visibility {
   background-position: -240px -16px;
 }
-.light-theme .icon-margin-top:hover {
+.light-theme .icon-margin-top:hover,
+.light-theme .distribute-highlight .icon-margin-top {
   background-position: -192px -32px;
 }
-.light-theme .icon-margin-right:hover {
+.light-theme .icon-margin-right:hover,
+.light-theme .distribute-highlight .icon-margin-right {
   background-position: -208px -32px;
 }
-.light-theme .icon-margin-bottom:hover {
+.light-theme .icon-margin-bottom:hover,
+.light-theme .distribute-highlight .icon-margin-bottom {
   background-position: -224px -32px;
 }
-.light-theme .icon-margin-left:hover {
+.light-theme .icon-margin-left:hover,
+.light-theme .distribute-highlight .icon-margin-left {
   background-position: -176px -32px;
 }
-.light-theme .icon-count-column:hover {
+.light-theme .icon-count-column:hover,
+.light-theme .distribute-highlight .icon-count-column {
   background-position: -224px 0px;
 }
-.light-theme .icon-count-row:hover {
+.light-theme .icon-count-row:hover,
+.light-theme .distribute-highlight .icon-count-row {
   background-position: -176px 0px;
 }
-.light-theme .icon-width-column:hover {
+.light-theme .icon-width-column:hover,
+.light-theme .distribute-highlight .icon-width-column {
   background-position: -192px -64px;
 }
-.light-theme .icon-width-column-gutter:hover {
+.light-theme .icon-width-column-gutter:hover,
+.light-theme .distribute-highlight .icon-width-column-gutter {
   background-position: -208px -64px;
 }
-.light-theme .icon-width-row:hover {
+.light-theme .icon-width-row:hover,
+.light-theme .distribute-highlight .icon-width-row {
   background-position: -224px -64px;
 }
-.light-theme .icon-width-row-gutter:hover {
+.light-theme .icon-width-row-gutter:hover,
+.light-theme .distribute-highlight .icon-width-row-gutter {
   background-position: -176px -64px;
 }
 
@@ -710,34 +720,44 @@ input, textarea {
 .dark-theme .header-action:hover .icon-visibility {
   background-position: -176px -16px;
 }
-.dark-theme .icon-margin-top:hover {
+.dark-theme .icon-margin-top:hover,
+.dark-theme .distribute-highlight .icon-margin-top {
   background-position: -128px -32px;
 }
-.dark-theme .icon-margin-right:hover {
+.dark-theme .icon-margin-right:hover,
+.dark-theme .distribute-highlight .icon-margin-right {
   background-position: -144px -32px;
 }
-.dark-theme .icon-margin-bottom:hover {
+.dark-theme .icon-margin-bottom:hover,
+.dark-theme .distribute-highlight .icon-margin-bottom {
   background-position: -160px -32px;
 }
-.dark-theme .icon-margin-left:hover {
+.dark-theme .icon-margin-left:hover,
+.dark-theme .distribute-highlight .icon-margin-left {
   background-position: -176px -32px;
 }
-.dark-theme .icon-count-column:hover {
+.dark-theme .icon-count-column:hover,
+.dark-theme .distribute-highlight .icon-count-column {
   background-position: -160px 0px;
 }
-.dark-theme .icon-count-row:hover {
+.dark-theme .icon-count-row:hover,
+.dark-theme .distribute-highlight .icon-count-row {
   background-position: -176px 0px;
 }
-.dark-theme .icon-width-column:hover {
+.dark-theme .icon-width-column:hover,
+.dark-theme .distribute-highlight .icon-width-column {
   background-position: -128px -64px;
 }
-.dark-theme .icon-width-column-gutter:hover {
+.dark-theme .icon-width-column-gutter:hover,
+.dark-theme .distribute-highlight .icon-width-column-gutter {
   background-position: -144px -64px;
 }
-.dark-theme .icon-width-row:hover {
+.dark-theme .icon-width-row:hover,
+.dark-theme .distribute-highlight .icon-width-row {
   background-position: -160px -64px;
 }
-.dark-theme .icon-width-row-gutter:hover {
+.dark-theme .icon-width-row-gutter:hover,
+.dark-theme .distribute-highlight .icon-width-row-gutter {
   background-position: -176px -64px;
 }
 
