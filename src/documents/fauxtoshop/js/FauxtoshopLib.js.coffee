@@ -8,7 +8,6 @@ class window.FauxtoshopLib
       localization: 'en_us'
       env: 'dev'
       guideguideVersion: '0.0.0'
-      submitAnonymousData: false
       checkForUpdates: false
   testInfo:
     hasOpenDocuments: true
@@ -39,7 +38,6 @@ class window.FauxtoshopLib
   constructor: (args, callback) ->
     args ||= {}
     @testMode = args.testMode if args.testMode
-    @data.application.submitAnonymousData = args.submitData || false
     @data.application.checkForUpdates = args.checkForUpdates || false
 
     callback @ if callback
