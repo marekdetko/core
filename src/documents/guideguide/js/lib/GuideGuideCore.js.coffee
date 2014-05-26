@@ -54,7 +54,7 @@ class window.GuideGuideCore
   manualCheckForUpdates: =>
     @hideLoader()
     @checkForUpdates (data) =>
-      @bridge.log data
+      @log data
       if data?
         if data.hasUpdate
           @bridge.showUpdateIndicator(data)
@@ -72,7 +72,7 @@ class window.GuideGuideCore
   #
   # Returns nothing.
   checkForUpdates: (callback) =>
-    @bridge.log 'Checking for updates'
+    @log 'Checking for updates'
 
     result =
       hasUpdate: false
@@ -98,7 +98,7 @@ class window.GuideGuideCore
 
         callback(result)
       error: (error) =>
-        @bridge.log error
+        @log error
         callback(result)
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
@@ -750,7 +750,7 @@ class window.GuideGuideCore
           bottom: info.offsetY + info.height
           right:  info.offsetX + info.width
         guides = @consolidate([], info.existingGuides, { bounds: bounds, invert: true })
-        console.log guides
+        @log guides
 
       @bridge.resetGuides(guides)
 
