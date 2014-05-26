@@ -99,7 +99,7 @@
       this.hideLoader();
       return this.checkForUpdates((function(_this) {
         return function(data) {
-          _this.bridge.log(data);
+          _this.log(data);
           if (data != null) {
             if (data.hasUpdate) {
               _this.bridge.showUpdateIndicator(data);
@@ -122,7 +122,7 @@
 
     GuideGuideCore.prototype.checkForUpdates = function(callback) {
       var result;
-      this.bridge.log('Checking for updates');
+      this.log('Checking for updates');
       result = {
         hasUpdate: false
       };
@@ -155,7 +155,7 @@
         })(this),
         error: (function(_this) {
           return function(error) {
-            _this.bridge.log(error);
+            _this.log(error);
             return callback(result);
           };
         })(this)
@@ -858,7 +858,7 @@
               bounds: bounds,
               invert: true
             });
-            console.log(guides);
+            _this.log(guides);
           }
           _this.bridge.resetGuides(guides);
           return _this.recordUsage("clear");
