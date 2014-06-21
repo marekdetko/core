@@ -98,9 +98,10 @@ class window.GuideGuideHTMLUI
   onBlurCustomForm: (event) =>
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
-      ggn = new GGN $input.val(), @messages
-      @markInvalid $input.closest('.js-input') if !ggn.isValid
-      $input.val ggn.toString()
+      string = GridNotation.clean $input.val()
+      valid = GridNotation.test $input.val()
+      @markInvalid $input.closest('.js-input') if !valid
+      $input.val string
       $input.trigger('autosize.resize')
 
   # Highlight all field icons of similar type
