@@ -82,7 +82,7 @@ class window.GuideGuideHTMLUI
   # Outline an invalid input with red.
   #
   # Returns nothing.
-  markInvalid: ($input) => $input.addClass 'is-invalid'
+  markInvalid: ($input) => $input.closest('.js-input').addClass 'is-invalid'
 
   # TODO: Add this to a `clean` menthod in GuideGuide Notation
   # Clear any error reporting text and reset the Custom forms's validation
@@ -199,19 +199,19 @@ class window.GuideGuideHTMLUI
   # Returns noting.
   onBlurFormInput: (event) =>
     $input = $(event.currentTarget)
-
+    return if $.trim($input.val()) is ""
     int = false
 
     if $input.attr 'data-integer'
       val = Math.round parseFloat $input.val()
       $input.val val if val
       int = true
+    else
+      @core.getInputFormat $input.val(), (val) -> $input.val(val)
 
     if !@core.validateInput $input.val(), int
       @markInvalid $input
     else
-      @formatField $input
-      $form  = $input.closest '.js-grid-form'
       @core.formChanged @getFormData()
 
   # When one of the input icons is clicked, change all fields of the same type
@@ -224,23 +224,12 @@ class window.GuideGuideHTMLUI
     $input = $(event.currentTarget).closest '.js-grid-form-iconned-input'
     $field = $input.find('.js-grid-form-input')
     return if $input.hasClass 'is-invalid'
-    @formatField $field
+    @core.getInputFormat $field.val(), (val) -> $field.val(val)
     value   = $field.val()
     type    = $input.attr 'data-distribute'
     $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
     $fields.find('.js-grid-form-input').val value
     @core.formChanged @getFormData()
-
-  # Reformat a unit string to match conventions
-  #
-  #   $field - input to format
-  #
-  # Returns a String
-  formatField: ($field) ->
-    int = if $field.attr 'data-integer' then true else false
-    gaps = $.map $field.val().split(','), (unit) ->
-      new Unit(unit,int).toString()
-    $field.val gaps.join(', ')
 
   # Toggle dropdown visibilty
   #

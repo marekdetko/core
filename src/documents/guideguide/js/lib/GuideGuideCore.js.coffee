@@ -409,12 +409,20 @@ class window.GuideGuideCore
   # Returns a Boolean
   validateInput: (value, integerOnly = false) =>
     return true if value == ""
+    valid = true
     units = value.split ','
-    units = units.filter (unit) =>
-      u = new Unit(unit,integerOnly)
-      !u.isValid
+    (valid = false if !Unit.parse(unit)) for unit in units
+    valid
 
-    units.length == 0
+  # Clean up an input string and fill in any missing units
+  getInputFormat: (string, callback) =>
+    string = string.replace(/\s/g,'')
+    @bridge.getDocumentInfo (info) =>
+      bits = string.split ','
+      for bit, i in bits
+        unit = Unit.preferredName(info.ruler)
+        bits[i] = "#{ bit }#{ unit }" if bit == parseFloat(bit).toString()
+      callback bits.join(', ')
 
   # Create a GuideGuide Notation string from the contents for the grid form
   #
