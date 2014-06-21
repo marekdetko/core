@@ -385,8 +385,8 @@ class window.GuideGuideCore
       list["#{ e.location }.#{ e.orientation }"] = true
       if args.bounds and include
         inBounds = false
-        inBounds = true  if e.orientation == "horizontal" and args.bounds.bottom >= e.location >= args.bounds.top
-        inBounds = true  if e.orientation == "vertical" and args.bounds.right >= e.location >= args.bounds.left
+        inBounds = true  if e.orientation == "h" and args.bounds.bottom >= e.location >= args.bounds.top
+        inBounds = true  if e.orientation == "v" and args.bounds.right >= e.location >= args.bounds.left
         include  = false if (inBounds and args.invert) or (!inBounds and !args.invert)
 
       result.push e if include
@@ -542,11 +542,10 @@ class window.GuideGuideCore
       return unless info and info.hasOpenDocuments
       guides = []
 
-      guides = @getGuidesFromGGN new GGN(notation, @messages), info
+      guides = GridNotation.parse notation, info
       guides = @consolidate(info.existingGuides, guides)
 
       @recordUsage source, guides.length
-      # TODO: @bridge.resetGuides()
       @addGuides guides
 
   getGGNFromExistingGuides: (callback) =>
@@ -572,10 +571,10 @@ class window.GuideGuideCore
           a.location - b.location
 
         $.each guides, (index, guide) =>
-          if guide.orientation == 'vertical'
+          if guide.orientation == 'v'
             xString = "#{ xString }#{ guide.location - prevVertical }px | "
             prevVertical = guide.location
-          if guide.orientation == 'horizontal'
+          if guide.orientation == 'h'
             yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
             prevHorizontal = guide.location
 
