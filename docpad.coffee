@@ -11,4 +11,8 @@ docpadConfig =
     'files'
   ]
 
+  plugins:
+    sass:
+      compass: false
+
 module.exports = docpadConfig
