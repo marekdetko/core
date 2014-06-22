@@ -552,12 +552,13 @@ class window.GuideGuideCore
     @addGuidesFromNotation notation
     return notation
 
-  # TODO: confirm this is valid via a GuideGuide Notation validate method
   # Add guides to the document based on the form
   #
   # Returns an Array of guides
   makeGridFromForm: (data) =>
-    @addGuidesFromNotation @stringifyFormData(data.contents), 'grid'
+    string = @stringifyFormData(data.contents)
+    return if !GridNotation.test(string)
+    @addGuidesFromNotation string, 'grid'
 
   # Add guides to the document from a set
   #
