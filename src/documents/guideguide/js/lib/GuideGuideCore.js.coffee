@@ -512,7 +512,7 @@ class window.GuideGuideCore
         string += '\n' if xString
         string += yString
         string += '\n' if yString
-        string += '\n# ' + @messages.notationStringFromExistingGuides() if xString or yString
+        string += '\n# ' + @messages.gnStringFromExistingGuides() if xString or yString
 
       callback string
 
