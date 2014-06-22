@@ -12,7 +12,7 @@ class window.GuideGuideCore
   #
   constructor: (args, callback) ->
     @bridge   = args.bridge
-    @messages = new GuideGuideMessages @bridge.locale
+    @messages = new Messages @bridge.locale
 
     @bridge.init @
 

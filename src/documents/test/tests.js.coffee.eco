@@ -6,8 +6,6 @@ args =
 
 window.Fauxtoshop = new FauxtoshopLib(args)
 
-window.Messages = new GuideGuideMessages("en_us")
-
 <%- @include('./_fauxtoshop') %>
 <%- @include('./_html_bridge') %>
 <%- @include('./_core') %>
