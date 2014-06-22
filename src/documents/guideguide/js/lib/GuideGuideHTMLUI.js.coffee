@@ -95,6 +95,14 @@ class window.GuideGuideHTMLUI
   #
   # Returns nothing.
   onBlurCustomForm: (event) =>
+    keys = [
+      'gnUnrecognized'
+      'gnNoGrids'
+      'gnNoFillWildcards'
+      'gnOneFillPerGrid'
+      'gnFillInVariable'
+      'gnUndefinedVariable'
+    ]
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
       string = GridNotation.clean $input.val()
@@ -102,7 +110,7 @@ class window.GuideGuideHTMLUI
       if errors.length > 0
         @markInvalid $input.closest('.js-input')
         string += "\n\n"
-        (string += "[#{ code }]\n") for code in errors
+        (string += "# #{ code }. #{ @messages[keys[code-1]]() }\n") for code in errors
       $input.val string
       $input.trigger('autosize.resize')
 
