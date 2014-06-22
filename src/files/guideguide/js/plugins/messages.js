@@ -54,6 +54,9 @@
       this.uiDonate = __bind(this.uiDonate, this);
       this.uiCancel = __bind(this.uiCancel, this);
       this.uiOk = __bind(this.uiOk, this);
+      this.uiGutterMidpoint = __bind(this.uiGutterMidpoint, this);
+      this.uiRowMidpoint = __bind(this.uiRowMidpoint, this);
+      this.uiColumnMidpoint = __bind(this.uiColumnMidpoint, this);
       this.uiExport = __bind(this.uiExport, this);
       this.uiImport = __bind(this.uiImport, this);
       this.uiSaveSet = __bind(this.uiSaveSet, this);
@@ -147,6 +150,18 @@
         default:
           return "Export";
       }
+    };
+
+    Messages.prototype.uiColumnMidpoint = function() {
+      return "Column midpoint";
+    };
+
+    Messages.prototype.uiRowMidpoint = function() {
+      return "Row midpoint";
+    };
+
+    Messages.prototype.uiGutterMidpoint = function() {
+      return "Gutter midpoint";
     };
 
     Messages.prototype.uiOk = function() {
@@ -589,7 +604,7 @@
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = Messages;
   } else {
-    window.messages = Messages;
+    window.Messages = Messages;
   }
 
 }).call(this);
