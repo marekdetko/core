@@ -6,11 +6,11 @@
   Messages = (function() {
     function Messages(locale) {
       this.gnStringFromExistingGuides = __bind(this.gnStringFromExistingGuides, this);
-      this.gnOneFillPerGrid = __bind(this.gnOneFillPerGrid, this);
       this.gnUndefinedVariable = __bind(this.gnUndefinedVariable, this);
       this.gnFillInVariable = __bind(this.gnFillInVariable, this);
-      this.gnNoGrids = __bind(this.gnNoGrids, this);
+      this.gnOneFillPerGrid = __bind(this.gnOneFillPerGrid, this);
       this.gnNoFillWildcards = __bind(this.gnNoFillWildcards, this);
+      this.gnNoGrids = __bind(this.gnNoGrids, this);
       this.gnUnrecognized = __bind(this.gnUnrecognized, this);
       this.alertMessageDonate = __bind(this.alertMessageDonate, this);
       this.alertTitleDonate = __bind(this.alertTitleDonate, this);
@@ -537,9 +537,18 @@
     Messages.prototype.gnUnrecognized = function() {
       switch (this.i18n) {
         case "es_es":
-          return "Hueco no reconocido";
+          return "Comando no reconocido";
         default:
-          return "Unrecognized gap";
+          return "Unrecognized command";
+      }
+    };
+
+    Messages.prototype.gnNoGrids = function() {
+      switch (this.i18n) {
+        case "es_es":
+          return "Esta cadena no contiene ninguna retícula";
+        default:
+          return "This string does not contain any grids";
       }
     };
 
@@ -552,12 +561,12 @@
       }
     };
 
-    Messages.prototype.gnNoGrids = function() {
+    Messages.prototype.gnOneFillPerGrid = function() {
       switch (this.i18n) {
         case "es_es":
-          return "Esta cadena no contiene ninguna retícula";
+          return "Una retícula sólo puede contener un relleno";
         default:
-          return "This string does not contain any grids";
+          return "A grid can only contain one fill";
       }
     };
 
@@ -576,15 +585,6 @@
           return "Variable no definida";
         default:
           return "Undefined variable";
-      }
-    };
-
-    Messages.prototype.gnOneFillPerGrid = function() {
-      switch (this.i18n) {
-        case "es_es":
-          return "Una retícula sólo puede contener un relleno";
-        default:
-          return "A grid can only contain one fill";
       }
     };
 
