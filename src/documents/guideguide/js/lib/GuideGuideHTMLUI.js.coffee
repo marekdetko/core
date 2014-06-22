@@ -98,8 +98,11 @@ class window.GuideGuideHTMLUI
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
       string = GridNotation.clean $input.val()
-      valid = GridNotation.test $input.val()
-      @markInvalid $input.closest('.js-input') if !valid
+      errors = GridNotation.test($input.val())
+      if errors.length > 0
+        @markInvalid $input.closest('.js-input')
+        string += "\n\n"
+        (string += "[#{ code }]\n") for code in errors
       $input.val string
       $input.trigger('autosize.resize')
 
