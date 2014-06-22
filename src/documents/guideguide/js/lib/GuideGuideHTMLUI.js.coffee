@@ -84,7 +84,6 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   markInvalid: ($input) => $input.closest('.js-input').addClass 'is-invalid'
 
-  # TODO: Add this to a `clean` menthod in GuideGuide Notation
   # Clear any error reporting text and reset the Custom forms's validation
   #
   # Returns nothing.
