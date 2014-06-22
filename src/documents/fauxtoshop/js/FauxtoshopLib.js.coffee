@@ -73,8 +73,6 @@ class window.FauxtoshopLib
       .clone().attr('class','')
       .addClass 'guide js-guide ' + g.orientation
 
-      console.log g
-
       if g.orientation == 'h'
         guide.css 'top', ( g.location + artboardPosition.top ) + 'px'
       else
