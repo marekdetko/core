@@ -430,7 +430,7 @@ class window.GuideGuideCore
   #
   # Returns a GuideGuide Notation string
   stringifyFormData: (data) =>
-    string1 = @stringifyGridPlane
+    string1 = GridNotation.stringify
       count:          data.countColumn
       width:          data.widthColumn
       gutter:         data.gutterColumn
@@ -439,9 +439,10 @@ class window.GuideGuideCore
       columnMidpoint: data.midpointColumn || false
       gutterMidpoint: data.midpointColumnGutter || false
       orientation:    'v'
-      position:       @data.settings.verticalPosition
-      remainder:      @data.settings.verticalRemainder
-    string2 = @stringifyGridPlane
+      position:       @data.settings.verticalPosition.charAt(0)
+      remainder:      @data.settings.verticalRemainder.charAt(0)
+      calculation:    @data.settings.calculation
+    string2 = GridNotation.stringify
       count:          data.countRow
       width:          data.widthRow
       gutter:         data.gutterRow
@@ -450,93 +451,11 @@ class window.GuideGuideCore
       columnMidpoint: data.midpointRow || false
       gutterMidpoint: data.midpointRowGutter || false
       orientation:    'h'
-      position:       @data.settings.horizontalPosition
-      remainder:      @data.settings.horizontalRemainder
+      position:       @data.settings.horizontalPosition.charAt(0)
+      remainder:      @data.settings.horizontalRemainder.charAt(0)
+      calculation:    @data.settings.calculation
 
     "#{ string1 }#{ if string1 and string2 then '\n' else '' }#{ string2 }"
-
-  # TODO: Move this to GuideGuideNotation.coffee
-  # TODO: Remove redundant pipes
-  # TODO: Send back an empty string if empty data is provided
-  # Convert grid data to a GuideGuide Notation string.
-  # This is a simple grid, with margins, equal columns and gutters.
-  #
-  #  data   - data from the form
-  #
-  # Returns a string
-  stringifyGridPlane: (data) =>
-    data ||= {}
-    data.count            = parseInt data.count
-    data.width          ||= ''
-    data.gutter         ||= ''
-    data.firstMargin    ||= ''
-    data.lastMargin     ||= ''
-    data.columnMidpoint ||= false
-    data.gutterMidpoint ||= false
-    data.orientation    ||= 'v'
-    data.position       ||= 'first'
-    data.remainder      ||= 'last'
-    firstMargString       = ''
-    varString             = ''
-    gridString            = ''
-    lastMargString        = ''
-    optionsString         = ''
-
-    # Set up the margins, if they exist
-    firstMargString = '|' + data.firstMargin.replace(/\s/g,'').split(',').join('|') + '|' if data.firstMargin
-    lastMargString  = '|' + data.lastMargin.replace(/\s/g,'').split(',').join('|') + '|' if data.lastMargin
-
-    # Set up the columns and gutters variables, if they exist
-    if data.count or data.width
-      column = if data.width then data.width else '~'
-      if data.columnMidpoint
-        unit   = new Unit data.width if data.width
-        column = if data.width then "#{ unit.value/2 }#{ unit.type }|#{ unit.value/2 }#{ unit.type }" else "~|~"
-
-      varString += "$#{ data.orientation }=|#{ column }|\n"
-
-      if data.gutter and data.count != 1
-        gutter = if data.gutter then data.gutter else '~'
-        if data.gutterMidpoint
-          unit   = new Unit data.gutter if data.gutter
-          gutter = if data.gutter then "#{ unit.value/2 }#{ unit.type }|#{ unit.value/2 }#{ unit.type }" else "~|~"
-
-        varString  = "$#{ data.orientation }=|#{ column }|#{ gutter }|\n"
-        varString += "$#{ data.orientation }C=|#{ column }|\n" if data.count
-
-    # Set up the grid string
-    if data.count or data.width
-      gridString += "|$#{ data.orientation }"
-      gridString += "*" if data.count != 1
-      gridString += data.count - 1 if data.count > 1 and data.gutter
-      gridString += data.count if data.count > 1 and !data.gutter
-      gridString += "|"
-      gridString += "|$#{ data.orientation }#{ if data.gutter then 'C' else '' }|" if data.count > 1 and data.gutter
-
-    if (!data.count and !data.width) and data.firstMargin
-      gridString += "|"
-
-    if (!data.count and !data.width) and (data.firstMargin or data.lastMargin)
-      gridString += "~"
-
-    if (!data.count and !data.width) and data.lastMargin
-      gridString += "|"
-
-    if data.firstMargin or data.lastMargin or data.count or data.width
-      # Set up the options
-      optionsString += "("
-      optionsString += data.orientation.charAt(0).toLowerCase()
-      optionsString += data.remainder.charAt(0).toLowerCase()
-      optionsString += "p" if @data.settings.calculation == "pixel"
-      optionsString += ")"
-
-    leftBuffer = rightBuffer = ""
-    if data.width
-      leftBuffer = "~" if data.position == "last" or data.position == "center"
-      rightBuffer = "~" if data.position == "first" or data.position == "center"
-
-    # Bring it all together
-    "#{ varString }#{ firstMargString }#{ leftBuffer }#{ gridString }#{ rightBuffer }#{ lastMargString }#{ optionsString }".replace(/\|+/g, "|")
 
   # Add guides to the stage from GuideGuide Notation.
   #
