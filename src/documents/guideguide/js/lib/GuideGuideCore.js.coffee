@@ -439,7 +439,7 @@ class window.GuideGuideCore
       columnMidpoint: data.midpointColumn || false
       gutterMidpoint: data.midpointColumnGutter || false
       orientation:    'v'
-      position:       @data.settings.verticalPosition.charAt(0)
+      position:       @data.settings.horizontalPosition.charAt(0)
       remainder:      @data.settings.verticalRemainder.charAt(0)
       calculation:    @data.settings.calculation
     string2 = GridNotation.stringify
@@ -451,7 +451,7 @@ class window.GuideGuideCore
       columnMidpoint: data.midpointRow || false
       gutterMidpoint: data.midpointRowGutter || false
       orientation:    'h'
-      position:       @data.settings.horizontalPosition.charAt(0)
+      position:       @data.settings.verticalPosition.charAt(0)
       remainder:      @data.settings.horizontalRemainder.charAt(0)
       calculation:    @data.settings.calculation
 
