@@ -2,21 +2,28 @@
   margin: 0;
   font-size: 13px;
   line-height: 18px;
-
-  h3 {
-    margin: 15px 3px 5px;
-    font-size: 14px;
-    font-weight: normal;
-  }
 }
 
 .settings-inner { position: relative; }
 
 .setting {
-
-  &:first-child h3 { margin-top: 3px; }
+  margin-bottom: 2px;
 }
 
 .settings-list-wrap {
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.update-button-holder {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 5;
+  text-align: center;
+  height: 36px;
+  line-height: 36px;
+}
+
+.import-export {
+  margin-top: 5px;
 }

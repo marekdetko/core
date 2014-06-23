@@ -8,11 +8,11 @@
   },
   "dependencies": {
     "datauri": "~0.3.1",
-    "docpad": "~6.64.0",
+    "docpad": "~6.69.0",
     "docpad-plugin-coffeescript": "~2.4.0",
-    "docpad-plugin-eco": "~2.0.3",
-    "docpad-plugin-partials": "~2.8.1",
-    "docpad-plugin-sass": "~2.7.1"
+    "docpad-plugin-eco": "*",
+    "docpad-plugin-partials": "*",
+    "docpad-plugin-sass": "*"
   },
   "main": "node_modules/docpad/bin/docpad-server",
   "scripts": {

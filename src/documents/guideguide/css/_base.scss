@@ -1,11 +1,12 @@
 @import 'mixins';
 
-*{
+* {
   @include userSelect(none);
 }
 
 body {
   margin: 0;
+  font-size: 13px;
 }
 
 a {
@@ -74,6 +75,10 @@ a {
   padding-right: 50px;
 }
 
+.button {
+  font-size: 13px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -83,7 +88,7 @@ table {
 .nav {
   margin: 0;
   height: 0;
-  display: table;
+  display: block;
   width: 100%;
   position: relative;
   z-index: 2;
@@ -93,21 +98,35 @@ table {
   }
 
   .left {
-    display: table-cell;
-    padding: 10px;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 35px 8px 10px;
+    white-space: nowrap;
+    line-height: 15px;
 
     a { margin-right: 5px; }
+
+    .overflow {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .right {
-    display: table-cell;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
     text-align: right;
-    padding: 5px 10px;
+    padding: 8px 10px 8px 0;
 
     a { margin-left: 5px; }
   }
 
-  .icon { vertical-align: -2px; }
+  .icon { vertical-align: top; }
 }
 
 .header-actions {
@@ -140,11 +159,11 @@ table {
 
   li:first-child { padding-right: 1px; }
   li:last-child { padding-left: 1px; }
-  li:first-child:last-child { margin: 0px; }
+  li:first-child:last-child { padding: 0px; }
 
   .button {
     display: block;
-    padding: 5px 10px;
+    padding: 3px 10px 5px;
     vertical-align: middle;
     text-align: center;
     white-space: nowrap;
@@ -177,29 +196,30 @@ table {
 
 .dropdown-button {
   display: block;
-  padding: 5px 20px 5px 5px;
+  padding: 3px 26px 5px 5px;
   position: relative;
+  text-align: right;
 
   &:before {
     position: absolute;
-    top: 10px;
-    right: 7px;
+    top: 11px;
+    right: 9px;
     display: block;
     width: 0;
     height: 0;
     content: "";
-    border: 6px solid #fff;
+    border: 4px solid #fff;
     z-index: 1;
   }
 
-  &:after {
+  .title {
+    margin: 0;
+    font-size: 12px;
+    font-weight: normal;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    display: block;
-    width: 26px;
-    content: "";
+    z-index: 5;
+    top: 4px;
+    left: 5px;
   }
 }
 
@@ -216,7 +236,8 @@ table {
 
 .dropdown-item {
   display: block;
-  padding: 5px 20px 5px 5px;
+  padding: 3px 26px 5px 5px;
+  text-align: right;
 }
 
 .loader {
@@ -302,19 +323,19 @@ only screen and (min-resolution: 240dppx) {
 }
 
 .checkbox {
-  font-size: 12px;
+  font-size: 10px;
   position: relative;
-  padding-left: 26px;
   cursor: pointer;
   display: inline-block;
-  line-height: 19px;
+  line-height: 18px;
+  width: 100%;
 
   &.checked .icon { display: block; }
 
   .square {
     position: absolute;
-    top: 3px;
-    left: 6px;
+    top: 2px;
+    left: 4px;
     display: inline-block;
     height: 12px;
     width: 12px;
@@ -324,8 +345,15 @@ only screen and (min-resolution: 240dppx) {
   .icon {
     display: none;
     position: absolute;
-    top: 2px;
-    left: 5px;
+    top: 1px;
+    left: 3px;
+  }
+
+  .label {
+    white-space: nowrap;
+    padding-left: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

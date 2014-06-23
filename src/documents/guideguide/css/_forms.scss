@@ -38,9 +38,9 @@ input, textarea {
 
   .set-name { width: 100%; }
 
-  .input { height: 26px; }
+  .input { height: 22px; }
 
-  .checkbox { height: 21px; }
+  .checkbox { height: 18px; }
 }
 
 .is-showing-new-set-form {
@@ -60,6 +60,7 @@ input, textarea {
     padding: 3px 0;
     width: 100%;
     resize: none;
+    font-size: 12px;
   }
 
   .grid-form {
@@ -111,7 +112,7 @@ input, textarea {
 
   .icon-button {
     line-height: 0;
-    padding: 5px 10px;
+    padding: 5px;
   }
 }
 
@@ -131,28 +132,30 @@ input, textarea {
   .input-shell {
     display: block;
     border: 1px solid transparent;
-    padding: 4px 5px;
+    padding: 2px 4px;
     line-height: 0;
     cursor: text;
   }
 
-  &.iconned .input-shell { padding-left: 25px; }
+  &.iconned .input-shell { padding: 2px 2px 2px 21px; }
 
-  input { width: 100%; }
+  input {
+    width: 100%;
+    font-size: 12px;
+  }
 
   position: relative;
 
   .icon {
     display: block;
     position: absolute;
-    top: 5px;
-    left: 5px;
-    left: 5px;
+    top: 3px;
+    left: 3px;
     width: 16px;
     height: 16px;
   }
 
-  .input-padding { padding: 0 5px; }
+  .input-padding { padding: 0 4px; }
 }
 
 .importer {

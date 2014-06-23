@@ -16,7 +16,8 @@
   display: table;
   width: 100%;
   margin-bottom: 2px;
-  height: 26px;
+  height: 22px;
+  font-size: 12px;
 
   .icon {
     opacity: 0.4;
@@ -27,12 +28,13 @@
 
   a {
     display: table-cell;
-    padding: 3px 5px;
+    padding: 2px 5px;
+    vertical-align: top;
   }
 
   .set-action {
     width: 1%;
-    padding: 4px 5px;
+    padding: 3px 3px 3px 0;
     line-height: 0;
   }
 }

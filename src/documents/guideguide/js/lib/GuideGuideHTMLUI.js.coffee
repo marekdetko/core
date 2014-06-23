@@ -82,9 +82,8 @@ class window.GuideGuideHTMLUI
   # Outline an invalid input with red.
   #
   # Returns nothing.
-  markInvalid: ($input) => $input.addClass 'is-invalid'
+  markInvalid: ($input) => $input.closest('.js-input').addClass 'is-invalid'
 
-  # TODO: Add this to a `clean` menthod in GuideGuide Notation
   # Clear any error reporting text and reset the Custom forms's validation
   #
   # Returns nothing.
@@ -96,11 +95,23 @@ class window.GuideGuideHTMLUI
   #
   # Returns nothing.
   onBlurCustomForm: (event) =>
+    keys = [
+      'gnUnrecognized'
+      'gnNoGrids'
+      'gnNoFillWildcards'
+      'gnOneFillPerGrid'
+      'gnFillInVariable'
+      'gnUndefinedVariable'
+    ]
     $input = $(event.currentTarget)
     if string = $input.val().replace /^\s+|\s+$/g, ''
-      ggn = new GGN $input.val(), @messages
-      @markInvalid $input.closest('.js-input') if !ggn.isValid
-      $input.val ggn.toString()
+      string = GridNotation.clean $input.val()
+      errors = GridNotation.test($input.val())
+      if errors.length > 0
+        @markInvalid $input.closest('.js-input')
+        string += "\n\n"
+        (string += "# #{ code }. #{ @messages[keys[code-1]]() }\n") for code in errors
+      $input.val string
       $input.trigger('autosize.resize')
 
   # Highlight all field icons of similar type
@@ -198,19 +209,19 @@ class window.GuideGuideHTMLUI
   # Returns noting.
   onBlurFormInput: (event) =>
     $input = $(event.currentTarget)
-
+    return if $.trim($input.val()) is ""
     int = false
 
     if $input.attr 'data-integer'
       val = Math.round parseFloat $input.val()
       $input.val val if val
       int = true
+    else
+      @core.getInputFormat $input.val(), (val) -> $input.val(val)
 
     if !@core.validateInput $input.val(), int
       @markInvalid $input
     else
-      @formatField $input
-      $form  = $input.closest '.js-grid-form'
       @core.formChanged @getFormData()
 
   # When one of the input icons is clicked, change all fields of the same type
@@ -223,23 +234,12 @@ class window.GuideGuideHTMLUI
     $input = $(event.currentTarget).closest '.js-grid-form-iconned-input'
     $field = $input.find('.js-grid-form-input')
     return if $input.hasClass 'is-invalid'
-    @formatField $field
+    @core.getInputFormat $field.val(), (val) -> $field.val(val)
     value   = $field.val()
     type    = $input.attr 'data-distribute'
     $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
     $fields.find('.js-grid-form-input').val value
     @core.formChanged @getFormData()
-
-  # Reformat a unit string to match conventions
-  #
-  #   $field - input to format
-  #
-  # Returns a String
-  formatField: ($field) ->
-    int = if $field.attr 'data-integer' then true else false
-    gaps = $.map $field.val().split(','), (unit) ->
-      new Unit(unit,int).toString()
-    $field.val gaps.join(', ')
 
   # Toggle dropdown visibilty
   #
@@ -247,11 +247,12 @@ class window.GuideGuideHTMLUI
   onToggleDropdown: (event) =>
     event.preventDefault()
 
-    if $(event.target).hasClass 'js-dropdown-backdrop'
-      $('.js-dropdown').removeClass('is-active')
+    $dropdown = $(event.currentTarget)
+    if $dropdown.hasClass 'is-active'
+      $dropdown.removeClass 'is-active'
     else
-      $dropdown = $(event.currentTarget)
-      $dropdown.toggleClass 'is-active'
+      $('.js-dropdown').removeClass 'is-active'
+      $dropdown.addClass 'is-active'
       $list = $dropdown.find('.js-dropdown-list')
       visibleBottom = $('.js-settings-list').scrollTop() + $('.js-settings-list').outerHeight()
       listBottom = $dropdown.position().top + $list.position().top + $list.outerHeight() + 3
@@ -259,8 +260,6 @@ class window.GuideGuideHTMLUI
       if listBottom > visibleBottom
         offset = listBottom - visibleBottom
         $('.js-settings-list').scrollTop $('.js-settings-list').scrollTop() + offset
-
-    @panel.toggleClass 'has-dropdown'
 
   # Update settings and dropdown button when a dropdown item is clicked.
   #
@@ -274,7 +273,7 @@ class window.GuideGuideHTMLUI
     value     = true if value is "true"
     value     = false if value is "false"
 
-    $dropdown.find('.js-dropdown-button').text $item.text()
+    $dropdown.find('.js-dropdown-button .js-value').text $item.text()
     data =
       settings: {}
     data.settings[setting] = value
@@ -291,7 +290,7 @@ class window.GuideGuideHTMLUI
       setting   = $dropdown.attr 'data-setting'
       value     = settings[setting]
       $selected = $dropdown.find("[data-value='#{ value }']")
-      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]()
+      $dropdown.find('.js-dropdown-button .js-value').text @messages[$selected.attr('data-localize')]()
 
   # Show the set importer
   #

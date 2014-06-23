@@ -73,7 +73,7 @@ class window.FauxtoshopLib
       .clone().attr('class','')
       .addClass 'guide js-guide ' + g.orientation
 
-      if g.orientation == 'horizontal'
+      if g.orientation == 'h'
         guide.css 'top', ( g.location + artboardPosition.top ) + 'px'
       else
         guide.css 'left', ( g.location + artboardPosition.left ) + 'px'
@@ -98,11 +98,11 @@ class window.FauxtoshopLib
       $el = $(el)
       guide = {}
 
-      if $el.hasClass 'horizontal'
-        guide.orientation = 'horizontal'
+      if $el.hasClass 'h'
+        guide.orientation = 'h'
         guide.location = $el.position().top - $artboard.position().top
-      if $el.hasClass 'vertical'
-        guide.orientation = 'vertical'
+      if $el.hasClass 'v'
+        guide.orientation = 'v'
         guide.location = $el.position().left - $artboard.position().left
 
       guides.push guide

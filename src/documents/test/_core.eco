@@ -2,7 +2,6 @@ module "Core"
 
 args =
   bridge: new GuideGuideHTMLBridge({testMode: true})
-  messages: new GuideGuideMessages "en_us"
 
 gg = new GuideGuideCore(args)
 

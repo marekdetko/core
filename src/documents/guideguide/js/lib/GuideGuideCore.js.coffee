@@ -12,7 +12,7 @@ class window.GuideGuideCore
   #
   constructor: (args, callback) ->
     @bridge   = args.bridge
-    @messages = new GuideGuideMessages @bridge.locale
+    @messages = new Messages @bridge.locale
 
     @bridge.init @
 
@@ -285,7 +285,7 @@ class window.GuideGuideCore
     callback: callbackName
     primary: primary || false
 
-  # Generate a set ID based on a hash of the GGN. This will allow us to detect
+  # Generate a set ID based on a hash of the grid notation. This will allow us to detect
   # duplicates easier. Since this is a dependency situation, leave it up to
   # the bridge to provide the utility.
   #
@@ -385,8 +385,8 @@ class window.GuideGuideCore
       list["#{ e.location }.#{ e.orientation }"] = true
       if args.bounds and include
         inBounds = false
-        inBounds = true  if e.orientation == "horizontal" and args.bounds.bottom >= e.location >= args.bounds.top
-        inBounds = true  if e.orientation == "vertical" and args.bounds.right >= e.location >= args.bounds.left
+        inBounds = true  if e.orientation == "h" and args.bounds.bottom >= e.location >= args.bounds.top
+        inBounds = true  if e.orientation == "v" and args.bounds.right >= e.location >= args.bounds.left
         include  = false if (inBounds and args.invert) or (!inBounds and !args.invert)
 
       result.push e if include
@@ -409,12 +409,20 @@ class window.GuideGuideCore
   # Returns a Boolean
   validateInput: (value, integerOnly = false) =>
     return true if value == ""
+    valid = true
     units = value.split ','
-    units = units.filter (unit) =>
-      u = new Unit(unit,integerOnly)
-      !u.isValid
+    (valid = false if !Unit.parse(unit)) for unit in units
+    valid
 
-    units.length == 0
+  # Clean up an input string and fill in any missing units
+  getInputFormat: (string, callback) =>
+    string = string.replace(/\s/g,'')
+    @bridge.getDocumentInfo (info) =>
+      bits = string.split ','
+      for bit, i in bits
+        unit = Unit.preferredName(info.ruler)
+        bits[i] = "#{ bit }#{ unit }" if bit == parseFloat(bit).toString()
+      callback bits.join(', ')
 
   # Create a GuideGuide Notation string from the contents for the grid form
   #
@@ -422,7 +430,7 @@ class window.GuideGuideCore
   #
   # Returns a GuideGuide Notation string
   stringifyFormData: (data) =>
-    string1 = @stringifyGridPlane
+    string1 = GridNotation.stringify
       count:          data.countColumn
       width:          data.widthColumn
       gutter:         data.gutterColumn
@@ -431,9 +439,10 @@ class window.GuideGuideCore
       columnMidpoint: data.midpointColumn || false
       gutterMidpoint: data.midpointColumnGutter || false
       orientation:    'v'
-      position:       @data.settings.verticalPosition
-      remainder:      @data.settings.verticalRemainder
-    string2 = @stringifyGridPlane
+      position:       @data.settings.horizontalPosition.charAt(0)
+      remainder:      @data.settings.verticalRemainder.charAt(0)
+      calculation:    @data.settings.calculation
+    string2 = GridNotation.stringify
       count:          data.countRow
       width:          data.widthRow
       gutter:         data.gutterRow
@@ -442,202 +451,28 @@ class window.GuideGuideCore
       columnMidpoint: data.midpointRow || false
       gutterMidpoint: data.midpointRowGutter || false
       orientation:    'h'
-      position:       @data.settings.horizontalPosition
-      remainder:      @data.settings.horizontalRemainder
+      position:       @data.settings.verticalPosition.charAt(0)
+      remainder:      @data.settings.horizontalRemainder.charAt(0)
+      calculation:    @data.settings.calculation
 
     "#{ string1 }#{ if string1 and string2 then '\n' else '' }#{ string2 }"
 
-  # TODO: Move this to GuideGuideNotation.coffee
-  # TODO: Remove redundant pipes
-  # TODO: Send back an empty string if empty data is provided
-  # Convert grid data to a GuideGuide Notation string.
-  # This is a simple grid, with margins, equal columns and gutters.
-  #
-  #  data   - data from the form
-  #
-  # Returns a string
-  stringifyGridPlane: (data) =>
-    data ||= {}
-    data.count            = parseInt data.count
-    data.width          ||= ''
-    data.gutter         ||= ''
-    data.firstMargin    ||= ''
-    data.lastMargin     ||= ''
-    data.columnMidpoint ||= false
-    data.gutterMidpoint ||= false
-    data.orientation    ||= 'v'
-    data.position       ||= 'first'
-    data.remainder      ||= 'last'
-    firstMargString       = ''
-    varString             = ''
-    gridString            = ''
-    lastMargString        = ''
-    optionsString         = ''
-
-    # Set up the margins, if they exist
-    firstMargString = '|' + data.firstMargin.replace(/\s/g,'').split(',').join('|') + '|' if data.firstMargin
-    lastMargString  = '|' + data.lastMargin.replace(/\s/g,'').split(',').join('|') + '|' if data.lastMargin
-
-    # Set up the columns and gutters variables, if they exist
-    if data.count or data.width
-      column = if data.width then data.width else '~'
-      if data.columnMidpoint
-        unit   = new Unit data.width if data.width
-        column = if data.width then "#{ unit.value/2 }#{ unit.type }|#{ unit.value/2 }#{ unit.type }" else "~|~"
-
-      varString += "$#{ data.orientation }=|#{ column }|\n"
-
-      if data.gutter and data.count != 1
-        gutter = if data.gutter then data.gutter else '~'
-        if data.gutterMidpoint
-          unit   = new Unit data.gutter if data.gutter
-          gutter = if data.gutter then "#{ unit.value/2 }#{ unit.type }|#{ unit.value/2 }#{ unit.type }" else "~|~"
-
-        varString  = "$#{ data.orientation }=|#{ column }|#{ gutter }|\n"
-        varString += "$#{ data.orientation }C=|#{ column }|\n" if data.count
-
-    # Set up the grid string
-    if data.count or data.width
-      gridString += "|$#{ data.orientation }"
-      gridString += "*" if data.count != 1
-      gridString += data.count - 1 if data.count > 1 and data.gutter
-      gridString += data.count if data.count > 1 and !data.gutter
-      gridString += "|"
-      gridString += "|$#{ data.orientation }#{ if data.gutter then 'C' else '' }|" if data.count > 1 and data.gutter
-
-    if (!data.count and !data.width) and data.firstMargin
-      gridString += "|"
-
-    if (!data.count and !data.width) and (data.firstMargin or data.lastMargin)
-      gridString += "~"
-
-    if (!data.count and !data.width) and data.lastMargin
-      gridString += "|"
-
-    if data.firstMargin or data.lastMargin or data.count or data.width
-      # Set up the options
-      optionsString += "("
-      optionsString += data.orientation.charAt(0).toLowerCase()
-      optionsString += data.remainder.charAt(0).toLowerCase()
-      optionsString += "p" if @data.settings.calculation == "pixel"
-      optionsString += ")"
-
-    leftBuffer = rightBuffer = ""
-    if data.width
-      leftBuffer = "~" if data.position == "last" or data.position == "center"
-      rightBuffer = "~" if data.position == "first" or data.position == "center"
-
-    # Bring it all together
-    "#{ varString }#{ firstMargString }#{ leftBuffer }#{ gridString }#{ rightBuffer }#{ lastMargString }#{ optionsString }".replace(/\|+/g, "|")
-
-  # TODO: Move this to GuideGuideNotation.coffee
-  # Turn a GuideGuide object into a collection of guides.
-  #
-  #   ggn  - GuideGuide Object to pull guides from
-  #   info - Document info
-  #
-  # Returns a collection of guides
-  getGuidesFromGGN: (ggn, info) =>
-    guides = []
-
-    $.each ggn.grids, (index,grid) =>
-      guideOrientation = grid.options.orientation.value
-      wholePixels      = grid.options.calculation?.value == 'pixel'
-      fill             = grid.gaps.fill if grid.gaps.fill
-      measuredWidth    = if guideOrientation == 'horizontal' then info.height else info.width
-      measuredWidth    = grid.options.width.value if grid.options.width
-      offset           = if guideOrientation == 'horizontal' then info.offsetY else info.offsetX
-
-      # Calculate and set the value percent gaps. This calculation is based on
-      # the document or selection width, less the margin area if it is greater
-      # zero.
-      if grid.gaps.percents
-        $.each grid.gaps.percents, (index,gap) =>
-          percentValue = measuredWidth*(gap.value/100)
-          Math.floor percentValue if wholePixels
-          gap.convertPercent percentValue
-
-      # Subtract arbitrary gap value from non-margin area to get wildcard area,
-      # which is used to calculate the size of the wildcards
-      arbitrarySum = if grid.gaps.arbitrary then @sum grid.gaps.arbitrary, 'value' else 0
-      wildcardArea = measuredWidth - arbitrarySum
-
-      if wildcardArea and fill
-        # The grid contains a fill, figure out how many times it will fit and generate
-        # new gaps for it.
-        fillIterations = Math.floor wildcardArea/fill.sum(ggn.variables)
-        fillCollection = []
-        fillWidth = 0
-
-        for i in [1..fillIterations]
-          if fill.isVariable
-            fillCollection = fillCollection.concat ggn.variables[fill.id].all
-            fillWidth += @sum ggn.variables[fill.id].all, 'value'
-          else
-            newGap = fill.clone()
-            newGap.isFill = false
-            fillCollection.push newGap
-            fillWidth += newGap.value
-
-        wildcardArea -= fillWidth
-
-      if wildcardArea and grid.gaps.wildcards
-        # If the grid contains wildcards, figure out and set how wide they are
-        wildcardWidth = wildcardArea/grid.gaps.wildcards.length
-
-        if wholePixels
-          wildcardWidth = Math.floor wildcardWidth
-          remainderPixels = wildcardArea % grid.gaps.wildcards.length
-
-        $.each grid.gaps.wildcards, (index,gap) =>
-          gap.value = wildcardWidth
-
-      if remainderPixels
-        # If this is a pixel specific grid, whole pixel math usually results in remainder pixels.
-        # This decides where amongst the wildcards the remainders should be distributed.
-        remainderOffset = 0
-
-        remainderOffset = Math.floor (grid.gaps.wildcards.length - remainderPixels)/2 if grid.options.remainder.value == 'center'
-        remainderOffset = grid.gaps.wildcards.length - remainderPixels if grid.options.remainder.value == 'last'
-
-        $.each grid.gaps.wildcards, (index, gap) =>
-          gap.value++ if index >= remainderOffset && index < remainderOffset + remainderPixels
-
-      # Figure out where the grid starts
-      insertMarker = if grid.options.offset then grid.options.offset.value else offset
-
-      # Expand any fills
-      $.each grid.gaps.all, (index,item) =>
-        grid.gaps.all = grid.gaps.all.slice(0, index).concat fillCollection, grid.gaps.all.slice(index + 1) if item.isFill
-
-      # Add all the guides
-      $.each grid.gaps.all, (index,item) =>
-        if item == '|'
-          guides.push obj =
-            location: insertMarker
-            orientation: guideOrientation
-        else
-          insertMarker += item.value
-
-    guides
-
   # Add guides to the stage from GuideGuide Notation.
   #
-  #   ggn    - String: GuideGuide Notation
+  #   notation    - String: GuideGuide Notation
   #   source - String: Action executed to add guides, used for recording usage.
   #
   # Returns the array of guides generated from the GuideGuide Notation.
-  addGuidesfromGGN: (ggn, source) =>
+  addGuidesFromNotation: (notation, source) =>
     @bridge.getDocumentInfo (info) =>
 
       return unless info and info.hasOpenDocuments
       guides = []
 
-      guides = @getGuidesFromGGN new GGN(ggn, @messages), info
+      guides = GridNotation.parse notation, info
       guides = @consolidate(info.existingGuides, guides)
 
       @recordUsage source, guides.length
-      # TODO: @bridge.resetGuides()
       @addGuides guides
 
   getGGNFromExistingGuides: (callback) =>
@@ -663,10 +498,10 @@ class window.GuideGuideCore
           a.location - b.location
 
         $.each guides, (index, guide) =>
-          if guide.orientation == 'vertical'
+          if guide.orientation == 'v'
             xString = "#{ xString }#{ guide.location - prevVertical }px | "
             prevVertical = guide.location
-          if guide.orientation == 'horizontal'
+          if guide.orientation == 'h'
             yString = "#{ yString }#{ guide.location - prevHorizontal }px | "
             prevHorizontal = guide.location
 
@@ -677,7 +512,7 @@ class window.GuideGuideCore
         string += '\n' if xString
         string += yString
         string += '\n' if yString
-        string += '\n# ' + @messages.ggnStringFromExistingGuides() if xString or yString
+        string += '\n# ' + @messages.gnStringFromExistingGuides() if xString or yString
 
       callback string
 
@@ -696,7 +531,7 @@ class window.GuideGuideCore
   quickGuide: (type) =>
     return unless type in ["top", "bottom", "horizontalMidpoint", "left", "right", "verticalMidpoint"]
 
-    orientation = before = after = ggn = ""
+    orientation = before = after = notation = ""
 
     switch type
       when "top", "bottom", "horizontalMidpoint"
@@ -712,30 +547,31 @@ class window.GuideGuideCore
       when "top", "left", "horizontalMidpoint", "verticalMidpoint"
         after = "~"
 
-    ggn = "#{ before }|#{ after }(#{ orientation }#{ @calculationType() })"
+    notation = "#{ before }|#{ after }(#{ orientation }#{ @calculationType() })"
 
-    @addGuidesfromGGN ggn
-    return ggn
+    @addGuidesFromNotation notation
+    return notation
 
-  # TODO: confirm this is valid via a GuideGuide Notation validate method
   # Add guides to the document based on the form
   #
   # Returns an Array of guides
   makeGridFromForm: (data) =>
-    @addGuidesfromGGN @stringifyFormData(data.contents), 'grid'
+    string = @stringifyFormData(data.contents)
+    return if !GridNotation.test(string)
+    @addGuidesFromNotation string, 'grid'
 
   # Add guides to the document from a set
   #
   # Returns an Array of guides
   makeGridFromSet: (set, group) =>
     set = @getSets { set: set, group: group }
-    @addGuidesfromGGN set.string, 'set'
+    @addGuidesFromNotation set.string, 'set'
 
   # Create a grid from the Custom form
   #
   # Returns an Array of guides
   makeGridFromCustom: (string) =>
-    @addGuidesfromGGN string, 'custom'
+    @addGuidesFromNotation string, 'custom'
 
   # Remove all or a portion of the guides.
   #
