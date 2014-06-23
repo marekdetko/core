@@ -32,7 +32,6 @@
       this.alertTitleUpdateError = __bind(this.alertTitleUpdateError, this);
       this.alertMessageUpToDate = __bind(this.alertMessageUpToDate, this);
       this.alertTitleUpToDate = __bind(this.alertTitleUpToDate, this);
-      this.helpImportExport = __bind(this.helpImportExport, this);
       this.helpGistExport = __bind(this.helpGistExport, this);
       this.helpImportDesc = __bind(this.helpImportDesc, this);
       this.helpRemainder = __bind(this.helpRemainder, this);
@@ -57,12 +56,11 @@
       this.uiGutterMidpoint = __bind(this.uiGutterMidpoint, this);
       this.uiRowMidpoint = __bind(this.uiRowMidpoint, this);
       this.uiColumnMidpoint = __bind(this.uiColumnMidpoint, this);
-      this.uiExport = __bind(this.uiExport, this);
-      this.uiImport = __bind(this.uiImport, this);
+      this.uiExportSets = __bind(this.uiExportSets, this);
+      this.uiImportSets = __bind(this.uiImportSets, this);
       this.uiSaveSet = __bind(this.uiSaveSet, this);
       this.uiMakeGrid = __bind(this.uiMakeGrid, this);
       this.uiDebug = __bind(this.uiDebug, this);
-      this.uiUpdates = __bind(this.uiUpdates, this);
       this.uiSets = __bind(this.uiSets, this);
       this.uiCustom = __bind(this.uiCustom, this);
       this.uiGrid = __bind(this.uiGrid, this);
@@ -98,15 +96,6 @@
       }
     };
 
-    Messages.prototype.uiUpdates = function() {
-      switch (this.i18n) {
-        case "es_es":
-          return "Actualizaciones";
-        default:
-          return "Updates";
-      }
-    };
-
     Messages.prototype.uiDebug = function() {
       switch (this.i18n) {
         case "es_es":
@@ -134,21 +123,21 @@
       }
     };
 
-    Messages.prototype.uiImport = function() {
+    Messages.prototype.uiImportSets = function() {
       switch (this.i18n) {
         case "es_es":
-          return "Importar";
+          return "Importar sets";
         default:
-          return "Import";
+          return "Import sets";
       }
     };
 
-    Messages.prototype.uiExport = function() {
+    Messages.prototype.uiExportSets = function() {
       switch (this.i18n) {
         case "es_es":
-          return "Exportar";
+          return "Exportar sets";
         default:
-          return "Export";
+          return "Export sets";
       }
     };
 
@@ -347,18 +336,9 @@
     Messages.prototype.helpGistExport = function() {
       switch (this.i18n) {
         case "es_es":
-          return 'Estos son los datos de un set de guías exportado por el plugin GuideGuide. Para importarlos, haz click en el botón "Importar" en los ajustes de GuideGuide y pega la url de este Gist, o el contenido del fichero `sets.json` en el campo de texto.';
+          return 'Estos son los datos de un set de guías exportado por el plugin GuideGuide. Para importarlos, haz click en el botón "Importar" en los ajustes de GuideGuide y pega la url de este Gist en el campo de texto.';
         default:
-          return 'This is guide set data exported by the GuideGuide plugin. To import them, click the "Import" button in the GuideGuide settings and paste this Gist url, or the contents of `sets.json` into the text field.';
-      }
-    };
-
-    Messages.prototype.helpImportExport = function() {
-      switch (this.i18n) {
-        case "es_es":
-          return "GuideGuide importa y exporta sus datos mediante";
-        default:
-          return "GuideGuide imports and exports its data via";
+          return 'This is guide set data exported by the GuideGuide plugin. To import them, click the "Import" button in the GuideGuide settings and paste this Gist url into the text field.';
       }
     };
 
