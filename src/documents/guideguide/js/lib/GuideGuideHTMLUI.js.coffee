@@ -247,11 +247,12 @@ class window.GuideGuideHTMLUI
   onToggleDropdown: (event) =>
     event.preventDefault()
 
-    if $(event.target).hasClass 'js-dropdown-backdrop'
-      $('.js-dropdown').removeClass('is-active')
+    $dropdown = $(event.currentTarget)
+    if $dropdown.hasClass 'is-active'
+      $dropdown.removeClass 'is-active'
     else
-      $dropdown = $(event.currentTarget)
-      $dropdown.toggleClass 'is-active'
+      $('.js-dropdown').removeClass 'is-active'
+      $dropdown.addClass 'is-active'
       $list = $dropdown.find('.js-dropdown-list')
       visibleBottom = $('.js-settings-list').scrollTop() + $('.js-settings-list').outerHeight()
       listBottom = $dropdown.position().top + $list.position().top + $list.outerHeight() + 3
@@ -259,8 +260,6 @@ class window.GuideGuideHTMLUI
       if listBottom > visibleBottom
         offset = listBottom - visibleBottom
         $('.js-settings-list').scrollTop $('.js-settings-list').scrollTop() + offset
-
-    @panel.toggleClass 'has-dropdown'
 
   # Update settings and dropdown button when a dropdown item is clicked.
   #
@@ -274,7 +273,7 @@ class window.GuideGuideHTMLUI
     value     = true if value is "true"
     value     = false if value is "false"
 
-    $dropdown.find('.js-dropdown-button').text $item.text()
+    $dropdown.find('.js-dropdown-button .js-value').text $item.text()
     data =
       settings: {}
     data.settings[setting] = value
@@ -291,7 +290,7 @@ class window.GuideGuideHTMLUI
       setting   = $dropdown.attr 'data-setting'
       value     = settings[setting]
       $selected = $dropdown.find("[data-value='#{ value }']")
-      $dropdown.find('.js-dropdown-button').text @messages[$selected.attr('data-localize')]()
+      $dropdown.find('.js-dropdown-button .js-value').text @messages[$selected.attr('data-localize')]()
 
   # Show the set importer
   #

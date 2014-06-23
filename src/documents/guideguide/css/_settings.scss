@@ -2,19 +2,12 @@
   margin: 0;
   font-size: 13px;
   line-height: 18px;
-
-  h3 {
-    margin: 10px 3px 2px;
-    font-size: 12px;
-    font-weight: normal;
-  }
 }
 
 .settings-inner { position: relative; }
 
 .setting {
-
-  &:first-child h3 { margin-top: 3px; }
+  margin-bottom: 2px;
 }
 
 .settings-list-wrap {
@@ -29,4 +22,8 @@
   text-align: center;
   height: 36px;
   line-height: 36px;
+}
+
+.import-export {
+  margin-top: 10px;
 }

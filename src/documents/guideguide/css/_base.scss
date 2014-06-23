@@ -196,29 +196,30 @@ table {
 
 .dropdown-button {
   display: block;
-  padding: 3px 20px 5px 5px;
+  padding: 3px 26px 5px 5px;
   position: relative;
+  text-align: right;
 
   &:before {
     position: absolute;
-    top: 10px;
-    right: 7px;
+    top: 11px;
+    right: 9px;
     display: block;
     width: 0;
     height: 0;
     content: "";
-    border: 6px solid #fff;
+    border: 4px solid #fff;
     z-index: 1;
   }
 
-  &:after {
+  .title {
+    margin: 0;
+    font-size: 12px;
+    font-weight: normal;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    display: block;
-    width: 26px;
-    content: "";
+    z-index: 5;
+    top: 4px;
+    left: 5px;
   }
 }
 
