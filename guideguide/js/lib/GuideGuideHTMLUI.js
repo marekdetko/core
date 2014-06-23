@@ -140,7 +140,7 @@
     };
 
     GuideGuideHTMLUI.prototype.markInvalid = function($input) {
-      return $input.addClass('is-invalid');
+      return $input.closest('.js-input').addClass('is-invalid');
     };
 
     GuideGuideHTMLUI.prototype.onFocusCustomForm = function(event) {
@@ -150,14 +150,21 @@
     };
 
     GuideGuideHTMLUI.prototype.onBlurCustomForm = function(event) {
-      var $input, ggn, string;
+      var $input, code, errors, keys, string, _i, _len;
+      keys = ['gnUnrecognized', 'gnNoGrids', 'gnNoFillWildcards', 'gnOneFillPerGrid', 'gnFillInVariable', 'gnUndefinedVariable'];
       $input = $(event.currentTarget);
       if (string = $input.val().replace(/^\s+|\s+$/g, '')) {
-        ggn = new GGN($input.val(), this.messages);
-        if (!ggn.isValid) {
+        string = GridNotation.clean($input.val());
+        errors = GridNotation.test($input.val());
+        if (errors.length > 0) {
           this.markInvalid($input.closest('.js-input'));
+          string += "\n\n";
+          for (_i = 0, _len = errors.length; _i < _len; _i++) {
+            code = errors[_i];
+            string += "# " + code + ". " + (this.messages[keys[code - 1]]()) + "\n";
+          }
         }
-        $input.val(ggn.toString());
+        $input.val(string);
         return $input.trigger('autosize.resize');
       }
     };
@@ -234,8 +241,11 @@
     };
 
     GuideGuideHTMLUI.prototype.onBlurFormInput = function(event) {
-      var $form, $input, int, val;
+      var $input, int, val;
       $input = $(event.currentTarget);
+      if ($.trim($input.val()) === "") {
+        return;
+      }
       int = false;
       if ($input.attr('data-integer')) {
         val = Math.round(parseFloat($input.val()));
@@ -243,12 +253,14 @@
           $input.val(val);
         }
         int = true;
+      } else {
+        this.core.getInputFormat($input.val(), function(val) {
+          return $input.val(val);
+        });
       }
       if (!this.core.validateInput($input.val(), int)) {
         return this.markInvalid($input);
       } else {
-        this.formatField($input);
-        $form = $input.closest('.js-grid-form');
         return this.core.formChanged(this.getFormData());
       }
     };
@@ -262,7 +274,9 @@
       if ($input.hasClass('is-invalid')) {
         return;
       }
-      this.formatField($field);
+      this.core.getInputFormat($field.val(), function(val) {
+        return $field.val(val);
+      });
       value = $field.val();
       type = $input.attr('data-distribute');
       $fields = this.filteredList($form.find('.js-grid-form-iconned-input'), type);
@@ -270,32 +284,23 @@
       return this.core.formChanged(this.getFormData());
     };
 
-    GuideGuideHTMLUI.prototype.formatField = function($field) {
-      var gaps, int;
-      int = $field.attr('data-integer') ? true : false;
-      gaps = $.map($field.val().split(','), function(unit) {
-        return new Unit(unit, int).toString();
-      });
-      return $field.val(gaps.join(', '));
-    };
-
     GuideGuideHTMLUI.prototype.onToggleDropdown = function(event) {
       var $dropdown, $list, listBottom, offset, visibleBottom;
       event.preventDefault();
-      if ($(event.target).hasClass('js-dropdown-backdrop')) {
-        $('.js-dropdown').removeClass('is-active');
+      $dropdown = $(event.currentTarget);
+      if ($dropdown.hasClass('is-active')) {
+        return $dropdown.removeClass('is-active');
       } else {
-        $dropdown = $(event.currentTarget);
-        $dropdown.toggleClass('is-active');
+        $('.js-dropdown').removeClass('is-active');
+        $dropdown.addClass('is-active');
         $list = $dropdown.find('.js-dropdown-list');
         visibleBottom = $('.js-settings-list').scrollTop() + $('.js-settings-list').outerHeight();
         listBottom = $dropdown.position().top + $list.position().top + $list.outerHeight() + 3;
         if (listBottom > visibleBottom) {
           offset = listBottom - visibleBottom;
-          $('.js-settings-list').scrollTop($('.js-settings-list').scrollTop() + offset);
+          return $('.js-settings-list').scrollTop($('.js-settings-list').scrollTop() + offset);
         }
       }
-      return this.panel.toggleClass('has-dropdown');
     };
 
     GuideGuideHTMLUI.prototype.onClickDropdownItem = function(event) {
@@ -311,7 +316,7 @@
       if (value === "false") {
         value = false;
       }
-      $dropdown.find('.js-dropdown-button').text($item.text());
+      $dropdown.find('.js-dropdown-button .js-value').text($item.text());
       data = {
         settings: {}
       };
@@ -329,7 +334,7 @@
           setting = $dropdown.attr('data-setting');
           value = settings[setting];
           $selected = $dropdown.find("[data-value='" + value + "']");
-          return $dropdown.find('.js-dropdown-button').text(_this.messages[$selected.attr('data-localize')]());
+          return $dropdown.find('.js-dropdown-button .js-value').text(_this.messages[$selected.attr('data-localize')]());
         };
       })(this));
     };

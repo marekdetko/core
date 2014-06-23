@@ -25,10 +25,9 @@
       this.quickGuide = __bind(this.quickGuide, this);
       this.addGuides = __bind(this.addGuides, this);
       this.getGGNFromExistingGuides = __bind(this.getGGNFromExistingGuides, this);
-      this.addGuidesfromGGN = __bind(this.addGuidesfromGGN, this);
-      this.getGuidesFromGGN = __bind(this.getGuidesFromGGN, this);
-      this.stringifyGridPlane = __bind(this.stringifyGridPlane, this);
+      this.addGuidesFromNotation = __bind(this.addGuidesFromNotation, this);
       this.stringifyFormData = __bind(this.stringifyFormData, this);
+      this.getInputFormat = __bind(this.getInputFormat, this);
       this.validateInput = __bind(this.validateInput, this);
       this.formChanged = __bind(this.formChanged, this);
       this.consolidate = __bind(this.consolidate, this);
@@ -56,7 +55,7 @@
       this.refreshSettings = __bind(this.refreshSettings, this);
       var _base, _base1, _base2;
       this.bridge = args.bridge;
-      this.messages = new GuideGuideMessages(this.bridge.locale);
+      this.messages = new Messages(this.bridge.locale);
       this.bridge.init(this);
       this.data = this.bridge.getData();
       (_base = this.data).panel || (_base.panel = this.panelBootstrap());
@@ -457,10 +456,10 @@
         list["" + e.location + "." + e.orientation] = true;
         if (args.bounds && include) {
           inBounds = false;
-          if (e.orientation === "horizontal" && (args.bounds.bottom >= (_ref = e.location) && _ref >= args.bounds.top)) {
+          if (e.orientation === "h" && (args.bounds.bottom >= (_ref = e.location) && _ref >= args.bounds.top)) {
             inBounds = true;
           }
-          if (e.orientation === "vertical" && (args.bounds.right >= (_ref1 = e.location) && _ref1 >= args.bounds.left)) {
+          if (e.orientation === "v" && (args.bounds.right >= (_ref1 = e.location) && _ref1 >= args.bounds.left)) {
             inBounds = true;
           }
           if ((inBounds && args.invert) || (!inBounds && !args.invert)) {
@@ -479,27 +478,45 @@
     };
 
     GuideGuideCore.prototype.validateInput = function(value, integerOnly) {
-      var units;
+      var unit, units, valid, _i, _len;
       if (integerOnly == null) {
         integerOnly = false;
       }
       if (value === "") {
         return true;
       }
+      valid = true;
       units = value.split(',');
-      units = units.filter((function(_this) {
-        return function(unit) {
-          var u;
-          u = new Unit(unit, integerOnly);
-          return !u.isValid;
+      for (_i = 0, _len = units.length; _i < _len; _i++) {
+        unit = units[_i];
+        if (!Unit.parse(unit)) {
+          valid = false;
+        }
+      }
+      return valid;
+    };
+
+    GuideGuideCore.prototype.getInputFormat = function(string, callback) {
+      string = string.replace(/\s/g, '');
+      return this.bridge.getDocumentInfo((function(_this) {
+        return function(info) {
+          var bit, bits, i, unit, _i, _len;
+          bits = string.split(',');
+          for (i = _i = 0, _len = bits.length; _i < _len; i = ++_i) {
+            bit = bits[i];
+            unit = Unit.preferredName(info.ruler);
+            if (bit === parseFloat(bit).toString()) {
+              bits[i] = "" + bit + unit;
+            }
+          }
+          return callback(bits.join(', '));
         };
       })(this));
-      return units.length === 0;
     };
 
     GuideGuideCore.prototype.stringifyFormData = function(data) {
       var string1, string2;
-      string1 = this.stringifyGridPlane({
+      string1 = GridNotation.stringify({
         count: data.countColumn,
         width: data.widthColumn,
         gutter: data.gutterColumn,
@@ -508,10 +525,11 @@
         columnMidpoint: data.midpointColumn || false,
         gutterMidpoint: data.midpointColumnGutter || false,
         orientation: 'v',
-        position: this.data.settings.verticalPosition,
-        remainder: this.data.settings.verticalRemainder
+        position: this.data.settings.horizontalPosition.charAt(0),
+        remainder: this.data.settings.verticalRemainder.charAt(0),
+        calculation: this.data.settings.calculation
       });
-      string2 = this.stringifyGridPlane({
+      string2 = GridNotation.stringify({
         count: data.countRow,
         width: data.widthRow,
         gutter: data.gutterRow,
@@ -520,197 +538,14 @@
         columnMidpoint: data.midpointRow || false,
         gutterMidpoint: data.midpointRowGutter || false,
         orientation: 'h',
-        position: this.data.settings.horizontalPosition,
-        remainder: this.data.settings.horizontalRemainder
+        position: this.data.settings.verticalPosition.charAt(0),
+        remainder: this.data.settings.horizontalRemainder.charAt(0),
+        calculation: this.data.settings.calculation
       });
       return "" + string1 + (string1 && string2 ? '\n' : '') + string2;
     };
 
-    GuideGuideCore.prototype.stringifyGridPlane = function(data) {
-      var column, firstMargString, gridString, gutter, lastMargString, leftBuffer, optionsString, rightBuffer, unit, varString;
-      data || (data = {});
-      data.count = parseInt(data.count);
-      data.width || (data.width = '');
-      data.gutter || (data.gutter = '');
-      data.firstMargin || (data.firstMargin = '');
-      data.lastMargin || (data.lastMargin = '');
-      data.columnMidpoint || (data.columnMidpoint = false);
-      data.gutterMidpoint || (data.gutterMidpoint = false);
-      data.orientation || (data.orientation = 'v');
-      data.position || (data.position = 'first');
-      data.remainder || (data.remainder = 'last');
-      firstMargString = '';
-      varString = '';
-      gridString = '';
-      lastMargString = '';
-      optionsString = '';
-      if (data.firstMargin) {
-        firstMargString = '|' + data.firstMargin.replace(/\s/g, '').split(',').join('|') + '|';
-      }
-      if (data.lastMargin) {
-        lastMargString = '|' + data.lastMargin.replace(/\s/g, '').split(',').join('|') + '|';
-      }
-      if (data.count || data.width) {
-        column = data.width ? data.width : '~';
-        if (data.columnMidpoint) {
-          if (data.width) {
-            unit = new Unit(data.width);
-          }
-          column = data.width ? "" + (unit.value / 2) + unit.type + "|" + (unit.value / 2) + unit.type : "~|~";
-        }
-        varString += "$" + data.orientation + "=|" + column + "|\n";
-        if (data.gutter && data.count !== 1) {
-          gutter = data.gutter ? data.gutter : '~';
-          if (data.gutterMidpoint) {
-            if (data.gutter) {
-              unit = new Unit(data.gutter);
-            }
-            gutter = data.gutter ? "" + (unit.value / 2) + unit.type + "|" + (unit.value / 2) + unit.type : "~|~";
-          }
-          varString = "$" + data.orientation + "=|" + column + "|" + gutter + "|\n";
-          if (data.count) {
-            varString += "$" + data.orientation + "C=|" + column + "|\n";
-          }
-        }
-      }
-      if (data.count || data.width) {
-        gridString += "|$" + data.orientation;
-        if (data.count !== 1) {
-          gridString += "*";
-        }
-        if (data.count > 1 && data.gutter) {
-          gridString += data.count - 1;
-        }
-        if (data.count > 1 && !data.gutter) {
-          gridString += data.count;
-        }
-        gridString += "|";
-        if (data.count > 1 && data.gutter) {
-          gridString += "|$" + data.orientation + (data.gutter ? 'C' : '') + "|";
-        }
-      }
-      if ((!data.count && !data.width) && data.firstMargin) {
-        gridString += "|";
-      }
-      if ((!data.count && !data.width) && (data.firstMargin || data.lastMargin)) {
-        gridString += "~";
-      }
-      if ((!data.count && !data.width) && data.lastMargin) {
-        gridString += "|";
-      }
-      if (data.firstMargin || data.lastMargin || data.count || data.width) {
-        optionsString += "(";
-        optionsString += data.orientation.charAt(0).toLowerCase();
-        optionsString += data.remainder.charAt(0).toLowerCase();
-        if (this.data.settings.calculation === "pixel") {
-          optionsString += "p";
-        }
-        optionsString += ")";
-      }
-      leftBuffer = rightBuffer = "";
-      if (data.width) {
-        if (data.position === "last" || data.position === "center") {
-          leftBuffer = "~";
-        }
-        if (data.position === "first" || data.position === "center") {
-          rightBuffer = "~";
-        }
-      }
-      return ("" + varString + firstMargString + leftBuffer + gridString + rightBuffer + lastMargString + optionsString).replace(/\|+/g, "|");
-    };
-
-    GuideGuideCore.prototype.getGuidesFromGGN = function(ggn, info) {
-      var guides;
-      guides = [];
-      $.each(ggn.grids, (function(_this) {
-        return function(index, grid) {
-          var arbitrarySum, fill, fillCollection, fillIterations, fillWidth, guideOrientation, i, insertMarker, measuredWidth, newGap, offset, remainderOffset, remainderPixels, wholePixels, wildcardArea, wildcardWidth, _i, _ref;
-          guideOrientation = grid.options.orientation.value;
-          wholePixels = ((_ref = grid.options.calculation) != null ? _ref.value : void 0) === 'pixel';
-          if (grid.gaps.fill) {
-            fill = grid.gaps.fill;
-          }
-          measuredWidth = guideOrientation === 'horizontal' ? info.height : info.width;
-          if (grid.options.width) {
-            measuredWidth = grid.options.width.value;
-          }
-          offset = guideOrientation === 'horizontal' ? info.offsetY : info.offsetX;
-          if (grid.gaps.percents) {
-            $.each(grid.gaps.percents, function(index, gap) {
-              var percentValue;
-              percentValue = measuredWidth * (gap.value / 100);
-              if (wholePixels) {
-                Math.floor(percentValue);
-              }
-              return gap.convertPercent(percentValue);
-            });
-          }
-          arbitrarySum = grid.gaps.arbitrary ? _this.sum(grid.gaps.arbitrary, 'value') : 0;
-          wildcardArea = measuredWidth - arbitrarySum;
-          if (wildcardArea && fill) {
-            fillIterations = Math.floor(wildcardArea / fill.sum(ggn.variables));
-            fillCollection = [];
-            fillWidth = 0;
-            for (i = _i = 1; 1 <= fillIterations ? _i <= fillIterations : _i >= fillIterations; i = 1 <= fillIterations ? ++_i : --_i) {
-              if (fill.isVariable) {
-                fillCollection = fillCollection.concat(ggn.variables[fill.id].all);
-                fillWidth += _this.sum(ggn.variables[fill.id].all, 'value');
-              } else {
-                newGap = fill.clone();
-                newGap.isFill = false;
-                fillCollection.push(newGap);
-                fillWidth += newGap.value;
-              }
-            }
-            wildcardArea -= fillWidth;
-          }
-          if (wildcardArea && grid.gaps.wildcards) {
-            wildcardWidth = wildcardArea / grid.gaps.wildcards.length;
-            if (wholePixels) {
-              wildcardWidth = Math.floor(wildcardWidth);
-              remainderPixels = wildcardArea % grid.gaps.wildcards.length;
-            }
-            $.each(grid.gaps.wildcards, function(index, gap) {
-              return gap.value = wildcardWidth;
-            });
-          }
-          if (remainderPixels) {
-            remainderOffset = 0;
-            if (grid.options.remainder.value === 'center') {
-              remainderOffset = Math.floor((grid.gaps.wildcards.length - remainderPixels) / 2);
-            }
-            if (grid.options.remainder.value === 'last') {
-              remainderOffset = grid.gaps.wildcards.length - remainderPixels;
-            }
-            $.each(grid.gaps.wildcards, function(index, gap) {
-              if (index >= remainderOffset && index < remainderOffset + remainderPixels) {
-                return gap.value++;
-              }
-            });
-          }
-          insertMarker = grid.options.offset ? grid.options.offset.value : offset;
-          $.each(grid.gaps.all, function(index, item) {
-            if (item.isFill) {
-              return grid.gaps.all = grid.gaps.all.slice(0, index).concat(fillCollection, grid.gaps.all.slice(index + 1));
-            }
-          });
-          return $.each(grid.gaps.all, function(index, item) {
-            var obj;
-            if (item === '|') {
-              return guides.push(obj = {
-                location: insertMarker,
-                orientation: guideOrientation
-              });
-            } else {
-              return insertMarker += item.value;
-            }
-          });
-        };
-      })(this));
-      return guides;
-    };
-
-    GuideGuideCore.prototype.addGuidesfromGGN = function(ggn, source) {
+    GuideGuideCore.prototype.addGuidesFromNotation = function(notation, source) {
       return this.bridge.getDocumentInfo((function(_this) {
         return function(info) {
           var guides;
@@ -718,7 +553,7 @@
             return;
           }
           guides = [];
-          guides = _this.getGuidesFromGGN(new GGN(ggn, _this.messages), info);
+          guides = GridNotation.parse(notation, info);
           guides = _this.consolidate(info.existingGuides, guides);
           _this.recordUsage(source, guides.length);
           return _this.addGuides(guides);
@@ -752,11 +587,11 @@
               return a.location - b.location;
             });
             $.each(guides, function(index, guide) {
-              if (guide.orientation === 'vertical') {
+              if (guide.orientation === 'v') {
                 xString = "" + xString + (guide.location - prevVertical) + "px | ";
                 prevVertical = guide.location;
               }
-              if (guide.orientation === 'horizontal') {
+              if (guide.orientation === 'h') {
                 yString = "" + yString + (guide.location - prevHorizontal) + "px | ";
                 return prevHorizontal = guide.location;
               }
@@ -776,7 +611,7 @@
               string += '\n';
             }
             if (xString || yString) {
-              string += '\n# ' + _this.messages.ggnStringFromExistingGuides();
+              string += '\n# ' + _this.messages.gnStringFromExistingGuides();
             }
           }
           return callback(string);
@@ -790,11 +625,11 @@
     };
 
     GuideGuideCore.prototype.quickGuide = function(type) {
-      var after, before, ggn, orientation;
+      var after, before, notation, orientation;
       if (type !== "top" && type !== "bottom" && type !== "horizontalMidpoint" && type !== "left" && type !== "right" && type !== "verticalMidpoint") {
         return;
       }
-      orientation = before = after = ggn = "";
+      orientation = before = after = notation = "";
       switch (type) {
         case "top":
         case "bottom":
@@ -820,13 +655,18 @@
         case "verticalMidpoint":
           after = "~";
       }
-      ggn = "" + before + "|" + after + "(" + orientation + (this.calculationType()) + ")";
-      this.addGuidesfromGGN(ggn);
-      return ggn;
+      notation = "" + before + "|" + after + "(" + orientation + (this.calculationType()) + ")";
+      this.addGuidesFromNotation(notation);
+      return notation;
     };
 
     GuideGuideCore.prototype.makeGridFromForm = function(data) {
-      return this.addGuidesfromGGN(this.stringifyFormData(data.contents), 'grid');
+      var string;
+      string = this.stringifyFormData(data.contents);
+      if (!GridNotation.test(string)) {
+        return;
+      }
+      return this.addGuidesFromNotation(string, 'grid');
     };
 
     GuideGuideCore.prototype.makeGridFromSet = function(set, group) {
@@ -834,11 +674,11 @@
         set: set,
         group: group
       });
-      return this.addGuidesfromGGN(set.string, 'set');
+      return this.addGuidesFromNotation(set.string, 'set');
     };
 
     GuideGuideCore.prototype.makeGridFromCustom = function(string) {
-      return this.addGuidesfromGGN(string, 'custom');
+      return this.addGuidesFromNotation(string, 'custom');
     };
 
     GuideGuideCore.prototype.clearGuides = function() {
