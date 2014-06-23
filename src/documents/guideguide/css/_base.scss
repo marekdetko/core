@@ -1,6 +1,6 @@
 @import 'mixins';
 
-*{
+* {
   @include userSelect(none);
 }
 
@@ -84,7 +84,7 @@ table {
 .nav {
   margin: 0;
   height: 0;
-  display: table;
+  display: block;
   width: 100%;
   position: relative;
   z-index: 2;
@@ -94,16 +94,29 @@ table {
   }
 
   .left {
-    display: table-cell;
-    padding: 10px;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 35px 10px 10px;
+    white-space: nowrap;
 
     a { margin-right: 5px; }
+
+    .overflow {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .right {
-    display: table-cell;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
     text-align: right;
-    padding: 5px 10px;
+    padding: 10px 10px 10px 0;
 
     a { margin-left: 5px; }
   }
