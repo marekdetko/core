@@ -1,0 +1,9 @@
+#!/bin/sh
+# usage: script/build
+#
+# Clean and build, then copy to the publish directory
+
+rm -rf dev
+docpad generate
+rm -rf guideguide
+cp -r dev/guideguide/ guideguide
