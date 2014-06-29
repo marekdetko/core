@@ -441,7 +441,7 @@ class window.GuideGuideCore
       orientation:    'v'
       position:       @data.settings.horizontalPosition.charAt(0)
       remainder:      @data.settings.verticalRemainder.charAt(0)
-      calculation:    @data.settings.calculation
+      calculation:    @data.settings.calculation.charAt(0)
     string2 = GridNotation.stringify
       count:          data.countRow
       width:          data.widthRow
@@ -453,7 +453,7 @@ class window.GuideGuideCore
       orientation:    'h'
       position:       @data.settings.verticalPosition.charAt(0)
       remainder:      @data.settings.horizontalRemainder.charAt(0)
-      calculation:    @data.settings.calculation
+      calculation:    @data.settings.calculation.charAt(0)
 
     "#{ string1 }#{ if string1 and string2 then '\n' else '' }#{ string2 }"
 
