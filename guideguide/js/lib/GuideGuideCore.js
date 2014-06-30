@@ -527,7 +527,7 @@
         orientation: 'v',
         position: this.data.settings.horizontalPosition.charAt(0),
         remainder: this.data.settings.verticalRemainder.charAt(0),
-        calculation: this.data.settings.calculation
+        calculation: this.data.settings.calculation.charAt(0)
       });
       string2 = GridNotation.stringify({
         count: data.countRow,
@@ -540,7 +540,7 @@
         orientation: 'h',
         position: this.data.settings.verticalPosition.charAt(0),
         remainder: this.data.settings.horizontalRemainder.charAt(0),
-        calculation: this.data.settings.calculation
+        calculation: this.data.settings.calculation.charAt(0)
       });
       return "" + string1 + (string1 && string2 ? '\n' : '') + string2;
     };

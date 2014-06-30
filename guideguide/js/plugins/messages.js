@@ -34,8 +34,6 @@
       this.alertTitleUpToDate = __bind(this.alertTitleUpToDate, this);
       this.helpGistExport = __bind(this.helpGistExport, this);
       this.helpImportDesc = __bind(this.helpImportDesc, this);
-      this.helpRemainder = __bind(this.helpRemainder, this);
-      this.helpPosition = __bind(this.helpPosition, this);
       this.uiOpenInBrowser = __bind(this.uiOpenInBrowser, this);
       this.uiNiceNo = __bind(this.uiNiceNo, this);
       this.uiVerticalLast = __bind(this.uiVerticalLast, this);
@@ -48,9 +46,12 @@
       this.uiHorizontalRemainder = __bind(this.uiHorizontalRemainder, this);
       this.uiVerticalPosition = __bind(this.uiVerticalPosition, this);
       this.uiHorizontalPosition = __bind(this.uiHorizontalPosition, this);
+      this.uiSnapToPixels = __bind(this.uiSnapToPixels, this);
       this.uiShowLogs = __bind(this.uiShowLogs, this);
       this.uiCheckForUpdates = __bind(this.uiCheckForUpdates, this);
       this.uiDonate = __bind(this.uiDonate, this);
+      this.uiOff = __bind(this.uiOff, this);
+      this.uiOn = __bind(this.uiOn, this);
       this.uiCancel = __bind(this.uiCancel, this);
       this.uiOk = __bind(this.uiOk, this);
       this.uiGutterMidpoint = __bind(this.uiGutterMidpoint, this);
@@ -171,6 +172,14 @@
       }
     };
 
+    Messages.prototype.uiOn = function() {
+      return "On";
+    };
+
+    Messages.prototype.uiOff = function() {
+      return "Off";
+    };
+
     Messages.prototype.uiDonate = function() {
       switch (this.i18n) {
         case "es_es":
@@ -196,6 +205,10 @@
         default:
           return "Show logs";
       }
+    };
+
+    Messages.prototype.uiSnapToPixels = function() {
+      return "Snap to pixels";
     };
 
     Messages.prototype.uiHorizontalPosition = function() {
@@ -303,24 +316,6 @@
           return "Abrir en navegador";
         default:
           return "Open in browser";
-      }
-    };
-
-    Messages.prototype.helpPosition = function() {
-      switch (this.i18n) {
-        case "es_es":
-          return "Determina dónde coloca GuideGuide una retícula cuando es más pequeña que el área disponible.";
-        default:
-          return "This determines where GuideGuide puts a grid when it is smaller than the available area.";
-      }
-    };
-
-    Messages.prototype.helpRemainder = function() {
-      switch (this.i18n) {
-        case "es_es":
-          return "En modo pixel, GuideGuide redondea hacia abajo los anchos con píxeles decimales y usa este ajuste para determinar qué columnas o filas reciben los pixels sobrantes.";
-        default:
-          return "In pixel mode, GuideGuide rounds down decimal pixel widths and uses this setting to determine which columns or rows receive the remainder pixels.";
       }
     };
 
