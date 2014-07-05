@@ -72,12 +72,21 @@ class window.GuideGuideHTMLUI
   onInputFocus: (event) =>
     $(event.currentTarget).closest('.js-input').addClass 'is-focused'
     $(event.currentTarget).closest('.js-input').removeClass 'is-invalid'
+    $(event.currentTarget).closest('.js-grid-form').find('.js-make-grid').addClass 'js-enter-click'
+    @panel.on 'keypress.enter', @onInputKeypress
 
   # When an input blurs remove its outline.
   #
   # Returns nothing.
   onInputBlur: (event) =>
     $(event.currentTarget).closest('.js-input').removeClass 'is-focused'
+    $('.js-enter-click').removeClass 'js-enter-click'
+    @panel.off '.enter'
+
+  # When enter is pressed, render the grid.
+  #
+  # Returns nothing.
+  onInputKeypress: (event) => $('.js-enter-click').click() if event.which is 13
 
   # Outline an invalid input with red.
   #
