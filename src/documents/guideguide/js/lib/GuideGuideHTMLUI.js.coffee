@@ -20,6 +20,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-action-bar .js-clear', @onClickClearGuides
     @panel.on 'focus', '.js-input input, .js-input textarea', @onInputFocus
     @panel.on 'blur', '.js-input input, .js-input textarea', @onInputBlur
+    @panel.on 'click', '.js-grid-form .js-clear-form', @onClickClearForm
     @panel.on 'mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOverDistributeIcon
     @panel.on 'mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', @onMouseOutDistributeIcon
     @panel.on 'click', '.js-dropdown', @onToggleDropdown
@@ -82,6 +83,14 @@ class window.GuideGuideHTMLUI
     $(event.currentTarget).closest('.js-input').removeClass 'is-focused'
     $('.js-enter-click').removeClass 'js-enter-click'
     @panel.off '.enter'
+
+  # Clear all values of the grid form.
+  #
+  # Returns nothing.
+  onClickClearForm: (event) =>
+    event.preventDefault()
+    $('.js-grid-form .js-grid-form-input').val ''
+    $('.js-grid-form .js-checkbox').removeClass 'checked'
 
   # When enter is pressed, render the grid.
   #
