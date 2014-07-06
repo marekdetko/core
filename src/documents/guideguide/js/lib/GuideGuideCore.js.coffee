@@ -563,9 +563,10 @@ class window.GuideGuideCore
   # Add guides to the document from a set
   #
   # Returns an Array of guides
-  makeGridFromSet: (set, group) =>
-    set = @getSets { set: set, group: group }
-    @addGuidesFromNotation set.string, 'set'
+  makeGridFromSet: (sets) =>
+    for s in sets
+      set = @getSets { set: s.id, group: s.group }
+      @addGuidesFromNotation set.string, 'set'
 
   # Create a grid from the Custom form
   #

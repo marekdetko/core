@@ -455,9 +455,7 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onSelectSet: (event) =>
     event.preventDefault()
-    $set = $(event.currentTarget)
-    $set.closest('.js-sets-form').find('.is-selected').removeClass('is-selected')
-    $set.closest('.js-set').addClass('is-selected')
+    $(event.currentTarget).closest('.js-set').toggleClass('is-selected')
 
   # Remove any sets in the markup and update the list with a new set items for
   # each set in the list.
@@ -638,11 +636,14 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   onClickMakeGridFromSet: (event) =>
     event.preventDefault()
-    $set = $('.js-set-list').find('.is-selected').first()
-    return unless $set.length
-    id    = $set.attr 'data-id'
-    group = $set.attr 'data-group'
-    @core.makeGridFromSet(id, group)
+    $selected = $('.js-set-list').find('.is-selected')
+    return unless $selected.length
+    sets = []
+    for set in $selected
+      sets.push
+        id: $(set).attr 'data-id'
+        group: $(set).attr 'data-group'
+    @core.makeGridFromSet(sets)
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.
