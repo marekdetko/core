@@ -186,3 +186,12 @@ input, textarea {
     resize: none;
   }
 }
+
+.clear-form-button-holder {
+  margin-top: 10px;
+  padding-left: 3px;
+
+  .icon-clear-guides {
+    vertical-align: top;
+  }
+}
