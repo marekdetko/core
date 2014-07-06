@@ -188,10 +188,15 @@ input, textarea {
 }
 
 .clear-form-button-holder {
+  display: none;
   margin-top: 10px;
   padding-left: 3px;
 
   .icon-clear-guides {
     vertical-align: top;
+  }
+
+  .is-showing-clear-button & {
+    display: block;
   }
 }

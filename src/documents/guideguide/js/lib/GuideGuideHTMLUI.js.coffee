@@ -82,13 +82,24 @@ class window.GuideGuideHTMLUI
   onInputBlur: (event) =>
     $(event.currentTarget).closest('.js-input').removeClass 'is-focused'
     $('.js-enter-click').removeClass 'js-enter-click'
+    $('.js-grid-form').toggleClass 'is-showing-clear-button', @formIsFilledOut()
     @panel.off '.enter'
+
+  # Determine if the form has been has been filled out in any way.
+  #
+  # Returns a boolean.
+  formIsFilledOut: ->
+    modified = false
+    (modified = true if $.trim($(field).val()).length > 0) for field in $('.js-grid-form .js-grid-form-input')
+    (modified = true if $(box).hasClass('checked')) for box in $('.js-grid-form .js-checkbox')
+    modified
 
   # Clear all values of the grid form.
   #
   # Returns nothing.
   onClickClearForm: (event) =>
     event.preventDefault()
+    $('.is-showing-clear-button').removeClass 'is-showing-clear-button'
     $('.js-grid-form .js-grid-form-input').val ''
     $('.js-grid-form .js-checkbox').removeClass 'checked'
 
@@ -212,9 +223,9 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     $checkbox = $(event.currentTarget)
     $checkbox.toggleClass 'checked'
-
     $form  = $checkbox.closest '.js-grid-form'
     @core.formChanged @getFormData()
+    $('.js-grid-form').toggleClass 'is-showing-clear-button', @formIsFilledOut()
 
   # Updates the text in the custom field and resizes it
   #
