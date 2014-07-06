@@ -1,0 +1,8 @@
+{
+  "name": "guideguide-plugins",
+  "private": true,
+  "dependencies": {
+    "messages": "https://github.com/guideguide/messages.git",
+    "grid-notation": "https://github.com/guideguide/grid-notation.git"
+  }
+}
