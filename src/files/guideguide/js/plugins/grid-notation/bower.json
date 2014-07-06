@@ -1,0 +1,21 @@
+{
+  "name": "grid-notation",
+  "homepage": "https://github.com/guideguide/grid-notation",
+  "authors": [
+    "Cameron McEfee <cm@cameronmcefee.com>"
+  ],
+  "description": "A human friendly(ish), written grid language",
+  "main": "grid-notation.js",
+  "keywords": [
+    "guides",
+    "grids",
+    "guideguide"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/*",
+    "bower.json",
+    "./!(grid-notation.js)"
+  ]
+}
