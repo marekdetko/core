@@ -544,6 +544,18 @@ input, textarea {
   resize: none;
 }
 
+.clear-form-button-holder {
+  display: none;
+  margin-top: 10px;
+  padding-left: 3px;
+}
+.clear-form-button-holder .icon-clear-guides {
+  vertical-align: top;
+}
+.is-showing-clear-button .clear-form-button-holder {
+  display: block;
+}
+
 .icon {
   display: inline-block;
   height: 16px;
@@ -554,6 +566,10 @@ input, textarea {
 
 .button-clear-guides:hover .icon-clear-guides {
   background-position: -80px 0px;
+}
+
+.clear-form-button-holder a:hover .icon-clear-guides {
+  background-position: -144px 0px;
 }
 
 .light-theme .icon-arrow-up {

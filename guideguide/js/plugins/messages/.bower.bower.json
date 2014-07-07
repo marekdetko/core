@@ -1,0 +1,28 @@
+{
+  "name": "messages",
+  "homepage": "https://github.com/guideguide/messages",
+  "authors": [
+    "Cameron McEfee <cm@cameronmcefee.com>"
+  ],
+  "description": "GuideGuide's messages and their translations",
+  "main": "messages.js",
+  "keywords": [
+    "guideguide"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/*",
+    "./!(messages.js)"
+  ],
+  "version": "0.0.2",
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.2",
+    "commit": "2930a6857b721f382a1bcab6c8a8913f11e64034"
+  },
+  "_source": "https://github.com/guideguide/messages.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/guideguide/messages.git"
+}

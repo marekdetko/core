@@ -62,6 +62,8 @@
       this.onBlurCustomForm = __bind(this.onBlurCustomForm, this);
       this.onFocusCustomForm = __bind(this.onFocusCustomForm, this);
       this.markInvalid = __bind(this.markInvalid, this);
+      this.onInputKeypress = __bind(this.onInputKeypress, this);
+      this.onClickClearForm = __bind(this.onClickClearForm, this);
       this.onInputBlur = __bind(this.onInputBlur, this);
       this.onInputFocus = __bind(this.onInputFocus, this);
       this.localizeUI = __bind(this.localizeUI, this);
@@ -82,6 +84,7 @@
       this.panel.on('click', '.js-action-bar .js-clear', this.onClickClearGuides);
       this.panel.on('focus', '.js-input input, .js-input textarea', this.onInputFocus);
       this.panel.on('blur', '.js-input input, .js-input textarea', this.onInputBlur);
+      this.panel.on('click', '.js-grid-form .js-clear-form', this.onClickClearForm);
       this.panel.on('mouseover', '.js-grid-form [data-distribute] .js-iconned-input-button', this.onMouseOverDistributeIcon);
       this.panel.on('mouseout', '.js-grid-form [data-distribute] .js-iconned-input-button', this.onMouseOutDistributeIcon);
       this.panel.on('click', '.js-dropdown', this.onToggleDropdown);
@@ -132,11 +135,49 @@
 
     GuideGuideHTMLUI.prototype.onInputFocus = function(event) {
       $(event.currentTarget).closest('.js-input').addClass('is-focused');
-      return $(event.currentTarget).closest('.js-input').removeClass('is-invalid');
+      $(event.currentTarget).closest('.js-input').removeClass('is-invalid');
+      $(event.currentTarget).closest('.js-grid-form').find('.js-make-grid').addClass('js-enter-click');
+      return this.panel.on('keypress.enter', this.onInputKeypress);
     };
 
     GuideGuideHTMLUI.prototype.onInputBlur = function(event) {
-      return $(event.currentTarget).closest('.js-input').removeClass('is-focused');
+      $(event.currentTarget).closest('.js-input').removeClass('is-focused');
+      $('.js-enter-click').removeClass('js-enter-click');
+      $('.js-grid-form').toggleClass('is-showing-clear-button', this.formIsFilledOut());
+      return this.panel.off('.enter');
+    };
+
+    GuideGuideHTMLUI.prototype.formIsFilledOut = function() {
+      var box, field, modified, _i, _j, _len, _len1, _ref, _ref1;
+      modified = false;
+      _ref = $('.js-grid-form .js-grid-form-input');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        field = _ref[_i];
+        if ($.trim($(field).val()).length > 0) {
+          modified = true;
+        }
+      }
+      _ref1 = $('.js-grid-form .js-checkbox');
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        box = _ref1[_j];
+        if ($(box).hasClass('checked')) {
+          modified = true;
+        }
+      }
+      return modified;
+    };
+
+    GuideGuideHTMLUI.prototype.onClickClearForm = function(event) {
+      event.preventDefault();
+      $('.is-showing-clear-button').removeClass('is-showing-clear-button');
+      $('.js-grid-form .js-grid-form-input').val('');
+      return $('.js-grid-form .js-checkbox').removeClass('checked');
+    };
+
+    GuideGuideHTMLUI.prototype.onInputKeypress = function(event) {
+      if (event.which === 13) {
+        return $('.js-enter-click').click();
+      }
     };
 
     GuideGuideHTMLUI.prototype.markInvalid = function($input) {
@@ -233,7 +274,8 @@
       $checkbox = $(event.currentTarget);
       $checkbox.toggleClass('checked');
       $form = $checkbox.closest('.js-grid-form');
-      return this.core.formChanged(this.getFormData());
+      this.core.formChanged(this.getFormData());
+      return $('.js-grid-form').toggleClass('is-showing-clear-button', this.formIsFilledOut());
     };
 
     GuideGuideHTMLUI.prototype.updateCustomField = function(text) {
@@ -488,11 +530,8 @@
     };
 
     GuideGuideHTMLUI.prototype.onSelectSet = function(event) {
-      var $set;
       event.preventDefault();
-      $set = $(event.currentTarget);
-      $set.closest('.js-sets-form').find('.is-selected').removeClass('is-selected');
-      return $set.closest('.js-set').addClass('is-selected');
+      return $(event.currentTarget).closest('.js-set').toggleClass('is-selected');
     };
 
     GuideGuideHTMLUI.prototype.refreshSets = function(sets) {
@@ -653,15 +692,21 @@
     };
 
     GuideGuideHTMLUI.prototype.onClickMakeGridFromSet = function(event) {
-      var $set, group, id;
+      var $selected, set, sets, _i, _len;
       event.preventDefault();
-      $set = $('.js-set-list').find('.is-selected').first();
-      if (!$set.length) {
+      $selected = $('.js-set-list').find('.is-selected');
+      if (!$selected.length) {
         return;
       }
-      id = $set.attr('data-id');
-      group = $set.attr('data-group');
-      return this.core.makeGridFromSet(id, group);
+      sets = [];
+      for (_i = 0, _len = $selected.length; _i < _len; _i++) {
+        set = $selected[_i];
+        sets.push({
+          id: $(set).attr('data-id'),
+          group: $(set).attr('data-group')
+        });
+      }
+      return this.core.makeGridFromSet(sets);
     };
 
     GuideGuideHTMLUI.prototype.onClickInputBackground = function(event) {

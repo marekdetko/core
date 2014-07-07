@@ -669,12 +669,18 @@
       return this.addGuidesFromNotation(string, 'grid');
     };
 
-    GuideGuideCore.prototype.makeGridFromSet = function(set, group) {
-      set = this.getSets({
-        set: set,
-        group: group
-      });
-      return this.addGuidesFromNotation(set.string, 'set');
+    GuideGuideCore.prototype.makeGridFromSet = function(sets) {
+      var s, set, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = sets.length; _i < _len; _i++) {
+        s = sets[_i];
+        set = this.getSets({
+          set: s.id,
+          group: s.group
+        });
+        _results.push(this.addGuidesFromNotation(set.string, 'set'));
+      }
+      return _results;
     };
 
     GuideGuideCore.prototype.makeGridFromCustom = function(string) {

@@ -7,8 +7,8 @@
   <script type="text/javascript">window.module = undefined</script>
   <script type="text/javascript" src="js/plugins/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="js/plugins/jquery.autosize.min.js"></script>
-  <script type="text/javascript" src="js/plugins/messages.js"></script>
-  <script type="text/javascript" src="js/plugins/grid-notation.js"></script>
+  <script type="text/javascript" src="js/plugins/messages/messages.js"></script>
+  <script type="text/javascript" src="js/plugins/grid-notation/grid-notation.js"></script>
   <script type="text/javascript" src="js/lib/GuideGuideCore.js"></script>
   <script type="text/javascript" src="js/lib/GuideGuideHTMLUI.js"></script>
   <script type="text/javascript" src="js/script.js"></script>
@@ -37,6 +37,7 @@
 
       <div class="pages height-stretch">
         <div class="tabbed-page height-stretch js-tabbed-page js-grid-form js-enter-form is-selected" data-page="form">
+
           <div class="set-name-row js-set-name-row">
             <span class="input js-input">
               <span class="input-shell js-input-shell">
@@ -146,6 +147,10 @@
                 <td><span class="js-checkbox checkbox" data-type="midpointRowGutter"><span class="square"></span><span class="icon icon-check"></span><span class="label height-stretch" data-localize="uiGutterMidpoint">Gutter midpoint</span></span></td>
               </tr>
             </table>
+
+            <div class="clear-form-button-holder">
+              <a class="js-clear-form" href><span class="icon icon-clear-guides"></span> <span data-localize="uiClearForm">Clear form</span></a>
+            </div>
           </div>
           <div class="form-action-buttons">
             <a class="button primary js-make-grid make-grid" data-localize="uiMakeGrid" href>Make grid</a>
