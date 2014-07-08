@@ -78,8 +78,11 @@ class window.GuideGuideCore
       hasUpdate: false
 
     $.ajax
-      type: 'GET'
-      url: "#{ @siteUrl }#{ @data.application.id }"
+      url: "#{ @siteUrl }#{ @data.application.id }.json"
+      crossDomain: true
+      dataType: 'jsonp'
+      jsonp: "callback"
+      jsonpCallback: "callback"
       success: (data) =>
         hasUpdate = false
 
