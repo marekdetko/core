@@ -83,6 +83,7 @@ class window.GuideGuideCore
       dataType: 'jsonp'
       jsonp: "callback"
       jsonpCallback: "callback"
+      timeout: 5000
       success: (data) =>
         hasUpdate = false
 
@@ -102,7 +103,7 @@ class window.GuideGuideCore
         callback(result)
       error: (error) =>
         @log error
-        callback(result)
+        callback(null)
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
