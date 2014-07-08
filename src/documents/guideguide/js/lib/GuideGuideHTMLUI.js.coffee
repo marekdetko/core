@@ -237,7 +237,9 @@ class window.GuideGuideHTMLUI
   #
   # Returns noting.
   onBlurFormInput: (event) =>
-    $input = $(event.currentTarget)
+    @validateInput $(event.currentTarget)
+
+  validateInput: ($input, callback) =>
     return if $.trim($input.val()) is ""
     int = false
 
@@ -253,6 +255,8 @@ class window.GuideGuideHTMLUI
     else
       @core.formChanged @getFormData()
 
+    callback() if callback
+
   # When one of the input icons is clicked, change all fields of the same type
   # to that value
   #
@@ -262,13 +266,13 @@ class window.GuideGuideHTMLUI
     $form  = $(event.currentTarget).closest '.js-grid-form'
     $input = $(event.currentTarget).closest '.js-grid-form-iconned-input'
     $field = $input.find('.js-grid-form-input')
-    return if $input.hasClass 'is-invalid'
-    @core.getInputFormat $field.val(), (val) -> $field.val(val)
-    value   = $field.val()
-    type    = $input.attr 'data-distribute'
-    $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
-    $fields.find('.js-grid-form-input').val value
-    @core.formChanged @getFormData()
+    @validateInput $field, =>
+      return if $input.hasClass 'is-invalid'
+      value   = $field.val()
+      type    = $input.attr 'data-distribute'
+      $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
+      $fields.find('.js-grid-form-input').val value
+      @core.formChanged @getFormData()
 
   # Toggle dropdown visibilty
   #
