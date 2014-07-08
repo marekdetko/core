@@ -49,6 +49,7 @@
       this.onClickDropdownItem = __bind(this.onClickDropdownItem, this);
       this.onToggleDropdown = __bind(this.onToggleDropdown, this);
       this.onClickDistributeIcon = __bind(this.onClickDistributeIcon, this);
+      this.validateInput = __bind(this.validateInput, this);
       this.onBlurFormInput = __bind(this.onBlurFormInput, this);
       this.updateCustomField = __bind(this.updateCustomField, this);
       this.onClickCheckbox = __bind(this.onClickCheckbox, this);
@@ -283,8 +284,11 @@
     };
 
     GuideGuideHTMLUI.prototype.onBlurFormInput = function(event) {
-      var $input, int, val;
-      $input = $(event.currentTarget);
+      return this.validateInput($(event.currentTarget));
+    };
+
+    GuideGuideHTMLUI.prototype.validateInput = function($input, callback) {
+      var int, val;
       if ($.trim($input.val()) === "") {
         return;
       }
@@ -301,29 +305,34 @@
         });
       }
       if (!this.core.validateInput($input.val(), int)) {
-        return this.markInvalid($input);
+        this.markInvalid($input);
       } else {
-        return this.core.formChanged(this.getFormData());
+        this.core.formChanged(this.getFormData());
+      }
+      if (callback) {
+        return callback();
       }
     };
 
     GuideGuideHTMLUI.prototype.onClickDistributeIcon = function(event) {
-      var $field, $fields, $form, $input, type, value;
+      var $field, $form, $input;
       event.preventDefault();
       $form = $(event.currentTarget).closest('.js-grid-form');
       $input = $(event.currentTarget).closest('.js-grid-form-iconned-input');
       $field = $input.find('.js-grid-form-input');
-      if ($input.hasClass('is-invalid')) {
-        return;
-      }
-      this.core.getInputFormat($field.val(), function(val) {
-        return $field.val(val);
-      });
-      value = $field.val();
-      type = $input.attr('data-distribute');
-      $fields = this.filteredList($form.find('.js-grid-form-iconned-input'), type);
-      $fields.find('.js-grid-form-input').val(value);
-      return this.core.formChanged(this.getFormData());
+      return this.validateInput($field, (function(_this) {
+        return function() {
+          var $fields, type, value;
+          if ($input.hasClass('is-invalid')) {
+            return;
+          }
+          value = $field.val();
+          type = $input.attr('data-distribute');
+          $fields = _this.filteredList($form.find('.js-grid-form-iconned-input'), type);
+          $fields.find('.js-grid-form-input').val(value);
+          return _this.core.formChanged(_this.getFormData());
+        };
+      })(this));
     };
 
     GuideGuideHTMLUI.prototype.onToggleDropdown = function(event) {

@@ -126,8 +126,12 @@
         hasUpdate: false
       };
       return $.ajax({
-        type: 'GET',
-        url: "" + this.siteUrl + this.data.application.id,
+        url: "" + this.siteUrl + this.data.application.id + ".json",
+        crossDomain: true,
+        dataType: 'jsonp',
+        jsonp: "callback",
+        jsonpCallback: "callback",
+        timeout: 5000,
         success: (function(_this) {
           return function(data) {
             var hasUpdate, i, num, ours, theirs, _i, _len;
@@ -155,7 +159,7 @@
         error: (function(_this) {
           return function(error) {
             _this.log(error);
-            return callback(result);
+            return callback(null);
           };
         })(this)
       });
