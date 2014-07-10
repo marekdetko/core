@@ -399,12 +399,6 @@ test "can create GuideGuide Notation from grid form", ->
   expected = "$v=|~|\n|$v*3|(vlp)\n$h=|~|\n|$h*3|(hlp)"
   equal gg.stringifyFormData(data), expected
 
-test "can get sum", ->
-  equal gg.sum([1,2]), 3
-
-test "can get sum with key", ->
-  equal gg.sum([{ foo: 1, bar: 5 }, { foo: 2, bar: 5 }], "foo"), 3
-
 asyncTest "can check for updates", ->
   gg.checkForUpdates (data) =>
     equal $.type(data), "object"

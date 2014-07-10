@@ -637,13 +637,26 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     @core.clearGuides()
 
+  toggleCancelButton: (button) =>
+    $button = $(button)
+    $button.text @messages.uiCancel() if !$button.hasClass 'js-cancel'
+    $button.text @messages.uiMakeGrid() if $button.hasClass 'js-cancel'
+    $button.toggleClass 'js-cancel'
+
+  onClickCancelButton: (event) =>
+    @core.disrupt()
+
   # Create a grid from the Grid form
   #
   # Returns Nothing.
   onClickMakeGridFromForm: (event) =>
     event.preventDefault()
+    data = @getFormData()
     return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
-    @core.makeGridFromForm @getFormData()
+    return if !@core.formIsValid(data)
+    @toggleCancelButton(event.currentTarget)
+    @core.makeGridFromForm data, =>
+      @toggleCancelButton(event.currentTarget)
 
   # Create a grid from the Custom form
   #
@@ -653,7 +666,9 @@ class window.GuideGuideHTMLUI
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
     return unless $form.find('.js-input.is-invalid').length == 0 and string
-    @core.makeGridFromCustom string
+    @toggleCancelButton(event.currentTarget)
+    @core.makeGridFromCustom string, =>
+      @toggleCancelButton(event.currentTarget)
 
   # Create a grid from a set
   #
@@ -667,7 +682,9 @@ class window.GuideGuideHTMLUI
       sets.push
         id: $(set).attr 'data-id'
         group: $(set).attr 'data-group'
-    @core.makeGridFromSet(sets)
+    @toggleCancelButton(event.currentTarget)
+    @core.makeGridFromSet sets, =>
+      @toggleCancelButton(event.currentTarget)
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.

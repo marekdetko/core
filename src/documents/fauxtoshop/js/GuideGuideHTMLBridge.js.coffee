@@ -36,8 +36,8 @@ class window.GuideGuideHTMLBridge
   #  guides - array of guide objects
   #
   # Returns false
-  addGuides: (guides) =>
-    Fauxtoshop.addGuides guides
+  addGuides: (guides, callback) =>
+    Fauxtoshop.addGuides guides, callback
 
   # Turn guide visibility on and off
   #
