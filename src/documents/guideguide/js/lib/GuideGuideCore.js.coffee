@@ -1,6 +1,7 @@
 class window.GuideGuideCore
   siteUrl: 'http://guideguide.me/update/'
   env:     'production'
+  allowGuideActions: true
   bridge: {}
   data: {}
 
@@ -113,6 +114,13 @@ class window.GuideGuideCore
   saveData: (data) =>
     @data = $.extend true, @data, data if data
     @bridge.setData @data
+
+  # Disable the action buttons while guides are being added.
+  #
+  # Returns nothing.
+  toggleAllowingGuideActions: =>
+    allowGuideActions = !allowGuideActions
+    @bridge.toggleActionBar()
 
   # Increment a usage counter of a given property.
   #

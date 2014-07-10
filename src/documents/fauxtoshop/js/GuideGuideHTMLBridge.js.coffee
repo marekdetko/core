@@ -45,6 +45,12 @@ class window.GuideGuideHTMLBridge
   disrupt: =>
     Fauxtoshop.isAddingGuides = false
 
+  # Fade the action bar since it can't be used.
+  #
+  # Returns nothing.
+  toggleActionBar: =>
+    @ui.toggleActionBar()
+
   # Turn guide visibility on and off
   #
   # Returns nothing
