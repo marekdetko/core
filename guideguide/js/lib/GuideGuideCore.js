@@ -7,6 +7,8 @@
 
     GuideGuideCore.prototype.env = 'production';
 
+    GuideGuideCore.prototype.allowGuideActions = true;
+
     GuideGuideCore.prototype.bridge = {};
 
     GuideGuideCore.prototype.data = {};
@@ -22,9 +24,11 @@
       this.makeGridFromCustom = __bind(this.makeGridFromCustom, this);
       this.makeGridFromSet = __bind(this.makeGridFromSet, this);
       this.makeGridFromForm = __bind(this.makeGridFromForm, this);
+      this.formIsValid = __bind(this.formIsValid, this);
       this.quickGuide = __bind(this.quickGuide, this);
       this.addGuides = __bind(this.addGuides, this);
       this.getGGNFromExistingGuides = __bind(this.getGGNFromExistingGuides, this);
+      this.disrupt = __bind(this.disrupt, this);
       this.addGuidesFromNotation = __bind(this.addGuidesFromNotation, this);
       this.stringifyFormData = __bind(this.stringifyFormData, this);
       this.getInputFormat = __bind(this.getInputFormat, this);
@@ -48,6 +52,7 @@
       this.deleteSet = __bind(this.deleteSet, this);
       this.getSets = __bind(this.getSets, this);
       this.recordUsage = __bind(this.recordUsage, this);
+      this.toggleAllowingGuideActions = __bind(this.toggleAllowingGuideActions, this);
       this.saveData = __bind(this.saveData, this);
       this.checkForUpdates = __bind(this.checkForUpdates, this);
       this.manualCheckForUpdates = __bind(this.manualCheckForUpdates, this);
@@ -170,6 +175,12 @@
         this.data = $.extend(true, this.data, data);
       }
       return this.bridge.setData(this.data);
+    };
+
+    GuideGuideCore.prototype.toggleAllowingGuideActions = function() {
+      var allowGuideActions;
+      allowGuideActions = !allowGuideActions;
+      return this.bridge.toggleActionBar();
     };
 
     GuideGuideCore.prototype.recordUsage = function(property, count) {
@@ -549,7 +560,7 @@
       return "" + string1 + (string1 && string2 ? '\n' : '') + string2;
     };
 
-    GuideGuideCore.prototype.addGuidesFromNotation = function(notation, source) {
+    GuideGuideCore.prototype.addGuidesFromNotation = function(notation, source, callback) {
       return this.bridge.getDocumentInfo((function(_this) {
         return function(info) {
           var guides;
@@ -560,9 +571,13 @@
           guides = GridNotation.parse(notation, info);
           guides = _this.consolidate(info.existingGuides, guides);
           _this.recordUsage(source, guides.length);
-          return _this.addGuides(guides);
+          return _this.addGuides(guides, callback);
         };
       })(this));
+    };
+
+    GuideGuideCore.prototype.disrupt = function() {
+      return this.bridge.disrupt();
     };
 
     GuideGuideCore.prototype.getGGNFromExistingGuides = function(callback) {
@@ -623,9 +638,8 @@
       })(this));
     };
 
-    GuideGuideCore.prototype.addGuides = function(guides) {
-      this.bridge.addGuides(guides);
-      return guides;
+    GuideGuideCore.prototype.addGuides = function(guides, callback) {
+      return this.bridge.addGuides(guides, callback);
     };
 
     GuideGuideCore.prototype.quickGuide = function(type) {
@@ -664,17 +678,21 @@
       return notation;
     };
 
-    GuideGuideCore.prototype.makeGridFromForm = function(data) {
+    GuideGuideCore.prototype.formIsValid = function(data) {
       var string;
       string = this.stringifyFormData(data.contents);
-      if (!GridNotation.test(string)) {
-        return;
-      }
-      return this.addGuidesFromNotation(string, 'grid');
+      return GridNotation.test(string).length === 0;
     };
 
-    GuideGuideCore.prototype.makeGridFromSet = function(sets) {
-      var s, set, _i, _len, _results;
+    GuideGuideCore.prototype.makeGridFromForm = function(data, callback) {
+      var string;
+      string = this.stringifyFormData(data.contents);
+      return this.addGuidesFromNotation(string, 'grid', callback);
+    };
+
+    GuideGuideCore.prototype.makeGridFromSet = function(sets, callback) {
+      var s, set, tasks, _i, _len, _results;
+      tasks = sets.length;
       _results = [];
       for (_i = 0, _len = sets.length; _i < _len; _i++) {
         s = sets[_i];
@@ -682,13 +700,20 @@
           set: s.id,
           group: s.group
         });
-        _results.push(this.addGuidesFromNotation(set.string, 'set'));
+        _results.push(this.addGuidesFromNotation(set.string, 'set', (function(_this) {
+          return function() {
+            tasks--;
+            if (tasks === 0 && callback) {
+              return callback();
+            }
+          };
+        })(this)));
       }
       return _results;
     };
 
-    GuideGuideCore.prototype.makeGridFromCustom = function(string) {
-      return this.addGuidesFromNotation(string, 'custom');
+    GuideGuideCore.prototype.makeGridFromCustom = function(string, callback) {
+      return this.addGuidesFromNotation(string, 'custom', callback);
     };
 
     GuideGuideCore.prototype.clearGuides = function() {
@@ -740,26 +765,6 @@
       var args;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       return this.bridge.log(args);
-    };
-
-    GuideGuideCore.prototype.sum = function(array, key) {
-      var total;
-      if (key == null) {
-        key = null;
-      }
-      total = 0;
-      $.each(array, (function(_this) {
-        return function(index, value) {
-          if (key) {
-            if (array[index][key]) {
-              return total += array[index][key];
-            }
-          } else {
-            return total += array[index];
-          }
-        };
-      })(this));
-      return total;
     };
 
     GuideGuideCore.prototype.updateTheme = function(colors) {
