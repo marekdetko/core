@@ -39,6 +39,12 @@ class window.GuideGuideHTMLBridge
   addGuides: (guides, callback) =>
     Fauxtoshop.addGuides guides, callback
 
+  # Discontinue adding guides.
+  #
+  # Returns nothing.
+  disrupt: =>
+    Fauxtoshop.isAddingGuides = false
+
   # Turn guide visibility on and off
   #
   # Returns nothing

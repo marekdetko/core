@@ -1,5 +1,6 @@
 class window.FauxtoshopLib
   testMode: false
+  isAddingGuides: false
   data:
     application:
       id: 'web'
@@ -72,7 +73,9 @@ class window.FauxtoshopLib
     for g in guides
       queue.push g
 
-    add = ->
+    @isAddingGuides = true
+    add = =>
+      return if !@isAddingGuides
       g = queue[0]
       guide = $('.js-templates').find('.js-guide')
       .clone().attr('class','')

@@ -50,6 +50,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
     @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onClickEditSet
+    @panel.on 'click', '.js-cancel-guides', @onClickCancelButton
 
   init: (core) =>
     @core = core
@@ -639,9 +640,9 @@ class window.GuideGuideHTMLUI
 
   toggleCancelButton: (button) =>
     $button = $(button)
-    $button.text @messages.uiCancel() if !$button.hasClass 'js-cancel'
-    $button.text @messages.uiMakeGrid() if $button.hasClass 'js-cancel'
-    $button.toggleClass 'js-cancel'
+    $button.text @messages.uiCancel() if !$button.hasClass 'js-cancel-guides'
+    $button.text @messages.uiMakeGrid() if $button.hasClass 'js-cancel-guides'
+    $button.toggleClass 'js-cancel-guides'
 
   onClickCancelButton: (event) =>
     @core.disrupt()
