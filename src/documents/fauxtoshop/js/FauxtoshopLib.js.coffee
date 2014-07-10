@@ -65,10 +65,15 @@ class window.FauxtoshopLib
   #  guide - guide to be added
   #
   # Returns false
-  addGuides: (guides) =>
+  addGuides: (guides, callback) =>
     return guides if @testMode
     artboardPosition = $('.js-document').find('.js-artboard').position()
-    for i, g of guides
+    queue = []
+    for g in guides
+      queue.push g
+
+    add = ->
+      g = queue[0]
       guide = $('.js-templates').find('.js-guide')
       .clone().attr('class','')
       .addClass 'guide js-guide ' + g.orientation
@@ -79,6 +84,10 @@ class window.FauxtoshopLib
         guide.css 'left', ( g.location + artboardPosition.left ) + 'px'
 
       $('.js-document').append guide
+      queue.shift()
+      return (callback() if callback) if queue.length == 0
+      setTimeout(add, 50)
+    add()
 
   resetGuides: =>
     return [] if @testMode
