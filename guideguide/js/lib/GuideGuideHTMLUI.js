@@ -11,6 +11,9 @@
       this.onClickMakeGridFromSet = __bind(this.onClickMakeGridFromSet, this);
       this.onClickMakeGridFromCusom = __bind(this.onClickMakeGridFromCusom, this);
       this.onClickMakeGridFromForm = __bind(this.onClickMakeGridFromForm, this);
+      this.onClickCancelButton = __bind(this.onClickCancelButton, this);
+      this.toggleCancelButton = __bind(this.toggleCancelButton, this);
+      this.toggleActionBar = __bind(this.toggleActionBar, this);
       this.onClickClearGuides = __bind(this.onClickClearGuides, this);
       this.onClickVerticalMidpoint = __bind(this.onClickVerticalMidpoint, this);
       this.onClickHorizontalMidpoint = __bind(this.onClickHorizontalMidpoint, this);
@@ -115,6 +118,7 @@
       this.panel.on('click', '.js-sets-form .js-make-grid', this.onClickMakeGridFromSet);
       this.panel.on('click', '.js-custom-form .js-make-grid', this.onClickMakeGridFromCusom);
       this.panel.on('click', '.js-sets-form .js-edit-set', this.onClickEditSet);
+      this.panel.on('click', '.js-cancel-guides', this.onClickCancelButton);
     }
 
     GuideGuideHTMLUI.prototype.init = function(core) {
@@ -648,45 +652,91 @@
 
     GuideGuideHTMLUI.prototype.onClickTopGuide = function(event) {
       event.preventDefault();
-      return this.core.quickGuide("top");
+      if (this.core.allowGuideActions) {
+        return this.core.quickGuide("top");
+      }
     };
 
     GuideGuideHTMLUI.prototype.onClickBottomGuide = function(event) {
       event.preventDefault();
-      return this.core.quickGuide("bottom");
+      if (this.core.allowGuideActions) {
+        return this.core.quickGuide("bottom");
+      }
     };
 
     GuideGuideHTMLUI.prototype.onClickLeftGuide = function(event) {
       event.preventDefault();
-      return this.core.quickGuide("left");
+      if (this.core.allowGuideActions) {
+        return this.core.quickGuide("left");
+      }
     };
 
     GuideGuideHTMLUI.prototype.onClickRightGuide = function(event) {
       event.preventDefault();
-      return this.core.quickGuide("right");
+      if (this.core.allowGuideActions) {
+        return this.core.quickGuide("right");
+      }
     };
 
     GuideGuideHTMLUI.prototype.onClickHorizontalMidpoint = function(event) {
       event.preventDefault();
-      return this.core.quickGuide("horizontalMidpoint");
+      if (this.core.allowGuideActions) {
+        return this.core.quickGuide("horizontalMidpoint");
+      }
     };
 
     GuideGuideHTMLUI.prototype.onClickVerticalMidpoint = function(event) {
       event.preventDefault();
-      return this.core.quickGuide("verticalMidpoint");
+      if (this.core.allowGuideActions) {
+        return this.core.quickGuide("verticalMidpoint");
+      }
     };
 
     GuideGuideHTMLUI.prototype.onClickClearGuides = function(event) {
       event.preventDefault();
-      return this.core.clearGuides();
+      if (this.core.allowGuideActions) {
+        return this.core.clearGuides();
+      }
+    };
+
+    GuideGuideHTMLUI.prototype.toggleActionBar = function() {
+      return $('.js-action-bar').toggleClass("is-faded");
+    };
+
+    GuideGuideHTMLUI.prototype.toggleCancelButton = function(button) {
+      var $button;
+      $button = $(button);
+      if (!$button.hasClass('js-cancel-guides')) {
+        $button.text(this.messages.uiCancel());
+      }
+      if ($button.hasClass('js-cancel-guides')) {
+        $button.text(this.messages.uiMakeGrid());
+      }
+      return $button.toggleClass('js-cancel-guides');
+    };
+
+    GuideGuideHTMLUI.prototype.onClickCancelButton = function(event) {
+      return this.core.disrupt();
     };
 
     GuideGuideHTMLUI.prototype.onClickMakeGridFromForm = function(event) {
+      var data;
       event.preventDefault();
+      data = this.getFormData();
       if (this.panel.find('.js-grid-form .js-input').filter('is-invalid') > 0) {
         return;
       }
-      return this.core.makeGridFromForm(this.getFormData());
+      if (!this.core.formIsValid(data)) {
+        return;
+      }
+      this.toggleCancelButton(event.currentTarget);
+      this.core.toggleAllowingGuideActions();
+      return this.core.makeGridFromForm(data, (function(_this) {
+        return function() {
+          _this.core.toggleAllowingGuideActions();
+          return _this.toggleCancelButton(event.currentTarget);
+        };
+      })(this));
     };
 
     GuideGuideHTMLUI.prototype.onClickMakeGridFromCusom = function(event) {
@@ -697,7 +747,14 @@
       if (!($form.find('.js-input.is-invalid').length === 0 && string)) {
         return;
       }
-      return this.core.makeGridFromCustom(string);
+      this.toggleCancelButton(event.currentTarget);
+      this.core.toggleAllowingGuideActions();
+      return this.core.makeGridFromCustom(string, (function(_this) {
+        return function() {
+          _this.core.toggleAllowingGuideActions();
+          return _this.toggleCancelButton(event.currentTarget);
+        };
+      })(this));
     };
 
     GuideGuideHTMLUI.prototype.onClickMakeGridFromSet = function(event) {
@@ -715,7 +772,14 @@
           group: $(set).attr('data-group')
         });
       }
-      return this.core.makeGridFromSet(sets);
+      this.toggleCancelButton(event.currentTarget);
+      this.core.toggleAllowingGuideActions();
+      return this.core.makeGridFromSet(sets, (function(_this) {
+        return function() {
+          _this.core.toggleAllowingGuideActions();
+          return _this.toggleCancelButton(event.currentTarget);
+        };
+      })(this));
     };
 
     GuideGuideHTMLUI.prototype.onClickInputBackground = function(event) {
@@ -751,7 +815,7 @@
       if (!$("#theme").length) {
         $("head").append('<style id="theme">');
       }
-      return $("#theme").text("#guideguide {\n  color: " + colors.text + ";\n  background-color: " + colors.background + ";\n}\n#guideguide a {\n  color: " + colors.text + ";\n}\n#guideguide a:hover {\n  color: " + colors.highlight + ";\n}\n#guideguide .nav a.is-selected {\n  color: " + colors.buttonSelect + ";\n}\n#guideguide .input {\n  background-color: " + colors.button + ";\n}\n#guideguide .input input, #guideguide .input textarea {\n  color: " + colors.text + ";\n}\n#guideguide .input.is-focused .input-shell {\n  border-color: " + colors.highlight + ";\n}\n#guideguide .input.is-invalid .input-shell {\n  border-color: " + colors.danger + ";\n}\n#guideguide .distribute-highlight .icon {\n  color: " + colors.highlight + ";\n}\n#guideguide .button {\n  background-color: " + colors.button + ";\n}\n#guideguide .button:hover {\n  background-color: " + colors.buttonHover + ";\n  color: " + colors.text + ";\n}\n#guideguide .button.primary {\n  background-color: " + colors.highlight + ";\n  color: #eee;\n}\n#guideguide .button.primary:hover {\n  background-color: " + colors.highlightHover + ";\n  color: #eee;\n}\n#guideguide .button-clear-guides:hover {\n  background-color: " + colors.danger + ";\n}\n#guideguide .set-list-set {\n  background-color: " + colors.button + ";\n}\n#guideguide .set-list-set:hover {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .set-list-set:hover a {\n  color: " + colors.text + ";\n}\n#guideguide .set-list-set.is-selected {\n  background-color: " + colors.highlight + ";\n  color: #eee;\n}\n#guideguide .set-list-set.is-selected a {\n  color: #eee;\n}\n#guideguide .set-list-set.is-selected:hover {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown.is-active .dropdown-button {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:after {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:hover, #guideguide .dropdown.is-active .dropdown-button:hover:after {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown-button {\n  background-color: " + colors.button + ";\n}\n#guideguide .dropdown-button:before {\n  border-color: " + colors.text + " transparent transparent;\n}\n#guideguide .dropdown-button:hover, #guideguide .dropdown-button:hover:after {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .dropdown-button:hover {\n  color: " + colors.text + ";\n}\n#guideguide .dropdown-button:after {\n  background-color: " + colors.button + ";\n  border-left: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item {\n  background-color: " + colors.button + ";\n  border-top: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item:hover {\n  color: " + colors.text + ";\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .alert-body {\n  background-color: " + colors.background + ";\n}\n#guideguide .scrollbar .handle {\n  background-color: " + colors.buttonSelect + ";\n}\n#guideguide .importer {\n  background-color: " + colors.background + ";\n}\n#guideguide .loader-background {\n  background-color: " + colors.background + ";\n}");
+      return $("#theme").text("#guideguide {\n  color: " + colors.text + ";\n  background-color: " + colors.background + ";\n}\n#guideguide a {\n  color: " + colors.text + ";\n}\n#guideguide a:hover {\n  color: " + colors.highlight + ";\n}\n#guideguide .nav a.is-selected {\n  color: " + colors.buttonSelect + ";\n}\n#guideguide .input {\n  background-color: " + colors.button + ";\n}\n#guideguide .input input, #guideguide .input textarea {\n  color: " + colors.text + ";\n}\n#guideguide .input.is-focused .input-shell {\n  border-color: " + colors.highlight + ";\n}\n#guideguide .input.is-invalid .input-shell {\n  border-color: " + colors.danger + ";\n}\n#guideguide .distribute-highlight .icon {\n  color: " + colors.highlight + ";\n}\n#guideguide .button {\n  background-color: " + colors.button + ";\n}\n#guideguide .button:hover {\n  background-color: " + colors.buttonHover + ";\n  color: " + colors.text + ";\n}\n#guideguide .button.primary {\n  background-color: " + colors.highlight + ";\n  color: #eee;\n}\n#guideguide .button.primary:hover {\n  background-color: " + colors.highlightHover + ";\n  color: #eee;\n}\n#guideguide .button-clear-guides:hover {\n  background-color: " + colors.danger + ";\n}\n#guideguide .action-bar.is-faded .button:hover {\n  background-color: " + colors.button + "\n}\n#guideguide .set-list-set {\n  background-color: " + colors.button + ";\n}\n#guideguide .set-list-set:hover {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .set-list-set:hover a {\n  color: " + colors.text + ";\n}\n#guideguide .set-list-set.is-selected {\n  background-color: " + colors.highlight + ";\n  color: #eee;\n}\n#guideguide .set-list-set.is-selected a {\n  color: #eee;\n}\n#guideguide .set-list-set.is-selected:hover {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown.is-active .dropdown-button {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:after {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:hover, #guideguide .dropdown.is-active .dropdown-button:hover:after {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown-button {\n  background-color: " + colors.button + ";\n}\n#guideguide .dropdown-button:before {\n  border-color: " + colors.text + " transparent transparent;\n}\n#guideguide .dropdown-button:hover, #guideguide .dropdown-button:hover:after {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .dropdown-button:hover {\n  color: " + colors.text + ";\n}\n#guideguide .dropdown-button:after {\n  background-color: " + colors.button + ";\n  border-left: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item {\n  background-color: " + colors.button + ";\n  border-top: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item:hover {\n  color: " + colors.text + ";\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .alert-body {\n  background-color: " + colors.background + ";\n}\n#guideguide .scrollbar .handle {\n  background-color: " + colors.buttonSelect + ";\n}\n#guideguide .importer {\n  background-color: " + colors.background + ";\n}\n#guideguide .loader-background {\n  background-color: " + colors.background + ";\n}");
     };
 
     return GuideGuideHTMLUI;

@@ -1,6 +1,7 @@
 class window.GuideGuideCore
   siteUrl: 'http://guideguide.me/update/'
   env:     'production'
+  allowGuideActions: true
   bridge: {}
   data: {}
 
@@ -113,6 +114,13 @@ class window.GuideGuideCore
   saveData: (data) =>
     @data = $.extend true, @data, data if data
     @bridge.setData @data
+
+  # Disable the action buttons while guides are being added.
+  #
+  # Returns nothing.
+  toggleAllowingGuideActions: =>
+    allowGuideActions = !allowGuideActions
+    @bridge.toggleActionBar()
 
   # Increment a usage counter of a given property.
   #
@@ -467,7 +475,7 @@ class window.GuideGuideCore
   #   source - String: Action executed to add guides, used for recording usage.
   #
   # Returns the array of guides generated from the GuideGuide Notation.
-  addGuidesFromNotation: (notation, source) =>
+  addGuidesFromNotation: (notation, source, callback) =>
     @bridge.getDocumentInfo (info) =>
 
       return unless info and info.hasOpenDocuments
@@ -477,7 +485,14 @@ class window.GuideGuideCore
       guides = @consolidate(info.existingGuides, guides)
 
       @recordUsage source, guides.length
-      @addGuides guides
+      @addGuides guides, callback
+
+  # Stop GuideGuide from adding guides. Useful caneling mistakes in Photoshop,
+  # where guides are added syncronously and slowly.
+  #
+  # Returns nothing.
+  disrupt: =>
+    @bridge.disrupt()
 
   getGGNFromExistingGuides: (callback) =>
     @bridge.getDocumentInfo (info) =>
@@ -525,9 +540,8 @@ class window.GuideGuideCore
   #  guides - Array: Guides to add.
   #
   # Returns the original guide array.
-  addGuides: (guides) =>
-    @bridge.addGuides(guides)
-    guides
+  addGuides: (guides, callback) =>
+    @bridge.addGuides guides, callback
 
   # Create a single guide in the location specified
   #
@@ -556,27 +570,36 @@ class window.GuideGuideCore
     @addGuidesFromNotation notation
     return notation
 
+  # Test a string to see if it is valid.
+  #
+  # Returns a Boolean
+  formIsValid: (data) =>
+    string = @stringifyFormData(data.contents)
+    GridNotation.test(string).length is 0
+
   # Add guides to the document based on the form
   #
   # Returns an Array of guides
-  makeGridFromForm: (data) =>
+  makeGridFromForm: (data, callback) =>
     string = @stringifyFormData(data.contents)
-    return if !GridNotation.test(string)
-    @addGuidesFromNotation string, 'grid'
+    @addGuidesFromNotation string, 'grid', callback
 
   # Add guides to the document from a set
   #
   # Returns an Array of guides
-  makeGridFromSet: (sets) =>
+  makeGridFromSet: (sets, callback) =>
+    tasks = sets.length
     for s in sets
       set = @getSets { set: s.id, group: s.group }
-      @addGuidesFromNotation set.string, 'set'
+      @addGuidesFromNotation set.string, 'set', =>
+        tasks--
+        callback() if tasks is 0 and callback
 
   # Create a grid from the Custom form
   #
   # Returns an Array of guides
-  makeGridFromCustom: (string) =>
-    @addGuidesFromNotation string, 'custom'
+  makeGridFromCustom: (string, callback) =>
+    @addGuidesFromNotation string, 'custom', callback
 
   # Remove all or a portion of the guides.
   #
@@ -631,21 +654,6 @@ class window.GuideGuideCore
   # Returns nothing
   log: (args...) =>
     @bridge.log args
-
-  # Calculate the sum of an array of values
-  #
-  #   array - array to be added together
-  #   key   - optional key value to be used if array contains objects
-  #
-  # Returns a Number
-  sum: (array, key = null) ->
-    total = 0
-    $.each array, (index,value) =>
-      if key
-        total += array[index][key] if array[index][key]
-      else
-        total += array[index]
-    total
 
   # Switch themes and add the theme to a list for later use
   #

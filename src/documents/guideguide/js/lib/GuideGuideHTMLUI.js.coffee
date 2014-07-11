@@ -50,6 +50,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
     @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onClickEditSet
+    @panel.on 'click', '.js-cancel-guides', @onClickCancelButton
 
   init: (core) =>
     @core = core
@@ -593,57 +594,81 @@ class window.GuideGuideHTMLUI
   # Return nothing.
   onClickTopGuide: (event) =>
     event.preventDefault()
-    @core.quickGuide "top"
+    @core.quickGuide "top" if @core.allowGuideActions
 
   # Draw a guide at the bottom of the document/selection
   #
   # Return nothing.
   onClickBottomGuide: (event) =>
     event.preventDefault()
-    @core.quickGuide "bottom"
+    @core.quickGuide "bottom" if @core.allowGuideActions
 
   # Draw a guide to the left of the document/selection
   #
   # Return nothing.
   onClickLeftGuide: (event) =>
     event.preventDefault()
-    @core.quickGuide "left"
+    @core.quickGuide "left" if @core.allowGuideActions
 
   # Draw a guide to the right of the document/selection
   #
   # Return nothing.
   onClickRightGuide: (event) =>
     event.preventDefault()
-    @core.quickGuide "right"
+    @core.quickGuide "right" if @core.allowGuideActions
 
   # Draw a guide at the horizontal midpoint of the document/selection
   #
   # Return nothing.
   onClickHorizontalMidpoint: (event) =>
     event.preventDefault()
-    @core.quickGuide "horizontalMidpoint"
+    @core.quickGuide "horizontalMidpoint" if @core.allowGuideActions
 
   # Draw a guide at the vertical midpoint of the document/selection
   #
   # Return nothing.
   onClickVerticalMidpoint: (event) =>
     event.preventDefault()
-    @core.quickGuide "verticalMidpoint"
+    @core.quickGuide "verticalMidpoint" if @core.allowGuideActions
 
   # Handle clicks on the clear guides button.
   #
   # Returns nothing.
   onClickClearGuides: (event) =>
     event.preventDefault()
-    @core.clearGuides()
+    @core.clearGuides() if @core.allowGuideActions
+
+  # Fade out the action bar.
+  #
+  # Returns nothing.
+  toggleActionBar: =>
+    $('.js-action-bar').toggleClass "is-faded"
+
+  # Toggle between "make grid" and "cancel"
+  #
+  # Returns nothing.
+  toggleCancelButton: (button) =>
+    $button = $(button)
+    $button.text @messages.uiCancel() if !$button.hasClass 'js-cancel-guides'
+    $button.text @messages.uiMakeGrid() if $button.hasClass 'js-cancel-guides'
+    $button.toggleClass 'js-cancel-guides'
+
+  onClickCancelButton: (event) =>
+    @core.disrupt()
 
   # Create a grid from the Grid form
   #
   # Returns Nothing.
   onClickMakeGridFromForm: (event) =>
     event.preventDefault()
+    data = @getFormData()
     return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
-    @core.makeGridFromForm @getFormData()
+    return if !@core.formIsValid(data)
+    @toggleCancelButton(event.currentTarget)
+    @core.toggleAllowingGuideActions()
+    @core.makeGridFromForm data, =>
+      @core.toggleAllowingGuideActions()
+      @toggleCancelButton(event.currentTarget)
 
   # Create a grid from the Custom form
   #
@@ -653,7 +678,11 @@ class window.GuideGuideHTMLUI
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
     return unless $form.find('.js-input.is-invalid').length == 0 and string
-    @core.makeGridFromCustom string
+    @toggleCancelButton(event.currentTarget)
+    @core.toggleAllowingGuideActions()
+    @core.makeGridFromCustom string, =>
+      @core.toggleAllowingGuideActions()
+      @toggleCancelButton(event.currentTarget)
 
   # Create a grid from a set
   #
@@ -667,7 +696,11 @@ class window.GuideGuideHTMLUI
       sets.push
         id: $(set).attr 'data-id'
         group: $(set).attr 'data-group'
-    @core.makeGridFromSet(sets)
+    @toggleCancelButton(event.currentTarget)
+    @core.toggleAllowingGuideActions()
+    @core.makeGridFromSet sets, =>
+      @core.toggleAllowingGuideActions()
+      @toggleCancelButton(event.currentTarget)
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.
@@ -762,6 +795,9 @@ class window.GuideGuideHTMLUI
       }
       #guideguide .button-clear-guides:hover {
         background-color: #{ colors.danger };
+      }
+      #guideguide .action-bar.is-faded .button:hover {
+        background-color: #{ colors.button }
       }
       #guideguide .set-list-set {
         background-color: #{ colors.button };

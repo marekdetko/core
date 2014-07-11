@@ -824,6 +824,9 @@ input, textarea {
   padding: 5px;
   vertical-align: top;
 }
+.action-bar.is-faded {
+  opacity: 0.5;
+}
 
 .set-list {
   font-size: 13px;
