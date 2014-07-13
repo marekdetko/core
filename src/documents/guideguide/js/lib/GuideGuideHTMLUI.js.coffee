@@ -50,7 +50,6 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
     @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onClickEditSet
-    @panel.on 'click', '.js-cancel-guides', @onClickCancelButton
 
   init: (core) =>
     @core = core
@@ -644,18 +643,6 @@ class window.GuideGuideHTMLUI
   toggleActionBar: =>
     $('.js-action-bar').toggleClass "is-faded"
 
-  # Toggle between "make grid" and "cancel"
-  #
-  # Returns nothing.
-  toggleCancelButton: (button) =>
-    $button = $(button)
-    $button.text @messages.uiCancel() if !$button.hasClass 'js-cancel-guides'
-    $button.text @messages.uiMakeGrid() if $button.hasClass 'js-cancel-guides'
-    $button.toggleClass 'js-cancel-guides'
-
-  onClickCancelButton: (event) =>
-    @core.disrupt()
-
   # Create a grid from the Grid form
   #
   # Returns Nothing.
@@ -664,11 +651,9 @@ class window.GuideGuideHTMLUI
     data = @getFormData()
     return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
     return if !@core.formIsValid(data)
-    @toggleCancelButton(event.currentTarget)
     @core.toggleAllowingGuideActions()
     @core.makeGridFromForm data, =>
       @core.toggleAllowingGuideActions()
-      @toggleCancelButton(event.currentTarget)
 
   # Create a grid from the Custom form
   #
@@ -678,11 +663,9 @@ class window.GuideGuideHTMLUI
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
     return unless $form.find('.js-input.is-invalid').length == 0 and string
-    @toggleCancelButton(event.currentTarget)
     @core.toggleAllowingGuideActions()
     @core.makeGridFromCustom string, =>
       @core.toggleAllowingGuideActions()
-      @toggleCancelButton(event.currentTarget)
 
   # Create a grid from a set
   #
@@ -696,11 +679,9 @@ class window.GuideGuideHTMLUI
       sets.push
         id: $(set).attr 'data-id'
         group: $(set).attr 'data-group'
-    @toggleCancelButton(event.currentTarget)
     @core.toggleAllowingGuideActions()
     @core.makeGridFromSet sets, =>
       @core.toggleAllowingGuideActions()
-      @toggleCancelButton(event.currentTarget)
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.
