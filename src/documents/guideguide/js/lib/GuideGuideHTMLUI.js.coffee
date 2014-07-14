@@ -84,6 +84,16 @@ class window.GuideGuideHTMLUI
     $('.js-enter-click').removeClass 'js-enter-click'
     $('.js-grid-form').toggleClass 'is-showing-clear-button', @formIsFilledOut()
     @panel.off '.enter'
+    setTimeout @updateGuideCounter('.js-count-form', @core.stringifyFormData(@getFormData().contents)), 100
+
+  # Update the Make grid button with the number of guides that will be added
+  # when creating the grid.
+  #
+  # Returns nothing.
+  updateGuideCounter: (button, notation) =>
+    @core.preCalculateGrid notation, (data) ->
+      str = " (+#{ data.guides.length })"
+      $(button).text if data.guides.length > 0 then str else ""
 
   # Determine if the form has been has been filled out in any way.
   #
@@ -102,6 +112,7 @@ class window.GuideGuideHTMLUI
     $('.is-showing-clear-button').removeClass 'is-showing-clear-button'
     $('.js-grid-form .js-grid-form-input').val ''
     $('.js-grid-form .js-checkbox').removeClass 'checked'
+    setTimeout @updateGuideCounter('.js-count-form', @core.stringifyFormData(@getFormData().contents)), 100
 
   # When enter is pressed, render the grid.
   #
@@ -140,6 +151,8 @@ class window.GuideGuideHTMLUI
         @markInvalid $input.closest('.js-input')
         string += "\n\n"
         (string += "# #{ code }. #{ @messages[keys[code-1]]() }\n") for code in errors
+      else
+        @updateGuideCounter('.js-count-custom', string)
       $input.val string
       $input.trigger('autosize.resize')
 
@@ -226,6 +239,7 @@ class window.GuideGuideHTMLUI
     $form  = $checkbox.closest '.js-grid-form'
     @core.formChanged @getFormData()
     $('.js-grid-form').toggleClass 'is-showing-clear-button', @formIsFilledOut()
+    setTimeout @updateGuideCounter('.js-count-form', @core.stringifyFormData(@getFormData().contents)), 100
 
   # Updates the text in the custom field and resizes it
   #
@@ -480,6 +494,15 @@ class window.GuideGuideHTMLUI
   onSelectSet: (event) =>
     event.preventDefault()
     $(event.currentTarget).closest('.js-set').toggleClass('is-selected')
+    $selected = $('.js-set-list').find('.is-selected')
+    notation = ""
+    for set in $selected
+      data =
+        set: $(set).attr('data-id')
+        group: $(set).attr('data-group')
+      notation += "#{ @core.getSets(data).string }\n"
+    @updateGuideCounter('.js-count-sets', notation)
+
 
   # Remove any sets in the markup and update the list with a new set items for
   # each set in the list.

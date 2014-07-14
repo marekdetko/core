@@ -103,7 +103,7 @@ class window.GuideGuideCore
 
         callback(result)
       error: (error) =>
-        @log error
+        @log "Update error", error
         callback(null)
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
@@ -613,6 +613,17 @@ class window.GuideGuideCore
 
       @recordUsage "clear"
 
+  # Take the current grid form data and calculate the results.
+  #
+  # Returns an Object.
+  preCalculateGrid: (notation, callback) =>
+    @bridge.getDocumentInfo (info) =>
+      return unless info and info.hasOpenDocuments
+      data = {}
+      guides = []
+      guides = GridNotation.parse notation, info
+      data.guides = @consolidate(info.existingGuides, guides)
+      callback(data)
 
   # Get the option value that corresponds to the calculation type of the app
   #
