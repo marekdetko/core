@@ -10,6 +10,13 @@ $sansSerif: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
   user-select: $val;
 }
 
+@mixin transition($transition) {
+  transition: $transition;
+  -o-transform: $transition;
+  -moz-transform: $transition;
+  -webkit-transition: $transition;
+}
+
 @mixin theme( $background, $dark, $darker, $darkest, $text, $highlight, $darkHighlight, $danger ){
 
   color: $text;

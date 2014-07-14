@@ -120,7 +120,7 @@ class window.GuideGuideCore
   # Returns nothing.
   toggleAllowingGuideActions: =>
     allowGuideActions = !allowGuideActions
-    @bridge.toggleActionBar()
+    @bridge.toggleGuideActions()
 
   # Increment a usage counter of a given property.
   #

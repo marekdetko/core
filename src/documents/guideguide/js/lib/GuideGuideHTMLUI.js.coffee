@@ -640,8 +640,8 @@ class window.GuideGuideHTMLUI
   # Fade out the action bar.
   #
   # Returns nothing.
-  toggleActionBar: =>
-    $('.js-action-bar').toggleClass "is-faded"
+  toggleGuideActions: =>
+    @panel.toggleClass "no-guide-actions"
 
   # Create a grid from the Grid form
   #
@@ -777,7 +777,11 @@ class window.GuideGuideHTMLUI
       #guideguide .button-clear-guides:hover {
         background-color: #{ colors.danger };
       }
-      #guideguide .action-bar.is-faded .button:hover {
+      #guideguide.no-guide-actions .action-bar .button:hover {
+        background-color: #{ colors.button }
+      }
+      #guideguide.no-guide-actions .make-grid,
+      #guideguide.no-guide-actions .make-grid:hover {
         background-color: #{ colors.button }
       }
       #guideguide .set-list-set {
