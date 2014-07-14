@@ -74,8 +74,12 @@ class window.FauxtoshopLib
       queue.push g
 
     @isAddingGuides = true
+
+    done = -> (callback() if callback)
+
     add = =>
       return if !@isAddingGuides
+      return done() if !queue[0]
       g = queue[0]
       guide = $('.js-templates').find('.js-guide')
       .clone().attr('class','')
@@ -88,7 +92,7 @@ class window.FauxtoshopLib
 
       $('.js-document').append guide
       queue.shift()
-      return (callback() if callback) if queue.length == 0
+      return done() if queue.length == 0
       setTimeout(add, 50)
     add()
 

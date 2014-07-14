@@ -120,7 +120,7 @@ class window.GuideGuideCore
   # Returns nothing.
   toggleAllowingGuideActions: =>
     allowGuideActions = !allowGuideActions
-    @bridge.toggleActionBar()
+    @bridge.toggleGuideActions()
 
   # Increment a usage counter of a given property.
   #
@@ -486,13 +486,6 @@ class window.GuideGuideCore
 
       @recordUsage source, guides.length
       @addGuides guides, callback
-
-  # Stop GuideGuide from adding guides. Useful caneling mistakes in Photoshop,
-  # where guides are added syncronously and slowly.
-  #
-  # Returns nothing.
-  disrupt: =>
-    @bridge.disrupt()
 
   getGGNFromExistingGuides: (callback) =>
     @bridge.getDocumentInfo (info) =>
