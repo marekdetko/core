@@ -34,7 +34,7 @@
 
   <%- @include('fauxtoshop/fauxtoshop.html') or '{}' %>
 
-  <iframe src="test/test.html" frameborder="0" class="tests"></iframe>
-
+<!--   <iframe src="test/test.html" frameborder="0" class="tests"></iframe>
+ -->
 </body>
 </html>
