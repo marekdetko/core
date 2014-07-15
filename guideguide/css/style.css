@@ -488,6 +488,16 @@ input, textarea {
   padding: 5px;
 }
 
+.make-grid {
+  transition: opacity 0.2s;
+  -o-transform: opacity 0.2s;
+  -moz-transform: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+}
+.no-guide-actions .make-grid {
+  opacity: 0.5;
+}
+
 .input {
   display: block;
   position: relative;
@@ -817,6 +827,10 @@ input, textarea {
   width: 100%;
   height: 26px;
   line-height: 0;
+  transition: opacity 0.2s;
+  -o-transform: opacity 0.2s;
+  -moz-transform: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
 }
 .action-bar .button {
   display: table-cell;
@@ -824,7 +838,7 @@ input, textarea {
   padding: 5px;
   vertical-align: top;
 }
-.action-bar.is-faded {
+.no-guide-actions .action-bar {
   opacity: 0.5;
 }
 

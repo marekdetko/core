@@ -20,6 +20,7 @@
       this.openURL = __bind(this.openURL, this);
       this.isDemo = __bind(this.isDemo, this);
       this.calculationType = __bind(this.calculationType, this);
+      this.preCalculateGrid = __bind(this.preCalculateGrid, this);
       this.clearGuides = __bind(this.clearGuides, this);
       this.makeGridFromCustom = __bind(this.makeGridFromCustom, this);
       this.makeGridFromSet = __bind(this.makeGridFromSet, this);
@@ -28,7 +29,6 @@
       this.quickGuide = __bind(this.quickGuide, this);
       this.addGuides = __bind(this.addGuides, this);
       this.getGGNFromExistingGuides = __bind(this.getGGNFromExistingGuides, this);
-      this.disrupt = __bind(this.disrupt, this);
       this.addGuidesFromNotation = __bind(this.addGuidesFromNotation, this);
       this.stringifyFormData = __bind(this.stringifyFormData, this);
       this.getInputFormat = __bind(this.getInputFormat, this);
@@ -163,7 +163,7 @@
         })(this),
         error: (function(_this) {
           return function(error) {
-            _this.log(error);
+            _this.log("Update error", error);
             return callback(null);
           };
         })(this)
@@ -180,7 +180,7 @@
     GuideGuideCore.prototype.toggleAllowingGuideActions = function() {
       var allowGuideActions;
       allowGuideActions = !allowGuideActions;
-      return this.bridge.toggleActionBar();
+      return this.bridge.toggleGuideActions();
     };
 
     GuideGuideCore.prototype.recordUsage = function(property, count) {
@@ -576,10 +576,6 @@
       })(this));
     };
 
-    GuideGuideCore.prototype.disrupt = function() {
-      return this.bridge.disrupt();
-    };
-
     GuideGuideCore.prototype.getGGNFromExistingGuides = function(callback) {
       return this.bridge.getDocumentInfo((function(_this) {
         return function(info) {
@@ -737,6 +733,22 @@
           }
           _this.bridge.resetGuides(guides);
           return _this.recordUsage("clear");
+        };
+      })(this));
+    };
+
+    GuideGuideCore.prototype.preCalculateGrid = function(notation, callback) {
+      return this.bridge.getDocumentInfo((function(_this) {
+        return function(info) {
+          var data, guides;
+          if (!(info && info.hasOpenDocuments)) {
+            return;
+          }
+          data = {};
+          guides = [];
+          guides = GridNotation.parse(notation, info);
+          data.guides = _this.consolidate(info.existingGuides, guides);
+          return callback(data);
         };
       })(this));
     };
