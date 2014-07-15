@@ -742,7 +742,7 @@
         return function(info) {
           var data, guides;
           if (!(info && info.hasOpenDocuments)) {
-            return;
+            return null;
           }
           data = {};
           guides = [];

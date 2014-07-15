@@ -154,8 +154,11 @@
     GuideGuideHTMLUI.prototype.updateGuideCounter = function(button, notation) {
       return this.core.preCalculateGrid(notation, function(data) {
         var str;
-        str = " (+" + data.guides.length + ")";
-        $(button).text(data.guides.length > 0 ? str : "");
+        str = "";
+        if (data && data.guides.length > 0) {
+          str = " (+" + data.guides.length + ")";
+        }
+        $(button).text(str);
         return str;
       });
     };
