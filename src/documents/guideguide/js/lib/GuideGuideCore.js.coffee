@@ -618,7 +618,7 @@ class window.GuideGuideCore
   # Returns an Object.
   preCalculateGrid: (notation, callback) =>
     @bridge.getDocumentInfo (info) =>
-      return unless info and info.hasOpenDocuments
+      return null unless info and info.hasOpenDocuments
       data = {}
       guides = []
       guides = GridNotation.parse notation, info

@@ -92,8 +92,9 @@ class window.GuideGuideHTMLUI
   # Returns nothing.
   updateGuideCounter: (button, notation) =>
     @core.preCalculateGrid notation, (data) ->
-      str = " (+#{ data.guides.length })"
-      $(button).text if data.guides.length > 0 then str else ""
+      str = ""
+      str = " (+#{ data.guides.length })" if data and data.guides.length > 0
+      $(button).text str
       str
 
   # Determine if the form has been has been filled out in any way.
