@@ -94,6 +94,7 @@ class window.GuideGuideHTMLUI
     @core.preCalculateGrid notation, (data) ->
       str = " (+#{ data.guides.length })"
       $(button).text if data.guides.length > 0 then str else ""
+      str
 
   # Determine if the form has been has been filled out in any way.
   #
