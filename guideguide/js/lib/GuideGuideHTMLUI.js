@@ -11,9 +11,7 @@
       this.onClickMakeGridFromSet = __bind(this.onClickMakeGridFromSet, this);
       this.onClickMakeGridFromCusom = __bind(this.onClickMakeGridFromCusom, this);
       this.onClickMakeGridFromForm = __bind(this.onClickMakeGridFromForm, this);
-      this.onClickCancelButton = __bind(this.onClickCancelButton, this);
-      this.toggleCancelButton = __bind(this.toggleCancelButton, this);
-      this.toggleActionBar = __bind(this.toggleActionBar, this);
+      this.toggleGuideActions = __bind(this.toggleGuideActions, this);
       this.onClickClearGuides = __bind(this.onClickClearGuides, this);
       this.onClickVerticalMidpoint = __bind(this.onClickVerticalMidpoint, this);
       this.onClickHorizontalMidpoint = __bind(this.onClickHorizontalMidpoint, this);
@@ -68,6 +66,7 @@
       this.markInvalid = __bind(this.markInvalid, this);
       this.onInputKeypress = __bind(this.onInputKeypress, this);
       this.onClickClearForm = __bind(this.onClickClearForm, this);
+      this.updateGuideCounter = __bind(this.updateGuideCounter, this);
       this.onInputBlur = __bind(this.onInputBlur, this);
       this.onInputFocus = __bind(this.onInputFocus, this);
       this.localizeUI = __bind(this.localizeUI, this);
@@ -118,7 +117,6 @@
       this.panel.on('click', '.js-sets-form .js-make-grid', this.onClickMakeGridFromSet);
       this.panel.on('click', '.js-custom-form .js-make-grid', this.onClickMakeGridFromCusom);
       this.panel.on('click', '.js-sets-form .js-edit-set', this.onClickEditSet);
-      this.panel.on('click', '.js-cancel-guides', this.onClickCancelButton);
     }
 
     GuideGuideHTMLUI.prototype.init = function(core) {
@@ -149,7 +147,17 @@
       $(event.currentTarget).closest('.js-input').removeClass('is-focused');
       $('.js-enter-click').removeClass('js-enter-click');
       $('.js-grid-form').toggleClass('is-showing-clear-button', this.formIsFilledOut());
-      return this.panel.off('.enter');
+      this.panel.off('.enter');
+      return setTimeout(this.updateGuideCounter('.js-count-form', this.core.stringifyFormData(this.getFormData().contents)), 100);
+    };
+
+    GuideGuideHTMLUI.prototype.updateGuideCounter = function(button, notation) {
+      return this.core.preCalculateGrid(notation, function(data) {
+        var str;
+        str = " (+" + data.guides.length + ")";
+        $(button).text(data.guides.length > 0 ? str : "");
+        return str;
+      });
     };
 
     GuideGuideHTMLUI.prototype.formIsFilledOut = function() {
@@ -176,7 +184,8 @@
       event.preventDefault();
       $('.is-showing-clear-button').removeClass('is-showing-clear-button');
       $('.js-grid-form .js-grid-form-input').val('');
-      return $('.js-grid-form .js-checkbox').removeClass('checked');
+      $('.js-grid-form .js-checkbox').removeClass('checked');
+      return setTimeout(this.updateGuideCounter('.js-count-form', this.core.stringifyFormData(this.getFormData().contents)), 100);
     };
 
     GuideGuideHTMLUI.prototype.onInputKeypress = function(event) {
@@ -209,6 +218,8 @@
             code = errors[_i];
             string += "# " + code + ". " + (this.messages[keys[code - 1]]()) + "\n";
           }
+        } else {
+          this.updateGuideCounter('.js-count-custom', string);
         }
         $input.val(string);
         return $input.trigger('autosize.resize');
@@ -280,7 +291,8 @@
       $checkbox.toggleClass('checked');
       $form = $checkbox.closest('.js-grid-form');
       this.core.formChanged(this.getFormData());
-      return $('.js-grid-form').toggleClass('is-showing-clear-button', this.formIsFilledOut());
+      $('.js-grid-form').toggleClass('is-showing-clear-button', this.formIsFilledOut());
+      return setTimeout(this.updateGuideCounter('.js-count-form', this.core.stringifyFormData(this.getFormData().contents)), 100);
     };
 
     GuideGuideHTMLUI.prototype.updateCustomField = function(text) {
@@ -543,8 +555,20 @@
     };
 
     GuideGuideHTMLUI.prototype.onSelectSet = function(event) {
+      var $selected, data, notation, set, _i, _len;
       event.preventDefault();
-      return $(event.currentTarget).closest('.js-set').toggleClass('is-selected');
+      $(event.currentTarget).closest('.js-set').toggleClass('is-selected');
+      $selected = $('.js-set-list').find('.is-selected');
+      notation = "";
+      for (_i = 0, _len = $selected.length; _i < _len; _i++) {
+        set = $selected[_i];
+        data = {
+          set: $(set).attr('data-id'),
+          group: $(set).attr('data-group')
+        };
+        notation += "" + (this.core.getSets(data).string) + "\n";
+      }
+      return this.updateGuideCounter('.js-count-sets', notation);
     };
 
     GuideGuideHTMLUI.prototype.refreshSets = function(sets) {
@@ -699,24 +723,8 @@
       }
     };
 
-    GuideGuideHTMLUI.prototype.toggleActionBar = function() {
-      return $('.js-action-bar').toggleClass("is-faded");
-    };
-
-    GuideGuideHTMLUI.prototype.toggleCancelButton = function(button) {
-      var $button;
-      $button = $(button);
-      if (!$button.hasClass('js-cancel-guides')) {
-        $button.text(this.messages.uiCancel());
-      }
-      if ($button.hasClass('js-cancel-guides')) {
-        $button.text(this.messages.uiMakeGrid());
-      }
-      return $button.toggleClass('js-cancel-guides');
-    };
-
-    GuideGuideHTMLUI.prototype.onClickCancelButton = function(event) {
-      return this.core.disrupt();
+    GuideGuideHTMLUI.prototype.toggleGuideActions = function() {
+      return this.panel.toggleClass("no-guide-actions");
     };
 
     GuideGuideHTMLUI.prototype.onClickMakeGridFromForm = function(event) {
@@ -729,12 +737,10 @@
       if (!this.core.formIsValid(data)) {
         return;
       }
-      this.toggleCancelButton(event.currentTarget);
       this.core.toggleAllowingGuideActions();
       return this.core.makeGridFromForm(data, (function(_this) {
         return function() {
-          _this.core.toggleAllowingGuideActions();
-          return _this.toggleCancelButton(event.currentTarget);
+          return _this.core.toggleAllowingGuideActions();
         };
       })(this));
     };
@@ -747,12 +753,10 @@
       if (!($form.find('.js-input.is-invalid').length === 0 && string)) {
         return;
       }
-      this.toggleCancelButton(event.currentTarget);
       this.core.toggleAllowingGuideActions();
       return this.core.makeGridFromCustom(string, (function(_this) {
         return function() {
-          _this.core.toggleAllowingGuideActions();
-          return _this.toggleCancelButton(event.currentTarget);
+          return _this.core.toggleAllowingGuideActions();
         };
       })(this));
     };
@@ -772,12 +776,10 @@
           group: $(set).attr('data-group')
         });
       }
-      this.toggleCancelButton(event.currentTarget);
       this.core.toggleAllowingGuideActions();
       return this.core.makeGridFromSet(sets, (function(_this) {
         return function() {
-          _this.core.toggleAllowingGuideActions();
-          return _this.toggleCancelButton(event.currentTarget);
+          return _this.core.toggleAllowingGuideActions();
         };
       })(this));
     };
@@ -815,7 +817,7 @@
       if (!$("#theme").length) {
         $("head").append('<style id="theme">');
       }
-      return $("#theme").text("#guideguide {\n  color: " + colors.text + ";\n  background-color: " + colors.background + ";\n}\n#guideguide a {\n  color: " + colors.text + ";\n}\n#guideguide a:hover {\n  color: " + colors.highlight + ";\n}\n#guideguide .nav a.is-selected {\n  color: " + colors.buttonSelect + ";\n}\n#guideguide .input {\n  background-color: " + colors.button + ";\n}\n#guideguide .input input, #guideguide .input textarea {\n  color: " + colors.text + ";\n}\n#guideguide .input.is-focused .input-shell {\n  border-color: " + colors.highlight + ";\n}\n#guideguide .input.is-invalid .input-shell {\n  border-color: " + colors.danger + ";\n}\n#guideguide .distribute-highlight .icon {\n  color: " + colors.highlight + ";\n}\n#guideguide .button {\n  background-color: " + colors.button + ";\n}\n#guideguide .button:hover {\n  background-color: " + colors.buttonHover + ";\n  color: " + colors.text + ";\n}\n#guideguide .button.primary {\n  background-color: " + colors.highlight + ";\n  color: #eee;\n}\n#guideguide .button.primary:hover {\n  background-color: " + colors.highlightHover + ";\n  color: #eee;\n}\n#guideguide .button-clear-guides:hover {\n  background-color: " + colors.danger + ";\n}\n#guideguide .action-bar.is-faded .button:hover {\n  background-color: " + colors.button + "\n}\n#guideguide .set-list-set {\n  background-color: " + colors.button + ";\n}\n#guideguide .set-list-set:hover {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .set-list-set:hover a {\n  color: " + colors.text + ";\n}\n#guideguide .set-list-set.is-selected {\n  background-color: " + colors.highlight + ";\n  color: #eee;\n}\n#guideguide .set-list-set.is-selected a {\n  color: #eee;\n}\n#guideguide .set-list-set.is-selected:hover {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown.is-active .dropdown-button {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:after {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:hover, #guideguide .dropdown.is-active .dropdown-button:hover:after {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown-button {\n  background-color: " + colors.button + ";\n}\n#guideguide .dropdown-button:before {\n  border-color: " + colors.text + " transparent transparent;\n}\n#guideguide .dropdown-button:hover, #guideguide .dropdown-button:hover:after {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .dropdown-button:hover {\n  color: " + colors.text + ";\n}\n#guideguide .dropdown-button:after {\n  background-color: " + colors.button + ";\n  border-left: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item {\n  background-color: " + colors.button + ";\n  border-top: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item:hover {\n  color: " + colors.text + ";\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .alert-body {\n  background-color: " + colors.background + ";\n}\n#guideguide .scrollbar .handle {\n  background-color: " + colors.buttonSelect + ";\n}\n#guideguide .importer {\n  background-color: " + colors.background + ";\n}\n#guideguide .loader-background {\n  background-color: " + colors.background + ";\n}");
+      return $("#theme").text("#guideguide {\n  color: " + colors.text + ";\n  background-color: " + colors.background + ";\n}\n#guideguide a {\n  color: " + colors.text + ";\n}\n#guideguide a:hover {\n  color: " + colors.highlight + ";\n}\n#guideguide .nav a.is-selected {\n  color: " + colors.buttonSelect + ";\n}\n#guideguide .input {\n  background-color: " + colors.button + ";\n}\n#guideguide .input input, #guideguide .input textarea {\n  color: " + colors.text + ";\n}\n#guideguide .input.is-focused .input-shell {\n  border-color: " + colors.highlight + ";\n}\n#guideguide .input.is-invalid .input-shell {\n  border-color: " + colors.danger + ";\n}\n#guideguide .distribute-highlight .icon {\n  color: " + colors.highlight + ";\n}\n#guideguide .button {\n  background-color: " + colors.button + ";\n}\n#guideguide .button:hover {\n  background-color: " + colors.buttonHover + ";\n  color: " + colors.text + ";\n}\n#guideguide .button.primary {\n  background-color: " + colors.highlight + ";\n  color: #eee;\n}\n#guideguide .button.primary:hover {\n  background-color: " + colors.highlightHover + ";\n  color: #eee;\n}\n#guideguide .button-clear-guides:hover {\n  background-color: " + colors.danger + ";\n}\n#guideguide.no-guide-actions .action-bar .button:hover {\n  background-color: " + colors.button + "\n}\n#guideguide.no-guide-actions .make-grid,\n#guideguide.no-guide-actions .make-grid:hover {\n  background-color: " + colors.button + "\n}\n#guideguide .set-list-set {\n  background-color: " + colors.button + ";\n}\n#guideguide .set-list-set:hover {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .set-list-set:hover a {\n  color: " + colors.text + ";\n}\n#guideguide .set-list-set.is-selected {\n  background-color: " + colors.highlight + ";\n  color: #eee;\n}\n#guideguide .set-list-set.is-selected a {\n  color: #eee;\n}\n#guideguide .set-list-set.is-selected:hover {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown.is-active .dropdown-button {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:after {\n  background-color: " + colors.highlight + ";\n}\n#guideguide .dropdown.is-active .dropdown-button:hover, #guideguide .dropdown.is-active .dropdown-button:hover:after {\n  background-color: " + colors.highlightHover + ";\n}\n#guideguide .dropdown-button {\n  background-color: " + colors.button + ";\n}\n#guideguide .dropdown-button:before {\n  border-color: " + colors.text + " transparent transparent;\n}\n#guideguide .dropdown-button:hover, #guideguide .dropdown-button:hover:after {\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .dropdown-button:hover {\n  color: " + colors.text + ";\n}\n#guideguide .dropdown-button:after {\n  background-color: " + colors.button + ";\n  border-left: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item {\n  background-color: " + colors.button + ";\n  border-top: 2px solid " + colors.background + ";\n}\n#guideguide .dropdown-item:hover {\n  color: " + colors.text + ";\n  background-color: " + colors.buttonHover + ";\n}\n#guideguide .alert-body {\n  background-color: " + colors.background + ";\n}\n#guideguide .scrollbar .handle {\n  background-color: " + colors.buttonSelect + ";\n}\n#guideguide .importer {\n  background-color: " + colors.background + ";\n}\n#guideguide .loader-background {\n  background-color: " + colors.background + ";\n}");
     };
 
     return GuideGuideHTMLUI;

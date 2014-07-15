@@ -39,17 +39,11 @@ class window.GuideGuideHTMLBridge
   addGuides: (guides, callback) =>
     Fauxtoshop.addGuides guides, callback
 
-  # Discontinue adding guides.
-  #
-  # Returns nothing.
-  disrupt: =>
-    Fauxtoshop.isAddingGuides = false
-
   # Fade the action bar since it can't be used.
   #
   # Returns nothing.
-  toggleActionBar: =>
-    @ui.toggleActionBar()
+  toggleGuideActions: =>
+    @ui.toggleGuideActions()
 
   # Turn guide visibility on and off
   #

@@ -50,7 +50,6 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
     @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onClickEditSet
-    @panel.on 'click', '.js-cancel-guides', @onClickCancelButton
 
   init: (core) =>
     @core = core
@@ -85,6 +84,17 @@ class window.GuideGuideHTMLUI
     $('.js-enter-click').removeClass 'js-enter-click'
     $('.js-grid-form').toggleClass 'is-showing-clear-button', @formIsFilledOut()
     @panel.off '.enter'
+    setTimeout @updateGuideCounter('.js-count-form', @core.stringifyFormData(@getFormData().contents)), 100
+
+  # Update the Make grid button with the number of guides that will be added
+  # when creating the grid.
+  #
+  # Returns nothing.
+  updateGuideCounter: (button, notation) =>
+    @core.preCalculateGrid notation, (data) ->
+      str = " (+#{ data.guides.length })"
+      $(button).text if data.guides.length > 0 then str else ""
+      str
 
   # Determine if the form has been has been filled out in any way.
   #
@@ -103,6 +113,7 @@ class window.GuideGuideHTMLUI
     $('.is-showing-clear-button').removeClass 'is-showing-clear-button'
     $('.js-grid-form .js-grid-form-input').val ''
     $('.js-grid-form .js-checkbox').removeClass 'checked'
+    setTimeout @updateGuideCounter('.js-count-form', @core.stringifyFormData(@getFormData().contents)), 100
 
   # When enter is pressed, render the grid.
   #
@@ -141,6 +152,8 @@ class window.GuideGuideHTMLUI
         @markInvalid $input.closest('.js-input')
         string += "\n\n"
         (string += "# #{ code }. #{ @messages[keys[code-1]]() }\n") for code in errors
+      else
+        @updateGuideCounter('.js-count-custom', string)
       $input.val string
       $input.trigger('autosize.resize')
 
@@ -227,6 +240,7 @@ class window.GuideGuideHTMLUI
     $form  = $checkbox.closest '.js-grid-form'
     @core.formChanged @getFormData()
     $('.js-grid-form').toggleClass 'is-showing-clear-button', @formIsFilledOut()
+    setTimeout @updateGuideCounter('.js-count-form', @core.stringifyFormData(@getFormData().contents)), 100
 
   # Updates the text in the custom field and resizes it
   #
@@ -481,6 +495,15 @@ class window.GuideGuideHTMLUI
   onSelectSet: (event) =>
     event.preventDefault()
     $(event.currentTarget).closest('.js-set').toggleClass('is-selected')
+    $selected = $('.js-set-list').find('.is-selected')
+    notation = ""
+    for set in $selected
+      data =
+        set: $(set).attr('data-id')
+        group: $(set).attr('data-group')
+      notation += "#{ @core.getSets(data).string }\n"
+    @updateGuideCounter('.js-count-sets', notation)
+
 
   # Remove any sets in the markup and update the list with a new set items for
   # each set in the list.
@@ -641,20 +664,8 @@ class window.GuideGuideHTMLUI
   # Fade out the action bar.
   #
   # Returns nothing.
-  toggleActionBar: =>
-    $('.js-action-bar').toggleClass "is-faded"
-
-  # Toggle between "make grid" and "cancel"
-  #
-  # Returns nothing.
-  toggleCancelButton: (button) =>
-    $button = $(button)
-    $button.text @messages.uiCancel() if !$button.hasClass 'js-cancel-guides'
-    $button.text @messages.uiMakeGrid() if $button.hasClass 'js-cancel-guides'
-    $button.toggleClass 'js-cancel-guides'
-
-  onClickCancelButton: (event) =>
-    @core.disrupt()
+  toggleGuideActions: =>
+    @panel.toggleClass "no-guide-actions"
 
   # Create a grid from the Grid form
   #
@@ -664,11 +675,9 @@ class window.GuideGuideHTMLUI
     data = @getFormData()
     return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
     return if !@core.formIsValid(data)
-    @toggleCancelButton(event.currentTarget)
     @core.toggleAllowingGuideActions()
     @core.makeGridFromForm data, =>
       @core.toggleAllowingGuideActions()
-      @toggleCancelButton(event.currentTarget)
 
   # Create a grid from the Custom form
   #
@@ -678,11 +687,9 @@ class window.GuideGuideHTMLUI
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
     return unless $form.find('.js-input.is-invalid').length == 0 and string
-    @toggleCancelButton(event.currentTarget)
     @core.toggleAllowingGuideActions()
     @core.makeGridFromCustom string, =>
       @core.toggleAllowingGuideActions()
-      @toggleCancelButton(event.currentTarget)
 
   # Create a grid from a set
   #
@@ -696,11 +703,9 @@ class window.GuideGuideHTMLUI
       sets.push
         id: $(set).attr 'data-id'
         group: $(set).attr 'data-group'
-    @toggleCancelButton(event.currentTarget)
     @core.toggleAllowingGuideActions()
     @core.makeGridFromSet sets, =>
       @core.toggleAllowingGuideActions()
-      @toggleCancelButton(event.currentTarget)
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.
@@ -796,7 +801,11 @@ class window.GuideGuideHTMLUI
       #guideguide .button-clear-guides:hover {
         background-color: #{ colors.danger };
       }
-      #guideguide .action-bar.is-faded .button:hover {
+      #guideguide.no-guide-actions .action-bar .button:hover {
+        background-color: #{ colors.button }
+      }
+      #guideguide.no-guide-actions .make-grid,
+      #guideguide.no-guide-actions .make-grid:hover {
         background-color: #{ colors.button }
       }
       #guideguide .set-list-set {

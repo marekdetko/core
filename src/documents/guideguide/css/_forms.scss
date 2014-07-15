@@ -116,6 +116,14 @@ input, textarea {
   }
 }
 
+.make-grid {
+  @include transition(opacity .2s);
+  
+  .no-guide-actions & {
+    opacity: 0.5;
+  }
+}
+
 // A basic input. This is required to be able to do 100% width AND have
 // padding, since box-sizing isn't supported.
 //
