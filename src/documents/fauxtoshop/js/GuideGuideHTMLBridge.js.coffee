@@ -42,8 +42,8 @@ class window.GuideGuideHTMLBridge
   # Fade the action bar since it can't be used.
   #
   # Returns nothing.
-  toggleGuideActions: =>
-    @ui.toggleGuideActions()
+  toggleGuideActions: (callback) =>
+    @ui.toggleGuideActions callback
 
   # Turn guide visibility on and off
   #

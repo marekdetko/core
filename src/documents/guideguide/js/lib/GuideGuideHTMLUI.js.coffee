@@ -665,8 +665,9 @@ class window.GuideGuideHTMLUI
   # Fade out the action bar.
   #
   # Returns nothing.
-  toggleGuideActions: =>
+  toggleGuideActions: (callback) =>
     @panel.toggleClass "no-guide-actions"
+    callback() if callback
 
   # Create a grid from the Grid form
   #
@@ -676,9 +677,9 @@ class window.GuideGuideHTMLUI
     data = @getFormData()
     return if @panel.find('.js-grid-form .js-input').filter('is-invalid') > 0
     return if !@core.formIsValid(data)
-    @core.toggleAllowingGuideActions()
-    @core.makeGridFromForm data, =>
-      @core.toggleAllowingGuideActions()
+    @core.toggleAllowingGuideActions =>
+      @core.makeGridFromForm data, =>
+        @core.toggleAllowingGuideActions()
 
   # Create a grid from the Custom form
   #
@@ -688,9 +689,9 @@ class window.GuideGuideHTMLUI
     $form  = @panel.find('.js-custom-form')
     string = @panel.find('.js-custom-input').val().replace(/^\s+|\s+$/g, '')
     return unless $form.find('.js-input.is-invalid').length == 0 and string
-    @core.toggleAllowingGuideActions()
-    @core.makeGridFromCustom string, =>
-      @core.toggleAllowingGuideActions()
+    @core.toggleAllowingGuideActions =>
+      @core.makeGridFromCustom string, =>
+        @core.toggleAllowingGuideActions()
 
   # Create a grid from a set
   #
@@ -704,9 +705,9 @@ class window.GuideGuideHTMLUI
       sets.push
         id: $(set).attr 'data-id'
         group: $(set).attr 'data-group'
-    @core.toggleAllowingGuideActions()
-    @core.makeGridFromSet sets, =>
-      @core.toggleAllowingGuideActions()
+    @core.toggleAllowingGuideActions =>
+      @core.makeGridFromSet sets, =>
+        @core.toggleAllowingGuideActions()
 
   # When the input shell is clicked rather than the input inside, focus the
   # input.

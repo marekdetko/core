@@ -118,9 +118,9 @@ class window.GuideGuideCore
   # Disable the action buttons while guides are being added.
   #
   # Returns nothing.
-  toggleAllowingGuideActions: =>
+  toggleAllowingGuideActions: (callback) =>
     allowGuideActions = !allowGuideActions
-    @bridge.toggleGuideActions()
+    @bridge.toggleGuideActions callback
 
   # Increment a usage counter of a given property.
   #
