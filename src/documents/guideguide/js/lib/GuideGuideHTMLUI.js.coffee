@@ -662,13 +662,6 @@ class window.GuideGuideHTMLUI
     event.preventDefault()
     @core.clearGuides() if @core.allowGuideActions
 
-  # Fade out the action bar.
-  #
-  # Returns nothing.
-  toggleGuideActions: (callback) =>
-    @panel.toggleClass "no-guide-actions"
-    callback() if callback
-
   # Create a grid from the Grid form
   #
   # Returns Nothing.
@@ -802,13 +795,6 @@ class window.GuideGuideHTMLUI
       }
       #guideguide .button-clear-guides:hover {
         background-color: #{ colors.danger };
-      }
-      #guideguide.no-guide-actions .action-bar .button:hover {
-        background-color: #{ colors.button }
-      }
-      #guideguide.no-guide-actions .make-grid,
-      #guideguide.no-guide-actions .make-grid:hover {
-        background-color: #{ colors.button }
       }
       #guideguide .set-list-set {
         background-color: #{ colors.button };
