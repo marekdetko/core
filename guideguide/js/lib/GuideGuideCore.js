@@ -178,9 +178,10 @@
     };
 
     GuideGuideCore.prototype.toggleAllowingGuideActions = function(callback) {
-      var allowGuideActions;
-      allowGuideActions = !allowGuideActions;
-      return this.bridge.toggleGuideActions(callback);
+      this.allowGuideActions = !this.allowGuideActions;
+      if (callback) {
+        return callback();
+      }
     };
 
     GuideGuideCore.prototype.recordUsage = function(property, count) {
