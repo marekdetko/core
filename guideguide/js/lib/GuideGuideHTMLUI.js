@@ -726,8 +726,11 @@
       }
     };
 
-    GuideGuideHTMLUI.prototype.toggleGuideActions = function() {
-      return this.panel.toggleClass("no-guide-actions");
+    GuideGuideHTMLUI.prototype.toggleGuideActions = function(callback) {
+      this.panel.toggleClass("no-guide-actions");
+      if (callback) {
+        return callback();
+      }
     };
 
     GuideGuideHTMLUI.prototype.onClickMakeGridFromForm = function(event) {
@@ -740,10 +743,11 @@
       if (!this.core.formIsValid(data)) {
         return;
       }
-      this.core.toggleAllowingGuideActions();
-      return this.core.makeGridFromForm(data, (function(_this) {
+      return this.core.toggleAllowingGuideActions((function(_this) {
         return function() {
-          return _this.core.toggleAllowingGuideActions();
+          return _this.core.makeGridFromForm(data, function() {
+            return _this.core.toggleAllowingGuideActions();
+          });
         };
       })(this));
     };
@@ -756,10 +760,11 @@
       if (!($form.find('.js-input.is-invalid').length === 0 && string)) {
         return;
       }
-      this.core.toggleAllowingGuideActions();
-      return this.core.makeGridFromCustom(string, (function(_this) {
+      return this.core.toggleAllowingGuideActions((function(_this) {
         return function() {
-          return _this.core.toggleAllowingGuideActions();
+          return _this.core.makeGridFromCustom(string, function() {
+            return _this.core.toggleAllowingGuideActions();
+          });
         };
       })(this));
     };
@@ -779,10 +784,11 @@
           group: $(set).attr('data-group')
         });
       }
-      this.core.toggleAllowingGuideActions();
-      return this.core.makeGridFromSet(sets, (function(_this) {
+      return this.core.toggleAllowingGuideActions((function(_this) {
         return function() {
-          return _this.core.toggleAllowingGuideActions();
+          return _this.core.makeGridFromSet(sets, function() {
+            return _this.core.toggleAllowingGuideActions();
+          });
         };
       })(this));
     };

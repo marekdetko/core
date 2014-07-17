@@ -177,10 +177,10 @@
       return this.bridge.setData(this.data);
     };
 
-    GuideGuideCore.prototype.toggleAllowingGuideActions = function() {
+    GuideGuideCore.prototype.toggleAllowingGuideActions = function(callback) {
       var allowGuideActions;
       allowGuideActions = !allowGuideActions;
-      return this.bridge.toggleGuideActions();
+      return this.bridge.toggleGuideActions(callback);
     };
 
     GuideGuideCore.prototype.recordUsage = function(property, count) {
