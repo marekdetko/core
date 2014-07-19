@@ -151,11 +151,15 @@
             }
             for (i = _i = 0, _len = theirs.length; _i < _len; i = ++_i) {
               num = theirs[i];
+              if (parseInt(num) < parseInt(ours[i])) {
+                return callback(result);
+              }
               if (parseInt(num) > parseInt(ours[i])) {
                 result.hasUpdate = true;
                 result.url = data.url;
                 result.title = _this.messages.alertTitleUpdate();
                 result.message = _this.messages.alertMessageUpdate();
+                return callback(result);
               }
             }
             return callback(result);
