@@ -7,4 +7,13 @@
     });
   };
 
+  $(function() {
+    return $('.tooltipped').tipsy({
+      gravity: function() {
+        return $(this).attr('data-tip-dir') || 'n';
+      },
+      delayIn: 1000
+    });
+  });
+
 }).call(this);

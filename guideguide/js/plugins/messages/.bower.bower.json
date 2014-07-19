@@ -15,12 +15,12 @@
     "**/*",
     "./!(messages.js)"
   ],
-  "version": "0.0.2",
-  "_release": "0.0.2",
+  "version": "0.0.3",
+  "_release": "0.0.3",
   "_resolution": {
     "type": "version",
-    "tag": "v0.0.2",
-    "commit": "2930a6857b721f382a1bcab6c8a8913f11e64034"
+    "tag": "v0.0.3",
+    "commit": "9f2403107f6e1a85479d36b0bc6d4d05157a931b"
   },
   "_source": "https://github.com/guideguide/messages.git",
   "_target": "*",

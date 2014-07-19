@@ -367,6 +367,15 @@ table {
   margin-top: 10px;
 }
 
+.tipsy {
+  font-family: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
+.tipsy-inner {
+  padding-bottom: 6px;
+}
+
 input, textarea {
   margin: 0;
   border: 0;
