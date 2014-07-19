@@ -14,15 +14,5 @@
   "ignore": [
     "**/*",
     "./!(messages.js)"
-  ],
-  "version": "0.0.5",
-  "_release": "0.0.5",
-  "_resolution": {
-    "type": "version",
-    "tag": "v0.0.5",
-    "commit": "627d9e54a5315f7ea01ca204242642a76d80016f"
-  },
-  "_source": "https://github.com/guideguide/messages.git",
-  "_target": "*",
-  "_originalSource": "https://github.com/guideguide/messages.git"
+  ]
 }
