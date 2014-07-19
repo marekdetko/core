@@ -5,4 +5,4 @@ window.initGuideGuide = (bridge) ->
 $ ->
   $('.tooltipped').tipsy
     gravity: -> $(this).attr('data-tip-dir') || 'n'
-    delayIn: 500
+    delayIn: 1000
