@@ -255,14 +255,14 @@ table {
   .is-loading & { display: block; }
 }
 
-.dark-theme .loader-spinner { background-image: url('spinner-dark.gif'); }
-.light-theme .loader-spinner { background-image: url('spinner-light.gif'); }
+.dark-theme .loader-spinner { background-image: url('../img/spinner-dark.gif'); }
+.light-theme .loader-spinner { background-image: url('../img/spinner-light.gif'); }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 only screen and (min--moz-device-pixel-ratio: 1.5),
 only screen and (min-resolution: 240dppx) {
-  .dark-theme .loader-spinner { background-image: url('spinner-dark@2x.gif'); }
-  .light-theme .loader-spinner { background-image: url('spinner-light@2x.gif'); }
+  .dark-theme .loader-spinner { background-image: url('../img/spinner-dark@2x.gif'); }
+  .light-theme .loader-spinner { background-image: url('../img/spinner-light@2x.gif'); }
   .loader-spinner { background-size: 37px 37px; }
 }
 
