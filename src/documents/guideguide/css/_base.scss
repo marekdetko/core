@@ -362,3 +362,12 @@ only screen and (min-resolution: 240dppx) {
   padding: 5px 10px;
   margin-top: 10px;
 }
+
+.tipsy {
+  font-family: $sansSerif;
+  font-size: 12px;
+}
+
+.tipsy-inner {
+  padding-bottom: 6px;
+}
