@@ -95,11 +95,13 @@ class window.GuideGuideCore
         ours.push(0) while theirs.length > ours.length
 
         for num, i in theirs
+          return callback(result) if parseInt(num) < parseInt(ours[i])
           if parseInt(num) > parseInt(ours[i])
             result.hasUpdate = true
             result.url = data.url
             result.title = @messages.alertTitleUpdate()
             result.message = @messages.alertMessageUpdate()
+            return callback(result)
 
         callback(result)
       error: (error) =>
