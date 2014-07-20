@@ -760,11 +760,13 @@
 
     GuideGuideCore.prototype.preCalculateGrid = function(notation, callback) {
       var data, guides;
-      if (!this.session.document) {
-        return null;
-      }
-      data = {};
+      data = {
+        guides: []
+      };
       guides = [];
+      if (!this.session.document) {
+        return callback(data);
+      }
       guides = GridNotation.parse(notation, this.session.document);
       data.guides = this.consolidate(this.session.document.existingGuides, guides);
       return callback(data);
