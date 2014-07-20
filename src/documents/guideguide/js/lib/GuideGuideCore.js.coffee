@@ -317,6 +317,12 @@ class window.GuideGuideCore
   storeDocumentState: =>
     @bridge.getDocumentInfo (info) => @session.document = info
 
+  # Clear the stored active document data.
+  #
+  # Returns nothing.
+  clearDocumentState: =>
+    @session.document = null
+
   # Get info about the current state of the active document.
   #
   # Returns an Object.
