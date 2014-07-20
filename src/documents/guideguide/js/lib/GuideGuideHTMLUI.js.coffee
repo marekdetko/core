@@ -50,6 +50,7 @@ class window.GuideGuideHTMLUI
     @panel.on 'click', '.js-sets-form .js-make-grid', @onClickMakeGridFromSet
     @panel.on 'click', '.js-custom-form .js-make-grid', @onClickMakeGridFromCusom
     @panel.on 'click', '.js-sets-form .js-edit-set', @onClickEditSet
+    @panel.on 'precalculate:form', @precalculateForm
 
   init: (core) =>
     @core = core
@@ -84,7 +85,12 @@ class window.GuideGuideHTMLUI
     $('.js-enter-click').removeClass 'js-enter-click'
     $('.js-grid-form').toggleClass 'is-showing-clear-button', @formIsFilledOut()
     @panel.off '.enter'
-    setTimeout @updateGuideCounter('.js-count-form', @core.stringifyFormData(@getFormData().contents)), 100
+
+  # Count the guides that will be added as a result of the current form inputs.
+  #
+  # Returns nothing.
+  precalculateForm: (event) =>
+    @updateGuideCounter('.js-count-form', @core.stringifyFormData(@getFormData().contents))
 
   # Update the Make grid button with the number of guides that will be added
   # when creating the grid.
@@ -253,7 +259,7 @@ class window.GuideGuideHTMLUI
   #
   # Returns noting.
   onBlurFormInput: (event) =>
-    @validateInput $(event.currentTarget)
+    @validateInput $(event.currentTarget), => @panel.trigger 'precalculate:form'
 
   validateInput: ($input, callback) =>
     return if $.trim($input.val()) is ""
