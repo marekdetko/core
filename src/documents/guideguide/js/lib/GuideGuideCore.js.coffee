@@ -4,6 +4,7 @@ class window.GuideGuideCore
   allowGuideActions: true
   bridge: {}
   data: {}
+  session: {}
 
   # Create a new GuideGuide instance
   #
@@ -308,6 +309,13 @@ class window.GuideGuideCore
   # returns a String
   generateSetID: (set) =>
     @bridge.toHash("#{ set.name }#{ set.string }")
+
+  # Save the data for the active document whenever it changes so that we can
+  # access it for precalculation without slowing down the UI.
+  #
+  # Returns nothing.
+  storeDocumentState: =>
+    @bridge.getDocumentInfo (info) => @session.document = info
 
   # Get info about the current state of the active document.
   #
