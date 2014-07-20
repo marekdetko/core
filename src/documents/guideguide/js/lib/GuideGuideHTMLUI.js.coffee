@@ -295,6 +295,7 @@ class window.GuideGuideHTMLUI
       $fields = @filteredList $form.find('.js-grid-form-iconned-input'), type
       $fields.find('.js-grid-form-input').val value
       @core.formChanged @getFormData()
+      @panel.trigger 'precalculate:form'
 
   # Toggle dropdown visibilty
   #
