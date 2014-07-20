@@ -627,13 +627,12 @@ class window.GuideGuideCore
   #
   # Returns an Object.
   preCalculateGrid: (notation, callback) =>
-    @bridge.getDocumentInfo (info) =>
-      return null unless info and info.hasOpenDocuments
-      data = {}
-      guides = []
-      guides = GridNotation.parse notation, info
-      data.guides = @consolidate(info.existingGuides, guides)
-      callback(data)
+    return null unless @session.document
+    data = {}
+    guides = []
+    guides = GridNotation.parse notation, @session.document
+    data.guides = @consolidate(@session.document.existingGuides, guides)
+    callback(data)
 
   # Get the option value that corresponds to the calculation type of the app
   #
