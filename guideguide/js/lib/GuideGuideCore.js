@@ -41,6 +41,7 @@
       this.setsBootstrap = __bind(this.setsBootstrap, this);
       this.panelBootstrap = __bind(this.panelBootstrap, this);
       this.getDocumentInfo = __bind(this.getDocumentInfo, this);
+      this.clearDocumentState = __bind(this.clearDocumentState, this);
       this.storeDocumentState = __bind(this.storeDocumentState, this);
       this.generateSetID = __bind(this.generateSetID, this);
       this.button = __bind(this.button, this);
@@ -400,6 +401,10 @@
           return _this.session.document = info;
         };
       })(this));
+    };
+
+    GuideGuideCore.prototype.clearDocumentState = function() {
+      return this.session.document = null;
     };
 
     GuideGuideCore.prototype.getDocumentInfo = function(callback) {
