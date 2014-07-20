@@ -13,6 +13,8 @@
 
     GuideGuideCore.prototype.data = {};
 
+    GuideGuideCore.prototype.session = {};
+
     function GuideGuideCore(args, callback) {
       this.updateTheme = __bind(this.updateTheme, this);
       this.log = __bind(this.log, this);
@@ -39,6 +41,7 @@
       this.setsBootstrap = __bind(this.setsBootstrap, this);
       this.panelBootstrap = __bind(this.panelBootstrap, this);
       this.getDocumentInfo = __bind(this.getDocumentInfo, this);
+      this.storeDocumentState = __bind(this.storeDocumentState, this);
       this.generateSetID = __bind(this.generateSetID, this);
       this.button = __bind(this.button, this);
       this.donate = __bind(this.donate, this);
@@ -389,6 +392,14 @@
 
     GuideGuideCore.prototype.generateSetID = function(set) {
       return this.bridge.toHash("" + set.name + set.string);
+    };
+
+    GuideGuideCore.prototype.storeDocumentState = function() {
+      return this.bridge.getDocumentInfo((function(_this) {
+        return function(info) {
+          return _this.session.document = info;
+        };
+      })(this));
     };
 
     GuideGuideCore.prototype.getDocumentInfo = function(callback) {
@@ -743,19 +754,15 @@
     };
 
     GuideGuideCore.prototype.preCalculateGrid = function(notation, callback) {
-      return this.bridge.getDocumentInfo((function(_this) {
-        return function(info) {
-          var data, guides;
-          if (!(info && info.hasOpenDocuments)) {
-            return null;
-          }
-          data = {};
-          guides = [];
-          guides = GridNotation.parse(notation, info);
-          data.guides = _this.consolidate(info.existingGuides, guides);
-          return callback(data);
-        };
-      })(this));
+      var data, guides;
+      if (!this.session.document) {
+        return null;
+      }
+      data = {};
+      guides = [];
+      guides = GridNotation.parse(notation, this.session.document);
+      data.guides = this.consolidate(this.session.document.existingGuides, guides);
+      return callback(data);
     };
 
     GuideGuideCore.prototype.calculationType = function() {

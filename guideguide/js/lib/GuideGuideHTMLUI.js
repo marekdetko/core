@@ -66,6 +66,7 @@
       this.onInputKeypress = __bind(this.onInputKeypress, this);
       this.onClickClearForm = __bind(this.onClickClearForm, this);
       this.updateGuideCounter = __bind(this.updateGuideCounter, this);
+      this.precalculateForm = __bind(this.precalculateForm, this);
       this.onInputBlur = __bind(this.onInputBlur, this);
       this.onInputFocus = __bind(this.onInputFocus, this);
       this.localizeUI = __bind(this.localizeUI, this);
@@ -116,6 +117,7 @@
       this.panel.on('click', '.js-sets-form .js-make-grid', this.onClickMakeGridFromSet);
       this.panel.on('click', '.js-custom-form .js-make-grid', this.onClickMakeGridFromCusom);
       this.panel.on('click', '.js-sets-form .js-edit-set', this.onClickEditSet);
+      this.panel.on('precalculate:form', this.precalculateForm);
     }
 
     GuideGuideHTMLUI.prototype.init = function(core) {
@@ -146,8 +148,11 @@
       $(event.currentTarget).closest('.js-input').removeClass('is-focused');
       $('.js-enter-click').removeClass('js-enter-click');
       $('.js-grid-form').toggleClass('is-showing-clear-button', this.formIsFilledOut());
-      this.panel.off('.enter');
-      return setTimeout(this.updateGuideCounter('.js-count-form', this.core.stringifyFormData(this.getFormData().contents)), 100);
+      return this.panel.off('.enter');
+    };
+
+    GuideGuideHTMLUI.prototype.precalculateForm = function(event) {
+      return this.updateGuideCounter('.js-count-form', this.core.stringifyFormData(this.getFormData().contents));
     };
 
     GuideGuideHTMLUI.prototype.updateGuideCounter = function(button, notation) {
@@ -302,7 +307,11 @@
     };
 
     GuideGuideHTMLUI.prototype.onBlurFormInput = function(event) {
-      return this.validateInput($(event.currentTarget));
+      return this.validateInput($(event.currentTarget), (function(_this) {
+        return function() {
+          return _this.panel.trigger('precalculate:form');
+        };
+      })(this));
     };
 
     GuideGuideHTMLUI.prototype.validateInput = function($input, callback) {
@@ -348,7 +357,8 @@
           type = $input.attr('data-distribute');
           $fields = _this.filteredList($form.find('.js-grid-form-iconned-input'), type);
           $fields.find('.js-grid-form-input').val(value);
-          return _this.core.formChanged(_this.getFormData());
+          _this.core.formChanged(_this.getFormData());
+          return _this.panel.trigger('precalculate:form');
         };
       })(this));
     };

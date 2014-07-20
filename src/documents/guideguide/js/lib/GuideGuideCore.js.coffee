@@ -4,6 +4,7 @@ class window.GuideGuideCore
   allowGuideActions: true
   bridge: {}
   data: {}
+  session: {}
 
   # Create a new GuideGuide instance
   #
@@ -308,6 +309,13 @@ class window.GuideGuideCore
   # returns a String
   generateSetID: (set) =>
     @bridge.toHash("#{ set.name }#{ set.string }")
+
+  # Save the data for the active document whenever it changes so that we can
+  # access it for precalculation without slowing down the UI.
+  #
+  # Returns nothing.
+  storeDocumentState: =>
+    @bridge.getDocumentInfo (info) => @session.document = info
 
   # Get info about the current state of the active document.
   #
@@ -619,13 +627,12 @@ class window.GuideGuideCore
   #
   # Returns an Object.
   preCalculateGrid: (notation, callback) =>
-    @bridge.getDocumentInfo (info) =>
-      return null unless info and info.hasOpenDocuments
-      data = {}
-      guides = []
-      guides = GridNotation.parse notation, info
-      data.guides = @consolidate(info.existingGuides, guides)
-      callback(data)
+    return null unless @session.document
+    data = {}
+    guides = []
+    guides = GridNotation.parse notation, @session.document
+    data.guides = @consolidate(@session.document.existingGuides, guides)
+    callback(data)
 
   # Get the option value that corresponds to the calculation type of the app
   #
