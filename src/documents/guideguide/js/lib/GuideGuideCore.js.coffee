@@ -633,9 +633,9 @@ class window.GuideGuideCore
   #
   # Returns an Object.
   preCalculateGrid: (notation, callback) =>
-    return null unless @session.document
-    data = {}
+    data = { guides: [] }
     guides = []
+    return callback(data) unless @session.document
     guides = GridNotation.parse notation, @session.document
     data.guides = @consolidate(@session.document.existingGuides, guides)
     callback(data)
