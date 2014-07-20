@@ -202,3 +202,4 @@ $ ->
         danger: '#c74040'
 
       frame.GuideGuide.updateTheme theme
+      frame.GuideGuide.storeDocumentState()
