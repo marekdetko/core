@@ -262,7 +262,7 @@ class window.GuideGuideHTMLUI
     @validateInput $(event.currentTarget), => @panel.trigger 'precalculate:form'
 
   validateInput: ($input, callback) =>
-    return if $.trim($input.val()) is ""
+    return (callback() if callback) if $.trim($input.val()) is ""
     int = false
 
     if $input.attr 'data-integer'
