@@ -317,7 +317,7 @@
     GuideGuideHTMLUI.prototype.validateInput = function($input, callback) {
       var int, val;
       if ($.trim($input.val()) === "") {
-        return;
+        return (callback ? callback() : void 0);
       }
       int = false;
       if ($input.attr('data-integer')) {
