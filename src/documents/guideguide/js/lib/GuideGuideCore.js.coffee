@@ -431,6 +431,7 @@ class window.GuideGuideCore
   # Returns a String.
   formChanged: (data) =>
     @bridge.updateCustomField @stringifyFormData data.contents
+    return
 
   # Determine whether the value in the form is valid
   #
