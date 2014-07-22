@@ -116,7 +116,10 @@ class window.GuideGuideCore
   # Returns nothing.
   saveData: (data) =>
     @data = $.extend true, @data, data if data
-    @bridge.setData @data
+    try
+      @bridge.setData @data
+    catch e
+      alert e
 
   # Disable the action buttons while guides are being added.
   #
