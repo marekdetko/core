@@ -516,7 +516,7 @@
     };
 
     GuideGuideCore.prototype.formChanged = function(data) {
-      return this.bridge.updateCustomField(this.stringifyFormData(data.contents));
+      this.bridge.updateCustomField(this.stringifyFormData(data.contents));
     };
 
     GuideGuideCore.prototype.validateInput = function(value, integerOnly) {
