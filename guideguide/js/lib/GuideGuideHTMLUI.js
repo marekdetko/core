@@ -334,7 +334,7 @@
       if (!this.core.validateInput($input.val(), int)) {
         this.markInvalid($input);
       } else {
-        this.core.formChanged(this.getFormData());
+        setTimeout(this.core.formChanged(this.getFormData()), 100);
       }
       if (callback) {
         return callback();

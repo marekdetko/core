@@ -179,10 +179,16 @@
     };
 
     GuideGuideCore.prototype.saveData = function(data) {
+      var e;
       if (data) {
         this.data = $.extend(true, this.data, data);
       }
-      return this.bridge.setData(this.data);
+      try {
+        return this.bridge.setData(this.data);
+      } catch (_error) {
+        e = _error;
+        return alert(e);
+      }
     };
 
     GuideGuideCore.prototype.toggleAllowingGuideActions = function(callback) {
