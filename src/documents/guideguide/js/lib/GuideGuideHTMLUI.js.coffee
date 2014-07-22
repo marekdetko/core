@@ -275,7 +275,7 @@ class window.GuideGuideHTMLUI
     if !@core.validateInput $input.val(), int
       @markInvalid $input
     else
-      @core.formChanged @getFormData()
+      setTimeout @core.formChanged(@getFormData()), 100
 
     callback() if callback
 
