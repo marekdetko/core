@@ -74,40 +74,43 @@ class window.GuideGuideCore
   #
   # Returns nothing.
   checkForUpdates: (callback) =>
-    @log 'Checking for updates'
+    try
+      @log 'Checking for updates'
 
-    result =
-      hasUpdate: false
+      result =
+        hasUpdate: false
 
-    $.ajax
-      url: "#{ @siteUrl }#{ @data.application.id }.json"
-      crossDomain: true
-      dataType: 'jsonp'
-      jsonp: "callback"
-      jsonpCallback: "callback"
-      timeout: 5000
-      success: (data) =>
-        hasUpdate = false
+      $.ajax
+        url: "#{ @siteUrl }#{ @data.application.id }.json"
+        crossDomain: true
+        dataType: 'jsonp'
+        jsonp: "callback"
+        jsonpCallback: "callback"
+        timeout: 5000
+        success: (data) =>
+          hasUpdate = false
 
-        ours = @data.application.guideguideVersion.replace(/-/g,'.').split('.')
-        theirs = data.version.replace(/-/g,'.').split('.')
+          ours = @data.application.guideguideVersion.replace(/-/g,'.').split('.')
+          theirs = data.version.replace(/-/g,'.').split('.')
 
-        theirs.push(0) while theirs.length < ours.length
-        ours.push(0) while theirs.length > ours.length
+          theirs.push(0) while theirs.length < ours.length
+          ours.push(0) while theirs.length > ours.length
 
-        for num, i in theirs
-          return callback(result) if parseInt(num) < parseInt(ours[i])
-          if parseInt(num) > parseInt(ours[i])
-            result.hasUpdate = true
-            result.url = data.url
-            result.title = @messages.alertTitleUpdate()
-            result.message = @messages.alertMessageUpdate()
-            return callback(result)
+          for num, i in theirs
+            return callback(result) if parseInt(num) < parseInt(ours[i])
+            if parseInt(num) > parseInt(ours[i])
+              result.hasUpdate = true
+              result.url = data.url
+              result.title = @messages.alertTitleUpdate()
+              result.message = @messages.alertMessageUpdate()
+              return callback(result)
 
-        callback(result)
-      error: (error) =>
-        @log "Update error", error
-        callback(null)
+          callback(result)
+        error: (error) =>
+          @log "Update error", error
+          callback(null)
+    catch e
+      alert e
 
   # Save GuideGuide's data, including usage data, user preferences, and sets
   #
