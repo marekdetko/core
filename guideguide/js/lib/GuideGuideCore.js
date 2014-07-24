@@ -129,53 +129,58 @@
     };
 
     GuideGuideCore.prototype.checkForUpdates = function(callback) {
-      var result;
-      this.log('Checking for updates');
-      result = {
-        hasUpdate: false
-      };
-      return $.ajax({
-        url: "" + this.siteUrl + this.data.application.id + ".json",
-        crossDomain: true,
-        dataType: 'jsonp',
-        jsonp: "callback",
-        jsonpCallback: "callback",
-        timeout: 5000,
-        success: (function(_this) {
-          return function(data) {
-            var hasUpdate, i, num, ours, theirs, _i, _len;
-            hasUpdate = false;
-            ours = _this.data.application.guideguideVersion.replace(/-/g, '.').split('.');
-            theirs = data.version.replace(/-/g, '.').split('.');
-            while (theirs.length < ours.length) {
-              theirs.push(0);
-            }
-            while (theirs.length > ours.length) {
-              ours.push(0);
-            }
-            for (i = _i = 0, _len = theirs.length; _i < _len; i = ++_i) {
-              num = theirs[i];
-              if (parseInt(num) < parseInt(ours[i])) {
-                return callback(result);
+      var e, result;
+      try {
+        this.log('Checking for updates');
+        result = {
+          hasUpdate: false
+        };
+        return $.ajax({
+          url: "" + this.siteUrl + this.data.application.id + ".json",
+          crossDomain: true,
+          dataType: 'jsonp',
+          jsonp: "callback",
+          jsonpCallback: "callback",
+          timeout: 5000,
+          success: (function(_this) {
+            return function(data) {
+              var hasUpdate, i, num, ours, theirs, _i, _len;
+              hasUpdate = false;
+              ours = _this.data.application.guideguideVersion.replace(/-/g, '.').split('.');
+              theirs = data.version.replace(/-/g, '.').split('.');
+              while (theirs.length < ours.length) {
+                theirs.push(0);
               }
-              if (parseInt(num) > parseInt(ours[i])) {
-                result.hasUpdate = true;
-                result.url = data.url;
-                result.title = _this.messages.alertTitleUpdate();
-                result.message = _this.messages.alertMessageUpdate();
-                return callback(result);
+              while (theirs.length > ours.length) {
+                ours.push(0);
               }
-            }
-            return callback(result);
-          };
-        })(this),
-        error: (function(_this) {
-          return function(error) {
-            _this.log("Update error", error);
-            return callback(null);
-          };
-        })(this)
-      });
+              for (i = _i = 0, _len = theirs.length; _i < _len; i = ++_i) {
+                num = theirs[i];
+                if (parseInt(num) < parseInt(ours[i])) {
+                  return callback(result);
+                }
+                if (parseInt(num) > parseInt(ours[i])) {
+                  result.hasUpdate = true;
+                  result.url = data.url;
+                  result.title = _this.messages.alertTitleUpdate();
+                  result.message = _this.messages.alertMessageUpdate();
+                  return callback(result);
+                }
+              }
+              return callback(result);
+            };
+          })(this),
+          error: (function(_this) {
+            return function(error) {
+              _this.log("Update error", error);
+              return callback(null);
+            };
+          })(this)
+        });
+      } catch (_error) {
+        e = _error;
+        return alert(e);
+      }
     };
 
     GuideGuideCore.prototype.saveData = function(data) {
