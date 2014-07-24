@@ -524,7 +524,8 @@
       if (this.panel.find('.js-grid-form .js-input').filter('.is-invalid').length > 0) {
         return;
       }
-      return this.core.saveSet(this.getFormData());
+      this.core.saveSet(this.getFormData());
+      return this.hideNewSetForm();
     };
 
     GuideGuideHTMLUI.prototype.onClickSaveSetFromCustom = function(event) {
@@ -547,7 +548,8 @@
         name: name,
         contents: string
       };
-      return this.core.saveSet(set);
+      this.core.saveSet(set);
+      return this.hideNewSetForm();
     };
 
     GuideGuideHTMLUI.prototype.onClickEditSet = function(event) {
