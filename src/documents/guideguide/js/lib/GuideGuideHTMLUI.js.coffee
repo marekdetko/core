@@ -468,6 +468,7 @@ class window.GuideGuideHTMLUI
     @markInvalid @panel.find('.js-grid-form .js-set-name').closest('.js-input') if data.name.length == 0
     return if @panel.find('.js-grid-form .js-input').filter('.is-invalid').length > 0
     @core.saveSet @getFormData()
+    @hideNewSetForm()
 
   onClickSaveSetFromCustom: (event) =>
     event.preventDefault()
@@ -482,6 +483,7 @@ class window.GuideGuideHTMLUI
       name: name
       contents: string
     @core.saveSet set
+    @hideNewSetForm()
 
   # Open Custom form with data from the set to be edited
   #
