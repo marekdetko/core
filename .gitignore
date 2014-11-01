@@ -3,3 +3,6 @@
 /dev
 ./DS_Store
 /src/components
+bower_components
+.sass-cache
+public
